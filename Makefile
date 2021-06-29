@@ -60,42 +60,42 @@ clean-test: ## remove test and coverage artifacts
 lint-all: black isort lint static bandit safety vulture darglint pylint ## run all linters
 
 lint: ## check style with flake8
-	flake8 python_project_template tests scripts
+	flake8 planning_with_past tests scripts
 
 static: ## static type checking with mypy
-	mypy python_project_template tests scripts
+	mypy planning_with_past tests scripts
 
 isort: ## sort import statements with isort
-	isort python_project_template tests scripts
+	isort planning_with_past tests scripts
 
 isort-check: ## check import statements order with isort
-	isort --check-only python_project_template tests scripts
+	isort --check-only planning_with_past tests scripts
 
 black: ## apply black formatting
-	black python_project_template tests scripts
+	black planning_with_past tests scripts
 
 black-check: ## check black formatting
-	black --check --verbose python_project_template tests scripts
+	black --check --verbose planning_with_past tests scripts
 
 bandit: ## run bandit
-	bandit python_project_template tests scripts
+	bandit planning_with_past tests scripts
 
 safety: ## run safety
 	safety
 
 pylint: ## run pylint
-	pylint python_project_template tests scripts
+	pylint planning_with_past tests scripts
 
 vulture: ## run vulture
-	vulture python_project_template scripts/whitelist.py
+	vulture planning_with_past scripts/whitelist.py
 
 darglint: ## run vulture
-	darglint python_project_template
+	darglint planning_with_past
 
 test: ## run tests quickly with the default Python
 	pytest tests --doctest-modules \
-        python_project_template tests/ \
-        --cov=python_project_template \
+        planning_with_past tests/ \
+        --cov=planning_with_past \
         --cov-report=xml \
         --cov-report=html \
         --cov-report=term
@@ -104,7 +104,7 @@ test-all: ## run tests on every Python version with tox
 	tox
 
 coverage: ## check code coverage quickly with the default Python
-	coverage run --source python_project_template -m pytest
+	coverage run --source planning_with_past -m pytest
 	coverage report -m
 	coverage html
 	$(BROWSER) htmlcov/index.html

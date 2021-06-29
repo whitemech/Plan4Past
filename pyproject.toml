@@ -1,13 +1,16 @@
 [tool.poetry]
-name = "python-project-template"
+name = "planning-with-past"
 version = "0.1.0"
 description = "A Python project template."
-authors = ["Marco Favorito <marco.favorito@gmail.com>"]
+authors = [
+    "Francesco Fuggitti <fuggitti@diag.uniroma1.it>",
+    "Marco Favorito <favorito@diag.uniroma1.it>"
+]
 license = "GPL-3.0-or-later"
 readme = "README.md"
-homepage = "https://marcofavorito.me/python-project-template"
-repository = "https://github.com/marcofavorito/python-project-template.git"
-documentation = "https://marcofavorito.me/python-project-template"
+homepage = "https://marcofavorito.me/planning-with-past"
+repository = "https://github.com/marcofavorito/planning-with-past.git"
+documentation = "https://marcofavorito.me/planning-with-past"
 keywords = []
 classifiers = [
     'Development Status :: 2 - Pre-Alpha',
@@ -26,8 +29,8 @@ include = []
 #script_name = 'path/to/script'
 
 [tool.poetry.urls]
-"Bug Tracker" = "https://github.com/marcofavorito/python-project-template/issues"
-"Pull Requests" = "https://github.com/marcofavorito/python-project-template/pulls"
+"Bug Tracker" = "https://github.com/marcofavorito/planning-with-past/issues"
+"Pull Requests" = "https://github.com/marcofavorito/planning-with-past/pulls"
 
 
 [tool.poetry.dependencies]
