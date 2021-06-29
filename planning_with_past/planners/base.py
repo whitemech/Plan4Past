@@ -20,11 +20,27 @@
 # along with planning-with-past.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-"""A Python project template."""
+"""Interface for planner wrappers."""
+from abc import ABC, abstractmethod
+from typing import Dict
 
-import inspect
-from pathlib import Path
+from pddl.core import Domain, Problem
 
-PACKAGE_ROOT = Path(inspect.getframeinfo(inspect.currentframe()).filename).parent  # type: ignore
+from planning_with_past.plans import BasePlan
 
-__version__ = "0.1.0"
+
+class Planner(ABC):
+    """Interface for planner wrappers."""
+
+    @abstractmethod
+    def plan(
+        self, domain: Domain, problem: Problem, **options: Dict[str, str]
+    ) -> BasePlan:
+        """
+        Find a plan.
+
+        :param domain: path to the domain file.
+        :param problem: path to the problem file.
+        :param options: a dictionary of options.
+        :return: a plan.
+        """

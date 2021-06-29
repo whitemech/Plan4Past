@@ -44,10 +44,32 @@ Planning for temporal goals in past temporal logic.
 
 ## Install
 
-(TODO replace) To install the package from PyPI:
+### Python code
+
+First, clone the repository:
 ```
-pip install planning_with_past
+git clone git@github.com:marcofavorito/planning-with-past
 ```
+
+Then, use Poetry to set up the development environment:
+
+```
+poetry shell && poetry install
+```
+
+Install the package:
+```
+pip install .
+```
+
+### Planners
+
+Run:
+```
+./scripts/build.sh
+```
+
+to build the required dependencies (in particular planners). 
 
 ## Tests
 

@@ -1,3 +1,6 @@
 [submodule "examples/downward"]
 	path = examples/downward
 	url = git@github.com:aibasel/downward.git
+[submodule "third_party/planner-for-relevant-policies"]
+	path = third_party/planner-for-relevant-policies
+	url = https://github.com/QuMuLab/planner-for-relevant-policies.git

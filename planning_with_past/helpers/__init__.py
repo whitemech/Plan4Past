@@ -20,11 +20,4 @@
 # along with planning-with-past.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-"""A Python project template."""
-
-import inspect
-from pathlib import Path
-
-PACKAGE_ROOT = Path(inspect.getframeinfo(inspect.currentframe()).filename).parent  # type: ignore
-
-__version__ = "0.1.0"
+"""Helper modules."""
