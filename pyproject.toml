@@ -35,7 +35,8 @@ include = []
 
 [tool.poetry.dependencies]
 python = "^3.7"
-ipython = "^7.25.0"
+pylogics = "^0.1.0"
+pddl = "^0.1.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.1"
@@ -58,7 +59,7 @@ bandit = "^1.7.0"
 mkdocs = "^1.2.1"
 markdown_include = "^0.6.0"
 mkdocs-material = "^7.1.9"
-ipython = "^7.18.1"
+ipython = "^7.25.0"
 jupyter = "^1.0.0"
 mknotebooks = "^0.7.0"
 markdown = "3.3.4"

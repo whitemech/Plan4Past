@@ -1,5 +1,5 @@
 <h1 align="center">
-  <b># Classical and FOND Planning for Past Temporal Goals</b>
+  <b>Classical and FOND Planning for Past Temporal Goals</b>
 </h1>
 
 <p align="center">
