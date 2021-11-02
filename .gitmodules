@@ -1,0 +1,3 @@
+[submodule "examples/downward"]
+	path = examples/downward
+	url = git@github.com:aibasel/downward.git
