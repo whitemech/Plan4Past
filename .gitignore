@@ -624,4 +624,12 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/tex,pycharm+all,latex,macos,linux,windows,visualstudiocode,textmate
+# End of https://www.toptal.com/developers/gitignore/api/tex,vim,tags,latex,linux,macos,python,textmate,sublimetext,pycharm+all,intellij+all,visualstudiocode
+
+output
+output.sas
+plan_numbers_and_cost
+policy.fsap
+policy.out
+sas_plan
+elapsed.time

@@ -55,7 +55,7 @@ class PRPPlanner(Planner):
 
         :return: path to PRP executable.
         """
-        which_output = shutil.which("prp")
+        which_output = shutil.which("")
         if which_output is not None:
             return Path(which_output).absolute()
 
@@ -69,7 +69,8 @@ class PRPPlanner(Planner):
     ):
         """Call the PRP command."""
         output = subprocess.Popen(
-            [str(self._prp_executable), str(domain_path), str(problem_path)],
+            [str(self._prp_executable), str(domain_path), str(problem_path),
+             "--dump-policy", "2"],
             cwd=str(cwd),
             stdout=subprocess.PIPE,
         )
@@ -93,6 +94,7 @@ class PRPPlanner(Planner):
     def _extract_plan_from_prp_output(_cls, plan_text: str) -> BasePlan:
         """Extract a plan form PRP output."""
         plan = Plan()
+        print(plan_text)
         for line in plan_text.splitlines():
             line = line.strip()
             # TODO
