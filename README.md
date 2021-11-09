@@ -62,6 +62,11 @@ Install the package:
 pip install .
 ```
 
+For development: install `pddl` in development mode:
+```
+pip install -e third_party/pddl
+```
+
 ### Planners
 
 Run:

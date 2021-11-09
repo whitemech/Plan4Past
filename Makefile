@@ -117,16 +117,3 @@ servedocs: docs ## compile the docs watching for changes
 	mkdocs build --clean
 	python -c 'print("###### Starting local server. Press Control+C to stop server ######")'
 	mkdocs serve
-
-release: dist ## package and upload a release
-	twine upload dist/*
-
-dist: clean ## builds source and wheel package
-	poetry build
-	ls -l dist
-
-install: clean ## install the package to the active Python's site-packages
-	poetry install
-
-develop: clean ## install the package in development mode
-	echo "Not supported by Poetry yet!"
