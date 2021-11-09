@@ -21,3 +21,20 @@
 #
 
 """Miscellanea utilities."""
+import contextlib
+import os
+import pathlib
+from collections import Generator
+from os import PathLike
+from pathlib import Path
+
+
+@contextlib.contextmanager
+def cd(path: PathLike) -> Generator:
+    """Change working directory temporarily."""
+    old_path = Path.cwd()
+    os.chdir(path)
+    try:
+        yield
+    finally:
+        os.chdir(str(old_path))

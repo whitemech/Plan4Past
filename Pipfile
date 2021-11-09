@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-planning-with-past = {path = "."}
+planning-with-past = {editable = true, path = "."}
 
 [dev-packages]
 pytest = ">=6.2.1"

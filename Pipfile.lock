@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "e79224da249952f6893649ffebed7384077b654ec4bb20cf3e3b5c7a8af08646"
+            "sha256": "454711a3720f076170a35ee5b87506700254825d91e2aa0fac3d83707a99dfaa"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -34,8 +34,8 @@
             "version": "==2.6.3"
         },
         "planning-with-past": {
-            "path": ".",
-            "version": "==0.1.0"
+            "editable": true,
+            "path": "."
         },
         "pylogics": {
             "hashes": [

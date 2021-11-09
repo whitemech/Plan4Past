@@ -39,6 +39,27 @@ Run:
 
 to build the required dependencies (in particular planners). 
 
+## Quickstart
+
+### Classical planning
+
+```python
+import networkx as nx
+import matplotlib.pyplot as plt
+from planning_with_past.planners.downward import DownwardPlanner
+from pathlib import Path
+planner = DownwardPlanner()
+plan = planner.plan(Path("examples/pddl/domain.pddl"), Path("examples/pddl/p-0.pddl"))
+
+# print the graph
+pos = nx.spring_layout(plan.graph)
+nx.draw_networkx(plan.graph, pos)
+edge_labels = dict([((n1, n2), action)
+                    for n1, n2, action in plan.graph.edges(data="action")])
+nx.draw_networkx_edge_labels(plan.graph, pos, edge_labels=edge_labels)
+plt.show()
+```
+
 ## Tests
 
 To run tests: `tox`

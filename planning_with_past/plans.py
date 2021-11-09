@@ -22,30 +22,43 @@
 
 """Core classes useful for programmatic usage of planners."""
 from abc import ABC, abstractmethod
-from typing import Hashable
+from typing import Hashable, Generic, TypeVar, Set
 
 import networkx as nx
 
 
-class BasePlan(ABC):
+NodeType = TypeVar("NodeType")
+
+
+class BasePlan(ABC, Generic[NodeType]):
     """Base class to build and represent a plan."""
 
+    @property
+    def nodes(self) -> Set[NodeType]:
+        """Get the set of nodes."""
+        raise NotImplementedError
+
+    @property
+    def graph(self) -> nx.DiGraph:
+        """Get the graph."""
+        raise NotImplementedError
+
     @abstractmethod
-    def add_edge(self, start: Hashable, end: Hashable, **attr):
+    def add_edge(self, start: NodeType, end: NodeType, **attr):
         """Add an edge."""
         raise NotImplementedError
 
     @abstractmethod
-    def add_node(self, node: Hashable, **attr):
+    def add_node(self, node: NodeType, **attr):
         """Add a node."""
         raise NotImplementedError
 
 
-class Plan(BasePlan):
+class Plan(BasePlan[int]):
     """
     Class to represent a plan.
 
-    In fact, it is a delegator to a networkX.DiGraph.
+    Wrapper of a networkX.DiGraph.
     """
 
     def __init__(self):
@@ -54,14 +67,19 @@ class Plan(BasePlan):
         self._g.add_node(0)
 
     @property
-    def nodes(self):
+    def nodes(self) -> Set[int]:
         """Return the set of nodes."""
-        return self._g.nodes
+        return set(self._g.nodes)
 
-    def add_edge(self, start: Hashable, end: Hashable, **attr):
+    @property
+    def graph(self) -> nx.DiGraph:
+        """Get the graph."""
+        return self._g
+
+    def add_edge(self, start: NodeType, end: NodeType, **attr):
         """Add an edge."""
         self._g.add_edge(start, end, **attr)
 
-    def add_node(self, node: Hashable, **attr):
+    def add_node(self, node: NodeType, **attr):
         """Add a node."""
         self._g.add_node(node, **attr)

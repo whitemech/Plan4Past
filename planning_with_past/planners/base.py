@@ -22,6 +22,7 @@
 
 """Interface for planner wrappers."""
 from abc import ABC, abstractmethod
+from pathlib import Path
 from typing import Dict
 
 from pddl.core import Domain, Problem
@@ -34,7 +35,7 @@ class Planner(ABC):
 
     @abstractmethod
     def plan(
-        self, domain: Domain, problem: Problem, **options: Dict[str, str]
+        self, domain: Path, problem: Path, **options: Dict[str, str]
     ) -> BasePlan:
         """
         Find a plan.
