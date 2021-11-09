@@ -7,7 +7,6 @@ nav:
 
 plugins:
 - search
-- markdownmermaid
 - mknotebooks:
     execute: false
     write_markdown: false
