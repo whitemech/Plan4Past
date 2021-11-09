@@ -69,8 +69,13 @@ class PRPPlanner(Planner):
     ):
         """Call the PRP command."""
         output = subprocess.Popen(
-            [str(self._prp_executable), str(domain_path), str(problem_path),
-             "--dump-policy", "2"],
+            [
+                str(self._prp_executable),
+                str(domain_path),
+                str(problem_path),
+                "--dump-policy",
+                "2",
+            ],
             cwd=str(cwd),
             stdout=subprocess.PIPE,
         )

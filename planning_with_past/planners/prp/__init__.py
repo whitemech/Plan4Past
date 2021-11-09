@@ -21,6 +21,3 @@
 #
 
 """Wrapper to the PRP planner."""
-
-from planning_with_past.planners.base import Planner
-
