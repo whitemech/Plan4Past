@@ -2,7 +2,7 @@
 (:domain BLOCKS)
 (:objects D B A C)
 
-(:INIT  
+(:init
         (CLEAR A) 
         (CLEAR B) 
         (CLEAR C) 
