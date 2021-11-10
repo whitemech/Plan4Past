@@ -23,14 +23,13 @@
 """Miscellanea utilities."""
 import contextlib
 import os
-import pathlib
-from collections import Generator
 from os import PathLike
 from pathlib import Path
+from typing import Generator
 
 
 @contextlib.contextmanager
-def cd(path: PathLike) -> Generator:
+def cd(path: PathLike) -> Generator:  # pylint: disable=invalid-name
     """Change working directory temporarily."""
     old_path = Path.cwd()
     os.chdir(path)

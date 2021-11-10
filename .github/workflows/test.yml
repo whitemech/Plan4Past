@@ -28,7 +28,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run:  |
-        pip install tox poetry
+        pip install tox
         sudo apt-get install -y graphviz libgraphviz-dev
       #    # set up environment depending on the platform in use
 #    - if: matrix.os == 'ubuntu-latest'

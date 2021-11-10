@@ -19,6 +19,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with planning-with-past.  If not, see <https://www.gnu.org/licenses/>.
 #
+# pylint: disable-all
 
 """Wrapper to PRP."""
 import shutil

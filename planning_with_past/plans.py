@@ -22,10 +22,9 @@
 
 """Core classes useful for programmatic usage of planners."""
 from abc import ABC, abstractmethod
-from typing import Hashable, Generic, TypeVar, Set
+from typing import Generic, Set, TypeVar
 
 import networkx as nx
-
 
 NodeType = TypeVar("NodeType")
 

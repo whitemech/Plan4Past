@@ -27,12 +27,10 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Dict
 
-from pddl.core import Domain, Problem
-from pddl.formatter import domain_to_string, problem_to_string
 from planning_with_past import PACKAGE_ROOT
 from planning_with_past.helpers.utils import cd
 from planning_with_past.planners.base import Planner
-from planning_with_past.plans import BasePlan, Plan
+from planning_with_past.plans import Plan
 
 repo_root = PACKAGE_ROOT.parent
 DEFAULT_BIN_DOWNWARD_PATH = (repo_root / "bin" / "fast-downward").absolute()
@@ -44,7 +42,9 @@ _SAS_FILENAME = "sas_plan"
 class DownwardPlanner(Planner):
     """Wrapper to Downward planner."""
 
-    def __init__(self, bin_path: Path = DEFAULT_BIN_DOWNWARD_PATH, search: str = DEFAULT_SEARCH) -> None:
+    def __init__(
+        self, bin_path: Path = DEFAULT_BIN_DOWNWARD_PATH, search: str = DEFAULT_SEARCH
+    ) -> None:
         """
         Initialize the planner.
 
@@ -77,7 +77,7 @@ class DownwardPlanner(Planner):
         """
         orig_domain_path = domain.absolute()
         orig_problem_path = problem.absolute()
-        with TemporaryDirectory() as tempdir_str, cd(tempdir_str):
+        with TemporaryDirectory() as tempdir_str, cd(Path(tempdir_str)):
             tempdir = Path(tempdir_str)
             tmp_domain_path = tempdir / "domain.pddl"
             tmp_problem_path = tempdir / "problem.pddl"
@@ -89,14 +89,22 @@ class DownwardPlanner(Planner):
 
     def _call_planner(self, domain_path: Path, problem_path: Path):
         """Call planner."""
-        subprocess.check_call([self.bin_path, str(domain_path), str(problem_path), "--search", self.search])
+        subprocess.check_call(
+            [
+                self.bin_path,
+                str(domain_path),
+                str(problem_path),
+                "--search",
+                self.search,
+            ]
+        )
 
 
 def from_sas_to_plan(sas_file: Path) -> Plan:
     """Transform a SAS plan file into a Plan object."""
     actions = sas_file.read_text().splitlines()[:-1]
     result = Plan()
-    for i, a in enumerate(actions):
-        result.add_node(i+1)
-        result.add_edge(i, i+1, action=a)
+    for i, action in enumerate(actions):
+        result.add_node(i + 1)
+        result.add_edge(i, i + 1, action=action)
     return result

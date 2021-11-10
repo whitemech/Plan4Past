@@ -33,7 +33,3 @@ class PRPOutput:
     def __post_init__(self):
         """Post-initialization checks."""
         assert self.version > 0
-
-
-def parse_prp_output(text: str):
-    """Parse a PRP output."""
