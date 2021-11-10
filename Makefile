@@ -81,7 +81,7 @@ bandit: ## run bandit
 	bandit planning_with_past tests scripts
 
 safety: ## run safety
-	safety
+	safety check
 
 pylint: ## run pylint
 	pylint planning_with_past tests scripts
