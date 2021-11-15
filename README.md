@@ -11,7 +11,7 @@ Planning for temporal goals in past temporal logic.
 
 First, clone the repository:
 ```
-git clone git@github.com:whitemech/planning-with-past
+git clone git@github.com:whitemech/planning-for-past-temporal-goals
 ```
 
 Then, use Pipenv to set up the development environment:
@@ -83,9 +83,9 @@ and then go to [http://localhost:8000](http://localhost:8000)
 
 ## License
 
-planning-with-past is released under the GNU Lesser General Public License v3.0 or later (LGPLv3+).
+planning-for-past-temporal-goals is released under the GNU Lesser General Public License v3.0 or later (LGPLv3+).
 
-Copyright 2021-2021 WhiteMech
+Copyright 2021 WhiteMech
 
 ## Authors
 
