@@ -1,0 +1,37 @@
+site_name: My Docs
+repo_name: 'whitemech/planning-with-past'
+repo_url: https://github.com/whitemech/planning-with-past
+
+nav:
+- Home: index.md
+
+plugins:
+- search
+- mknotebooks:
+    execute: false
+    write_markdown: false
+    #preamble: ""
+    #enable_default_jupyter_cell_styling: false
+    #enable_default_pandas_dataframe_styling: false
+
+theme:
+  name: material
+  feature:
+    tabs: true
+
+
+strict: true
+
+
+markdown_extensions:
+- codehilite
+- pymdownx.arithmatex
+- pymdownx.superfences
+- pymdownx.highlight
+- admonition
+- markdown_include.include:
+    base_path: docs
+
+extra_javascript:
+- 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML'
+- 'https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js'

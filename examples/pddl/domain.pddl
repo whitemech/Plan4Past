@@ -120,7 +120,7 @@
 	(:action check
 		:parameters ()
 		:precondition (and 
-		(not (act)) (onBA-and-Y-ontableC)
+		(not (act)) (once-tt)
 		)
 		:effect (and 
 		(goal)
