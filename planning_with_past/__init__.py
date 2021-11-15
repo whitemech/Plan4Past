@@ -20,7 +20,7 @@
 # along with planning-with-past.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-"""A Python project template."""
+"""Pure-Past Planning."""
 
 import inspect
 from pathlib import Path
