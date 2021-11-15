@@ -21,7 +21,7 @@
 #
 
 """Compiler from PDDL Domain and PLTLf into a new PDDL domain."""
-from functools import singledispatchmethod
+from functools import singledispatchmethod, singledispatch
 from typing import Optional, Set, List
 
 from pylogics.syntax.base import Formula, Logic
@@ -32,6 +32,27 @@ from pddl.core import Domain, Action
 from pddl.logic.base import And, FalseFormula
 from pddl.logic.effects import When
 from pddl.logic.predicates import DerivedPredicate, Predicate
+
+
+
+@singledispatch
+def whens(formula: Formula) -> Set[When]:
+    raise NotImplementedError()
+
+@whens.register
+def whens_atomic(formula: PLTLAtomic):
+    pass
+
+
+@singledispatch
+def derived_predicates(formula: Formula) -> Set[DerivedPredicate]:
+    raise NotImplementedError()
+
+
+@derived_predicates.register
+def derived_predicates(formula: PLTLAtomic):
+    pass
+
 
 
 class Compiler:
