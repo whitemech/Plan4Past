@@ -24,13 +24,26 @@
 from functools import singledispatch
 from typing import Optional, Set
 
-from pylogics.syntax.base import Formula, Logic, And as PLTLAnd, Or as PLTLOr, Not as PLTLNot
-from pylogics.syntax.pltl import Atomic as PLTLAtomic, TrueFormula as PLTLtt, FalseFormula as PLTLff, Before, Since, \
-    Once, Historically
+from pylogics.syntax.base import (
+    Formula,
+    Logic,
+    And as PLTLAnd,
+    Or as PLTLOr,
+    Not as PLTLNot,
+)
+from pylogics.syntax.pltl import (
+    Atomic as PLTLAtomic,
+    TrueFormula as PLTLTrue,
+    FalseFormula as PLTLFalse,
+    Before,
+    Since,
+    Once,
+    Historically,
+)
 from pylogics.utils.to_string import to_string
 
 from pddl.core import Domain, Action
-from pddl.logic.base import And
+from pddl.logic.base import And, Or, Not
 from pddl.logic.effects import When
 from pddl.logic.predicates import DerivedPredicate, Predicate
 
@@ -41,8 +54,14 @@ def _add_prime_prefix(name: str):
 
 
 def replace_symbols(name: str):
-    return name.replace("(", "").replace(")", "").replace("&", "and").replace("|", "or").replace("~", "not-").replace(
-        " ", "-")
+    return (
+        name.replace("(", "")
+        .replace(")", "")
+        .replace("&", "and")
+        .replace("|", "or")
+        .replace("~", "not-")
+        .replace(" ", "-")
+    )
 
 
 @singledispatch
@@ -51,7 +70,7 @@ def predicates(formula: Formula) -> Set[Predicate]:
 
 
 @predicates.register
-def predicates_tt(_formula: PLTLtt) -> Set[Predicate]:
+def predicates_tt(_formula: PLTLTrue) -> Set[Predicate]:
     """Compute the predicates for a true formula."""
     prime = Predicate(_add_prime_prefix("tt"))
     non_prime = Predicate("tt")
@@ -59,7 +78,7 @@ def predicates_tt(_formula: PLTLtt) -> Set[Predicate]:
 
 
 @predicates.register
-def predicates_ff(_formula: PLTLff) -> Set[Predicate]:
+def predicates_ff(_formula: PLTLFalse) -> Set[Predicate]:
     """Compute the predicates for a true formula."""
     prime = Predicate(_add_prime_prefix("ff"))
     non_prime = Predicate("ff")
@@ -159,7 +178,7 @@ def whens_atomic(formula: PLTLAtomic) -> Set[When]:
 
 
 @whens.register
-def whens_tt(_formula: PLTLtt) -> Set[When]:
+def whens_tt(_formula: PLTLTrue) -> Set[When]:
     """Compute the "when" clause for a true formula."""
     prime = Predicate(_add_prime_prefix("tt"))
     non_prime = Predicate("tt")
@@ -167,7 +186,7 @@ def whens_tt(_formula: PLTLtt) -> Set[When]:
 
 
 @whens.register
-def whens_ff(_formula: PLTLff) -> Set[When]:
+def whens_ff(_formula: PLTLFalse) -> Set[When]:
     """Compute the "when" clause for a false formula."""
     prime = Predicate(_add_prime_prefix("ff"))
     non_prime = Predicate("ff")
@@ -196,12 +215,112 @@ def whens_and(_formula: PLTLAnd) -> Set[When]:
 
 @singledispatch
 def derived_predicates(formula: Formula) -> Set[DerivedPredicate]:
-    raise NotImplementedError()
+    raise NotImplementedError("handler not implemented for formula %s" % type(formula))
 
 
 @derived_predicates.register
-def derived_predicates(formula: PLTLAtomic) -> Set[DerivedPredicate]:
-    pass
+def derived_predicates_tt(formula: PLTLTrue) -> Set[DerivedPredicate]:
+    """Compute the derived predicate for a true formula."""
+    prime = Predicate(_add_prime_prefix("tt"))
+    condition = Predicate("top")
+    return {DerivedPredicate(prime, condition)}
+
+
+@derived_predicates.register
+def derived_predicates_atomic(formula: PLTLAtomic) -> Set[DerivedPredicate]:
+    """Compute the derived predicate for an atomic formula."""
+    prime = Predicate(_add_prime_prefix(formula.name))
+    condition = Predicate(formula.name)
+    return {DerivedPredicate(prime, condition)}
+
+
+@derived_predicates.register
+def derived_predicates_and(formula: PLTLAnd) -> Set[DerivedPredicate]:
+    """Compute the derived predicate for a PLTL And formula."""
+    formula_name = to_string(formula)
+    prime = Predicate(_add_prime_prefix(replace_symbols(formula_name)))
+    prime_ops = [Predicate(_add_prime_prefix(to_string(op))) for op in formula.operands]
+    condition = And(*prime_ops)
+    return {DerivedPredicate(prime, condition)}
+
+
+@derived_predicates.register
+def derived_predicates_or(formula: PLTLOr) -> Set[DerivedPredicate]:
+    """Compute the derived predicate for a PLTL Or formula."""
+    formula_name = to_string(formula)
+    prime = Predicate(_add_prime_prefix(replace_symbols(formula_name)))
+    prime_ops = [Predicate(_add_prime_prefix(to_string(op))) for op in formula.operands]
+    condition = Or(*prime_ops)
+    return {DerivedPredicate(prime, condition)}
+
+
+@derived_predicates.register
+def derived_predicates_not(formula: PLTLNot) -> Set[DerivedPredicate]:
+    """Compute the derived predicate for a PLTL Not formula."""
+    formula_name = to_string(formula)
+    prime = Predicate(_add_prime_prefix(replace_symbols(formula_name)))
+    condition = Not(
+        Predicate(_add_prime_prefix(replace_symbols(to_string(formula.argument))))
+    )
+    return {DerivedPredicate(prime, condition)}
+
+
+@derived_predicates.register
+def derived_predicates_before(formula: Before) -> Set[DerivedPredicate]:
+    """Compute the derived predicate for a Before formula."""
+    formula_name = to_string(formula)
+    prime = Predicate(_add_prime_prefix(replace_symbols(formula_name)))
+    condition = And(
+        Predicate(replace_symbols(to_string(formula.argument))), Predicate("Ott")
+    )
+    return {DerivedPredicate(prime, condition)}
+
+
+@derived_predicates.register
+def derived_predicates_since(formula: Since) -> Set[DerivedPredicate]:
+    """Compute the derived predicate for a Since formula."""
+    formula_name = to_string(formula)
+    prime = Predicate(_add_prime_prefix(replace_symbols(formula_name)))
+    op_or_1 = Predicate(
+        _add_prime_prefix(replace_symbols(to_string(formula.operands[1])))
+    )
+    op_or_2 = And(
+        Predicate(_add_prime_prefix(replace_symbols(to_string(formula.operands[0])))),
+        Predicate(replace_symbols(to_string(formula))),
+        Predicate("Ott"),
+    )
+    condition = Or(op_or_1, op_or_2)
+    return {DerivedPredicate(prime, condition)}
+
+
+@derived_predicates.register
+def derived_predicates_once(formula: Once) -> Set[DerivedPredicate]:
+    """Compute the derived predicate for a Once formula."""
+    formula_name = to_string(formula)
+    prime = Predicate(_add_prime_prefix(replace_symbols(formula_name)))
+    condition = Or(
+        Predicate(replace_symbols(to_string(formula.argument))),
+        And(
+            Predicate(f"O{replace_symbols(to_string(formula.argument))}"),
+            Predicate("Ott"),
+        ),
+    )
+    return {DerivedPredicate(prime, condition)}
+
+
+@derived_predicates.register
+def derived_predicates_historically(formula: Historically) -> Set[DerivedPredicate]:
+    """Compute the derived predicate for a Historically formula."""
+    formula_name = to_string(formula)
+    prime = Predicate(_add_prime_prefix(replace_symbols(formula_name)))
+    condition = And(
+        Predicate(replace_symbols(to_string(formula.argument))),
+        Or(
+            Not(Predicate(f"Onot-{replace_symbols(to_string(formula.argument))}")),
+            Not(Predicate("Ott")),
+        ),
+    )
+    return {DerivedPredicate(prime, condition)}
 
 
 class Compiler:
@@ -243,18 +362,22 @@ class Compiler:
         goal = Predicate("goal")
         new_predicates = predicates(self.formula).union({top, act, goal})
 
-        # TODO: add precondition "(not (act))" to each action
+        new_derived_predicates = derived_predicates(self.formula)
+
+        # TODO: add precondition "(act)" to each action, "(not (act))"
         actions = self.domain.actions
 
-        # TODO: action prog
         new_whens = whens(self.formula)
         prog_action = Action(
-            name="prog",
-            parameters=[],
-            effect=And(*new_whens)
+            name="prog", parameters=[], precondition=And(), effect=And(*new_whens)
         )
 
-        # new_derived_predicates = derived_predicates(self.formula)
+        check_action = Action(
+            name="check",
+            parameters=[],
+            precondition=~act & Predicate(replace_symbols(to_string(self.formula))),
+            effect=goal,
+        )
 
         # TODO return domain with new actions and predicates
         # return Domain(..., derived_predicates=derived_predicates, ...)
