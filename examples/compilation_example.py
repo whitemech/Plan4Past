@@ -27,7 +27,6 @@ from planning_with_past.compiler import Compiler
 
 EXAMPLES_DIR = PACKAGE_ROOT.parent / "examples"
 
-
 if __name__ == '__main__':
     domain_parser = DomainParser()
     domain = domain_parser((EXAMPLES_DIR / "pddl" / "domain.pddl").read_text())

@@ -30,10 +30,119 @@ from pylogics.syntax.pltl import Atomic as PLTLAtomic, TrueFormula as PLTLtt, Fa
 from pylogics.utils.to_string import to_string
 
 from pddl.core import Domain, Action
-from pddl.logic.base import And, FalseFormula
+from pddl.logic.base import And
 from pddl.logic.effects import When
 from pddl.logic.predicates import DerivedPredicate, Predicate
 
+
+def _add_prime_prefix(name: str):
+    """Add the 'prime' prefix."""
+    return "p_" + name
+
+
+def replace_symbols(name: str):
+    return name.replace("(", "").replace(")", "").replace("&", "and").replace("|", "or").replace("~", "not-").replace(
+        " ", "-")
+
+
+@singledispatch
+def predicates(formula: Formula) -> Set[Predicate]:
+    raise NotImplementedError("handler not implemented for formula %s" % type(formula))
+
+
+@predicates.register
+def predicates_tt(_formula: PLTLtt) -> Set[Predicate]:
+    """Compute the predicates for a true formula."""
+    prime = Predicate(_add_prime_prefix("tt"))
+    non_prime = Predicate("tt")
+    return {prime, non_prime}
+
+
+@predicates.register
+def predicates_ff(_formula: PLTLff) -> Set[Predicate]:
+    """Compute the predicates for a true formula."""
+    prime = Predicate(_add_prime_prefix("ff"))
+    non_prime = Predicate("ff")
+    return {prime, non_prime}
+
+
+@predicates.register
+def predicates_atomic(formula: PLTLAtomic) -> Set[Predicate]:
+    """Compute predicate for an atomic formula."""
+    prime = Predicate(_add_prime_prefix(formula.name))
+    non_prime = Predicate(formula.name)
+    return {prime, non_prime}
+
+
+@predicates.register
+def predicates_and(_formula: PLTLAnd) -> Set[Predicate]:
+    """Compute predicate for an And formula."""
+    formula_name = replace_symbols(to_string(_formula))
+    prime = Predicate(_add_prime_prefix(formula_name))
+    non_prime = Predicate(formula_name)
+    subands = [predicates(f_predicates) for f_predicates in _formula.operands]
+    return set.union({prime, non_prime}, *subands)
+
+
+@predicates.register
+def predicates_or(_formula: PLTLOr) -> Set[Predicate]:
+    """Compute predicate for an Or formula."""
+    formula_name = replace_symbols(to_string(_formula))
+    prime = Predicate(_add_prime_prefix(formula_name))
+    non_prime = Predicate(formula_name)
+    subors = [predicates(f_predicates) for f_predicates in _formula.operands]
+    return set.union({prime, non_prime}, *subors)
+
+
+@predicates.register
+def predicates_not(_formula: PLTLNot) -> Set[Predicate]:
+    """Compute predicate for a Not formula."""
+    formula_name = replace_symbols(to_string(_formula))
+    prime = Predicate(_add_prime_prefix(formula_name))
+    non_prime = Predicate(formula_name)
+    sub = predicates(_formula.argument)
+    return sub.union({prime, non_prime})
+
+
+@predicates.register
+def predicates_before(_formula: Before) -> Set[Predicate]:
+    """Compute predicate for a Before (Yesterday) formula."""
+    formula_name = replace_symbols(to_string(_formula))
+    prime = Predicate(_add_prime_prefix(formula_name))
+    non_prime = Predicate(formula_name)
+    sub = predicates(_formula.argument)
+    return sub.union({prime, non_prime})
+
+
+@predicates.register
+def predicates_since(_formula: Since) -> Set[Predicate]:
+    """Compute predicate for a Since formula."""
+    formula_name = replace_symbols(to_string(_formula))
+    prime = Predicate(_add_prime_prefix(formula_name))
+    non_prime = Predicate(formula_name)
+    subsinces = [predicates(f_predicates) for f_predicates in _formula.operands]
+    # sub = predicates(_formula.operands)
+    return set.union({prime, non_prime}, *subsinces)
+
+
+@predicates.register
+def predicates_once(_formula: Once) -> Set[Predicate]:
+    """Compute predicate for a Once formula."""
+    formula_name = replace_symbols(to_string(_formula))
+    prime = Predicate(_add_prime_prefix(formula_name))
+    non_prime = Predicate(formula_name)
+    sub = predicates(_formula.argument)
+    return sub.union({prime, non_prime})
+
+
+@predicates.register
+def predicates_historically(_formula: Historically) -> Set[Predicate]:
+    """Compute predicate for a Historically formula."""
+    formula_name = replace_symbols(to_string(_formula))
+    prime = Predicate(_add_prime_prefix(formula_name))
+    non_prime = Predicate(formula_name)
+    sub = predicates(_formula.argument)
+    return sub.union({prime, non_prime})
 
 
 @singledispatch
@@ -91,9 +200,8 @@ def derived_predicates(formula: Formula) -> Set[DerivedPredicate]:
 
 
 @derived_predicates.register
-def derived_predicates(formula: PLTLAtomic):
+def derived_predicates(formula: PLTLAtomic) -> Set[DerivedPredicate]:
     pass
-
 
 
 class Compiler:
@@ -129,66 +237,24 @@ class Compiler:
             return self.result
         self._executed = True
 
+        # new predicates
+        top = Predicate("top")
+        act = Predicate("act")
+        goal = Predicate("goal")
+        new_predicates = predicates(self.formula).union({top, act, goal})
+
         # TODO: add precondition "(not (act))" to each action
         actions = self.domain.actions
 
         # TODO: action prog
-        whens = self._compute_whens(self.formula)
+        new_whens = whens(self.formula)
         prog_action = Action(
             name="prog",
             parameters=[],
-            effect=And(*whens)
+            effect=And(*new_whens)
         )
 
-        derived_predicates = self._compute_derived_predicates(self.formula)
+        # new_derived_predicates = derived_predicates(self.formula)
 
         # TODO return domain with new actions and predicates
         # return Domain(..., derived_predicates=derived_predicates, ...)
-
-    @classmethod
-    def _add_prime_prefix(cls, name: str):
-        """Add the 'prime' prefix."""
-        return "p_" + name
-
-    @singledispatchmethod
-    def _compute_whens(self, formula: Formula) -> Set[When]:
-        raise NotImplementedError("handler not implemented for formula %s" % type(formula))
-
-    @_compute_whens.register
-    def _compute_whens(self, formula: PLTLAtomic) -> Set[When]:
-        """Compute the "when" clause for an atomic formula."""
-        prime = Predicate(self._add_prime_prefix(formula.name))
-        non_prime = Predicate(formula.name)
-        return {When(prime, non_prime)}
-
-    @_compute_whens.register
-    def _compute_whens(self, _formula: TrueFormula) -> Set[When]:
-        """Compute the "when" clause for an atomic formula."""
-        prime = Predicate(self._add_prime_prefix("tt"))
-        non_prime = Predicate("tt")
-        return {When(prime, non_prime)}
-
-    @_compute_whens.register
-    def _compute_whens(self, _formula: FalseFormula) -> Set[When]:
-        """Compute the "when" clause for an atomic formula."""
-        prime = Predicate(self._add_prime_prefix("ff"))
-        non_prime = Predicate("ff")
-        return {When(prime, non_prime)}
-
-    @_compute_whens.register
-    def _compute_whens(self, _formula: Once) -> Set[When]:
-        """Compute the "when" clause for an atomic formula."""
-        formula_name = to_string(_formula)
-        prime = Predicate(self._add_prime_prefix(formula_name))
-        non_prime = Predicate(formula_name)
-        subwhens = self._compute_whens(_formula.argument)
-        return subwhens.union({When(prime, non_prime)})
-
-    @singledispatchmethod
-    def _compute_derived_predicates(self, formula: Formula) -> Set[DerivedPredicate]:
-        raise NotImplementedError("handler not implemented for formula %s" % type(formula))
-
-    @_compute_derived_predicates.register
-    def _compute_derived_predicates(self, formula: PLTLAtomic) -> Set[DerivedPredicate]:
-        """"""
-        # TODO
