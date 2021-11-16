@@ -21,11 +21,12 @@
 #
 
 """Compiler from PDDL Domain and PLTLf into a new PDDL domain."""
-from functools import singledispatchmethod, singledispatch
-from typing import Optional, Set, List
+from functools import singledispatch
+from typing import Optional, Set
 
-from pylogics.syntax.base import Formula, Logic
-from pylogics.syntax.pltl import Atomic as PLTLAtomic, TrueFormula, Once
+from pylogics.syntax.base import Formula, Logic, And as PLTLAnd, Or as PLTLOr, Not as PLTLNot
+from pylogics.syntax.pltl import Atomic as PLTLAtomic, TrueFormula as PLTLtt, FalseFormula as PLTLff, Before, Since, \
+    Once, Historically
 from pylogics.utils.to_string import to_string
 
 from pddl.core import Domain, Action
@@ -37,11 +38,51 @@ from pddl.logic.predicates import DerivedPredicate, Predicate
 
 @singledispatch
 def whens(formula: Formula) -> Set[When]:
-    raise NotImplementedError()
+    raise NotImplementedError("handler not implemented for formula %s" % type(formula))
+
 
 @whens.register
-def whens_atomic(formula: PLTLAtomic):
-    pass
+def whens_atomic(formula: PLTLAtomic) -> Set[When]:
+    """Compute the "when" clause for an atomic formula."""
+    prime = Predicate(_add_prime_prefix(formula.name))
+    non_prime = Predicate(formula.name)
+    return {When(prime, non_prime)}
+
+
+@whens.register
+def whens_tt(_formula: PLTLtt) -> Set[When]:
+    """Compute the "when" clause for a true formula."""
+    prime = Predicate(_add_prime_prefix("tt"))
+    non_prime = Predicate("tt")
+    return {When(prime, non_prime)}
+
+
+@whens.register
+def whens_ff(_formula: PLTLff) -> Set[When]:
+    """Compute the "when" clause for a false formula."""
+    prime = Predicate(_add_prime_prefix("ff"))
+    non_prime = Predicate("ff")
+    return {When(prime, non_prime)}
+
+
+@whens.register
+def whens_once(_formula: Once) -> Set[When]:
+    """Compute the "when" clause for the Once formula."""
+    formula_name = replace_symbols(to_string(_formula))
+    prime = Predicate(_add_prime_prefix(formula_name))
+    non_prime = Predicate(formula_name)
+    subwhen = whens(_formula.argument)
+    return subwhen.union({When(prime, non_prime)})
+
+
+@whens.register
+def whens_and(_formula: PLTLAnd) -> Set[When]:
+    """Compute the "when" clause for the Once formula."""
+    formula_name = to_string(_formula)
+    prime = Predicate(_add_prime_prefix(formula_name))
+    non_prime = Predicate(replace_symbols(formula_name))
+    subwhens = [whens(f_whens) for f_whens in _formula.operands]
+    return set.union({When(prime, non_prime)}, *subwhens)
 
 
 @singledispatch
