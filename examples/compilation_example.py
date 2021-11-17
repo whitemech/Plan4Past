@@ -26,6 +26,10 @@ from pddl.parser.problem import ProblemParser
 from planning_with_past import PACKAGE_ROOT
 from planning_with_past.compiler import Compiler
 
+from planning_with_past.planners.downward import DownwardPlanner
+from pathlib import Path
+
+
 EXAMPLES_DIR = PACKAGE_ROOT.parent / "examples"
 
 if __name__ == '__main__':
@@ -39,3 +43,6 @@ if __name__ == '__main__':
     compiler = Compiler(domain, problem, formula)
     compiler.compile()
     result = compiler.result
+
+    # planner = DownwardPlanner()
+    # plan = planner.plan(Path("examples/compiled_pddl/domain.pddl"), Path("examples/compiled_pddl/p-0.pddl"))

@@ -22,7 +22,7 @@
 
 """Compiler from PDDL Domain and PLTLf into a new PDDL domain."""
 from functools import singledispatch
-from typing import Optional, Set, AbstractSet, Tuple
+from typing import Optional, Set, AbstractSet, Tuple, Dict
 
 from pylogics.syntax.base import (
     Formula,
@@ -43,6 +43,7 @@ from pylogics.syntax.pltl import (
 from pylogics.utils.to_string import to_string
 
 from pddl.core import Domain, Action, Problem
+from pddl.logic import Constant
 from pddl.logic.base import And, Or, Not
 from pddl.logic.effects import When
 from pddl.logic.predicates import DerivedPredicate, Predicate
@@ -134,13 +135,16 @@ def predicates_before(_formula: Before) -> Set[Predicate]:
 
 
 @predicates.register
-def predicates_since(_formula: Since) -> Set[Predicate]:
+def predicates_since(formula: Since) -> Set[Predicate]:
     """Compute predicate for a Since formula."""
-    formula_name = replace_symbols(to_string(_formula))
+    if formula.operands != 2:
+        head = formula.operands[0]
+        tail = Since(*formula.operands[1:])
+        return predicates(Since(head, tail))
+    formula_name = replace_symbols(to_string(formula))
     prime = Predicate(_add_prime_prefix(formula_name))
     non_prime = Predicate(formula_name)
-    subsinces = [predicates(f_predicates) for f_predicates in _formula.operands]
-    # sub = predicates(_formula.operands)
+    subsinces = [predicates(f_predicates) for f_predicates in formula.operands]
     return set.union({prime, non_prime}, *subsinces)
 
 
@@ -219,10 +223,18 @@ def derived_predicates(formula: Formula) -> Set[DerivedPredicate]:
 
 
 @derived_predicates.register
-def derived_predicates_tt(formula: PLTLTrue) -> Set[DerivedPredicate]:
+def derived_predicates_tt(_formula: PLTLTrue) -> Set[DerivedPredicate]:
     """Compute the derived predicate for a true formula."""
     prime = Predicate(_add_prime_prefix("tt"))
     condition = Predicate("top")
+    return {DerivedPredicate(prime, condition)}
+
+
+@derived_predicates.register
+def derived_predicates_ff(_formula: PLTLFalse) -> Set[DerivedPredicate]:
+    """Compute the derived predicate for a false formula."""
+    prime = Predicate(_add_prime_prefix("ff"))
+    condition = Not(Predicate("top"))
     return {DerivedPredicate(prime, condition)}
 
 
@@ -231,6 +243,7 @@ def derived_predicates_atomic(formula: PLTLAtomic) -> Set[DerivedPredicate]:
     """Compute the derived predicate for an atomic formula."""
     prime = Predicate(_add_prime_prefix(formula.name))
     condition = Predicate(formula.name)
+    # TODO
     return {DerivedPredicate(prime, condition)}
 
 
@@ -279,6 +292,10 @@ def derived_predicates_before(formula: Before) -> Set[DerivedPredicate]:
 @derived_predicates.register
 def derived_predicates_since(formula: Since) -> Set[DerivedPredicate]:
     """Compute the derived predicate for a Since formula."""
+    if formula.operands != 2:
+        head = formula.operands[0]
+        tail = Since(*formula.operands[1:])
+        return derived_predicates(Since(head, tail))
     formula_name = to_string(formula)
     prime = Predicate(_add_prime_prefix(replace_symbols(formula_name)))
     op_or_1 = Predicate(
@@ -326,7 +343,8 @@ def derived_predicates_historically(formula: Historically) -> Set[DerivedPredica
 class Compiler:
     """Compiler of PLTLf goals into PDDL."""
 
-    def __init__(self, domain: Domain, problem: Problem, formula: Formula) -> None:
+    def __init__(self, domain: Domain, problem: Problem, formula: Formula,
+                 from_atoms_to_fluent: Dict[PLTLAtomic, Predicate]) -> None:
         """
         Initialize the compiler.
 
@@ -337,6 +355,8 @@ class Compiler:
         self.domain = domain
         self.problem = problem
         self.formula = formula
+        self.from_atoms_to_fluent = from_atoms_to_fluent
+        self.validate_mapping(domain, formula, from_atoms_to_fluent)
 
         assert self.formula.logic == Logic.PLTL, "only PLTL is supported!"
 
@@ -345,6 +365,24 @@ class Compiler:
         self._result_problem: Optional = None
 
         self._derived_predicates: Set[DerivedPredicate] = set()
+
+    @classmethod
+    def validate_mapping(cls, domain: Domain, formula: Formula, from_atoms_to_fluent: Dict[PLTLAtomic, Predicate]):
+        """
+        Check that the mapping is valid wrt the problem instance.
+
+        In particular:
+        - check that all the formula atoms are covered (TODO)
+        - check that all the atoms are legal wrt the formula
+        - check that the fluents are legal wrt the domain
+
+        :param domain:
+        :param formula:
+        :param from_atoms_to_fluent:
+        :return:
+        """
+        for atom, fluent in from_atoms_to_fluent.items():
+            assert all(isinstance(t, Constant) for t in fluent.terms)
 
     @property
     def result(self) -> Tuple[Domain, Problem]:
