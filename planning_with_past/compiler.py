@@ -22,7 +22,7 @@
 
 """Compiler from PDDL Domain and PLTLf into a new PDDL domain."""
 from functools import singledispatch
-from typing import Optional, Set
+from typing import Optional, Set, AbstractSet, Tuple
 
 from pylogics.syntax.base import (
     Formula,
@@ -341,29 +341,29 @@ class Compiler:
         assert self.formula.logic == Logic.PLTL, "only PLTL is supported!"
 
         self._executed: bool = False
-        self._result: Optional = None
+        self._result_domain: Optional = None
+        self._result_problem: Optional = None
 
         self._derived_predicates: Set[DerivedPredicate] = set()
 
     @property
-    def result(self) -> Domain:
+    def result(self) -> Tuple[Domain, Problem]:
         """Get the result."""
-        if self._result is None:
-            raise ValueError("not executed yet")
-        return self._result
+        if self._result_domain and self._result_problem is None:
+            raise ValueError("compilation not executed yet")
+        return self._result_domain, self._result_problem
 
     def compile(self):
         """Compute the new domain and the new problem."""
+        if self._executed:
+            return self.result
+        self._executed = True
+
         self._compile_domain()
         self._compile_problem()
 
     def _compile_domain(self):
         """Compute the new domain."""
-        if self._executed:
-            return self.result
-        self._executed = True
-
-        # new predicates
         top = Predicate("top")
         act = Predicate("act")
         goal = Predicate("goal")
@@ -389,7 +389,7 @@ class Compiler:
 
         domain_actions = domain_actions.union({prog_action, check_action})
 
-        self._result = Domain(
+        self._result_domain = Domain(
             name=self.domain.name,
             requirements=self.domain.requirements,
             types=self.domain.types,
@@ -401,10 +401,24 @@ class Compiler:
 
     def _compile_problem(self):
         """Compute the new problem."""
-        pass
+        top = Predicate("top")
+        act = Predicate("act")
+        goal = Predicate("goal")
+
+        new_init = set(self.problem.init)
+        new_init = new_init.union({act, top})
+
+        self._result_problem = Problem(
+            name=self.problem.name,
+            domain=self._result_domain,
+            requirements=self.problem.requirements,
+            objects=self.problem.objects,
+            init=new_init,
+            goal=goal
+        )
 
 
-def _update_domain_actions(actions: Set[Action], act: Predicate) -> Set[Action]:
+def _update_domain_actions(actions: AbstractSet[Action], act: Predicate) -> Set[Action]:
     """Update domain actions."""
     new_actions = set()
     for action in actions:
