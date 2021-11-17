@@ -48,8 +48,9 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from planning_with_past.planners.downward import DownwardPlanner
 from pathlib import Path
+
 planner = DownwardPlanner()
-plan = planner.plan(Path("examples/pddl/domain.pddl"), Path("examples/pddl/p-0.pddl"))
+plan = planner.plan(Path("examples/compiled_pddl/domain.pddl"), Path("examples/compiled_pddl/p-0.pddl"))
 
 # print the graph
 pos = nx.spring_layout(plan.graph)

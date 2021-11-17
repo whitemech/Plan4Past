@@ -22,6 +22,7 @@
 from pylogics.parsers import parse_pltl
 
 from pddl.parser.domain import DomainParser
+from pddl.parser.problem import ProblemParser
 from planning_with_past import PACKAGE_ROOT
 from planning_with_past.compiler import Compiler
 
@@ -29,10 +30,12 @@ EXAMPLES_DIR = PACKAGE_ROOT.parent / "examples"
 
 if __name__ == '__main__':
     domain_parser = DomainParser()
+    problem_parser = ProblemParser()
     domain = domain_parser((EXAMPLES_DIR / "pddl" / "domain.pddl").read_text())
+    problem = problem_parser((EXAMPLES_DIR / "pddl" / "p-0.pddl").read_text())
 
     formula = parse_pltl("tt")
 
-    compiler = Compiler(domain, formula)
+    compiler = Compiler(domain, problem, formula)
     compiler.compile()
     result = compiler.result

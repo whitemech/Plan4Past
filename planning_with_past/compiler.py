@@ -42,7 +42,7 @@ from pylogics.syntax.pltl import (
 )
 from pylogics.utils.to_string import to_string
 
-from pddl.core import Domain, Action
+from pddl.core import Domain, Action, Problem
 from pddl.logic.base import And, Or, Not
 from pddl.logic.effects import When
 from pddl.logic.predicates import DerivedPredicate, Predicate
@@ -326,14 +326,16 @@ def derived_predicates_historically(formula: Historically) -> Set[DerivedPredica
 class Compiler:
     """Compiler of PLTLf goals into PDDL."""
 
-    def __init__(self, domain: Domain, formula: Formula) -> None:
+    def __init__(self, domain: Domain, problem: Problem, formula: Formula) -> None:
         """
         Initialize the compiler.
 
         :param domain: the domain
+        :param problem: the problem
         :param formula: the formula
         """
         self.domain = domain
+        self.problem = problem
         self.formula = formula
 
         assert self.formula.logic == Logic.PLTL, "only PLTL is supported!"
@@ -351,6 +353,11 @@ class Compiler:
         return self._result
 
     def compile(self):
+        """Compute the new domain and the new problem."""
+        self._compile_domain()
+        self._compile_problem()
+
+    def _compile_domain(self):
         """Compute the new domain."""
         if self._executed:
             return self.result
@@ -364,14 +371,15 @@ class Compiler:
 
         new_derived_predicates = derived_predicates(self.formula)
 
-        # TODO: add precondition "(act)" to each action, "(not (act))"
-        actions = self.domain.actions
+        domain_actions = _update_domain_actions(self.domain.actions, act)
 
         new_whens = whens(self.formula)
         prog_action = Action(
-            name="prog", parameters=[], precondition=And(), effect=And(*new_whens)
+            name="prog",
+            parameters=[],
+            precondition=~act & ~goal,
+            effect=And(*new_whens, act)
         )
-
         check_action = Action(
             name="check",
             parameters=[],
@@ -379,5 +387,33 @@ class Compiler:
             effect=goal,
         )
 
-        # TODO return domain with new actions and predicates
-        # return Domain(..., derived_predicates=derived_predicates, ...)
+        domain_actions = domain_actions.union({prog_action, check_action})
+
+        self._result = Domain(
+            name=self.domain.name,
+            requirements=self.domain.requirements,
+            types=self.domain.types,
+            constants=self.domain.constants,
+            predicates=[self.domain.predicates, *new_predicates],
+            derived_predicates=[self.domain.derived_predicates, *new_derived_predicates],
+            actions=domain_actions,
+        )
+
+    def _compile_problem(self):
+        """Compute the new problem."""
+        pass
+
+
+def _update_domain_actions(actions: Set[Action], act: Predicate) -> Set[Action]:
+    """Update domain actions."""
+    new_actions = set()
+    for action in actions:
+        new_actions.add(
+            Action(
+                name=action.name,
+                parameters=action.parameters,
+                precondition=And(action.precondition, act),
+                effect=And(action.effect, Not(act)),
+            )
+        )
+    return new_actions
