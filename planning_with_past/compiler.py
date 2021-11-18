@@ -54,6 +54,11 @@ def _add_prime_prefix(name: str):
     return "p_" + name
 
 
+def _remove_prime_prefix(name: str):
+    """Remove the 'prime' prefix."""
+    return name.replace("p_", "")
+
+
 def replace_symbols(name: str):
     return (
         name.replace("(", "")
@@ -137,7 +142,7 @@ def predicates_before(_formula: Before) -> Set[Predicate]:
 @predicates.register
 def predicates_since(formula: Since) -> Set[Predicate]:
     """Compute predicate for a Since formula."""
-    if formula.operands != 2:
+    if len(formula.operands) != 2:
         head = formula.operands[0]
         tail = Since(*formula.operands[1:])
         return predicates(Since(head, tail))
@@ -166,55 +171,6 @@ def predicates_historically(_formula: Historically) -> Set[Predicate]:
     non_prime = Predicate(formula_name)
     sub = predicates(_formula.argument)
     return sub.union({prime, non_prime})
-
-
-@singledispatch
-def whens(formula: Formula) -> Set[When]:
-    raise NotImplementedError("handler not implemented for formula %s" % type(formula))
-
-
-@whens.register
-def whens_atomic(formula: PLTLAtomic) -> Set[When]:
-    """Compute the "when" clause for an atomic formula."""
-    prime = Predicate(_add_prime_prefix(formula.name))
-    non_prime = Predicate(formula.name)
-    return {When(prime, non_prime)}
-
-
-@whens.register
-def whens_tt(_formula: PLTLTrue) -> Set[When]:
-    """Compute the "when" clause for a true formula."""
-    prime = Predicate(_add_prime_prefix("tt"))
-    non_prime = Predicate("tt")
-    return {When(prime, non_prime)}
-
-
-@whens.register
-def whens_ff(_formula: PLTLFalse) -> Set[When]:
-    """Compute the "when" clause for a false formula."""
-    prime = Predicate(_add_prime_prefix("ff"))
-    non_prime = Predicate("ff")
-    return {When(prime, non_prime)}
-
-
-@whens.register
-def whens_once(_formula: Once) -> Set[When]:
-    """Compute the "when" clause for the Once formula."""
-    formula_name = replace_symbols(to_string(_formula))
-    prime = Predicate(_add_prime_prefix(formula_name))
-    non_prime = Predicate(formula_name)
-    subwhen = whens(_formula.argument)
-    return subwhen.union({When(prime, non_prime)})
-
-
-@whens.register
-def whens_and(_formula: PLTLAnd) -> Set[When]:
-    """Compute the "when" clause for the Once formula."""
-    formula_name = to_string(_formula)
-    prime = Predicate(_add_prime_prefix(formula_name))
-    non_prime = Predicate(replace_symbols(formula_name))
-    subwhens = [whens(f_whens) for f_whens in _formula.operands]
-    return set.union({When(prime, non_prime)}, *subwhens)
 
 
 @singledispatch
@@ -292,7 +248,7 @@ def derived_predicates_before(formula: Before) -> Set[DerivedPredicate]:
 @derived_predicates.register
 def derived_predicates_since(formula: Since) -> Set[DerivedPredicate]:
     """Compute the derived predicate for a Since formula."""
-    if formula.operands != 2:
+    if len(formula.operands) != 2:
         head = formula.operands[0]
         tail = Since(*formula.operands[1:])
         return derived_predicates(Since(head, tail))
@@ -411,7 +367,7 @@ class Compiler:
 
         domain_actions = _update_domain_actions(self.domain.actions, act)
 
-        new_whens = whens(self.formula)
+        new_whens = _compute_whens(self.formula)
         prog_action = Action(
             name="prog",
             parameters=[],
@@ -454,6 +410,11 @@ class Compiler:
             init=new_init,
             goal=goal
         )
+
+
+def _compute_whens(formula: Formula) -> Set[When]:
+    """Compute conditional effects for formula progression."""
+    return {When(p, Predicate(_remove_prime_prefix(p.name))) for p in predicates(formula) if p.name.startswith("p_")}
 
 
 def _update_domain_actions(actions: AbstractSet[Action], act: Predicate) -> Set[Action]:

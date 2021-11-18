@@ -43,7 +43,7 @@
 
 	; (:derived (predicate) (condition))
 	(:derived (p_once-tt) (top))
-	(:derived (p_onBA) (onBA))
+	(:derived (p_onBA) (on B A))
 	(:derived (p_ontableC) (ontableC))
 	(:derived (p_Y-ontableC) (and (ontableC) (once-tt)))
 	(:derived (p_onBA-and-Y-ontableC) (and (p_onBA) (p_Y-ontableC)))
