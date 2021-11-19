@@ -37,3 +37,25 @@ def cd(path: PathLike) -> Generator:  # pylint: disable=invalid-name
         yield
     finally:
         os.chdir(str(old_path))
+
+
+def add_prime_prefix(name: str):
+    """Add the 'prime' prefix."""
+    return "p_" + name.replace('"', "")
+
+
+def remove_prime_prefix(name: str):
+    """Remove the 'prime' prefix."""
+    return name.replace("p_", "")
+
+
+def replace_symbols(name: str):
+    return (
+        name.replace('"',"")
+        .replace("(", "")
+        .replace(")", "")
+        .replace("&", "and")
+        .replace("|", "or")
+        .replace("~", "not-")
+        .replace(" ", "-")
+    )
