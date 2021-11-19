@@ -210,7 +210,8 @@ def derived_predicates_and(formula: PLTLAnd) -> Set[DerivedPredicate]:
     prime = Predicate(_add_prime_prefix(replace_symbols(formula_name)))
     prime_ops = [Predicate(_add_prime_prefix(to_string(op))) for op in formula.operands]
     condition = And(*prime_ops)
-    return {DerivedPredicate(prime, condition)}
+    der_pred_ops = [derived_predicates(op) for op in formula.operands]
+    return {DerivedPredicate(prime, condition)}.union(*der_pred_ops)
 
 
 @derived_predicates.register
@@ -220,7 +221,8 @@ def derived_predicates_or(formula: PLTLOr) -> Set[DerivedPredicate]:
     prime = Predicate(_add_prime_prefix(replace_symbols(formula_name)))
     prime_ops = [Predicate(_add_prime_prefix(to_string(op))) for op in formula.operands]
     condition = Or(*prime_ops)
-    return {DerivedPredicate(prime, condition)}
+    der_pred_ops = [derived_predicates(op) for op in formula.operands]
+    return {DerivedPredicate(prime, condition)}.union(*der_pred_ops)
 
 
 @derived_predicates.register
@@ -231,7 +233,8 @@ def derived_predicates_not(formula: PLTLNot) -> Set[DerivedPredicate]:
     condition = Not(
         Predicate(_add_prime_prefix(replace_symbols(to_string(formula.argument))))
     )
-    return {DerivedPredicate(prime, condition)}
+    der_pred_arg = derived_predicates(formula.argument)
+    return {DerivedPredicate(prime, condition)}.union(der_pred_arg)
 
 
 @derived_predicates.register
@@ -263,7 +266,8 @@ def derived_predicates_since(formula: Since) -> Set[DerivedPredicate]:
         Predicate("Ott"),
     )
     condition = Or(op_or_1, op_or_2)
-    return {DerivedPredicate(prime, condition)}
+    der_pred_ops = [derived_predicates(op) for op in formula.operands]
+    return {DerivedPredicate(prime, condition)}.union(*der_pred_ops)
 
 
 @derived_predicates.register
@@ -272,13 +276,14 @@ def derived_predicates_once(formula: Once) -> Set[DerivedPredicate]:
     formula_name = to_string(formula)
     prime = Predicate(_add_prime_prefix(replace_symbols(formula_name)))
     condition = Or(
-        Predicate(replace_symbols(to_string(formula.argument))),
+        Predicate(_add_prime_prefix(replace_symbols(to_string(formula.argument)))),
         And(
             Predicate(f"O{replace_symbols(to_string(formula.argument))}"),
             Predicate("Ott"),
         ),
     )
-    return {DerivedPredicate(prime, condition)}
+    der_pred_arg = derived_predicates(formula.argument)
+    return {DerivedPredicate(prime, condition)}.union(der_pred_arg)
 
 
 @derived_predicates.register
@@ -287,20 +292,26 @@ def derived_predicates_historically(formula: Historically) -> Set[DerivedPredica
     formula_name = to_string(formula)
     prime = Predicate(_add_prime_prefix(replace_symbols(formula_name)))
     condition = And(
-        Predicate(replace_symbols(to_string(formula.argument))),
+        Predicate(_add_prime_prefix(replace_symbols(to_string(formula.argument)))),
         Or(
             Not(Predicate(f"Onot-{replace_symbols(to_string(formula.argument))}")),
             Not(Predicate("Ott")),
         ),
     )
-    return {DerivedPredicate(prime, condition)}
+    der_pred_arg = derived_predicates(formula.argument)
+    return {DerivedPredicate(prime, condition)}.union(der_pred_arg)
 
 
 class Compiler:
     """Compiler of PLTLf goals into PDDL."""
 
-    def __init__(self, domain: Domain, problem: Problem, formula: Formula,
-                 from_atoms_to_fluent: Dict[PLTLAtomic, Predicate]) -> None:
+    def __init__(
+        self,
+        domain: Domain,
+        problem: Problem,
+        formula: Formula,
+        from_atoms_to_fluent: Dict[PLTLAtomic, Predicate],
+    ) -> None:
         """
         Initialize the compiler.
 
@@ -323,7 +334,12 @@ class Compiler:
         self._derived_predicates: Set[DerivedPredicate] = set()
 
     @classmethod
-    def validate_mapping(cls, domain: Domain, formula: Formula, from_atoms_to_fluent: Dict[PLTLAtomic, Predicate]):
+    def validate_mapping(
+        cls,
+        domain: Domain,
+        formula: Formula,
+        from_atoms_to_fluent: Dict[PLTLAtomic, Predicate],
+    ):
         """
         Check that the mapping is valid wrt the problem instance.
 
@@ -372,7 +388,7 @@ class Compiler:
             name="prog",
             parameters=[],
             precondition=~act & ~goal,
-            effect=And(*new_whens, act)
+            effect=And(*new_whens, act),
         )
         check_action = Action(
             name="check",
@@ -389,7 +405,10 @@ class Compiler:
             types=self.domain.types,
             constants=self.domain.constants,
             predicates=[self.domain.predicates, *new_predicates],
-            derived_predicates=[self.domain.derived_predicates, *new_derived_predicates],
+            derived_predicates=[
+                self.domain.derived_predicates,
+                *new_derived_predicates,
+            ],
             actions=domain_actions,
         )
 
@@ -408,13 +427,17 @@ class Compiler:
             requirements=self.problem.requirements,
             objects=self.problem.objects,
             init=new_init,
-            goal=goal
+            goal=goal,
         )
 
 
 def _compute_whens(formula: Formula) -> Set[When]:
     """Compute conditional effects for formula progression."""
-    return {When(p, Predicate(_remove_prime_prefix(p.name))) for p in predicates(formula) if p.name.startswith("p_")}
+    return {
+        When(p, Predicate(_remove_prime_prefix(p.name)))
+        for p in predicates(formula)
+        if p.name.startswith("p_")
+    }
 
 
 def _update_domain_actions(actions: AbstractSet[Action], act: Predicate) -> Set[Action]:
