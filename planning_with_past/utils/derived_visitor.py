@@ -71,7 +71,7 @@ def derived_predicates_ff(_formula: PLTLFalse) -> Set[DerivedPredicate]:
 def derived_predicates_atomic(formula: PLTLAtomic) -> Set[DerivedPredicate]:
     """Compute the derived predicate for an atomic formula."""
     prime = Predicate(add_prime_prefix(formula.name))
-    condition = Predicate(formula.name.replace('"',""))
+    condition = Predicate(formula.name.replace('"', ""))
     # TODO
     return {DerivedPredicate(prime, condition)}
 
@@ -81,7 +81,10 @@ def derived_predicates_and(formula: PLTLAnd) -> Set[DerivedPredicate]:
     """Compute the derived predicate for a PLTL And formula."""
     formula_name = to_string(formula)
     prime = Predicate(add_prime_prefix(replace_symbols(formula_name)))
-    prime_ops = [Predicate(add_prime_prefix(replace_symbols(to_string(op)))) for op in formula.operands]
+    prime_ops = [
+        Predicate(add_prime_prefix(replace_symbols(to_string(op))))
+        for op in formula.operands
+    ]
     condition = And(*prime_ops)
     der_pred_ops = [derived_predicates(op) for op in formula.operands]
     return {DerivedPredicate(prime, condition)}.union(*der_pred_ops)

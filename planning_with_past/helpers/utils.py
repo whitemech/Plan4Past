@@ -51,7 +51,7 @@ def remove_prime_prefix(name: str):
 
 def replace_symbols(name: str):
     return (
-        name.replace('"',"")
+        name.replace('"', "")
         .replace("(", "")
         .replace(")", "")
         .replace("&", "and")

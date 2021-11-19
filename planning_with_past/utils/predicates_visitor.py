@@ -71,7 +71,7 @@ def predicates_ff(_formula: PLTLFalse) -> Set[Predicate]:
 def predicates_atomic(formula: PLTLAtomic) -> Set[Predicate]:
     """Compute predicate for an atomic formula."""
     prime = Predicate(add_prime_prefix(formula.name))
-    non_prime = Predicate(formula.name.replace('"',""))
+    non_prime = Predicate(formula.name.replace('"', ""))
     return {prime, non_prime}
 
 
