@@ -22,7 +22,7 @@
 
 """Derived Predicates visitor."""
 from functools import singledispatch
-from typing import Set
+from typing import Set, Dict
 
 from pylogics.syntax.base import (
     Formula,
@@ -47,12 +47,16 @@ from planning_with_past.helpers.utils import add_prime_prefix, replace_symbols
 
 
 @singledispatch
-def derived_predicates(formula: Formula) -> Set[DerivedPredicate]:
+def derived_predicates(
+    formula: Formula, atoms_to_fluents: Dict[PLTLAtomic, Predicate]
+) -> Set[DerivedPredicate]:
     raise NotImplementedError("handler not implemented for formula %s" % type(formula))
 
 
 @derived_predicates.register
-def derived_predicates_tt(_formula: PLTLTrue) -> Set[DerivedPredicate]:
+def derived_predicates_tt(
+    _formula: PLTLTrue, _atoms_to_fluents: Dict[PLTLAtomic, Predicate]
+) -> Set[DerivedPredicate]:
     """Compute the derived predicate for a true formula."""
     prime = Predicate(add_prime_prefix("tt"))
     condition = Predicate("top")
@@ -60,7 +64,9 @@ def derived_predicates_tt(_formula: PLTLTrue) -> Set[DerivedPredicate]:
 
 
 @derived_predicates.register
-def derived_predicates_ff(_formula: PLTLFalse) -> Set[DerivedPredicate]:
+def derived_predicates_ff(
+    _formula: PLTLFalse, _atoms_to_fluents: Dict[PLTLAtomic, Predicate]
+) -> Set[DerivedPredicate]:
     """Compute the derived predicate for a false formula."""
     prime = Predicate(add_prime_prefix("ff"))
     condition = Not(Predicate("top"))
@@ -68,16 +74,20 @@ def derived_predicates_ff(_formula: PLTLFalse) -> Set[DerivedPredicate]:
 
 
 @derived_predicates.register
-def derived_predicates_atomic(formula: PLTLAtomic) -> Set[DerivedPredicate]:
+def derived_predicates_atomic(
+    formula: PLTLAtomic, atoms_to_fluents: Dict[PLTLAtomic, Predicate]
+) -> Set[DerivedPredicate]:
     """Compute the derived predicate for an atomic formula."""
     prime = Predicate(add_prime_prefix(formula.name))
-    condition = Predicate(formula.name.replace('"', ""))
-    # TODO
+    # condition = Predicate(formula.name.replace('"', ""))
+    condition = atoms_to_fluents[formula]
     return {DerivedPredicate(prime, condition)}
 
 
 @derived_predicates.register
-def derived_predicates_and(formula: PLTLAnd) -> Set[DerivedPredicate]:
+def derived_predicates_and(
+    formula: PLTLAnd, atoms_to_fluents: Dict[PLTLAtomic, Predicate]
+) -> Set[DerivedPredicate]:
     """Compute the derived predicate for a PLTL And formula."""
     formula_name = to_string(formula)
     prime = Predicate(add_prime_prefix(replace_symbols(formula_name)))
@@ -86,51 +96,60 @@ def derived_predicates_and(formula: PLTLAnd) -> Set[DerivedPredicate]:
         for op in formula.operands
     ]
     condition = And(*prime_ops)
-    der_pred_ops = [derived_predicates(op) for op in formula.operands]
+    der_pred_ops = [derived_predicates(op, atoms_to_fluents) for op in formula.operands]
     return {DerivedPredicate(prime, condition)}.union(*der_pred_ops)
 
 
 @derived_predicates.register
-def derived_predicates_or(formula: PLTLOr) -> Set[DerivedPredicate]:
+def derived_predicates_or(
+    formula: PLTLOr, atoms_to_fluents: Dict[PLTLAtomic, Predicate]
+) -> Set[DerivedPredicate]:
     """Compute the derived predicate for a PLTL Or formula."""
     formula_name = to_string(formula)
     prime = Predicate(add_prime_prefix(replace_symbols(formula_name)))
     prime_ops = [Predicate(add_prime_prefix(to_string(op))) for op in formula.operands]
     condition = Or(*prime_ops)
-    der_pred_ops = [derived_predicates(op) for op in formula.operands]
+    der_pred_ops = [derived_predicates(op, atoms_to_fluents) for op in formula.operands]
     return {DerivedPredicate(prime, condition)}.union(*der_pred_ops)
 
 
 @derived_predicates.register
-def derived_predicates_not(formula: PLTLNot) -> Set[DerivedPredicate]:
+def derived_predicates_not(
+    formula: PLTLNot, atoms_to_fluents: Dict[PLTLAtomic, Predicate]
+) -> Set[DerivedPredicate]:
     """Compute the derived predicate for a PLTL Not formula."""
     formula_name = to_string(formula)
     prime = Predicate(add_prime_prefix(replace_symbols(formula_name)))
     condition = Not(
         Predicate(add_prime_prefix(replace_symbols(to_string(formula.argument))))
     )
-    der_pred_arg = derived_predicates(formula.argument)
+    der_pred_arg = derived_predicates(formula.argument, atoms_to_fluents)
     return {DerivedPredicate(prime, condition)}.union(der_pred_arg)
 
 
 @derived_predicates.register
-def derived_predicates_before(formula: Before) -> Set[DerivedPredicate]:
+def derived_predicates_before(
+    formula: Before, atoms_to_fluents: Dict[PLTLAtomic, Predicate]
+) -> Set[DerivedPredicate]:
     """Compute the derived predicate for a Before formula."""
     formula_name = to_string(formula)
     prime = Predicate(add_prime_prefix(replace_symbols(formula_name)))
     condition = And(
         Predicate(replace_symbols(to_string(formula.argument))), Predicate("Ott")
     )
-    return {DerivedPredicate(prime, condition)}
+    der_pred_arg = derived_predicates(formula.argument, atoms_to_fluents)
+    return {DerivedPredicate(prime, condition)}.union(der_pred_arg)
 
 
 @derived_predicates.register
-def derived_predicates_since(formula: Since) -> Set[DerivedPredicate]:
+def derived_predicates_since(
+    formula: Since, atoms_to_fluents: Dict[PLTLAtomic, Predicate]
+) -> Set[DerivedPredicate]:
     """Compute the derived predicate for a Since formula."""
     if len(formula.operands) != 2:
         head = formula.operands[0]
         tail = Since(*formula.operands[1:])
-        return derived_predicates(Since(head, tail))
+        return derived_predicates(Since(head, tail), atoms_to_fluents)
     formula_name = to_string(formula)
     prime = Predicate(add_prime_prefix(replace_symbols(formula_name)))
     op_or_1 = Predicate(
@@ -142,12 +161,14 @@ def derived_predicates_since(formula: Since) -> Set[DerivedPredicate]:
         Predicate("Ott"),
     )
     condition = Or(op_or_1, op_or_2)
-    der_pred_ops = [derived_predicates(op) for op in formula.operands]
+    der_pred_ops = [derived_predicates(op, atoms_to_fluents) for op in formula.operands]
     return {DerivedPredicate(prime, condition)}.union(*der_pred_ops)
 
 
 @derived_predicates.register
-def derived_predicates_once(formula: Once) -> Set[DerivedPredicate]:
+def derived_predicates_once(
+    formula: Once, atoms_to_fluents: Dict[PLTLAtomic, Predicate]
+) -> Set[DerivedPredicate]:
     """Compute the derived predicate for a Once formula."""
     formula_name = to_string(formula)
     prime = Predicate(add_prime_prefix(replace_symbols(formula_name)))
@@ -158,12 +179,14 @@ def derived_predicates_once(formula: Once) -> Set[DerivedPredicate]:
             Predicate("Ott"),
         ),
     )
-    der_pred_arg = derived_predicates(formula.argument)
+    der_pred_arg = derived_predicates(formula.argument, atoms_to_fluents)
     return {DerivedPredicate(prime, condition)}.union(der_pred_arg)
 
 
 @derived_predicates.register
-def derived_predicates_historically(formula: Historically) -> Set[DerivedPredicate]:
+def derived_predicates_historically(
+    formula: Historically, atoms_to_fluents: Dict[PLTLAtomic, Predicate]
+) -> Set[DerivedPredicate]:
     """Compute the derived predicate for a Historically formula."""
     formula_name = to_string(formula)
     prime = Predicate(add_prime_prefix(replace_symbols(formula_name)))
@@ -174,5 +197,5 @@ def derived_predicates_historically(formula: Historically) -> Set[DerivedPredica
             Not(Predicate("Ott")),
         ),
     )
-    der_pred_arg = derived_predicates(formula.argument)
+    der_pred_arg = derived_predicates(formula.argument, atoms_to_fluents)
     return {DerivedPredicate(prime, condition)}.union(der_pred_arg)
