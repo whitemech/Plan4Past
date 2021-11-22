@@ -26,7 +26,6 @@ from typing import Set
 
 from pylogics.syntax.base import (
     Formula,
-    Logic,
     And as PLTLAnd,
     Or as PLTLOr,
     Not as PLTLNot,
@@ -76,42 +75,42 @@ def predicates_atomic(formula: PLTLAtomic) -> Set[Predicate]:
 
 
 @predicates.register
-def predicates_and(_formula: PLTLAnd) -> Set[Predicate]:
+def predicates_and(formula: PLTLAnd) -> Set[Predicate]:
     """Compute predicate for an And formula."""
-    formula_name = replace_symbols(to_string(_formula))
+    formula_name = replace_symbols(to_string(formula))
     prime = Predicate(add_prime_prefix(formula_name))
     non_prime = Predicate(formula_name)
-    subands = [predicates(f_predicates) for f_predicates in _formula.operands]
+    subands = [predicates(f_predicates) for f_predicates in formula.operands]
     return set.union({prime, non_prime}, *subands)
 
 
 @predicates.register
-def predicates_or(_formula: PLTLOr) -> Set[Predicate]:
+def predicates_or(formula: PLTLOr) -> Set[Predicate]:
     """Compute predicate for an Or formula."""
-    formula_name = replace_symbols(to_string(_formula))
+    formula_name = replace_symbols(to_string(formula))
     prime = Predicate(add_prime_prefix(formula_name))
     non_prime = Predicate(formula_name)
-    subors = [predicates(f_predicates) for f_predicates in _formula.operands]
+    subors = [predicates(f_predicates) for f_predicates in formula.operands]
     return set.union({prime, non_prime}, *subors)
 
 
 @predicates.register
-def predicates_not(_formula: PLTLNot) -> Set[Predicate]:
+def predicates_not(formula: PLTLNot) -> Set[Predicate]:
     """Compute predicate for a Not formula."""
-    formula_name = replace_symbols(to_string(_formula))
+    formula_name = replace_symbols(to_string(formula))
     prime = Predicate(add_prime_prefix(formula_name))
     non_prime = Predicate(formula_name)
-    sub = predicates(_formula.argument)
+    sub = predicates(formula.argument)
     return sub.union({prime, non_prime})
 
 
 @predicates.register
-def predicates_before(_formula: Before) -> Set[Predicate]:
+def predicates_before(formula: Before) -> Set[Predicate]:
     """Compute predicate for a Before (Yesterday) formula."""
-    formula_name = replace_symbols(to_string(_formula))
+    formula_name = replace_symbols(to_string(formula))
     prime = Predicate(add_prime_prefix(formula_name))
     non_prime = Predicate(formula_name)
-    sub = predicates(_formula.argument)
+    sub = predicates(formula.argument)
     return sub.union({prime, non_prime})
 
 
@@ -130,20 +129,20 @@ def predicates_since(formula: Since) -> Set[Predicate]:
 
 
 @predicates.register
-def predicates_once(_formula: Once) -> Set[Predicate]:
+def predicates_once(formula: Once) -> Set[Predicate]:
     """Compute predicate for a Once formula."""
-    formula_name = replace_symbols(to_string(_formula))
+    formula_name = replace_symbols(to_string(formula))
     prime = Predicate(add_prime_prefix(formula_name))
     non_prime = Predicate(formula_name)
-    sub = predicates(_formula.argument)
+    sub = predicates(formula.argument)
     return sub.union({prime, non_prime})
 
 
 @predicates.register
-def predicates_historically(_formula: Historically) -> Set[Predicate]:
+def predicates_historically(formula: Historically) -> Set[Predicate]:
     """Compute predicate for a Historically formula."""
-    formula_name = replace_symbols(to_string(_formula))
+    formula_name = replace_symbols(to_string(formula))
     prime = Predicate(add_prime_prefix(formula_name))
     non_prime = Predicate(formula_name)
-    sub = predicates(_formula.argument)
+    sub = predicates(formula.argument)
     return sub.union({prime, non_prime})
