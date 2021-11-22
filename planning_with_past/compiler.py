@@ -32,7 +32,7 @@ from pylogics.syntax.pltl import (
 )
 from pylogics.utils.to_string import to_string
 
-from pddl.core import Domain, Action, Problem
+from pddl.core import Domain, Action, Problem, Requirements
 from pddl.logic import Constant
 from pddl.logic.base import And, Not
 from pddl.logic.effects import When
@@ -117,9 +117,15 @@ class Compiler:
         top = Predicate("top")
         act = Predicate("act")
         goal = Predicate("goal")
-        new_predicates = predicates(self.formula).union({top, act, goal})
+        once_tt = Predicate("Ott")
+        p_once_tt = Predicate("p_Ott")
+        new_predicates = predicates(self.formula).union(
+            {top, act, goal, once_tt, p_once_tt}
+        )
 
-        new_derived_predicates = derived_predicates(self.formula)
+        new_derived_predicates = derived_predicates(
+            self.formula, self.from_atoms_to_fluent
+        ).union({DerivedPredicate(Predicate("p_Ott"), top)})
 
         domain_actions = _update_domain_actions(self.domain.actions, act)
 
@@ -133,7 +139,7 @@ class Compiler:
         check_action = Action(
             name="check",
             parameters=[],
-            precondition=~act & Predicate(replace_symbols(to_string(self.formula))),
+            precondition=Predicate(replace_symbols(to_string(self.formula))),
             effect=goal,
         )
 
@@ -141,7 +147,12 @@ class Compiler:
 
         self._result_domain = Domain(
             name=self.domain.name,
-            requirements=[*self.domain.requirements],
+            requirements=[
+                *self.domain.requirements,
+                Requirements.DERIVED_PREDICATES,
+                Requirements.CONDITIONAL_EFFECTS,
+                Requirements.NEG_PRECONDITION,
+            ],
             types=self.domain.types,
             constants=self.domain.constants,
             predicates=[*self.domain.predicates, *new_predicates],
@@ -159,13 +170,13 @@ class Compiler:
         goal = Predicate("goal")
 
         new_init = set(self.problem.init)
-        new_init = new_init.union({act, top})
+        new_init = new_init.union({act, top, ~goal})
 
         self._result_problem = Problem(
             name=self.problem.name,
             domain=self._result_domain,
             requirements=self.problem.requirements,
-            objects=self.problem.objects,
+            objects=[*self.problem.objects],
             init=new_init,
             goal=goal,
         )
@@ -177,7 +188,7 @@ def _compute_whens(formula: Formula) -> Set[When]:
         When(p, Predicate(remove_prime_prefix(p.name)))
         for p in predicates(formula)
         if p.name.startswith("p_")
-    }
+    }.union({When(Predicate("p_Ott"), Predicate("Ott"))})
 
 
 def _update_domain_actions(actions: AbstractSet[Action], act: Predicate) -> Set[Action]:
@@ -187,7 +198,7 @@ def _update_domain_actions(actions: AbstractSet[Action], act: Predicate) -> Set[
         new_actions.add(
             Action(
                 name=action.name,
-                parameters=action.parameters,
+                parameters=[*action.parameters],
                 precondition=And(action.precondition, act),
                 effect=And(action.effect, Not(act)),
             )
