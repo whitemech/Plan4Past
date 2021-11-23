@@ -11,7 +11,7 @@ Planning for temporal goals in past temporal logic.
 
 First, clone the repository:
 ```
-git clone git@github.com:whitemech/planning-for-past-temporal-goals
+git clone git@github.com:whitemech/planning-for-past-temporal-goals --recursive
 ```
 
 Then, use Pipenv to set up the development environment:

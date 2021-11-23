@@ -21,6 +21,7 @@
 #
 
 """Compiler from PDDL Domain and PLTLf into a new PDDL domain."""
+import copy
 from typing import Optional, Set, AbstractSet, Tuple, Dict
 
 from pylogics.syntax.base import (
