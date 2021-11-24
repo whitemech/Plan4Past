@@ -36,7 +36,7 @@ from pylogics.utils.to_string import to_string
 from pddl.core import Domain, Action, Problem, Requirements
 from pddl.logic import Constant
 from pddl.logic.base import And, Not
-from pddl.logic.effects import When
+from pddl.logic.effects import When, AndEffect
 from pddl.logic.predicates import DerivedPredicate, Predicate
 from planning_with_past.helpers.utils import remove_prime_prefix, replace_symbols
 from planning_with_past.utils.derived_visitor import derived_predicates
@@ -201,7 +201,7 @@ def _update_domain_actions(actions: AbstractSet[Action], act: Predicate) -> Set[
                 name=action.name,
                 parameters=[*action.parameters],
                 precondition=And(action.precondition, act),
-                effect=And(action.effect, Not(act)),
+                effect=AndEffect(action.effect, Not(act)),
             )
         )
     return new_actions

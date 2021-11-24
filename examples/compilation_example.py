@@ -19,7 +19,6 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with planning-with-past.  If not, see <https://www.gnu.org/licenses/>.
 #
-import re
 from typing import Dict
 
 import networkx as nx
@@ -31,7 +30,7 @@ from pylogics.syntax.pltl import (
 )
 
 from pddl.formatter import domain_to_string, problem_to_string
-from pddl.logic import Predicate, Constant, constants
+from pddl.logic import Predicate, constants
 from pddl.parser.domain import DomainParser
 from pddl.parser.problem import ProblemParser
 from planning_with_past import PACKAGE_ROOT
@@ -55,8 +54,11 @@ def mapping_parser(text: str, formula: Formula) -> Dict[PLTLAtomic, Predicate]:
         for map in maps:
             s, p = map.split(",")
             if symbol.name == s:
-                name, cons = p.split(" ", maxsplit=1)
-                from_atoms_to_fluents[symbol] = Predicate(name, *constants(cons))
+                if " " in p:
+                    name, cons = p.split(" ", maxsplit=1)
+                    from_atoms_to_fluents[symbol] = Predicate(name, *constants(cons))
+                else:
+                    from_atoms_to_fluents[symbol] = Predicate(p)
             else:
                 continue
     return from_atoms_to_fluents
@@ -64,13 +66,14 @@ def mapping_parser(text: str, formula: Formula) -> Dict[PLTLAtomic, Predicate]:
 
 if __name__ == "__main__":
 
-    formula = parse_pltl("on_b_a & O(ontable_c)")
+    # formula = parse_pltl("on_b_a & O(ontable_c)")
+    formula = parse_pltl("vehicleat_l22 & O(vehicleat_l31)")
 
     domain_parser = DomainParser()
     problem_parser = ProblemParser()
-    domain = domain_parser((EXAMPLES_DIR / "pddl" / "domain.pddl").read_text())
-    problem = problem_parser((EXAMPLES_DIR / "pddl" / "p-0.pddl").read_text())
-    mapping = mapping_parser((EXAMPLES_DIR / "pddl" / "p-0.map").read_text(), formula)
+    domain = domain_parser((EXAMPLES_DIR / "pddl" / "fond-domain.pddl").read_text())
+    problem = problem_parser((EXAMPLES_DIR / "pddl" / "fond-p-0.pddl").read_text())
+    mapping = mapping_parser((EXAMPLES_DIR / "pddl" / "fond-p-0.map").read_text(), formula)
 
     compiler = Compiler(domain, problem, formula, mapping)
     compiler.compile()
@@ -86,13 +89,13 @@ if __name__ == "__main__":
             "[ERROR]: Something wrong occurred while writing the compiled domain and problem."
         )
 
-    planner = DownwardPlanner()
-    plan = planner.plan(Path("compiled_pddl/new_domain.pddl"), Path("compiled_pddl/new_problem.pddl"))
-
-    # print the graph
-    pos = nx.spring_layout(plan.graph)
-    nx.draw_networkx(plan.graph, pos)
-    edge_labels = dict([((n1, n2), action)
-                        for n1, n2, action in plan.graph.edges(data="action")])
-    nx.draw_networkx_edge_labels(plan.graph, pos, edge_labels=edge_labels)
-    plt.show()
+    # planner = DownwardPlanner()
+    # plan = planner.plan(Path("compiled_pddl/new_domain.pddl"), Path("compiled_pddl/new_problem.pddl"))
+    #
+    # # print the graph
+    # pos = nx.spring_layout(plan.graph)
+    # nx.draw_networkx(plan.graph, pos)
+    # edge_labels = dict([((n1, n2), action)
+    #                     for n1, n2, action in plan.graph.edges(data="action")])
+    # nx.draw_networkx_edge_labels(plan.graph, pos, edge_labels=edge_labels)
+    # plt.show()
