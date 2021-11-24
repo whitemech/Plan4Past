@@ -41,6 +41,7 @@ from pddl.logic.predicates import DerivedPredicate, Predicate
 from planning_with_past.helpers.utils import remove_prime_prefix, replace_symbols
 from planning_with_past.utils.derived_visitor import derived_predicates
 from planning_with_past.utils.predicates_visitor import predicates
+from planning_with_past.utils.whens_visitor import whens
 
 
 class Compiler:
@@ -68,11 +69,17 @@ class Compiler:
 
         assert self.formula.logic == Logic.PLTL, "only PLTL is supported!"
 
+        self._nondeterministic: bool = self._is_deterministic(self.domain)
         self._executed: bool = False
         self._result_domain: Optional = None
         self._result_problem: Optional = None
 
         self._derived_predicates: Set[DerivedPredicate] = set()
+
+    @staticmethod
+    def _is_deterministic(domain: Domain):
+        """Check if domain is non-deterministic."""
+        return True if Requirements.NON_DETERMINISTIC in domain.requirements else False
 
     @classmethod
     def validate_mapping(
@@ -124,13 +131,17 @@ class Compiler:
             {top, act, goal, once_tt, p_once_tt}
         )
 
-        new_derived_predicates = derived_predicates(
-            self.formula, self.from_atoms_to_fluent
-        ).union({DerivedPredicate(Predicate("p_Ott"), top)})
+        if not self._nondeterministic:
+            new_derived_predicates = derived_predicates(
+                self.formula, self.from_atoms_to_fluent
+            ).union({DerivedPredicate(Predicate("p_Ott"), top)})
 
         domain_actions = _update_domain_actions(self.domain.actions, act)
 
-        new_whens = _compute_whens(self.formula)
+        if self._nondeterministic:
+            new_whens = whens(self.formula, self.from_atoms_to_fluent)
+        else:
+            new_whens = _compute_whens(self.formula)
         prog_action = Action(
             name="prog",
             parameters=[],
@@ -146,23 +157,38 @@ class Compiler:
 
         domain_actions = domain_actions.union({prog_action, check_action})
 
-        self._result_domain = Domain(
-            name=self.domain.name,
-            requirements=[
-                *self.domain.requirements,
-                Requirements.DERIVED_PREDICATES,
-                Requirements.CONDITIONAL_EFFECTS,
-                Requirements.NEG_PRECONDITION,
-            ],
-            types=self.domain.types,
-            constants=self.domain.constants,
-            predicates=[*self.domain.predicates, *new_predicates],
-            derived_predicates=[
-                *self.domain.derived_predicates,
-                *new_derived_predicates,
-            ],
-            actions=domain_actions,
-        )
+        if self._nondeterministic:
+            self._result_domain = Domain(
+                name=self.domain.name,
+                requirements=[
+                    *self.domain.requirements,
+                    Requirements.CONDITIONAL_EFFECTS,
+                    Requirements.NEG_PRECONDITION,
+                ],
+                types=self.domain.types,
+                constants=self.domain.constants,
+                predicates=[*self.domain.predicates, *new_predicates],
+                derived_predicates=self.domain.derived_predicates,
+                actions=domain_actions,
+            )
+        else:
+            self._result_domain = Domain(
+                name=self.domain.name,
+                requirements=[
+                    *self.domain.requirements,
+                    Requirements.DERIVED_PREDICATES,
+                    Requirements.CONDITIONAL_EFFECTS,
+                    Requirements.NEG_PRECONDITION,
+                ],
+                types=self.domain.types,
+                constants=self.domain.constants,
+                predicates=[*self.domain.predicates, *new_predicates],
+                derived_predicates=[
+                    *self.domain.derived_predicates,
+                    *new_derived_predicates,
+                ],
+                actions=domain_actions,
+            )
 
     def _compile_problem(self):
         """Compute the new problem."""
