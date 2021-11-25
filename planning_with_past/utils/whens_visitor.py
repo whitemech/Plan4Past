@@ -41,7 +41,7 @@ from pylogics.syntax.pltl import (
 )
 from pylogics.utils.to_string import to_string
 
-from pddl.logic.base import Not, And, Or
+from pddl.logic.base import And
 from pddl.logic.effects import When
 from pddl.logic.predicates import Predicate
 from planning_with_past.helpers.utils import replace_symbols
@@ -134,6 +134,28 @@ def whens_since(
 ) -> Set[When]:
     """Compute the conditional effect for a Since formula."""
     formula_name = to_string(formula)
-    condition = conditions(formula, atoms_to_fluents)
+    conds = conditions(formula, atoms_to_fluents)
     effect = Predicate(replace_symbols(formula_name))
-    return {When(condition, effect)}
+    return {When(c, effect) for c in conds.operands}
+
+
+@whens.register
+def whens_once(
+    formula: Once, atoms_to_fluents: Dict[PLTLAtomic, Predicate]
+) -> Set[When]:
+    """Compute the conditional effect for a Once formula."""
+    formula_name = to_string(formula)
+    conds = conditions(formula, atoms_to_fluents)
+    effect = Predicate(replace_symbols(formula_name))
+    return {When(c, effect) for c in conds.operands}
+
+
+@whens.register
+def whens_historically(
+    formula: Historically, atoms_to_fluents: Dict[PLTLAtomic, Predicate]
+) -> Set[When]:
+    """Compute the conditional effect for a Historically formula."""
+    formula_name = to_string(formula)
+    conds = conditions(formula, atoms_to_fluents)
+    effect = Predicate(replace_symbols(formula_name))
+    return {When(c, effect) for c in conds.operands}

@@ -22,7 +22,7 @@
 
 """Condition visitor for Conditional Effects."""
 from functools import singledispatch
-from typing import Set, Dict
+from typing import Dict
 
 from pylogics.syntax.base import (
     Formula,
@@ -42,7 +42,6 @@ from pylogics.syntax.pltl import (
 from pylogics.utils.to_string import to_string
 
 from pddl.logic.base import Not, And, Or, Formula as PDDLFormula
-from pddl.logic.effects import When
 from pddl.logic.predicates import Predicate
 from planning_with_past.helpers.utils import replace_symbols
 
@@ -126,4 +125,39 @@ def conditions_since(
     formula: Since, atoms_to_fluents: Dict[PLTLAtomic, Predicate]
 ) -> PDDLFormula:
     """Compute the conditions of a Since formula."""
-    return Or(conditions(formula.operands[1]))
+    formula_name = to_string(formula)
+    if len(formula.operands) != 2:
+        head = formula.operands[0]
+        tail = Since(*formula.operands[1:])
+        return conditions(Since(head, tail), atoms_to_fluents)
+    op_or_1 = conditions(formula.operands[1], atoms_to_fluents)
+    op_or_2 = And(
+        conditions(formula.operands[0], atoms_to_fluents),
+        Predicate(replace_symbols(formula_name)),
+        Predicate("Ott"),
+    )
+    return Or(op_or_1, op_or_2)
+
+
+@conditions.register
+def conditions_once(
+    formula: Once, atoms_to_fluents: Dict[PLTLAtomic, Predicate]
+) -> PDDLFormula:
+    """Compute the conditions of a Once formula."""
+    formula_name = to_string(formula)
+    cond_op_1 = conditions(formula.argument, atoms_to_fluents)
+    cond_op_2 = And(Predicate(replace_symbols(formula_name)), Predicate("Ott"))
+    return Or(cond_op_1, cond_op_2)
+
+
+@conditions.register
+def conditions_historically(
+    formula: Historically, atoms_to_fluents: Dict[PLTLAtomic, Predicate]
+) -> PDDLFormula:
+    """Compute the conditions of a Historically formula."""
+    op_1 = conditions(formula.argument, atoms_to_fluents)
+    op_2 = Not(Predicate(f"Onot-{replace_symbols(to_string(formula.argument))}"))
+    op_3 = Predicate("Ott")
+    cond_op_1 = And(op_1, op_2)
+    cond_op_2 = And(op_1, op_3)
+    return Or(cond_op_1, cond_op_2)
