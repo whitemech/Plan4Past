@@ -131,17 +131,13 @@ class Compiler:
             {top, act, goal, once_tt, p_once_tt}
         )
 
-        if not self._nondeterministic:
-            new_derived_predicates = derived_predicates(
-                self.formula, self.from_atoms_to_fluent
-            ).union({DerivedPredicate(Predicate("p_Ott"), top)})
+        new_derived_predicates = derived_predicates(
+            self.formula, self.from_atoms_to_fluent
+        ).union({DerivedPredicate(Predicate("p_Ott"), top)})
 
         domain_actions = _update_domain_actions(self.domain.actions, act)
 
-        if self._nondeterministic:
-            new_whens = whens(self.formula, self.from_atoms_to_fluent)
-        else:
-            new_whens = _compute_whens(self.formula)
+        new_whens = _compute_whens(self.formula)
         prog_action = Action(
             name="prog",
             parameters=[],
@@ -157,38 +153,23 @@ class Compiler:
 
         domain_actions = domain_actions.union({prog_action, check_action})
 
-        if self._nondeterministic:
-            self._result_domain = Domain(
-                name=self.domain.name,
-                requirements=[
-                    *self.domain.requirements,
-                    Requirements.CONDITIONAL_EFFECTS,
-                    Requirements.NEG_PRECONDITION,
-                ],
-                types=self.domain.types,
-                constants=self.domain.constants,
-                predicates=[*self.domain.predicates, *new_predicates],
-                derived_predicates=self.domain.derived_predicates,
-                actions=domain_actions,
-            )
-        else:
-            self._result_domain = Domain(
-                name=self.domain.name,
-                requirements=[
-                    *self.domain.requirements,
-                    Requirements.DERIVED_PREDICATES,
-                    Requirements.CONDITIONAL_EFFECTS,
-                    Requirements.NEG_PRECONDITION,
-                ],
-                types=self.domain.types,
-                constants=self.domain.constants,
-                predicates=[*self.domain.predicates, *new_predicates],
-                derived_predicates=[
-                    *self.domain.derived_predicates,
-                    *new_derived_predicates,
-                ],
-                actions=domain_actions,
-            )
+        self._result_domain = Domain(
+            name=self.domain.name,
+            requirements=[
+                *self.domain.requirements,
+                Requirements.DERIVED_PREDICATES,
+                Requirements.CONDITIONAL_EFFECTS,
+                Requirements.NEG_PRECONDITION,
+            ],
+            types=self.domain.types,
+            constants=self.domain.constants,
+            predicates=[*self.domain.predicates, *new_predicates],
+            derived_predicates=[
+                *self.domain.derived_predicates,
+                *new_derived_predicates,
+            ],
+            actions=domain_actions,
+        )
 
     def _compile_problem(self):
         """Compute the new problem."""
