@@ -145,4 +145,4 @@ def predicates_historically(formula: Historically) -> Set[Predicate]:
     prime = Predicate(add_prime_prefix(formula_name))
     non_prime = Predicate(formula_name)
     sub = predicates(formula.argument)
-    return sub.union({prime, non_prime})
+    return sub.union({prime, non_prime, Predicate(f"Onot-{to_string(formula.argument)}")})
