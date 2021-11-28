@@ -1,0 +1,82 @@
+#! /usr/bin/env python3
+
+
+import argparse
+import os
+import shutil
+from pathlib import Path
+
+from pylogics.parsers import parse_pltl
+
+from pddl.formatter import domain_to_string, problem_to_string
+from pddl.logic.base import Formula
+from pddl.parser.domain import DomainParser
+from pddl.parser.problem import ProblemParser
+from planning_with_past.compiler import Compiler
+from planning_with_past.utils.mapping_parser import mapping_parser
+
+DEFAULT_OUTPUT_DIR: str = "output"
+
+
+def is_valid_file(arg):
+    """Argparse validator for files to check for their existence."""
+    if not os.path.exists(arg):
+        raise FileNotFoundError("The file %s does not exist!" % arg)
+    return Path(arg)
+
+
+def does_not_exists(arg):
+    """Argparse validator for files to check they do not exist."""
+    if os.path.exists(arg):
+        raise FileExistsError("The file %s already exists!" % arg)
+    return Path(arg)
+
+
+def parse_args():
+    """Parse command-line arguments."""
+    parser = argparse.ArgumentParser("pltlf-planner", description="A FOND planner for temporal goals in PLTLf")
+    parser.add_argument("--domain", type=is_valid_file, required=True)
+    parser.add_argument("--problem", type=is_valid_file, required=True)
+    parser.add_argument("--formula", type=parse_pltl, required=True)
+    parser.add_argument("--map", dest="map_file", type=is_valid_file, required=True)
+    parser.add_argument("--output-dir", type=str, default=DEFAULT_OUTPUT_DIR)
+    parser.add_argument("--force", type=bool, action="store_true", default=False, help="Force removal of output directory if already exists")
+    return parser.parse_args()
+
+
+def _process_output_dir(output_path: str, force: bool):
+    """Process the output directory argument."""
+    if force:
+        shutil.rmtree(output_path, ignore_errors=True)
+    elif os.path.exists(output_path):
+        raise FileExistsError("The file %s already exists!" % output_path)
+    Path(output_path).mkdir(parents=True)
+
+
+def main(domain_path: Path, problem_path: Path, formula: Formula, map_path: Path, output_dirpath: str = DEFAULT_OUTPUT_DIR, force: bool = False):
+    _process_output_dir(output_dirpath, force)
+    output_dirpath_obj = Path(output_dirpath)
+    domain_parser = DomainParser()
+    problem_parser = ProblemParser()
+    domain = domain_parser(domain_path.read_text())
+    problem = problem_parser(problem_path.read_text())
+    mapping = mapping_parser(map_path.read_text(), formula)
+
+    compiler = Compiler(domain, problem, formula, mapping)
+    compiler.compile()
+    compiled_domain, compiled_problem = compiler.result
+
+    try:
+        with (output_dirpath_obj / "new_domain.pddl").open("w") as dom:
+            dom.write(domain_to_string(compiled_domain))
+        with (output_dirpath_obj / "new_problem.pddl").open("w") as prob:
+            prob.write(problem_to_string(compiled_problem))
+    except Exception:
+        raise IOError(
+            "[ERROR]: Something wrong occurred while writing the compiled domain and problem."
+        )
+
+
+if __name__ == '__main__':
+    arguments = parse_args()
+    main(arguments.domain, arguments.problem, arguments.formula, arguments.map_file, arguments.output_dir, arguments.force)

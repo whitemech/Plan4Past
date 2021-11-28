@@ -61,6 +61,32 @@ nx.draw_networkx_edge_labels(plan.graph, pos, edge_labels=edge_labels)
 plt.show()
 ```
 
+## Use the planner
+
+The main entrypoint for our planner is `./bin/pltlf-planner`. Usage: 
+
+```
+./bin/pltlf-planner
+    --domain PDDL_DOMAIN_FILEPATH
+    --problem PDDL_PROBLEM_FILEPATH
+    --map MAP_FILEPATH
+    --formula PLTL_FORMULA
+    [--output-dir OUTPUT_DIR]
+```
+
+E.g.:
+
+```
+./bin/pltlf-planner \
+    --domain examples/pddl/fond-domain.pddl \
+    --problem examples/pddl/fond-p-0.pddl \
+    --map examples/pddl/fond-p-0.map \
+    --formula "vehicleat_l22 & O(vehicleat_l31)" \
+    --output-dir output \
+    --force
+```
+
+
 ## Tests
 
 To run tests: `tox`
