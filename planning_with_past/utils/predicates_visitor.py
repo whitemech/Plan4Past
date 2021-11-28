@@ -24,25 +24,19 @@
 from functools import singledispatch
 from typing import Set
 
-from pylogics.syntax.base import (
-    Formula,
-    And as PLTLAnd,
-    Or as PLTLOr,
-    Not as PLTLNot,
-)
-from pylogics.syntax.pltl import (
-    Atomic as PLTLAtomic,
-    TrueFormula as PLTLTrue,
-    FalseFormula as PLTLFalse,
-    Before,
-    Since,
-    Once,
-    Historically,
-)
+from pddl.logic.predicates import Predicate
+from pylogics.syntax.base import And as PLTLAnd
+from pylogics.syntax.base import Formula
+from pylogics.syntax.base import Not as PLTLNot
+from pylogics.syntax.base import Or as PLTLOr
+from pylogics.syntax.pltl import Atomic as PLTLAtomic
+from pylogics.syntax.pltl import Before
+from pylogics.syntax.pltl import FalseFormula as PLTLFalse
+from pylogics.syntax.pltl import Historically, Once, Since
+from pylogics.syntax.pltl import TrueFormula as PLTLTrue
 from pylogics.utils.to_string import to_string
 
-from pddl.logic.predicates import Predicate
-from planning_with_past.helpers.utils import replace_symbols, add_prime_prefix
+from planning_with_past.helpers.utils import add_prime_prefix, replace_symbols
 
 
 @singledispatch

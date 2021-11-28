@@ -25,24 +25,16 @@ import functools
 from functools import singledispatch
 from typing import Set
 
-
-from pylogics.syntax.base import (
-    Formula,
-    And as PLTLAnd,
-    Or as PLTLOr,
-    Not as PLTLNot,
-    _BinaryOp,
-    _UnaryOp,
-)
-from pylogics.syntax.pltl import (
-    Atomic as PLTLAtomic,
-    TrueFormula as PLTLTrue,
-    FalseFormula as PLTLFalse,
-    Before,
-    Since,
-    Once,
-    Historically,
-)
+from pylogics.syntax.base import And as PLTLAnd
+from pylogics.syntax.base import Formula
+from pylogics.syntax.base import Not as PLTLNot
+from pylogics.syntax.base import Or as PLTLOr
+from pylogics.syntax.base import _BinaryOp, _UnaryOp
+from pylogics.syntax.pltl import Atomic as PLTLAtomic
+from pylogics.syntax.pltl import Before
+from pylogics.syntax.pltl import FalseFormula as PLTLFalse
+from pylogics.syntax.pltl import Historically, Once, Since
+from pylogics.syntax.pltl import TrueFormula as PLTLTrue
 
 
 def find_atoms_binaryop(f: _BinaryOp):

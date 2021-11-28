@@ -22,28 +22,22 @@
 
 """Conditional Effects visitor."""
 from functools import singledispatch
-from typing import Set, Dict
-
-from pylogics.syntax.base import (
-    Formula,
-    And as PLTLAnd,
-    Or as PLTLOr,
-    Not as PLTLNot,
-)
-from pylogics.syntax.pltl import (
-    Atomic as PLTLAtomic,
-    TrueFormula as PLTLTrue,
-    FalseFormula as PLTLFalse,
-    Before,
-    Since,
-    Once,
-    Historically,
-)
-from pylogics.utils.to_string import to_string
+from typing import Dict, Set
 
 from pddl.logic.base import And
 from pddl.logic.effects import When
 from pddl.logic.predicates import Predicate
+from pylogics.syntax.base import And as PLTLAnd
+from pylogics.syntax.base import Formula
+from pylogics.syntax.base import Not as PLTLNot
+from pylogics.syntax.base import Or as PLTLOr
+from pylogics.syntax.pltl import Atomic as PLTLAtomic
+from pylogics.syntax.pltl import Before
+from pylogics.syntax.pltl import FalseFormula as PLTLFalse
+from pylogics.syntax.pltl import Historically, Once, Since
+from pylogics.syntax.pltl import TrueFormula as PLTLTrue
+from pylogics.utils.to_string import to_string
+
 from planning_with_past.helpers.utils import replace_symbols
 from planning_with_past.utils.condition_visitor import conditions
 
