@@ -17,7 +17,7 @@ git clone git@github.com:whitemech/planning-for-past-temporal-goals --recursive
 Then, use Pipenv to set up the development environment:
 
 ```
-pipenv shell --python=python3.7 && pipnev install --dev
+pipenv shell --python=python3.7 && pipenv install --dev
 ```
 
 Install the package:
