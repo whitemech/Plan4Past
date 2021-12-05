@@ -21,7 +21,6 @@
 #
 
 """Compiler from PDDL Domain and PLTLf into a new PDDL domain."""
-import copy
 from typing import AbstractSet, Dict, Optional, Set, Tuple
 
 from pddl.core import Action, Domain, Problem, Requirements
@@ -33,10 +32,13 @@ from pylogics.syntax.base import Formula, Logic
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
 from pylogics.utils.to_string import to_string
 
-from planning_with_past.helpers.utils import remove_prime_prefix, replace_symbols
+from planning_with_past.helpers.utils import (
+    replace_symbols,
+    add_val_prefix,
+)
 from planning_with_past.utils.derived_visitor import derived_predicates
 from planning_with_past.utils.predicates_visitor import predicates
-from planning_with_past.utils.whens_visitor import whens
+from planning_with_past.utils.val_predicates_visitor import val_predicates
 
 
 class Compiler:
@@ -117,18 +119,15 @@ class Compiler:
 
     def _compile_domain(self):
         """Compute the new domain."""
-        top = Predicate("top")
         act = Predicate("act")
         goal = Predicate("goal")
-        once_tt = Predicate("Ott")
-        p_once_tt = Predicate("p_Ott")
         new_predicates = predicates(self.formula).union(
-            {top, act, goal, once_tt, p_once_tt}
+            {act, goal}, val_predicates(self.formula)
         )
 
         new_derived_predicates = derived_predicates(
             self.formula, self.from_atoms_to_fluent
-        ).union({DerivedPredicate(Predicate("p_Ott"), top)})
+        )
 
         domain_actions = _update_domain_actions(self.domain.actions, act)
 
@@ -142,7 +141,9 @@ class Compiler:
         check_action = Action(
             name="check",
             parameters=[],
-            precondition=Predicate(replace_symbols(to_string(self.formula))),
+            precondition=Predicate(
+                add_val_prefix(replace_symbols(to_string(self.formula)))
+            ),
             effect=goal,
         )
 
@@ -168,12 +169,11 @@ class Compiler:
 
     def _compile_problem(self):
         """Compute the new problem."""
-        top = Predicate("top")
         act = Predicate("act")
         goal = Predicate("goal")
 
         new_init = set(self.problem.init)
-        new_init = new_init.union({act, top, ~goal})
+        new_init = new_init.union({act, ~goal})
 
         self._result_problem = Problem(
             name=self.problem.name,
@@ -187,11 +187,7 @@ class Compiler:
 
 def _compute_whens(formula: Formula) -> Set[When]:
     """Compute conditional effects for formula progression."""
-    return {
-        When(p, Predicate(remove_prime_prefix(p.name)))
-        for p in predicates(formula)
-        if p.name.startswith("p_")
-    }.union({When(Predicate("p_Ott"), Predicate("Ott"))})
+    return {When(Predicate(add_val_prefix(p.name)), p) for p in predicates(formula)}
 
 
 def _update_domain_actions(actions: AbstractSet[Action], act: Predicate) -> Set[Action]:

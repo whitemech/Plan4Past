@@ -50,22 +50,6 @@ def conditions(
 
 
 @conditions.register
-def conditions_tt(
-    _formula: PLTLTrue, _atoms_to_fluents: Dict[PLTLAtomic, Predicate]
-) -> PDDLFormula:
-    """Compute the conditions of a true formula."""
-    return Predicate("top")
-
-
-@conditions.register
-def conditions_ff(
-    _formula: PLTLFalse, _atoms_to_fluents: Dict[PLTLAtomic, Predicate]
-) -> PDDLFormula:
-    """Compute the conditions of a true formula."""
-    return ~Predicate("top")
-
-
-@conditions.register
 def conditions_atomic(
     formula: PLTLAtomic, atoms_to_fluents: Dict[PLTLAtomic, Predicate]
 ) -> PDDLFormula:
