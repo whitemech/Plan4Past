@@ -29,6 +29,7 @@ from pylogics.syntax.pltl import (
     Atomic as PLTLAtomic,
 )
 
+from pddl.core import Requirements
 from pddl.formatter import domain_to_string, problem_to_string
 from pddl.logic import Predicate, constants
 from pddl.parser.domain import DomainParser
@@ -37,6 +38,7 @@ from planning_with_past import PACKAGE_ROOT
 from planning_with_past.compiler import Compiler
 
 from planning_with_past.planners.downward import DownwardPlanner
+from planning_with_past.planners.mynd.base import MyNDPlanner
 from pathlib import Path
 
 from planning_with_past.utils.atoms_visitor import find_atoms
@@ -66,14 +68,14 @@ def mapping_parser(text: str, formula: Formula) -> Dict[PLTLAtomic, Predicate]:
 
 if __name__ == "__main__":
 
-    formula = parse_pltl("Y(on_b_a & ontable_c)")
-    # formula = parse_pltl("vehicleat_l22 & O(vehicleat_l31)")
+    # formula = parse_pltl("on_b_a & Y(ontable_c)")
+    formula = parse_pltl("vehicleat_l22 & O(vehicleat_l31)")
 
     domain_parser = DomainParser()
     problem_parser = ProblemParser()
-    domain = domain_parser((EXAMPLES_DIR / "pddl" / "domain.pddl").read_text())
-    problem = problem_parser((EXAMPLES_DIR / "pddl" / "p-0.pddl").read_text())
-    mapping = mapping_parser((EXAMPLES_DIR / "pddl" / "p-0.map").read_text(), formula)
+    domain = domain_parser((EXAMPLES_DIR / "pddl" / "fond-domain.pddl").read_text())
+    problem = problem_parser((EXAMPLES_DIR / "pddl" / "fond-p-0.pddl").read_text())
+    mapping = mapping_parser((EXAMPLES_DIR / "pddl" / "fond-p-0.map").read_text(), formula)
 
     compiler = Compiler(domain, problem, formula, mapping)
     compiler.compile()
@@ -89,13 +91,18 @@ if __name__ == "__main__":
             "[ERROR]: Something wrong occurred while writing the compiled domain and problem."
         )
 
-    # planner = DownwardPlanner()
-    # plan = planner.plan(Path("compiled_pddl/new_domain.pddl"), Path("compiled_pddl/new_problem.pddl"))
-    #
-    # # print the graph
-    # pos = nx.spring_layout(plan.graph)
-    # nx.draw_networkx(plan.graph, pos)
-    # edge_labels = dict([((n1, n2), action)
-    #                     for n1, n2, action in plan.graph.edges(data="action")])
-    # nx.draw_networkx_edge_labels(plan.graph, pos, edge_labels=edge_labels)
-    # plt.show()
+    if Requirements.NON_DETERMINISTIC in domain.requirements:
+        planner = MyNDPlanner()
+        plan = planner.plan(Path("compiled_pddl/new_domain.pddl"), Path("compiled_pddl/new_problem.pddl"))
+        # TODO: complete here
+    else:
+        planner = DownwardPlanner()
+        plan = planner.plan(Path("compiled_pddl/new_domain.pddl"), Path("compiled_pddl/new_problem.pddl"))
+
+        # print the graph
+        pos = nx.spring_layout(plan.graph)
+        nx.draw_networkx(plan.graph, pos)
+        edge_labels = dict([((n1, n2), action)
+                            for n1, n2, action in plan.graph.edges(data="action")])
+        nx.draw_networkx_edge_labels(plan.graph, pos, edge_labels=edge_labels)
+        plt.show()
