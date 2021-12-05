@@ -32,10 +32,7 @@ from pylogics.syntax.base import Formula, Logic
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
 from pylogics.utils.to_string import to_string
 
-from planning_with_past.helpers.utils import (
-    replace_symbols,
-    add_val_prefix,
-)
+from planning_with_past.helpers.utils import add_val_prefix, replace_symbols
 from planning_with_past.utils.derived_visitor import derived_predicates
 from planning_with_past.utils.predicates_visitor import predicates
 from planning_with_past.utils.val_predicates_visitor import val_predicates

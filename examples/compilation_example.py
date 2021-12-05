@@ -66,14 +66,14 @@ def mapping_parser(text: str, formula: Formula) -> Dict[PLTLAtomic, Predicate]:
 
 if __name__ == "__main__":
 
-    # formula = parse_pltl("on_b_a & O(ontable_c)")
-    formula = parse_pltl("vehicleat_l22 & O(vehicleat_l31)")
+    formula = parse_pltl("Y(on_b_a & ontable_c)")
+    # formula = parse_pltl("vehicleat_l22 & O(vehicleat_l31)")
 
     domain_parser = DomainParser()
     problem_parser = ProblemParser()
-    domain = domain_parser((EXAMPLES_DIR / "pddl" / "fond-domain.pddl").read_text())
-    problem = problem_parser((EXAMPLES_DIR / "pddl" / "fond-p-0.pddl").read_text())
-    mapping = mapping_parser((EXAMPLES_DIR / "pddl" / "fond-p-0.map").read_text(), formula)
+    domain = domain_parser((EXAMPLES_DIR / "pddl" / "domain.pddl").read_text())
+    problem = problem_parser((EXAMPLES_DIR / "pddl" / "p-0.pddl").read_text())
+    mapping = mapping_parser((EXAMPLES_DIR / "pddl" / "p-0.map").read_text(), formula)
 
     compiler = Compiler(domain, problem, formula, mapping)
     compiler.compile()
