@@ -26,5 +26,7 @@ import inspect
 from pathlib import Path
 
 PACKAGE_ROOT = Path(inspect.getframeinfo(inspect.currentframe()).filename).parent  # type: ignore
+REPO_ROOT = PACKAGE_ROOT.parent
+
 
 __version__ = "0.1.0"

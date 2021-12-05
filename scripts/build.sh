@@ -20,9 +20,17 @@ build_downward() {
   cd ../../
 }
 
+build_mynd() {
+  echo "Building MyND..."
+  cd third_party/MyNDPlanner/src &&\
+  ./build &&\
+  cd ../../../
+}
+
 main() {
   build_downward
   build_prp
+  build_mynd
 }
 
 main

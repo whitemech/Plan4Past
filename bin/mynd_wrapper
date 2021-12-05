@@ -1,0 +1,76 @@
+#!/usr/bin/env python3
+import contextlib
+import os
+import argparse
+import re
+import signal
+import sys
+import inspect
+from pathlib import Path
+from subprocess import Popen, PIPE, TimeoutExpired
+from typing import Generator
+
+PACKAGE_ROOT = Path(inspect.getframeinfo(inspect.currentframe()).filename).parent  # type: ignore
+REPO_ROOT = PACKAGE_ROOT.parent
+
+MYND_DIR = (REPO_ROOT / "third_party" / "MyNDPlanner").resolve()  # type: ignore
+MYND_SRC_DIR = MYND_DIR / "src"
+OUTPUT_DIR = REPO_ROOT
+
+
+@contextlib.contextmanager
+def cd(path: os.PathLike) -> Generator:  # pylint: disable=invalid-name
+    """Change working directory temporarily."""
+    old_path = Path.cwd()
+    os.chdir(path)
+    try:
+        yield
+    finally:
+        os.chdir(str(old_path))
+
+
+def launch(cmd, cwd=None):
+    """Launch a command."""
+    process = Popen(
+        args=cmd,
+        preexec_fn=os.setsid,
+        encoding="utf-8",
+        cwd=cwd,
+    )
+    try:
+        process.wait(timeout=30)
+    except TimeoutExpired:
+        os.killpg(os.getpgid(process.pid), signal.SIGTERM)
+
+
+def plan(domain_path, problem_path, strong):
+    """Planning for temporally extended goals (LTLf or PLTLf)."""
+    domain_path = str(Path(domain_path).absolute())
+    problem_path = str(Path(problem_path).absolute())
+    search = "laostar"
+    if strong:
+        search = "aostar"
+    translate_command = [sys.executable, f"{MYND_DIR}/translator-fond/translate.py", f"{domain_path}",
+                         f"{problem_path}"]
+    launch(translate_command)
+    output_sas = Path("output.sas").absolute()
+    planner_command = ["java", "mynd.MyNDPlanner", f"-{search}", str(output_sas)]
+    launch(planner_command, cwd=str(MYND_SRC_DIR))
+    output_sas.unlink()
+
+
+if __name__ == '__main__':
+    """
+    Usage: python mynd_wrapper.py -d <DOMAIN-PATH> -p <PROBLEM-PATH> -s <STRONG>
+    """
+    parser = argparse.ArgumentParser(description="Wrapper for mynd.")
+    parser.add_argument('-d', dest='domain_path', type=Path, required=True)
+    parser.add_argument('-p', dest='problem_path', type=Path, required=True)
+    parser.add_argument('-s', dest='strong', type=int, choices={0, 1}, required=True)
+    args = parser.parse_args()
+
+    domain_path = args.domain_path
+    problem_path = args.problem_path
+    strong = args.strong
+
+    plan(domain_path, problem_path, strong)

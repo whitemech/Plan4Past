@@ -8,8 +8,16 @@ This folder contains scripts and modules to run planning benchmark.
 
 ## Examples
 
-Run `fast-downward` planner  
+You may need `export PYTHONPATH=.` before running the commands.
+
+- Run `fast-downward` planner  
 
 ```
 ./benchmark/run_planner.py --tool-id fast-downward --domain examples/pddl/domain.pddl --problem examples/pddl/p-0.pddl
+```
+
+- Run `mynd` planner  
+
+```
+./benchmark/run_planner.py --tool-id mynd --domain examples/pddl/domain.pddl --problem examples/pddl/p-0.pddl
 ```

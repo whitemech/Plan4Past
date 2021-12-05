@@ -7,3 +7,6 @@
 [submodule "third_party/pddl"]
 	path = third_party/pddl
 	url = https://github.com/whitemech/pddl.git
+[submodule "third_party/MyNDPlanner"]
+	path = third_party/MyNDPlanner
+	url = https://github.com/JackyCSer/MyNDPlanner.git

@@ -7,8 +7,8 @@ from pathlib import Path
 import click
 from click import FloatRange
 
-from benchmark.utils import tool_registry
-from benchmark.utils.tools import ToolID, Result
+from benchmark.tools import tool_registry
+from benchmark.tools.core import Result, ToolID
 
 DEFAULT_TIMEOUT: float = 60.0 * 1000.0
 
@@ -20,10 +20,28 @@ def _print_row(row: Result):
 
 @click.command()
 @click.option("--name", type=str, default=None)
-@click.option("--domain", required=True, type=click.Path(exists=True, dir_okay=False, readable=True))
-@click.option("--problem", required=True, type=click.Path(exists=True, dir_okay=False, readable=True))
-@click.option("--formula", required=False, default=None, type=click.Path(exists=True, dir_okay=False, readable=True))
-@click.option("--mapping", required=False, default=None, type=click.Path(exists=True, dir_okay=False, readable=True))
+@click.option(
+    "--domain",
+    required=True,
+    type=click.Path(exists=True, dir_okay=False, readable=True),
+)
+@click.option(
+    "--problem",
+    required=True,
+    type=click.Path(exists=True, dir_okay=False, readable=True),
+)
+@click.option(
+    "--formula",
+    required=False,
+    default=None,
+    type=click.Path(exists=True, dir_okay=False, readable=True),
+)
+@click.option(
+    "--mapping",
+    required=False,
+    default=None,
+    type=click.Path(exists=True, dir_okay=False, readable=True),
+)
 @click.option("--timeout", type=FloatRange(min=0.0), default=DEFAULT_TIMEOUT)
 @click.option(
     "--tool-id",
