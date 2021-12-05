@@ -26,13 +26,13 @@ from typing import Dict, Set
 
 from pddl.logic.base import And, Not, Or
 from pddl.logic.predicates import DerivedPredicate, Predicate
-from pylogics.syntax.base import And as PLTLAnd, _BinaryOp, _UnaryOp
+from pylogics.syntax.base import And as PLTLAnd
 from pylogics.syntax.base import Formula
 from pylogics.syntax.base import Not as PLTLNot
 from pylogics.syntax.base import Or as PLTLOr
+from pylogics.syntax.base import _BinaryOp, _UnaryOp
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
-from pylogics.syntax.pltl import Before
-from pylogics.syntax.pltl import Historically, Once, Since
+from pylogics.syntax.pltl import Before, Historically, Once, Since
 from pylogics.utils.to_string import to_string
 
 from planning_with_past.helpers.utils import add_val_prefix, replace_symbols
