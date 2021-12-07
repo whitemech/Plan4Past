@@ -117,9 +117,8 @@ class Compiler:
     def _compile_domain(self):
         """Compute the new domain."""
         act = Predicate("act")
-        goal = Predicate("goal")
         new_predicates = predicates(self.formula).union(
-            {act, goal}, val_predicates(self.formula)
+            {act}, val_predicates(self.formula)
         )
 
         new_derived_predicates = derived_predicates(
@@ -132,19 +131,11 @@ class Compiler:
         prog_action = Action(
             name="prog",
             parameters=[],
-            precondition=~act & ~goal,
+            precondition=~act,
             effect=And(*new_whens, act),
         )
-        check_action = Action(
-            name="check",
-            parameters=[],
-            precondition=Predicate(
-                add_val_prefix(replace_symbols(to_string(self.formula)))
-            ),
-            effect=goal,
-        )
 
-        domain_actions = domain_actions.union({prog_action, check_action})
+        domain_actions = domain_actions.union({prog_action})
 
         self._result_domain = Domain(
             name=self.domain.name,
@@ -167,10 +158,9 @@ class Compiler:
     def _compile_problem(self):
         """Compute the new problem."""
         act = Predicate("act")
-        goal = Predicate("goal")
 
         new_init = set(self.problem.init)
-        new_init = new_init.union({act, ~goal})
+        new_init = new_init.union({act})
 
         self._result_problem = Problem(
             name=self.problem.name,
@@ -178,7 +168,9 @@ class Compiler:
             requirements=self.problem.requirements,
             objects=[*self.problem.objects],
             init=new_init,
-            goal=goal,
+            goal=Predicate(
+                add_val_prefix(replace_symbols(to_string(self.formula)))
+            ),
         )
 
 
