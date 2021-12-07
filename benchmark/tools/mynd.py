@@ -10,7 +10,7 @@ DEFAULT_BIN_MYND_PATH = (REPO_ROOT / "bin" / "mynd_wrapper").absolute()
 
 
 class MyNDTool(Tool):
-    """Implement Downward experiments and configurations."""
+    """Implement MyND tool wrapper."""
 
     TOOL_ID = ToolID.MYND
     NAME = "MyND"

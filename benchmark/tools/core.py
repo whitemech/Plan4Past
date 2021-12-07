@@ -1,18 +1,18 @@
-import re
 import subprocess
 import time
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-from typing import List, Dict, Type, Union, Optional, Pattern, Any
+from typing import List, Dict, Type, Union, Optional, Any
 
-from benchmark.utils.tools import CTRL_C_EXIT_CODE
+from benchmark.utils.base import CTRL_C_EXIT_CODE
 
 
 class ToolID(Enum):
     FAST_DOWNWARD = "fast-downward"
     MYND = "mynd"
+    FOND4LTLfPLTLf_MYND = "f4lp-mynd"
 
 
 class Status(Enum):

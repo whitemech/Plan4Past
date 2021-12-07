@@ -21,3 +21,9 @@ You may need `export PYTHONPATH=.` before running the commands.
 ```
 ./benchmark/run_planner.py --tool-id mynd --domain examples/pddl/domain.pddl --problem examples/pddl/p-0.pddl
 ```
+
+- Run `fond4ltlfpltlf` + `mynd` planner  
+
+```
+./benchmark/run_planner.py --tool-id f4lp-mynd --domain examples/pddl/domain.pddl --problem examples/pddl/p-0.pddl --formula "on_d_c | \!on_d_c"
+```

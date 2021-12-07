@@ -776,3 +776,7 @@ policy.fsap
 policy.out
 sas_plan
 elapsed.time
+formula.pltlf
+formula.ltlf
+new-domain.pddl
+new-problem.pddl

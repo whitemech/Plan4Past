@@ -2,12 +2,11 @@
 import contextlib
 import os
 import argparse
-import re
 import signal
 import sys
 import inspect
 from pathlib import Path
-from subprocess import Popen, PIPE, TimeoutExpired
+from subprocess import Popen, TimeoutExpired
 from typing import Generator
 
 PACKAGE_ROOT = Path(inspect.getframeinfo(inspect.currentframe()).filename).parent  # type: ignore
@@ -55,6 +54,7 @@ def plan(domain_path, problem_path, strong):
     launch(translate_command)
     output_sas = Path("output.sas").absolute()
     planner_command = ["java", "mynd.MyNDPlanner", f"-{search}", str(output_sas)]
+    print("Start planner")
     launch(planner_command, cwd=str(MYND_SRC_DIR))
     output_sas.unlink()
 
