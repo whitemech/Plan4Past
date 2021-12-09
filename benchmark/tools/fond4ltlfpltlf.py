@@ -29,14 +29,14 @@ class Fond4LtlfPltlfTool(Tool, ABC):
         self,
         domain: Path,
         problem: Path,
-        formula: Optional[Path] = None,
+        formula: Optional[str] = None,
         mapping: Optional[Path] = None,
     ) -> List[str]:
         """Get CLI arguments."""
         assert formula is not None, "formula argument must be specified"
         assert mapping is None, "mapping argument not supported"
 
-        cli_args = [self.binary_path, "-t", self.planner_id, "-d", domain, "-p", problem, "-g", formula.read_text().strip()]
+        cli_args = [self.binary_path, "-t", self.planner_id, "-d", domain, "-p", problem, "-g", formula]
         return cli_args
 
 

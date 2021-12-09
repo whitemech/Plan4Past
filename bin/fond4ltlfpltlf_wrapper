@@ -22,6 +22,7 @@ MYND_SRC_DIR = MYND_DIR / "src"
 
 def launch(cmd, cwd=None):
     """Launch a command."""
+    print("Running command: ", " ".join(map(str, cmd)))
     process = Popen(
         args=cmd,
         preexec_fn=os.setsid,

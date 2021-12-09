@@ -70,6 +70,14 @@ class Result:
             f"{' '.join(map(str, self.command))}"
         )
 
+    def to_rows(self) -> str:
+        """Print results by rows."""
+        return f"name={self.name}\n" \
+            f"status={self.status}\n" \
+            f"time_tool={self.millis_tool / 1000.0}\n" \
+            f"time_end2end={self.millis_end2end / 1000.0}\n" \
+            f"command={' '.join(map(str, self.command))}"
+
 
 class Tool(ABC):
     """Interface for tools."""
@@ -91,7 +99,7 @@ class Tool(ABC):
         self,
         domain: Path,
         problem: Path,
-        formula: Optional[Path] = None,
+        formula: Optional[str] = None,
         mapping: Optional[Path] = None,
         timeout: float = 5000.0,
         cwd: Optional[str] = None,
@@ -112,6 +120,7 @@ class Tool(ABC):
         args = self.get_cli_args(domain, problem, formula, mapping)
         start = time.perf_counter()
         timed_out = False
+        print("Running command: ", " ".join(map(str, args)))
         proc = subprocess.Popen(
             args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=cwd
         )
@@ -159,7 +168,7 @@ class Tool(ABC):
         self,
         domain: Path,
         problem: Path,
-        formula: Optional[Path] = None,
+        formula: Optional[str] = None,
         mapping: Optional[Path] = None,
     ) -> List[str]:
         """Get CLI arguments."""

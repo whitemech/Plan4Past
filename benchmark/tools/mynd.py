@@ -33,7 +33,7 @@ class MyNDTool(Tool):
         self,
         domain: Path,
         problem: Path,
-        formula: Optional[Path] = None,
+        formula: Optional[str] = None,
         mapping: Optional[Path] = None,
     ) -> List[str]:
         """Get CLI arguments."""

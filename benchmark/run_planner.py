@@ -3,6 +3,7 @@ import json
 import logging
 from operator import attrgetter
 from pathlib import Path
+from typing import Optional
 
 import click
 from click import FloatRange
@@ -16,6 +17,14 @@ DEFAULT_TIMEOUT: float = 60.0 * 1000.0
 def _print_row(row: Result):
     """Print a row."""
     print(str(row))
+
+
+def parse_formula_args(formula_path: Optional[str], formula_str: Optional[str]) -> Optional[str]:
+    """Parse the formula from the CLI args."""
+    assert not (formula_path and formula_str), "only one of --formula and --formula-str must be specified"
+    if formula_path:
+        return Path(formula_path).read_text().strip()
+    return formula_str
 
 
 @click.command()
@@ -35,6 +44,13 @@ def _print_row(row: Result):
     required=False,
     default=None,
     type=click.Path(exists=True, dir_okay=False, readable=True),
+
+)
+@click.option(
+    "--formula-str",
+    required=False,
+    default=None,
+    type=str,
 )
 @click.option(
     "--mapping",
@@ -49,11 +65,11 @@ def _print_row(row: Result):
     type=click.Choice(list(map(attrgetter("value"), ToolID)), case_sensitive=False),
 )
 @click.option("--config", default="{}", type=str)
-def main(name, domain, problem, formula, mapping, timeout, tool_id, config):
+def main(name, domain, problem, formula, formula_str, mapping, timeout, tool_id, config):
     """Compute times."""
     domain = Path(domain)
     problem = Path(problem)
-    formula = Path(formula) if formula else None
+    formula = parse_formula_args(formula, formula_str)
     mapping = Path(mapping) if mapping else None
     json_config = json.loads(config)
 
@@ -67,9 +83,8 @@ def main(name, domain, problem, formula, mapping, timeout, tool_id, config):
     logging.debug(f"tool={tool_id}")
 
     try:
-        print(Result.headers())
         result = tool.plan(domain, problem, formula, mapping)
-        print(str(result))
+        print(result.to_rows())
         return 0
     except KeyboardInterrupt:
         logging.info("Interrupted!")
