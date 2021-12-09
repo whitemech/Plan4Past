@@ -11,7 +11,7 @@ Planning for temporal goals in past temporal logic.
 
 First, clone the repository:
 ```
-git clone git@github.com:whitemech/planning-with-past
+git clone git@github.com:whitemech/planning-for-past-temporal-goals --recursive
 ```
 
 Then, use Pipenv to set up the development environment:
@@ -48,8 +48,9 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from planning_with_past.planners.downward import DownwardPlanner
 from pathlib import Path
+
 planner = DownwardPlanner()
-plan = planner.plan(Path("examples/pddl/domain.pddl"), Path("examples/pddl/p-0.pddl"))
+plan = planner.plan(Path("examples/compiled_pddl/domain.pddl"), Path("examples/compiled_pddl/p-0.pddl"))
 
 # print the graph
 pos = nx.spring_layout(plan.graph)
@@ -83,9 +84,9 @@ and then go to [http://localhost:8000](http://localhost:8000)
 
 ## License
 
-planning-with-past is released under the GNU Lesser General Public License v3.0 or later (LGPLv3+).
+planning-for-past-temporal-goals is released under the GNU Lesser General Public License v3.0 or later (LGPLv3+).
 
-Copyright 2021-2021 WhiteMech
+Copyright 2021 WhiteMech
 
 ## Authors
 
