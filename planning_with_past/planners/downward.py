@@ -33,7 +33,8 @@ from planning_with_past.planners.base import Planner
 from planning_with_past.plans import Plan
 
 DEFAULT_BIN_FAST_DOWNWARD_PATH = (REPO_ROOT / "bin" / "fast-downward").absolute()
-DEFAULT_SEARCH = "astar(blind())"
+DEFAULT_HEURISTIC = "ff()"
+DEFAULT_SEARCH = f"astar({DEFAULT_HEURISTIC})"
 
 _SAS_FILENAME = "sas_plan"
 
