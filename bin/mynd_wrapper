@@ -12,7 +12,7 @@ from typing import Generator
 PACKAGE_ROOT = Path(inspect.getframeinfo(inspect.currentframe()).filename).parent  # type: ignore
 REPO_ROOT = PACKAGE_ROOT.parent
 
-MYND_DIR = (REPO_ROOT / "third_party" / "MyNDPlanner").resolve()  # type: ignore
+MYND_DIR = (REPO_ROOT / "third_party" / "myND").resolve()  # type: ignore
 MYND_SRC_DIR = MYND_DIR / "src"
 OUTPUT_DIR = REPO_ROOT
 

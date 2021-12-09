@@ -22,8 +22,8 @@ build_downward() {
 
 build_mynd() {
   echo "Building MyND..."
-  cd third_party/MyNDPlanner/src &&\
-  ./build &&\
+  cd third_party/myND/src &&\
+  javac `find generator mynd net -name '*.java'` &&\
   cd ../../../
 }
 
