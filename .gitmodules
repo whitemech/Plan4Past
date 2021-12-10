@@ -10,3 +10,6 @@
 [submodule "third_party/myND"]
 	path = third_party/myND
 	url = git@github.com:robertmattmueller/myND.git
+[submodule "third_party/ltlfond2fond"]
+	path = third_party/ltlfond2fond
+	url = https://bitbucket.org/acamacho/ltlfond2fond

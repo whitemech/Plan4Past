@@ -17,9 +17,7 @@ class SupportedPlanners:
 class Fond4LtlfPltlfTool(Tool, ABC):
     """Implement abstract FOND4LTLfPLTLf tool wrapper."""
 
-    def __init__(
-            self, binary_path: str, planner_id: Union[str, SupportedPlanners]
-    ):
+    def __init__(self, binary_path: str, planner_id: Union[str, SupportedPlanners]):
         """Initialize the tool."""
         super().__init__(binary_path)
 
@@ -36,7 +34,17 @@ class Fond4LtlfPltlfTool(Tool, ABC):
         assert formula is not None, "formula argument must be specified"
         assert mapping is None, "mapping argument not supported"
 
-        cli_args = [self.binary_path, "-t", self.planner_id, "-d", domain, "-p", problem, "-g", formula]
+        cli_args = [
+            self.binary_path,
+            "-t",
+            self.planner_id,
+            "-d",
+            domain,
+            "-p",
+            problem,
+            "-g",
+            formula,
+        ]
         return cli_args
 
 
@@ -61,13 +69,24 @@ class Fond4LtlfPltlfMyND(Fond4LtlfPltlfTool):
 
     def collect_statistics(self, output: str) -> Result:
         """Collect statistics."""
-        match = re.search("Total time: +([0-9.]+) seconds", output)
-        tool_time = float(match.group(1))
+        tool_time_match = re.search("Total time: +([0-9.]+) seconds", output)
+        tool_time = float(tool_time_match.group(1)) if tool_time_match else -1.0
+
+        compilation_time_match = re.search(
+            "Compilation time: +([0-9.]+) seconds", output
+        )
+        compilation_time = (
+            float(compilation_time_match.group(1)) if compilation_time_match else -1.0
+        )
+
+        timed_out_match = re.search("Timed out.", output)
 
         solution_found_match = re.search("Result: Strong cyclic plan found", output)
         if solution_found_match is not None:
             status = Status.SUCCESS
+        elif timed_out_match is not None:
+            status = Status.TIMEOUT
         else:
             status = Status.FAILURE
 
-        return Result("", [], tool_time * 1000.0, None, status)
+        return Result("", [], compilation_time, tool_time, None, status)

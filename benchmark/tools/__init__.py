@@ -15,5 +15,7 @@ tool_registry.register(
     ToolID.MYND, tool_cls=MyNDTool, binary_path=DEFAULT_BIN_MYND_PATH
 )
 tool_registry.register(
-    ToolID.FOND4LTLfPLTLf_MYND, tool_cls=Fond4LtlfPltlfMyND, binary_path=DEFAULT_BIN_F4LP_PATH
+    ToolID.FOND4LTLfPLTLf_MYND,
+    tool_cls=Fond4LtlfPltlfMyND,
+    binary_path=DEFAULT_BIN_F4LP_PATH,
 )

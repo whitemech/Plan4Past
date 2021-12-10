@@ -26,8 +26,9 @@ class Status(Enum):
 class Result:
     name: str
     command: List[str]
-    millis_tool: Optional[float]
-    millis_end2end: Optional[float]
+    time_compilation: Optional[float]
+    time_tool: Optional[float]
+    time_end2end: Optional[float]
     status: Status
 
     @staticmethod
@@ -35,6 +36,7 @@ class Result:
         return (
             f"{'name': <10}\t"
             f"{'status': <10}\t"
+            f"{'time_compilation': <10}\t"
             f"{'time_tool': <10}\t"
             f"{'time_end2end': <10}\t"
             f"{'command': <10}"
@@ -45,38 +47,57 @@ class Result:
         return dict(
             name=self.name,
             status=self.status.value,
-            time_tool=self.millis_tool,
-            time_end2end=self.millis_end2end,
+            time_compilation=self.time_compilation,
+            time_tool=self.time_tool,
+            time_end2end=self.time_end2end,
             command=" ".join(self.command),
         )
 
     def __str__(self):
         """To string."""
-        millis_tool_str = (
-            f"{self.millis_tool / 1000.0: 10.5f}"
-            if self.millis_tool is not None
+        time_compilation_str = (
+            f"{self.time_compilation: 10.6f}"
+            if self.time_compilation is not None
             else f"{'None': <10}"
         )
-        millis_end2end_str = (
-            f"{self.millis_end2end / 1000.0: 10.5f}"
-            if self.millis_end2end is not None
+        time_tool_str = (
+            f"{self.time_tool: 10.6f}"
+            if self.time_tool is not None
+            else f"{'None': <10}"
+        )
+        time_end2end_str = (
+            f"{self.time_end2end: 10.6f}"
+            if self.time_end2end is not None
             else f"{'None': <10}"
         )
         return (
             f"{str(self.name): <10}\t"
             f"{self.status.value}\t"
-            f"{millis_tool_str}\t"
-            f"{millis_end2end_str}\t"
+            f"{time_compilation_str}\t"
+            f"{time_tool_str}\t"
+            f"{time_end2end_str}\t"
             f"{' '.join(map(str, self.command))}"
         )
 
     def to_rows(self) -> str:
         """Print results by rows."""
-        return f"name={self.name}\n" \
-            f"status={self.status}\n" \
-            f"time_tool={self.millis_tool / 1000.0}\n" \
-            f"time_end2end={self.millis_end2end / 1000.0}\n" \
+        return (
+            f"name={self.name}\n"
+            f"status={self.status}\n"
+            f"time_compilation={self.time_compilation}\n"
+            f"time_tool={self.time_tool}\n"
+            f"time_end2end={self.time_end2end}\n"
             f"command={' '.join(map(str, self.command))}"
+        )
+
+
+def save_data(data: List[Result], output: Path) -> None:
+    """Save data to a file."""
+    content = ""
+    content += Result.headers() + "\n"
+    for result in data:
+        content += str(result) + "\n"
+    output.write_text(content)
 
 
 class Tool(ABC):
@@ -101,7 +122,7 @@ class Tool(ABC):
         problem: Path,
         formula: Optional[str] = None,
         mapping: Optional[Path] = None,
-        timeout: float = 5000.0,
+        timeout: float = 5.0,
         cwd: Optional[str] = None,
         name: Optional[str] = None,
     ) -> Result:
@@ -112,7 +133,7 @@ class Tool(ABC):
         :param problem: path to the problem file
         :param mapping: path to the mapping file
         :param formula: the PLTLf formula
-        :param timeout: the timeout in milliseconds
+        :param timeout: the timeout in seconds
         :param cwd: the current working directory
         :param name: the experiment name
         :return: the planning result
@@ -125,26 +146,26 @@ class Tool(ABC):
             args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=cwd
         )
         try:
-            proc.wait(timeout=int(timeout / 1000.0))
+            proc.wait(timeout=timeout)
         except subprocess.TimeoutExpired:
             proc.terminate()
             proc.wait()
             timed_out = True
         end = time.perf_counter()
-        total = (end - start) * 1000.0
+        total = end - start
+
+        if timed_out:
+            return Result(name, args, total, total, total, Status.TIMEOUT)
 
         stdout, _stderr = proc.communicate()
         stdout = stdout.decode("utf-8")
         result = self.collect_statistics(stdout)
         result.name = name
         result.command = args
-        result.millis_end2end = total
+        result.time_end2end = total
         # CTRL+C termination happens only if timeout occurred.
         if proc.returncode != 0 and proc.returncode != CTRL_C_EXIT_CODE:
             result.status = Status.ERROR
-        # we don't consider time out if we constructed the DFA.
-        elif timed_out:
-            result.status = Status.TIMEOUT
 
         return result
 

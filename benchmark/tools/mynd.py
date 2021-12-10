@@ -56,4 +56,4 @@ class MyNDTool(Tool):
         else:
             status = Status.FAILURE
 
-        return Result("", [], tool_time * 1000.0, None, status)
+        return Result("", [], 0.0, tool_time, None, status)
