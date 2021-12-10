@@ -29,6 +29,7 @@ class Result:
     time_compilation: Optional[float]
     time_tool: Optional[float]
     time_end2end: Optional[float]
+    # nb_node_expanded: Optional[int]
     status: Status
 
     @staticmethod
@@ -154,15 +155,19 @@ class Tool(ABC):
         end = time.perf_counter()
         total = end - start
 
-        if timed_out:
-            return Result(name, args, total, total, total, Status.TIMEOUT)
-
         stdout, _stderr = proc.communicate()
         stdout = stdout.decode("utf-8")
         result = self.collect_statistics(stdout)
         result.name = name
         result.command = args
-        result.time_end2end = total
+
+        # in case time end2end not set by the tool, set from command
+        if result.time_end2end is None:
+            result.time_end2end = total
+
+        if timed_out:
+            result.status = Status.TIMEOUT
+
         # CTRL+C termination happens only if timeout occurred.
         if proc.returncode != 0 and proc.returncode != CTRL_C_EXIT_CODE:
             result.status = Status.ERROR

@@ -5,7 +5,7 @@ import inspect
 import os
 import signal
 from pathlib import Path
-from subprocess import Popen, TimeoutExpired
+from subprocess import Popen
 from tempfile import TemporaryDirectory
 
 SUPPORTED_PLANNERS = {
@@ -31,12 +31,11 @@ def launch(cmd, cwd=None):
     )
     try:
         process.wait()
-    except TimeoutExpired:
-        print("Timed out.")
-        os.killpg(os.getpgid(process.pid), signal.SIGTERM)
     finally:
-        if process.returncode != 0:
-            raise Exception(f"return code {process.returncode}")
+        if process.poll() is None:
+            os.killpg(os.getpgid(process.pid), signal.SIGTERM)
+            if process.returncode != 0:
+                raise Exception(f"return code {process.returncode}")
 
 
 if __name__ == '__main__':
@@ -61,8 +60,8 @@ if __name__ == '__main__':
                 "-outp", new_problem_file,
                 ])
         end_compilation = datetime.datetime.now()
-        elapsed_time = (end_compilation.timestamp() - start.timestamp())
-        print(f"Compilation time: {elapsed_time} seconds")
+        elapsed_time_compilation = (end_compilation.timestamp() - start.timestamp())
+        print(f"Compilation time: {elapsed_time_compilation} seconds")
 
         cli_args = []
         if args.planner == "mynd":
@@ -76,6 +75,8 @@ if __name__ == '__main__':
             raise ValueError
         launch(cli_args)
     # some code
-    end = datetime.datetime.now()
-    elapsed = end - start
+    end_tool = datetime.datetime.now()
+    end_tool_time = end_tool - end_compilation
+    print(f"Tool time: {end_tool_time.total_seconds()} seconds")
+    elapsed = end_tool - start
     print(f"Total time: {elapsed.total_seconds()} seconds")

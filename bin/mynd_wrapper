@@ -37,9 +37,12 @@ def launch(cmd, cwd=None):
         cwd=cwd,
     )
     try:
-        process.wait(timeout=30)
-    except TimeoutExpired:
-        os.killpg(os.getpgid(process.pid), signal.SIGTERM)
+        process.wait()
+    finally:
+        if process.poll() is None:
+            os.killpg(os.getpgid(process.pid), signal.SIGTERM)
+            if process.returncode != 0:
+                raise Exception(f"return code {process.returncode}")
 
 
 def plan(domain_path, problem_path, strong, heuristic):

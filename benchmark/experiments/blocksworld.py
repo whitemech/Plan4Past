@@ -14,7 +14,7 @@ PROBLEM_FILES = sorted(DATASET_DIR.glob("p*.pddl"), key=lambda p: p.name)
 
 
 @click.command()
-@click.option("--timeout", type=int, default=60)
+@click.option("--timeout", type=float, default=60.0)
 @click.option("--output", type=click.Path(exists=False), default="output.tsv")
 def main(output: str, timeout: float):
     data = []

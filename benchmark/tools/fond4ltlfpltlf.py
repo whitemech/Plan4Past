@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import List, Optional, Union
 
 from benchmark.tools.core import Tool, Result, Status, ToolID
+from benchmark.utils.base import try_to_get_float
 from planning_with_past import REPO_ROOT
 
 DEFAULT_BIN_F4LP_PATH = (REPO_ROOT / "bin" / "fond4ltlfpltlf_wrapper").absolute()
@@ -69,14 +70,12 @@ class Fond4LtlfPltlfMyND(Fond4LtlfPltlfTool):
 
     def collect_statistics(self, output: str) -> Result:
         """Collect statistics."""
-        tool_time_match = re.search("Total time: +([0-9.]+) seconds", output)
-        tool_time = float(tool_time_match.group(1)) if tool_time_match else -1.0
-
-        compilation_time_match = re.search(
+        tool_time = try_to_get_float("Tool time: +([0-9.]+) seconds", output)
+        compilation_time = try_to_get_float(
             "Compilation time: +([0-9.]+) seconds", output
         )
-        compilation_time = (
-            float(compilation_time_match.group(1)) if compilation_time_match else -1.0
+        end2end_time = try_to_get_float(
+            "Total time: +([0-9.]+) seconds", output, default=None
         )
 
         timed_out_match = re.search("Timed out.", output)
@@ -89,4 +88,4 @@ class Fond4LtlfPltlfMyND(Fond4LtlfPltlfTool):
         else:
             status = Status.FAILURE
 
-        return Result("", [], compilation_time, tool_time, None, status)
+        return Result("", [], compilation_time, tool_time, end2end_time, status)
