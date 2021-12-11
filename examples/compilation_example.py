@@ -77,7 +77,7 @@ if __name__ == "__main__":
     problem = problem_parser((EXAMPLES_DIR / "pddl" / "p-0.pddl").read_text())
     mapping = mapping_parser((EXAMPLES_DIR / "pddl" / "p-0.map").read_text(), formula)
 
-    compiler = Compiler(domain, problem, formula, mapping)
+    compiler = Compiler(domain, problem, formula)
     compiler.compile()
     compiled_domain, compiled_problem = compiler.result
 
