@@ -168,8 +168,8 @@ class Compiler:
             requirements=self.problem.requirements,
             objects=[*self.problem.objects],
             init=new_init,
-            goal=Predicate(
-                add_val_prefix(replace_symbols(to_string(self.formula)))
+            goal=And(
+                Predicate(add_val_prefix(replace_symbols(to_string(self.formula)))), act
             ),
         )
 
