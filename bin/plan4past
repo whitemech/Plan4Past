@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#!/usr/bin/env python3
 
 
 import argparse
@@ -11,14 +11,6 @@ from pathlib import Path
 from subprocess import Popen
 from tempfile import TemporaryDirectory
 
-from pylogics.parsers import parse_pltl
-
-from pddl.formatter import domain_to_string, problem_to_string
-from pddl.logic.base import Formula
-from pddl.parser.domain import DomainParser
-from pddl.parser.problem import ProblemParser
-from planning_with_past.compiler import Compiler
-from planning_with_past.utils.mapping_parser import mapping_parser
 
 DEFAULT_OUTPUT_DIR: str = "output"
 BIN_DIR = Path(inspect.getframeinfo(inspect.currentframe()).filename).parent
