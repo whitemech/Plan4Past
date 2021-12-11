@@ -15,6 +15,7 @@ class ToolID(Enum):
     FAST_DOWNWARD = "fast-downward"
     MYND = "mynd"
     FOND4LTLfPLTLf_MYND = "f4lp-mynd"
+    PLAN4PAST_MYND = "p4p-mynd"
 
 
 class Status(Enum):

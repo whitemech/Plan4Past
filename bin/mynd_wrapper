@@ -41,13 +41,15 @@ def launch(cmd, cwd=None):
     except KeyboardInterrupt:
         print("Interrupted")
     finally:
-        try:
-            print("do killpg")
-            os.killpg(os.getpgid(process.pid), signal.SIGTERM)
-        except:
-            print("killpg failed")
+        if process.poll() is None:
+            try:
+                print("do killpg")
+                os.killpg(os.getpgid(process.pid), signal.SIGTERM)
+            except:
+                print("killpg failed")
         if process.returncode != 0:
-            raise Exception(f"return code {process.returncode}")
+            print(f"return code {process.returncode}")
+            exit(1)
 
 
 def plan(domain_path, problem_path, strong, heuristic):

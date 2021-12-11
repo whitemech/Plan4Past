@@ -3,7 +3,6 @@
 
 import argparse
 import os
-import shutil
 from pathlib import Path
 
 from pylogics.parsers import parse_pltl
@@ -15,7 +14,8 @@ from pddl.parser.problem import ProblemParser
 from planning_with_past.compiler import Compiler
 from planning_with_past.utils.mapping_parser import mapping_parser
 
-DEFAULT_OUTPUT_DIR: str = "output"
+DEFAULT_NEW_DOMAIN_FILENAME: str = "new-domain.pddl"
+DEFAULT_NEW_PROBLEM_FILENAME: str = "new-problem.pddl"
 
 
 def is_valid_file(arg):
@@ -38,38 +38,32 @@ def parse_args():
     parser.add_argument("--domain", type=is_valid_file, required=True)
     parser.add_argument("--problem", type=is_valid_file, required=True)
     parser.add_argument("--formula", type=parse_pltl, required=True)
-    parser.add_argument("--map", dest="map_file", type=is_valid_file, required=True)
-    parser.add_argument("--output-dir", type=str, default=DEFAULT_OUTPUT_DIR)
-    parser.add_argument("--force", type=bool, action="store_true", default=False, help="Force removal of output directory if already exists")
+    parser.add_argument("--map", dest="map_file", type=is_valid_file, default=None, required=False)
+    parser.add_argument("--output-domain", type=str, default=DEFAULT_NEW_DOMAIN_FILENAME)
+    parser.add_argument("--output-problem", type=str, default=DEFAULT_NEW_PROBLEM_FILENAME)
     return parser.parse_args()
 
 
-def _process_output_dir(output_path: str, force: bool):
-    """Process the output directory argument."""
-    if force:
-        shutil.rmtree(output_path, ignore_errors=True)
-    elif os.path.exists(output_path):
-        raise FileExistsError("The file %s already exists!" % output_path)
-    Path(output_path).mkdir(parents=True)
-
-
-def main(domain_path: Path, problem_path: Path, formula: Formula, map_path: Path, output_dirpath: str = DEFAULT_OUTPUT_DIR, force: bool = False):
-    _process_output_dir(output_dirpath, force)
-    output_dirpath_obj = Path(output_dirpath)
+def main(domain_path: Path, problem_path: Path, formula: Formula, map_path: Path, output_domain: str, output_problem: str):
+    output_domain_path = Path(output_domain)
+    output_problem_path = Path(output_problem)
     domain_parser = DomainParser()
     problem_parser = ProblemParser()
     domain = domain_parser(domain_path.read_text())
     problem = problem_parser(problem_path.read_text())
-    mapping = mapping_parser(map_path.read_text(), formula)
+    if map_path:
+        mapping = mapping_parser(map_path.read_text(), formula)
+    else:
+        mapping = None
 
     compiler = Compiler(domain, problem, formula, mapping)
     compiler.compile()
     compiled_domain, compiled_problem = compiler.result
 
     try:
-        with (output_dirpath_obj / "new_domain.pddl").open("w") as dom:
+        with output_domain_path.open("w") as dom:
             dom.write(domain_to_string(compiled_domain))
-        with (output_dirpath_obj / "new_problem.pddl").open("w") as prob:
+        with output_problem_path.open("w") as prob:
             prob.write(problem_to_string(compiled_problem))
     except Exception:
         raise IOError(
@@ -79,4 +73,4 @@ def main(domain_path: Path, problem_path: Path, formula: Formula, map_path: Path
 
 if __name__ == '__main__':
     arguments = parse_args()
-    main(arguments.domain, arguments.problem, arguments.formula, arguments.map_file, arguments.output_dir, arguments.force)
+    main(arguments.domain, arguments.problem, arguments.formula, arguments.map_file, arguments.output_domain, arguments.output_problem)

@@ -13,3 +13,6 @@
 [submodule "third_party/ltlfond2fond"]
 	path = third_party/ltlfond2fond
 	url = https://bitbucket.org/acamacho/ltlfond2fond
+[submodule "third_party/spot"]
+	path = third_party/spot
+	url = https://gitlab.lrde.epita.fr/spot/spot

@@ -27,3 +27,9 @@ You may need `export PYTHONPATH=.` before running the commands.
 ```
 ./benchmark/run_planner.py --tool-id f4lp-mynd --domain examples/pddl/domain.pddl --problem examples/pddl/p-0.pddl --formula-str "on_c_b & O(on_b_a)"
 ```
+
+- Run `plan4past` + `mynd` planner  
+
+```
+./benchmark/run_planner.py --tool-id p4p-mynd --domain examples/pddl/domain.pddl --problem examples/pddl/p-0.pddl --formula-str "on_c_b & O(on_b_a)"
+```
