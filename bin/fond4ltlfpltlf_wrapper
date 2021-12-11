@@ -25,17 +25,21 @@ def launch(cmd, cwd=None):
     print("Running command: ", " ".join(map(str, cmd)))
     process = Popen(
         args=cmd,
-        preexec_fn=os.setsid,
         encoding="utf-8",
         cwd=cwd,
     )
     try:
         process.wait()
+    except KeyboardInterrupt:
+        print("Interrupted")
     finally:
-        if process.poll() is None:
+        try:
+            print("do killpg")
             os.killpg(os.getpgid(process.pid), signal.SIGTERM)
-            if process.returncode != 0:
-                raise Exception(f"return code {process.returncode}")
+        except:
+            print("killpg failed")
+        if process.returncode != 0:
+            raise Exception(f"return code {process.returncode}")
 
 
 if __name__ == '__main__':

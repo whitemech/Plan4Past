@@ -79,13 +79,15 @@ class Fond4LtlfPltlfMyND(Fond4LtlfPltlfTool):
         )
 
         timed_out_match = re.search("Timed out.", output)
-
-        solution_found_match = re.search("Result: Strong cyclic plan found", output)
-        if solution_found_match is not None:
+        initial_proven_match = re.search("INITIAL IS PROVEN!", output)
+        initial_disproven_match = re.search("INITIAL IS DISPROVEN!", output)
+        if initial_proven_match is not None:
             status = Status.SUCCESS
+        elif initial_disproven_match is not None:
+            status = Status.FAILURE
         elif timed_out_match is not None:
             status = Status.TIMEOUT
         else:
-            status = Status.FAILURE
+            status = Status.ERROR
 
         return Result("", [], compilation_time, tool_time, end2end_time, status)

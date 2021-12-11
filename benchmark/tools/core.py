@@ -1,3 +1,5 @@
+import os
+import signal
 import subprocess
 import time
 from abc import ABC, abstractmethod
@@ -144,12 +146,16 @@ class Tool(ABC):
         timed_out = False
         print("Running command: ", " ".join(map(str, args)))
         proc = subprocess.Popen(
-            args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=cwd
+            args,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            cwd=cwd,
+            preexec_fn=os.setsid,
         )
         try:
             proc.wait(timeout=timeout)
         except subprocess.TimeoutExpired:
-            proc.terminate()
+            os.killpg(os.getpgid(proc.pid), signal.SIGTERM)
             proc.wait()
             timed_out = True
         end = time.perf_counter()
