@@ -1,0 +1,90 @@
+#!/usr/bin/env python3
+import argparse
+import datetime
+import inspect
+import os
+import shutil
+import signal
+import sys
+from pathlib import Path
+from subprocess import Popen
+from tempfile import TemporaryDirectory
+
+
+BIN_DIR = Path(inspect.getframeinfo(inspect.currentframe()).filename).parent.absolute()
+REPO_ROOT = BIN_DIR.parent
+MYND_WRAPPER_PATH = BIN_DIR / "mynd_wrapper"
+
+MYND_DIR = (REPO_ROOT / "third_party" / "MyNDPlanner").resolve()  # type: ignore
+MYND_SRC_DIR = MYND_DIR / "src"
+
+LTLFOND2FOND_DIR = (REPO_ROOT / "third_party" / "ltlfond2fond").resolve()  # type: ignore
+
+
+def launch(cmd, cwd=None):
+    """Launch a command."""
+    print("Running command: ", " ".join(map(str, cmd)))
+    process = Popen(
+        args=cmd,
+        encoding="utf-8",
+        cwd=cwd,
+    )
+    try:
+        process.wait()
+    except KeyboardInterrupt:
+        print("Interrupted")
+    finally:
+        if process.poll() is None:
+            try:
+                print("do killpg")
+                os.killpg(os.getpgid(process.pid), signal.SIGTERM)
+            except:
+                print("killpg failed")
+        if process.returncode != 0:
+            print(f"return code {process.returncode}")
+            exit(1)
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description="Wrapper for FOND4LTLfPLTLf.")
+    parser.add_argument('-d', dest='domain_path', type=Path, required=True)
+    parser.add_argument('-p', dest='problem_path', type=Path, required=True)
+    parser.add_argument('-g', dest='goal', type=str, required=True)
+    parser.add_argument('-s', dest='strong', type=int, choices={0, 1}, default=0)
+    parser.add_argument('--heuristic', dest='heuristic', type=str, choices={"ff"}, default="ff")
+    args = parser.parse_args()
+
+    start = datetime.datetime.now()
+    domain_path_absolute = Path(args.domain_path).absolute()
+    problem_path_absolute = Path(args.problem_path).absolute()
+    with TemporaryDirectory() as tmpdir:
+        goal_path = Path(tmpdir) / "goal.ltl"
+        goal_path.write_text(args.goal)
+        launch([sys.executable, str(LTLFOND2FOND_DIR / "convert-finite.py"),
+                str(domain_path_absolute),
+                str(problem_path_absolute),
+                str(goal_path),
+                ], cwd=str(LTLFOND2FOND_DIR))
+        end_compilation = datetime.datetime.now()
+        elapsed_time_compilation = (end_compilation.timestamp() - start.timestamp())
+        print(f"Compilation time: {elapsed_time_compilation} seconds")
+
+        compiled_domain_file = LTLFOND2FOND_DIR / "compiled_domain.pddl"
+        compiled_problem_file = LTLFOND2FOND_DIR / "compiled_problem.pddl"
+        new_domain_file = Path(tmpdir) / "compiled_domain.pddl"
+        new_problem_file = Path(tmpdir) /"compiled_problem.pddl"
+        shutil.move(compiled_domain_file, new_domain_file)
+        shutil.move(compiled_problem_file, new_problem_file)
+
+        cli_args = [str(MYND_WRAPPER_PATH),
+                    "-d", str(new_domain_file),
+                    "-p", str(new_problem_file),
+                    "-s", str(args.strong),
+                    "--heuristic", str(args.heuristic)]
+        launch(cli_args)
+    # some code
+    end_tool = datetime.datetime.now()
+    end_tool_time = end_tool - end_compilation
+    print(f"Tool time: {end_tool_time.total_seconds()} seconds")
+    elapsed = end_tool - start
+    print(f"Total time: {elapsed.total_seconds()} seconds")

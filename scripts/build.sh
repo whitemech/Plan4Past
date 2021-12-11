@@ -1,8 +1,5 @@
 #!/usr/bin/env sh
 
-# This script builds:
-# - Downward
-# - PRP
 
 set -e
 
@@ -27,10 +24,41 @@ build_mynd() {
   cd ../../../
 }
 
+build_spot() {
+  echo "Building SPOT..."
+  cd third_party/spot
+  ./configure
+  sudo make -j4
+  sudo make install
+  cd ../../
+}
+
+build_ltlfond2fond() {
+  echo "Building ltlfond2fond..."
+  cd third_party/ltlfond2fond/ext/ltlfkit/LTLf2FOL/ltlf2fol
+  make
+  cd ../../ext/MONA
+  libtoolize --force
+  aclocal
+  autoheader
+  automake --force-missing --add-missing
+  autoconf
+  sudo make -j4
+  sudo make install
+  mkdir -p bin
+  cd bin
+  rm -f mona
+  ln -s ../Front/.libs/mona mona
+  cd ../../../../../../../
+}
+
 main() {
   build_downward
   build_prp
   build_mynd
+  build_spot
+  build_ltlfond2fond
 }
 
+echo "Start building"
 main
