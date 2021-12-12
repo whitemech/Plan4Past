@@ -1,9 +1,8 @@
 import re
-from enum import Enum
 from pathlib import Path
 from typing import List, Optional, Union
 
-from benchmark.tools.core import Tool, ToolID, Result, Status, SearchAlg, Heuristic
+from benchmark.tools.core import Tool, Result, Status, SearchAlg, Heuristic
 from planning_with_past import REPO_ROOT
 
 DEFAULT_BIN_MYND_PATH = (REPO_ROOT / "bin" / "mynd_wrapper").absolute()

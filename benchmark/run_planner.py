@@ -40,6 +40,7 @@ def run_planner(
     timeout: float,
     tool_id: str,
     config: Dict,
+    working_dir: Optional[str] = None
 ) -> Result:
     tool = tool_registry.make(tool_id, **config)
     logging.debug(f"name={name}")
@@ -51,7 +52,7 @@ def run_planner(
     logging.debug(f"tool={tool_id}")
 
     try:
-        result = tool.plan(domain, problem, formula, mapping, timeout=timeout)
+        result = tool.plan(domain, problem, formula, mapping, timeout=timeout, name=name, working_dir=working_dir)
         return result
     except KeyboardInterrupt:
         logging.info("Interrupted!")

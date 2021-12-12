@@ -14,3 +14,4 @@ def try_to_get_float(pattern: str, text: str, default=-1.0) -> float:
     number_match = re.search(pattern, text)
     number = float(number_match.group(1)) if number_match else default
     return number
+

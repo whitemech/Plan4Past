@@ -1,21 +1,13 @@
 #!/usr/bin/env python3
 import argparse
 import contextlib
-import inspect
 import os
-import signal
 import sys
+import tempfile
 from pathlib import Path
-from subprocess import Popen
 from typing import Generator
 
-PACKAGE_ROOT = Path(inspect.getframeinfo(inspect.currentframe()).filename).parent  # type: ignore
-REPO_ROOT = PACKAGE_ROOT.parent
-
-MYND_JAR = (REPO_ROOT / "third_party" / "mynd.jar").resolve()
-MYND_DIR = (REPO_ROOT / "third_party" / "myND").resolve()  # type: ignore
-MYND_SRC_DIR = MYND_DIR / "src"
-OUTPUT_DIR = REPO_ROOT
+from bin.utils import launch, MYND_SRC_DIR, MYND_JAR, MYND_DIR, ALGORITHMS, HEURISTICS
 
 
 @contextlib.contextmanager
@@ -29,41 +21,15 @@ def cd(path: os.PathLike) -> Generator:  # pylint: disable=invalid-name
         os.chdir(str(old_path))
 
 
-def launch(cmd, cwd=None):
-    """Launch a command."""
-    print("Running command: ", " ".join(map(str, cmd)))
-    process = Popen(
-        args=cmd,
-        encoding="utf-8",
-        cwd=cwd,
-    )
-    try:
-        process.wait()
-    except KeyboardInterrupt:
-        print("Interrupted")
-    finally:
-        if process.poll() is None:
-            try:
-                print("do killpg")
-                os.killpg(os.getpgid(process.pid), signal.SIGTERM)
-            except:
-                print("killpg failed")
-        if process.returncode != 0:
-            print(f"return code {process.returncode}")
-            exit(1)
-
-
-def plan(domain_path, problem_path, strong, heuristic):
+def plan(domain_path, problem_path, algorithm, heuristic, working_dir):
     """Planning for temporally extended goals (LTLf or PLTLf)."""
     domain_path = str(Path(domain_path).absolute())
     problem_path = str(Path(problem_path).absolute())
-    search = "laostar"
-    if strong:
-        search = "aostar"
+    working_dir = working_dir if working_dir is not None else tempfile.tempdir
     translate_command = [sys.executable, f"{MYND_DIR}/translator-fond/translate.py", f"{domain_path}",
                          f"{problem_path}"]
-    launch(translate_command)
-    output_sas = Path("output.sas").absolute()
+    launch(translate_command, cwd=working_dir)
+    output_sas = (working_dir / Path("output.sas")).absolute()
     planner_command = ['java',
                        "-Xmx4g",
                        '-jar',
@@ -72,14 +38,13 @@ def plan(domain_path, problem_path, strong, heuristic):
                        'FOND',
                        str(output_sas),
                        '-search',
-                       search,
+                       algorithm,
                        '-heuristic',
                        heuristic
                        ]
 
     print("Start planner")
     launch(planner_command, cwd=str(MYND_SRC_DIR))
-    output_sas.unlink()
 
 
 if __name__ == '__main__':
@@ -89,13 +54,15 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Wrapper for mynd.")
     parser.add_argument('-d', dest='domain_path', type=Path, required=True)
     parser.add_argument('-p', dest='problem_path', type=Path, required=True)
-    parser.add_argument('-s', dest='strong', type=int, choices={0, 1}, required=True)
-    parser.add_argument('--heuristic', dest='heuristic', type=str, choices={"ff"}, default="ff")
+    parser.add_argument('-a', dest='algorithm', type=str, choices=ALGORITHMS, default="laostar")
+    parser.add_argument('--heuristic', dest='heuristic', type=str, choices=HEURISTICS, default="ff")
+    parser.add_argument('--working-dir', dest='working_dir', type=str, default=None)
     args = parser.parse_args()
 
     domain_path = args.domain_path
     problem_path = args.problem_path
-    strong = args.strong
+    algorithm = args.algorithm
     heuristic = args.heuristic
+    working_dir = args.working_dir
 
-    plan(domain_path, problem_path, strong, heuristic)
+    plan(domain_path, problem_path, algorithm, heuristic, working_dir)

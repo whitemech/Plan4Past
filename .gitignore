@@ -781,4 +781,4 @@ formula.ltlf
 new-domain.pddl
 new-problem.pddl
 output.tsv
-
+results/

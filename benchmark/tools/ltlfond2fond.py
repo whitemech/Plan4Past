@@ -8,15 +8,15 @@ from benchmark.tools.core import Tool, Result, Status, ToolID, SearchAlg, Heuris
 from benchmark.utils.base import try_to_get_float
 from planning_with_past import REPO_ROOT
 
-DEFAULT_BIN_F4LP_PATH = (REPO_ROOT / "bin" / "fond4ltlfpltlf_wrapper").absolute()
+DEFAULT_BIN_LF2F_PATH = (REPO_ROOT / "bin" / "ltlfond2fond_wrapper").absolute()
 
 
 class SupportedPlanners:
     MYND = "mynd"
 
 
-class Fond4LtlfPltlfTool(Tool, ABC):
-    """Implement abstract FOND4LTLfPLTLf tool wrapper."""
+class LTLFond2FondTool(Tool, ABC):
+    """Implement abstract LTLFond2Fond tool wrapper."""
 
     def __init__(self, binary_path: str, planner_id: Union[str, SupportedPlanners]):
         """Initialize the tool."""
@@ -52,9 +52,9 @@ class Fond4LtlfPltlfTool(Tool, ABC):
         return cli_args
 
 
-class Fond4LtlfPltlfMyND(Fond4LtlfPltlfTool):
+class LTLFond2FondMyNDTool(LTLFond2FondTool):
 
-    NAME = "F4LP-MyND"
+    NAME = "LF2F-MyND"
 
     def __init__(
         self, binary_path: str, search: Union[SearchAlg, str] = SearchAlg.LAOSTAR, heuristic: Union[Heuristic, str] = Heuristic.FF

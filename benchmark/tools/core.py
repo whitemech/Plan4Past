@@ -1,4 +1,5 @@
 import os
+import re
 import signal
 import subprocess
 import time
@@ -8,14 +9,24 @@ from enum import Enum
 from pathlib import Path
 from typing import List, Dict, Type, Union, Optional, Any
 
-from benchmark.utils.base import CTRL_C_EXIT_CODE
+from benchmark.utils.base import CTRL_C_EXIT_CODE, try_to_get_float
 
 
 class ToolID(Enum):
     FAST_DOWNWARD = "fast-downward"
     MYND = "mynd"
-    FOND4LTLfPLTLf_MYND = "f4lp-mynd"
-    PLAN4PAST_MYND = "p4p-mynd"
+    FOND4LTLfPLTLf_MYND_STRONG_FF = "f4lp-mynd-s-ff"
+    FOND4LTLfPLTLf_MYND_STRONG_HMAX = "f4lp-mynd-s-hmax"
+    FOND4LTLfPLTLf_MYND_STORNG_CYCLIC_FF = "f4lp-mynd-sc-ff"
+    FOND4LTLfPLTLf_MYND_STORNG_CYCLIC_HMAX = "f4lp-mynd-sc-hmax"
+    PLAN4PAST_MYND_STRONG_FF = "p4p-mynd-s-ff"
+    PLAN4PAST_MYND_STRONG_HMAX = "p4p-mynd-s-hmax"
+    PLAN4PAST_MYND_STORNG_CYCLIC_FF = "p4p-mynd-sc-ff"
+    PLAN4PAST_MYND_STORNG_CYCLIC_HMAX = "p4p-mynd-sc-hmax"
+    LTLFOND2FOND_MYND_STRONG_FF = "lf2f-mynd-s-ff"
+    LTLFOND2FOND_MYND_STRONG_HMAX = "lf2f-mynd-s-hmax"
+    LTLFOND2FOND_MYND_STORNG_CYCLIC_FF = "lf2f-mynd-sc-ff"
+    LTLFOND2FOND_MYND_STORNG_CYCLIC_HMAX = "lf2f-mynd-sc-hmax"
 
 
 class Status(Enum):
@@ -147,6 +158,7 @@ class Tool(ABC):
         timeout: float = 5.0,
         cwd: Optional[str] = None,
         name: Optional[str] = None,
+        working_dir: Optional[str] = None
     ) -> Result:
         """
         Apply the tool to a file.
@@ -158,9 +170,10 @@ class Tool(ABC):
         :param timeout: the timeout in seconds
         :param cwd: the current working directory
         :param name: the experiment name
+        :param working_dir: the working dir
         :return: the planning result
         """
-        args = self.get_cli_args(domain, problem, formula, mapping)
+        args = self.get_cli_args(domain, problem, formula, mapping, working_dir)
         start = time.perf_counter()
         timed_out = False
         print("Running command: ", " ".join(map(str, args)))
@@ -180,8 +193,13 @@ class Tool(ABC):
         end = time.perf_counter()
         total = end - start
 
-        stdout, _stderr = proc.communicate()
+        stdout, stderr = proc.communicate()
         stdout = stdout.decode("utf-8")
+        stderr = stderr.decode("utf-8")
+
+        (Path(working_dir) / "stdout.txt").write_text(stdout)
+        (Path(working_dir) / "stderr.txt").write_text(stderr)
+
         result = self.collect_statistics(stdout)
         result.name = name
         result.command = args
@@ -193,8 +211,7 @@ class Tool(ABC):
         if timed_out:
             result.status = Status.TIMEOUT
 
-        # CTRL+C termination happens only if timeout occurred.
-        if proc.returncode != 0 and proc.returncode != CTRL_C_EXIT_CODE:
+        if result.status is None:
             result.status = Status.ERROR
 
         return result
@@ -215,6 +232,7 @@ class Tool(ABC):
         problem: Path,
         formula: Optional[str] = None,
         mapping: Optional[Path] = None,
+        working_dir: Optional[str] = None
     ) -> List[str]:
         """Get CLI arguments."""
 
@@ -276,3 +294,34 @@ class ToolRegistry:
         """
         tool_spec = self._specs[ToolID(tool_id)]
         return tool_spec.make(**kwargs)
+
+
+def extract_from_mynd(output):
+    tool_time = try_to_get_float("Tool time: +([0-9.]+) seconds", output)
+    compilation_time = try_to_get_float(
+        "Compilation time: +([0-9.]+) seconds", output
+    )
+    end2end_time = try_to_get_float(
+        "Total time: +([0-9.]+) seconds", output, default=None
+    )
+
+    timed_out_match = re.search("Timed out.", output)
+    initial_proven_match = re.search("INITIAL IS PROVEN!", output)
+    initial_disproven_match = re.search("INITIAL IS DISPROVEN!", output)
+    if initial_proven_match is not None:
+        status = Status.SUCCESS
+    elif initial_disproven_match is not None:
+        status = Status.FAILURE
+    elif timed_out_match is not None:
+        status = Status.TIMEOUT
+    else:
+        status = Status.ERROR
+
+    nb_nodes_expansion_match = re.search("Number of node expansions: ([0-9]+)", output)
+    if nb_nodes_expansion_match:
+        nb_nodes_expansions = int(nb_nodes_expansion_match.group(1))
+    else:
+        nb_nodes_expansions = None
+
+    return Result("", [], compilation_time, tool_time, end2end_time, nb_nodes_expansions, status)
+

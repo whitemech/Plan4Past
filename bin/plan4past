@@ -6,41 +6,15 @@ import datetime
 import inspect
 import os
 import shutil
-import signal
+import tempfile
 from pathlib import Path
-from subprocess import Popen
 from tempfile import TemporaryDirectory
 
+from bin.utils import ALGORITHMS, HEURISTICS, PLTLF_WRAPPER_PATH, MYND_WRAPPER_PATH, launch
 
 DEFAULT_OUTPUT_DIR: str = "output"
 BIN_DIR = Path(inspect.getframeinfo(inspect.currentframe()).filename).parent
 REPO_ROOT = BIN_DIR.parent
-MYND_WRAPPER_PATH = BIN_DIR / "mynd_wrapper"
-PLTLF_WRAPPER_PATH = BIN_DIR / "pltlf-planner"
-
-
-def launch(cmd, cwd=None):
-    """Launch a command."""
-    print("Running command: ", " ".join(map(str, cmd)))
-    process = Popen(
-        args=cmd,
-        encoding="utf-8",
-        cwd=cwd,
-    )
-    try:
-        process.wait()
-    except KeyboardInterrupt:
-        print("Interrupted")
-    finally:
-        if process.poll() is None:
-            try:
-                print("do killpg")
-                os.killpg(os.getpgid(process.pid), signal.SIGTERM)
-            except:
-                print("killpg failed")
-        if process.returncode != 0:
-            print(f"return code {process.returncode}")
-            exit(1)
 
 
 def is_valid_file(arg):
@@ -65,8 +39,9 @@ def parse_args():
     parser.add_argument("--formula", type=str, required=True)
     parser.add_argument("--map", dest="map_file", type=is_valid_file, default=None, required=False)
     parser.add_argument("--output-dir", type=str, default=DEFAULT_OUTPUT_DIR)
-    parser.add_argument('-s', dest='strong', type=int, choices={0, 1}, default=0)
-    parser.add_argument('--heuristic', dest='heuristic', type=str, choices={"ff"}, default="ff")
+    parser.add_argument('-a', "--algorithm", dest='algorithm', type=str, choices=ALGORITHMS, default="laostar")
+    parser.add_argument('--heuristic', dest='heuristic', type=str, choices=HEURISTICS, default="ff")
+    parser.add_argument('--working-dir', dest='working_dir', type=str, default=None)
     return parser.parse_args()
 
 
@@ -81,30 +56,36 @@ def _process_output_dir(output_path: str, force: bool):
 
 if __name__ == '__main__':
     args = parse_args()
-    start = datetime.datetime.now()
-    with TemporaryDirectory() as tmpdir:
-        new_domain_file = Path(tmpdir) / "new_domain.pddl"
-        new_problem_file = Path(tmpdir) / "new_problem.pddl"
-        cli_args =[PLTLF_WRAPPER_PATH,
-            "--domain", args.domain,
-            "--problem", args.problem,
-            "--formula", args.formula,
-            "--output-domain", str(new_domain_file),
-            "--output-problem", str(new_problem_file),]
-        if args.map_file:
-            cli_args += ["--map", args.map_file,]
-        launch(cli_args)
-        end_compilation = datetime.datetime.now()
-        elapsed_time_compilation = (end_compilation.timestamp() - start.timestamp())
-        print(f"Compilation time: {elapsed_time_compilation} seconds")
+    if args.working_dir:
+        working_dir = Path(args.working_dir)
+        working_dir.mkdir()
+    else:
+        working_dir = Path(tempfile.mkdtemp())
 
-        cli_args = [str(MYND_WRAPPER_PATH),
-                    "-d", str(new_domain_file),
-                    "-p", str(new_problem_file),
-                    "-s", str(args.strong),
-                    "--heuristic", str(args.heuristic)]
-        launch(cli_args)
-    # some code
+    start = datetime.datetime.now()
+
+    new_domain_file = working_dir / "new_domain.pddl"
+    new_problem_file = working_dir / "new_problem.pddl"
+    cli_args =[PLTLF_WRAPPER_PATH,
+        "--domain", args.domain,
+        "--problem", args.problem,
+        "--formula", args.formula,
+        "--output-domain", str(new_domain_file),
+        "--output-problem", str(new_problem_file),]
+    if args.map_file:
+        cli_args += ["--map", args.map_file,]
+    launch(cli_args)
+    end_compilation = datetime.datetime.now()
+    elapsed_time_compilation = (end_compilation.timestamp() - start.timestamp())
+    print(f"Compilation time: {elapsed_time_compilation} seconds")
+
+    cli_args = [str(MYND_WRAPPER_PATH),
+                "-d", str(new_domain_file),
+                "-p", str(new_problem_file),
+                "-a", str(args.algorithm),
+                "--heuristic", str(args.heuristic),
+                "--working-dir", str(working_dir)]
+    launch(cli_args)
     end_tool = datetime.datetime.now()
     end_tool_time = end_tool - end_compilation
     print(f"Tool time: {end_tool_time.total_seconds()} seconds")
