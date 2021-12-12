@@ -6,7 +6,8 @@ import sys
 import tempfile
 from pathlib import Path
 
-from bin.utils import SUPPORTED_PLANNERS, HEURISTICS, ALGORITHMS, LTLFOND2FOND_DIR, launch, MYND_WRAPPER_PATH
+from bin.utils import SUPPORTED_PLANNERS, HEURISTICS, ALGORITHMS, LTLFOND2FOND_DIR, launch, MYND_WRAPPER_PATH, \
+    FD_WRAPPER_PATH
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Wrapper for FOND4LTLfPLTLf.")
@@ -14,7 +15,7 @@ if __name__ == '__main__':
     parser.add_argument('-p', dest='problem_path', type=Path, required=True)
     parser.add_argument('-g', dest='goal', type=str, required=True)
     parser.add_argument('-t', dest='planner', type=str, choices=SUPPORTED_PLANNERS, required=True)
-    parser.add_argument('-a', "--algorithm", dest='algorithm', type=str, choices=ALGORITHMS, default="laostar")
+    parser.add_argument('-a', "--algorithm", dest='algorithm', type=str, choices=ALGORITHMS, required=True)
     parser.add_argument('--heuristic', dest='heuristic', type=str, choices=HEURISTICS, default="ff")
     parser.add_argument('--working-dir', dest='working_dir', type=str, default=None)
     args = parser.parse_args()
@@ -50,6 +51,13 @@ if __name__ == '__main__':
     cli_args = []
     if args.planner == "mynd":
         cli_args = [str(MYND_WRAPPER_PATH),
+                    "-d", str(new_domain_file),
+                    "-p", str(new_problem_file),
+                    "-a", str(args.algorithm),
+                    "--heuristic", str(args.heuristic),
+                    "--working-dir", str(working_dir)]
+    elif args.planner == "fd":
+        cli_args = [str(FD_WRAPPER_PATH),
                     "-d", str(new_domain_file),
                     "-p", str(new_problem_file),
                     "-a", str(args.algorithm),
