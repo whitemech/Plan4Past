@@ -27,6 +27,24 @@ build_mynd() {
 build_spot() {
   echo "Building SPOT..."
   cd third_party/spot
+
+  echo "pre-configure Spot"
+  libtoolize --force
+  aclocal
+  autoheader
+  automake --force-missing --add-missing
+  autoconf
+
+  echo "pre-configure Buddy"
+  cd buddy
+  libtoolize --force
+  aclocal
+  autoheader
+  automake --force-missing --add-missing
+  autoconf
+  ./configure
+  cd ..
+
   ./configure
   sudo make -j4
   sudo make install

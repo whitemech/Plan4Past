@@ -1,7 +1,6 @@
 """Produce a LaTeX table."""
 import operator
 from pathlib import Path
-from typing import List
 
 import click
 import numpy as np
@@ -25,14 +24,8 @@ def get_tools(benchmark_dir: str):
 
 @click.command("table")
 @click.option(
-    "--directory", multiple=True, type=click.Path(exists=True, file_okay=False, dir_okay=True),
-    help="List of benchmark directories."
-)
-@click.option(
-    "--output", default="output.svg"
-)
-@click.option(
-    "--title", default=None
+    "--directory", type=click.Path(exists=True, file_okay=False, dir_okay=True),
+    help="The benchmark directory."
 )
 @click.option(
     "--timeout", type=int, default=300
@@ -40,10 +33,10 @@ def get_tools(benchmark_dir: str):
 @click.option(
     "--field", type=click.Choice(["time_end2end", "nb_node_expanded"])
 )
-def main(directory: List[str], output: str, title: str, timeout: int, field: str):
+def main(directory: str, timeout: int, field: str):
     """Plot results from benchmark directory."""
-    results = [do_job(d, timeout, field) for d in directory]
-    tool_names = [tool_registry.make(tool_id).NAME for tool_id in ORDER]
+    results = do_job(directory, timeout, field)
+    tool_names = [tool_registry.make(tool_id).NAME for tool_id in get_tools(directory)]
     header = " & ".join(["Benchmark name"] + tool_names)
     print(header)
     print("\\\\ \hline")
