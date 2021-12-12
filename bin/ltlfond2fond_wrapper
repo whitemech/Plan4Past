@@ -72,7 +72,7 @@ if __name__ == '__main__':
         compiled_domain_file = LTLFOND2FOND_DIR / "compiled_domain.pddl"
         compiled_problem_file = LTLFOND2FOND_DIR / "compiled_problem.pddl"
         new_domain_file = Path(tmpdir) / "compiled_domain.pddl"
-        new_problem_file = Path(tmpdir) /"compiled_problem.pddl"
+        new_problem_file = Path(tmpdir) / "compiled_problem.pddl"
         shutil.move(compiled_domain_file, new_domain_file)
         shutil.move(compiled_problem_file, new_problem_file)
 
@@ -82,7 +82,6 @@ if __name__ == '__main__':
                     "-s", str(args.strong),
                     "--heuristic", str(args.heuristic)]
         launch(cli_args)
-    # some code
     end_tool = datetime.datetime.now()
     end_tool_time = end_tool - end_compilation
     print(f"Tool time: {end_tool_time.total_seconds()} seconds")

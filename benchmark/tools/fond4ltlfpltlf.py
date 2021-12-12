@@ -4,7 +4,7 @@ from enum import Enum
 from pathlib import Path
 from typing import List, Optional, Union
 
-from benchmark.tools.core import Tool, Result, Status, ToolID
+from benchmark.tools.core import Tool, Result, Status, ToolID, SearchAlg
 from benchmark.utils.base import try_to_get_float
 from planning_with_past import REPO_ROOT
 
@@ -51,14 +51,7 @@ class Fond4LtlfPltlfTool(Tool, ABC):
 
 class Fond4LtlfPltlfMyND(Fond4LtlfPltlfTool):
 
-    TOOL_ID = ToolID.FOND4LTLfPLTLf_MYND
     NAME = "F4LP-MyND"
-
-    class SearchAlg(Enum):
-        """MyND Search algorithms"""
-
-        LAOSTAR = "laostar"
-        AOSTAR = "aostar"
 
     def __init__(
         self, binary_path: str, search: Union[SearchAlg, str] = SearchAlg.LAOSTAR
@@ -66,7 +59,7 @@ class Fond4LtlfPltlfMyND(Fond4LtlfPltlfTool):
         """Initialize the tool."""
         super().__init__(binary_path, SupportedPlanners.MYND)
 
-        self.search = Fond4LtlfPltlfMyND.SearchAlg(search)
+        self.search = SearchAlg(search)
 
     def collect_statistics(self, output: str) -> Result:
         """Collect statistics."""

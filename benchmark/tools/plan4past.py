@@ -4,7 +4,7 @@ from enum import Enum
 from pathlib import Path
 from typing import List, Optional, Union
 
-from benchmark.tools.core import Tool, Result, Status, ToolID
+from benchmark.tools.core import Tool, Result, Status, ToolID, SearchAlg, Heuristic
 from benchmark.utils.base import try_to_get_float
 from planning_with_past import REPO_ROOT
 
@@ -47,19 +47,14 @@ class Plan4PastToolMyND(Plan4PastTool):
     TOOL_ID = ToolID.FOND4LTLfPLTLf_MYND
     NAME = "P4P-MyND"
 
-    class SearchAlg(Enum):
-        """MyND Search algorithms"""
-
-        LAOSTAR = "laostar"
-        AOSTAR = "aostar"
-
     def __init__(
-        self, binary_path: str, search: Union[SearchAlg, str] = SearchAlg.LAOSTAR
+        self, binary_path: str, search: Union[SearchAlg, str] = SearchAlg.LAOSTAR, heuristic: Union[Heuristic, str] = Heuristic.FF
     ):
         """Initialize the tool."""
         super().__init__(binary_path)
 
-        self.search = Plan4PastToolMyND.SearchAlg(search)
+        self.search = SearchAlg(search)
+        self.heuristic = Heuristic(heuristic)
 
     def collect_statistics(self, output: str) -> Result:
         """Collect statistics."""

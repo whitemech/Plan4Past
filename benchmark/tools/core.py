@@ -25,6 +25,20 @@ class Status(Enum):
     ERROR = "error"
 
 
+class SearchAlg(Enum):
+    """MyND Search algorithms"""
+
+    LAOSTAR = "laostar"
+    AOSTAR = "aostar"
+
+
+class Heuristic(Enum):
+    """MyND heuristics"""
+
+    FF = "ff"
+    HMAX = "hmax"
+
+
 @dataclass()  # frozen=True
 class Result:
     name: str
@@ -189,12 +203,6 @@ class Tool(ABC):
         :param output: the output from where to extract statistics.
         :return: statistics
         """
-
-    @property
-    @classmethod
-    @abstractmethod
-    def TOOL_ID(cls) -> ToolID:
-        """Get tool id."""
 
     @abstractmethod
     def get_cli_args(
