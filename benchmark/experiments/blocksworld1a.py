@@ -53,9 +53,9 @@ def generate_formula(future: bool = False):
 
 
 def generate_problem(nb_blocks: int) -> str:
-    objects = [f"b{i}" for i in range (1, nb_blocks + 1)]
-    init_on_table = [f"(on-table b{i})" for i in range(1, nb_blocks + 1)]
-    init_clear = [f"(clear b{i})" for i in range(1, nb_blocks + 1)]
+    objects = [f"b{i:02d}" for i in range (1, nb_blocks + 1)]
+    init_on_table = [f"(on-table b{i:02d})" for i in range(1, nb_blocks + 1)]
+    init_clear = [f"(clear b{i:02d})" for i in range(1, nb_blocks + 1)]
     problem = f"""(define (problem bw_{nb_blocks})
   (:domain blocks-domain)
   (:objects {' '.join(objects)} - block)

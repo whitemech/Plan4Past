@@ -63,13 +63,13 @@ class Result:
     @staticmethod
     def headers() -> str:
         return (
-            f"{'name': <10}\t"
-            f"{'status': <10}\t"
-            f"{'time_compilation': <10}\t"
-            f"{'time_tool': <10}\t"
-            f"{'time_end2end': <10}\t"
-            f"{'nb_node_expanded': <10}\t"
-            f"{'command': <10}"
+            "name\t"
+            "status\t"
+            "time_compilation\t"
+            "time_tool\t"
+            "time_end2end\t"
+            "nb_node_expanded\t"
+            "command"
         )
 
     def json(self) -> Dict[str, Any]:
@@ -87,22 +87,22 @@ class Result:
     def __str__(self):
         """To string."""
         time_compilation_str = (
-            f"{self.time_compilation: 10.6f}"
+            f"{self.time_compilation:10.6f}"
             if self.time_compilation is not None
-            else f"{'None': <10}"
+            else "None"
         )
         time_tool_str = (
-            f"{self.time_tool: 10.6f}"
+            f"{self.time_tool:10.6f}"
             if self.time_tool is not None
-            else f"{'None': <10}"
+            else "None"
         )
         time_end2end_str = (
-            f"{self.time_end2end: 10.6f}"
+            f"{self.time_end2end:10.6f}"
             if self.time_end2end is not None
-            else f"{'None': <10}"
+            else "None"
         )
         return (
-            f"{str(self.name): <10}\t"
+            f"{self.name}\t"
             f"{self.status.value}\t"
             f"{time_compilation_str}\t"
             f"{time_tool_str}\t"
