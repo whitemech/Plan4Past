@@ -35,7 +35,7 @@ def run_planner(
     name: str,
     domain: Path,
     problem: Path,
-    formula: str,
+    formula: Optional[str],
     mapping: Optional[Path],
     timeout: float,
     tool_id: str,

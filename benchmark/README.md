@@ -39,3 +39,12 @@ You may need `export PYTHONPATH=.` before running the commands.
 ```
 python benchmark/experiments/blocksworld1a.py --timeout 60.0 --max-nb-blocks 20 -t 'f4lp-mynd-sc-ff' -t 'p4p-mynd-sc-ff' -t 'lf2f-mynd-sc-ff'
 ```
+
+
+## Experiment type 2
+
+### Blocksworld 
+
+```
+python benchmark/experiments/experiment-type-2.py --timeout 60.0 --dataset-dir data/blocksworld-ipc08
+```

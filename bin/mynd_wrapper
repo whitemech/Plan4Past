@@ -52,7 +52,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Wrapper for mynd.")
     parser.add_argument('-d', dest='domain_path', type=Path, required=True)
     parser.add_argument('-p', dest='problem_path', type=Path, required=True)
-    parser.add_argument('-a', dest='algorithm', type=str, choices=ALGORITHMS, default="laostar")
+    parser.add_argument('-a', "--algorithm", dest='algorithm', type=str, choices=ALGORITHMS, default="laostar")
     parser.add_argument('--heuristic', dest='heuristic', type=str, choices=HEURISTICS, default="ff")
     parser.add_argument('--working-dir', dest='working_dir', type=str, default=None)
     args = parser.parse_args()

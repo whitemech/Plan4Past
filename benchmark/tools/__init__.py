@@ -13,8 +13,21 @@ tool_registry.register(
     tool_cls=FastDownwardTool,
     binary_path=DEFAULT_BIN_FAST_DOWNWARD_PATH,
 )
+
+# MyND + search alg + heuristics
 tool_registry.register(
-    ToolID.MYND, tool_cls=MyNDTool, binary_path=DEFAULT_BIN_MYND_PATH
+    ToolID.MYND_STRONG_FF,
+    tool_cls=MyNDTool,
+    binary_path=DEFAULT_BIN_MYND_PATH,
+    search=SearchAlg.AOSTAR,
+    heuristic=Heuristic.FF
+)
+tool_registry.register(
+    ToolID.MYND_STRONG_CYCLIC_FF,
+    tool_cls=MyNDTool,
+    binary_path=DEFAULT_BIN_MYND_PATH,
+    search=SearchAlg.LAOSTAR,
+    heuristic=Heuristic.FF
 )
 
 # FOND4LTLfPLTLf + search alg + heuristics
