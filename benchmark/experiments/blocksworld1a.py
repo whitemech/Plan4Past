@@ -48,8 +48,8 @@ def default_output_dir():
 def generate_formula(future: bool = False):
     """Generate formula from number of blocks."""
     if future:
-        return "F(on_b2_b3 & XF on_b1_b2)"
-    return "on_b1_b2 & Y(O(on_b2_b3))"
+        return 'F("on b2 b3"&X(F("on b1 b2")))'
+    return "O(on_b1_b2 & Y(O(on_b2_b3)))"
 
 
 def generate_problem(nb_blocks: int) -> str:
@@ -127,7 +127,7 @@ def run_experiments(timeout, output_dir, tools: List[str], max_nb_blocks: int):
     ToolID.PLAN4PAST_MYND_STORNG_CYCLIC_FF.value,
     ToolID.LTLFOND2FOND_MYND_STORNG_CYCLIC_FF.value
 ])
-@click.option("--max-nb-blocks", type=int, default=20)
+@click.option("--max-nb-blocks", type=int, default=3)
 def main(output_dir: str, timeout: float, tool: List[str], max_nb_blocks: int):
     run_experiments(timeout, output_dir, tool, max_nb_blocks)
 

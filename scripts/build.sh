@@ -42,7 +42,7 @@ build_spot() {
   autoheader
   automake --force-missing --add-missing
   autoconf
-  ./configure
+  ./configure --disable-doc
   cd ..
 
   ./configure
@@ -61,6 +61,7 @@ build_ltlfond2fond() {
   autoheader
   automake --force-missing --add-missing
   autoconf
+  ./configure
   sudo make -j4
   sudo make install
   mkdir -p bin
