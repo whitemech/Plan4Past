@@ -34,8 +34,6 @@ def plan(domain_path, problem_path, algorithm, heuristic, working_dir):
                        "-Xmx4g",
                        '-jar',
                        str(MYND_JAR),
-                       '-t',
-                       'FOND',
                        str(output_sas),
                        '-search',
                        algorithm,
