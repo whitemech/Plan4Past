@@ -46,7 +46,7 @@ class Result:
     time_compilation: Optional[float]
     time_tool: Optional[float]
     time_end2end: Optional[float]
-    # nb_node_expanded: Optional[int]
+    nb_node_expanded: Optional[int]
     status: Status
 
     @staticmethod
@@ -57,6 +57,7 @@ class Result:
             f"{'time_compilation': <10}\t"
             f"{'time_tool': <10}\t"
             f"{'time_end2end': <10}\t"
+            f"{'nb_node_expanded': <10}\t"
             f"{'command': <10}"
         )
 
@@ -68,6 +69,7 @@ class Result:
             time_compilation=self.time_compilation,
             time_tool=self.time_tool,
             time_end2end=self.time_end2end,
+            nb_node_expanded=self.nb_node_expanded,
             command=" ".join(self.command),
         )
 
@@ -94,6 +96,7 @@ class Result:
             f"{time_compilation_str}\t"
             f"{time_tool_str}\t"
             f"{time_end2end_str}\t"
+            f"{self.nb_node_expanded}\t"
             f"{' '.join(map(str, self.command))}"
         )
 
@@ -105,6 +108,7 @@ class Result:
             f"time_compilation={self.time_compilation}\n"
             f"time_tool={self.time_tool}\n"
             f"time_end2end={self.time_end2end}\n"
+            f"nb_node_expanded={self.nb_node_expanded}\n"
             f"command={' '.join(map(str, self.command))}"
         )
 

@@ -50,4 +50,10 @@ class MyNDTool(Tool):
         else:
             status = Status.FAILURE
 
-        return Result("", [], 0.0, tool_time, None, status)
+        nb_nodes_expansion_match = re.search("Number of node expansions: ([0-9]+)", output)
+        if nb_nodes_expansion_match:
+            nb_nodes_expansions = int(nb_nodes_expansion_match.group(1))
+        else:
+            nb_nodes_expansions = None
+
+        return Result("", [], 0.0, tool_time, None, nb_nodes_expansions, status)

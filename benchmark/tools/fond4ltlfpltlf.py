@@ -83,4 +83,10 @@ class Fond4LtlfPltlfMyND(Fond4LtlfPltlfTool):
         else:
             status = Status.ERROR
 
-        return Result("", [], compilation_time, tool_time, end2end_time, status)
+        nb_nodes_expansion_match = re.search("Number of node expansions: ([0-9]+)", output)
+        if nb_nodes_expansion_match:
+            nb_nodes_expansions = int(nb_nodes_expansion_match.group(1))
+        else:
+            nb_nodes_expansions = None
+
+        return Result("", [], compilation_time, tool_time, end2end_time, nb_nodes_expansions, status)
