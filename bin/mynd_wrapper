@@ -12,6 +12,7 @@ from typing import Generator
 PACKAGE_ROOT = Path(inspect.getframeinfo(inspect.currentframe()).filename).parent  # type: ignore
 REPO_ROOT = PACKAGE_ROOT.parent
 
+MYND_JAR = (REPO_ROOT / "third_party" / "mynd.jar").resolve()
 MYND_DIR = (REPO_ROOT / "third_party" / "myND").resolve()  # type: ignore
 MYND_SRC_DIR = MYND_DIR / "src"
 OUTPUT_DIR = REPO_ROOT
@@ -63,7 +64,19 @@ def plan(domain_path, problem_path, strong, heuristic):
                          f"{problem_path}"]
     launch(translate_command)
     output_sas = Path("output.sas").absolute()
-    planner_command = ["java", "-Xmx4g", "mynd.MyNDPlanner", f"-{search}", f"-{heuristic}", str(output_sas)]
+    planner_command = ['java',
+                       "-Xmx4g",
+                       '-jar',
+                       str(MYND_JAR),
+                       '-t',
+                       'FOND',
+                       str(output_sas),
+                       '-search',
+                       search,
+                       '-heuristic',
+                       heuristic
+                       ]
+
     print("Start planner")
     launch(planner_command, cwd=str(MYND_SRC_DIR))
     output_sas.unlink()
