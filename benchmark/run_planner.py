@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import json
 import logging
+import tempfile
 from operator import attrgetter
 from pathlib import Path
 from typing import Optional, Dict
@@ -43,6 +44,11 @@ def run_planner(
     working_dir: Optional[str] = None
 ) -> Result:
     tool = tool_registry.make(tool_id, **config)
+    if working_dir is not None and Path(working_dir).mkdir(exist_ok=True):
+        raise ValueError(f"Working dir {working_dir} already exists, please remove")
+    if working_dir is None:
+        working_dir = tempfile.mkdtemp()
+
     logging.debug(f"name={name}")
     logging.debug(f"domain={domain}")
     logging.debug(f"problem={problem}")
@@ -50,6 +56,8 @@ def run_planner(
     logging.debug(f"mapping={mapping}")
     logging.debug(f"timeout={timeout}")
     logging.debug(f"tool={tool_id}")
+    logging.debug(f"config={config}")
+    logging.debug(f"working_dir={working_dir}")
 
     try:
         result = tool.plan(domain, problem, formula, mapping, timeout=timeout, name=name, working_dir=working_dir)
@@ -99,8 +107,9 @@ def run_planner(
     type=click.Choice(list(map(attrgetter("value"), ToolID)), case_sensitive=False),
 )
 @click.option("--config", default="{}", type=str)
+@click.option("--working-dir", default=None, type=str)
 def main(
-    name, domain, problem, formula, formula_str, mapping, timeout, tool_id, config
+    name, domain, problem, formula, formula_str, mapping, timeout, tool_id, config, working_dir
 ):
     """Compute times."""
     domain = Path(domain)
@@ -109,7 +118,7 @@ def main(
     mapping = Path(mapping) if mapping else None
     json_config = json.loads(config)
     result = run_planner(
-        name, domain, problem, formula, mapping, timeout, tool_id, json_config
+        name, domain, problem, formula, mapping, timeout, tool_id, json_config, working_dir
     )
     print(result.to_rows())
 
