@@ -23,7 +23,6 @@ def run_tool(tool_id, output_dir, problem_files, domain_file, timeout):
     try:
         for index, problem_path in list(enumerate(problem_files)):
             problem_working_dir = tool_dir / problem_path.stem
-            problem_working_dir.mkdir()
             formula = get_reachability_goal(problem_path) if "p4p" in tool_id else None
             logging.info("=" * 100)
             logging.info(f"Time: {datetime.datetime.now()}")
