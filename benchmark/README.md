@@ -40,12 +40,12 @@ To run the experiments:
 
 Nondeterministic
 ```
-python benchmark/experiments/experiment-1a.py --timeout 60.0 --max-nb-blocks 20 -t 'f4lp-mynd-sc-ff' -t 'p4p-mynd-sc-ff' -t 'lf2f-mynd-sc-ff' --dataset-name blocksworld-ipc08 --output-dir output
+python benchmark/experiments/experiment-1.py --timeout 60.0 --min-param 3 --max-param 20 --dataset-name blocksworld --experiment-type a -t 'f4lp-mynd-sc-ff' -t 'p4p-mynd-sc-ff' -t 'lf2f-mynd-sc-ff' --output-dir output 
 ```
 
 Deterministic:
 ```
-python benchmark/experiments/experiment-1a.py --timeout 60.0 --max-nb-blocks 20 -t 'f4lp-fd-ff' -t 'p4p-fd-ff' -t 'lf2f-fd-ff' --dataset-name blocksworld-ipc00 --output-dir output
+python benchmark/experiments/experiment-1.py --timeout 60.0 --min-param 3 --max-param 20 --dataset-name blocksworld --experiment-type a -t 'f4lp-fd-ff' -t 'p4p-fd-ff' -t 'lf2f-fd-ff' --output-dir output
 ```
 
 Produce the plot:
@@ -65,7 +65,7 @@ python benchmark/plotting/table.py --directory output --timeout 60.0
 To run the experiments:
 
 ```
-python benchmark/experiments/blocksworld1b.py --timeout 60.0 --max-nb-blocks 10 -t 'f4lp-mynd-sc-ff' -t 'p4p-mynd-sc-ff' -t 'lf2f-mynd-sc-ff' --output-dir output
+python benchmark/experiments/experiment-1.py --timeout 60.0 --min-param 2 --max-param 20 --dataset-name blocksworld --experiment-type b -t 'f4lp-fd-ff' -t 'p4p-fd-ff' -t 'lf2f-fd-ff' --output-dir output
 ```
 
 ## Experiment type 2
