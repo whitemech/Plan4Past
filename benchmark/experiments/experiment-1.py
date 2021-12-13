@@ -13,17 +13,10 @@ from benchmark.utils.base import (
     get_dataset_dir,
     TSV_FILENAME,
     default_output_dir,
-    generate_problem_blocksworld,
     generate_problems,
-    REPO_ROOT,
+    REPO_ROOT, ExperimentType,
 )
-
-
-def generate_formula(future: bool = False):
-    """Generate formula from number of blocks."""
-    if future:
-        return 'F("on b2 b3"&X(F("on b1 b2")))'
-    return "O(on_b1_b2 & Y(O(on_b2_b3)))"
+from benchmark.utils.generate import get_generator
 
 
 def run_experiments(
@@ -32,7 +25,10 @@ def run_experiments(
     timeout,
     output_dir,
     tools: List[str],
-    max_nb_blocks: int,
+    experiment_type: ExperimentType,
+    min_param: int,
+    max_param: int,
+    step: int,
 ):
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=False)
@@ -41,10 +37,13 @@ def run_experiments(
     logging.info(f"Using timeout {timeout}, writing to {output_dir}")
     logging.info(f"Tools: {tools}")
 
+
     domain_path = output_dir / "domain.pddl"
+    generator = get_generator(experiment_type, dataset_name)
     problem_paths = generate_problems(
-        max_nb_blocks, output_dir, generate_problem_blocksworld
+        min_param, max_param, step, output_dir, generator.generate_problem
     )
+    parameters = list(range(min_param, max_param + 1, step))
 
     for tool in tools:
         # det or nondet
@@ -57,8 +56,8 @@ def run_experiments(
         tool_dir = output_dir / tool
         tool_dir.mkdir()
         try:
-            for index, problem_path in list(enumerate(problem_paths)):
-                formula = generate_formula(future="lf2f" in tool)
+            for parameter, problem_path in zip(parameters, problem_paths):
+                formula = generator.generate_formula(tool, parameter)
                 logging.info("=" * 100)
                 logging.info(f"Time: {datetime.datetime.now()}")
                 logging.info(f"Processing problem {problem_path}")
@@ -72,7 +71,7 @@ def run_experiments(
                     timeout,
                     tool,
                     {},
-                    tool_dir / problem_path.stem,
+                    str(tool_dir / problem_path.stem),
                 )
                 logging.info(result.to_rows())
                 data.append(result)
@@ -101,16 +100,22 @@ def run_experiments(
         ToolID.LTLFOND2FOND_MYND_STORNG_CYCLIC_FF.value,
     ],
 )
-@click.option("--max-nb-blocks", type=int, default=20)
+@click.option("--experiment-type", type=click.Choice(["a", "b"], case_sensitive=False))
+@click.option("--min-param", type=int)
+@click.option("--max-param", type=int)
+@click.option("--step", type=int, default=1)
 def main(
     dataset_name: str,
     dataset_dir: str,
     output_dir: str,
     timeout: float,
     tool: List[str],
-    max_nb_blocks: int,
+    experiment_type: str,
+    min_param: int,
+    max_param: int,
+    step: int,
 ):
-    run_experiments(dataset_name, dataset_dir, timeout, output_dir, tool, max_nb_blocks)
+    run_experiments(dataset_name, dataset_dir, timeout, output_dir, tool, ExperimentType(experiment_type), min_param, max_param, step)
 
 
 if __name__ == "__main__":

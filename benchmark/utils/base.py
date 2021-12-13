@@ -3,6 +3,7 @@ import logging
 import operator
 import re
 import inspect
+from enum import Enum
 from pathlib import Path
 from typing import List
 
@@ -21,6 +22,11 @@ TSV_FILENAME = "output.tsv"
 
 nan = float("nan")
 CTRL_C_EXIT_CODE = -15
+
+
+class ExperimentType(Enum):
+    A = "a"
+    B = "b"
 
 
 def to_seconds(millis: float) -> float:
@@ -79,27 +85,12 @@ def get_dataset_dir(tool_id: str, dataset_dir_root: Path, dataset_name: str) -> 
     return dataset_dir_root / prefix / dataset_name
 
 
-def generate_problem_blocksworld(nb_blocks: int) -> str:
-    objects = [f"b{i}" for i in range(1, nb_blocks + 1)]
-    init_on_table = [f"(ontable b{i})" for i in range(1, nb_blocks + 1)]
-    init_clear = [f"(clear b{i})" for i in range(1, nb_blocks + 1)]
-    problem = f"""(define (problem bw_{nb_blocks})
-  (:domain blocks-domain)
-  (:objects {' '.join(objects)} - block)
-  (:init (emptyhand) {' '.join(init_on_table)} {' '.join(init_clear)})
-  (:goal (and (emptyhand)))
-)
-"""
-    return problem
-
-
 def generate_problems(
-    max_nb_blocks: int, output_dir: Path, generate_problem_callable
+    min_param: int, max_param: int, step: int, output_dir: Path, generate_problem_callable
 ) -> List[Path]:
     """Generate problems"""
     result = []
-    assert max_nb_blocks >= 3
-    for i in range(3, max_nb_blocks + 1):
+    for i in range(min_param, max_param + 1, step):
         problem_i = generate_problem_callable(i)
         problem_path = output_dir / f"p{i:02d}.pddl"
         problem_path.write_text(problem_i)
