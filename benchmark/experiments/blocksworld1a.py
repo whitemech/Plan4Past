@@ -11,9 +11,12 @@ from planning_with_past import REPO_ROOT
 
 import logging
 
-DATASET_DIR = REPO_ROOT / "data" / "blocksworld-ipc08"
-DOMAIN_FILE = DATASET_DIR / "domain.pddl"
-PROBLEM_FILES = sorted(DATASET_DIR.glob("p*.pddl"), key=lambda p: p.name)
+DATASET_DIR_DET = REPO_ROOT / "data" / "deterministic" / "blocksworld-ipc00"
+DATASET_DIR_NONDET = REPO_ROOT / "data" / "non-deterministic" / "blocksworld-ipc08"
+DOMAIN_FILE_DET = DATASET_DIR_DET / "domain.pddl"
+DOMAIN_FILE_NONDET = DATASET_DIR_NONDET / "domain.pddl"
+PROBLEM_FILES_DET = sorted(DATASET_DIR_DET.glob("p*.pddl"), key=lambda p: p.name)
+PROBLEM_FILES_NONDET = sorted(DATASET_DIR_NONDET.glob("p*.pddl"), key=lambda p: p.name)
 
 TSV_FILENAME = "output.tsv"
 
@@ -86,11 +89,11 @@ def run_experiments(timeout, output_dir, tools: List[str], max_nb_blocks: int):
     logging.info(f"Tools: {tools}")
 
     domain_path = output_dir / "domain.pddl"
-    shutil.copy(DOMAIN_FILE, domain_path)
 
     problem_paths = generate_problems(max_nb_blocks, output_dir)
 
     for tool in tools:
+        shutil.copy(DOMAIN_FILE_DET, domain_path) if "fd" in tool else shutil.copy(DOMAIN_FILE_NONDET, domain_path)
         # create tool working directory
         data = []
         tool_dir = output_dir / tool
