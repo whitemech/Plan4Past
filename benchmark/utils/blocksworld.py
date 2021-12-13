@@ -12,7 +12,7 @@ def generate_problem_blocksworld(nb_blocks: int) -> str:
     return problem
 
 
-def generate_formula(nb_blocks: int):
+def generate_formula_blocksworld(nb_blocks: int):
     """Generate formula from number of blocks."""
     assert nb_blocks >= 2
     formula = f"on_b{nb_blocks - 1}_b{nb_blocks}"
@@ -22,7 +22,7 @@ def generate_formula(nb_blocks: int):
     return formula
 
 
-def generate_future_formula(nb_blocks: int):
+def generate_future_formula_blocksworld(nb_blocks: int):
     """Generate future formula."""
     assert nb_blocks >= 2
     formula = f'"on b1 b2"'
