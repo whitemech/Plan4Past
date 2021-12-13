@@ -1,0 +1,6 @@
+(define (problem bw_5_10)
+    (:domain blocks-domain)
+    (:objects b1 b2 b3 b4 b5)
+    (:init (act) (clear b4) (clear b5) (emptyhand) (on b2 b3) (on b4 b2) (on b5 b1) (on-table b1) (on-table b3))
+    (:goal (and (val_emptyhand-and-on_b1_b2-and-on-table_b2-and-on_b3_b5-and-on-table_b4-and-on-table_b5-and-clear_b1-and-clear_b3-and-clear_b4) (act)))
+)

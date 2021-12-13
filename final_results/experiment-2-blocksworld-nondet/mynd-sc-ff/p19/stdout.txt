@@ -1,0 +1,57 @@
+Parsing...
+Parsing: [0.000s CPU, 0.003s wall-clock]
+Normalizing task... [0.000s CPU, 0.000s wall-clock]
+Instantiating...
+Generating Datalog program... [0.000s CPU, 0.000s wall-clock]
+Normalizing Datalog program...
+Normalizing Datalog program: [0.000s CPU, 0.002s wall-clock]
+Preparing model... [0.000s CPU, 0.001s wall-clock]
+Generated 47 rules.
+Computing model... [0.050s CPU, 0.048s wall-clock]
+2482 relevant atoms
+1880 auxiliary atoms
+4362 final queue length
+11484 total queue pushes
+Completing instantiation... [0.130s CPU, 0.132s wall-clock]
+Instantiating: [0.180s CPU, 0.185s wall-clock]
+Computing fact groups...
+Finding invariants...
+10 initial candidates
+Finding invariants: [0.010s CPU, 0.006s wall-clock]
+Checking invariant weight... [0.000s CPU, 0.000s wall-clock]
+Instantiating groups... [0.000s CPU, 0.000s wall-clock]
+Collecting mutex groups... [0.000s CPU, 0.000s wall-clock]
+Choosing groups...
+11 uncovered facts
+Choosing groups: [0.000s CPU, 0.000s wall-clock]
+Building translation key... [0.000s CPU, 0.000s wall-clock]
+Computing fact groups: [0.010s CPU, 0.008s wall-clock]
+Building STRIPS to SAS dictionary... [0.000s CPU, 0.000s wall-clock]
+Building dictionary for full mutex groups... [0.000s CPU, 0.000s wall-clock]
+Building mutex information...
+Building mutex information: [0.000s CPU, 0.000s wall-clock]
+Translating task...
+Processing axioms...
+Simplifying axioms... [0.000s CPU, 0.000s wall-clock]
+Processing axioms: [0.010s CPU, 0.010s wall-clock]
+Translating task: [0.200s CPU, 0.202s wall-clock]
+2090 effect conditions simplified
+0 implied preconditions added
+Detecting unreachable propositions...
+0 operators removed
+10 propositions removed
+Detecting unreachable propositions: [0.030s CPU, 0.031s wall-clock]
+Translator variables: 21
+Translator derived variables: 0
+Translator facts: 142
+Translator goal facts: 14
+Translator mutex groups: 11
+Translator total mutex groups size: 131
+Translator operators: 2110
+Translator axioms: 0
+Translator task size: 22488
+Translator peak memory: 32888 KB
+Writing output... [0.040s CPU, 0.039s wall-clock]
+Done! [0.470s CPU, 0.475s wall-clock]
+Heuristic: FF-heuristic.
+Algorithm: LAO*-search

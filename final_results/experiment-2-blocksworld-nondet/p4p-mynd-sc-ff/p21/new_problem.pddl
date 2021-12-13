@@ -1,0 +1,6 @@
+(define (problem bw_15_21)
+    (:domain blocks-domain)
+    (:objects b1 b10 b11 b12 b13 b14 b15 b2 b3 b4 b5 b6 b7 b8 b9)
+    (:init (act) (clear b2) (clear b5) (emptyhand) (on b1 b13) (on b10 b7) (on b12 b3) (on b13 b6) (on b14 b10) (on b15 b14) (on b2 b4) (on b3 b15) (on b4 b8) (on b6 b12) (on b7 b11) (on b8 b9) (on b9 b1) (on-table b11) (on-table b5))
+    (:goal (and (val_emptyhand-and-on_b1_b6-and-on_b2_b1-and-on_b3_b12-and-on-table_b4-and-on_b5_b3-and-on-table_b6-and-on-table_b7-and-on_b8_b9-and-on-table_b9-and-on_b10_b5-and-on_b11_b2-and-on_b12_b8-and-on_b13_b15-and-on_b14_b11-and-on_b15_b14-and-clear_b4-and-clear_b7-and-clear_b10-and-clear_b13) (act)))
+)

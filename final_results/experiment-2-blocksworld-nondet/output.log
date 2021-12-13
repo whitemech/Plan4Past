@@ -1,0 +1,1021 @@
+[2021-12-13 01:06:37,587][INFO]: Using timeout 600.0, writing to results/experiment-type-2-2021-12-13T01:06:37.586069
+[2021-12-13 01:06:37,587][INFO]: ====================================================================================================
+[2021-12-13 01:06:37,587][INFO]: Time: 2021-12-13 01:06:37.587942
+[2021-12-13 01:06:37,588][INFO]: Processing problem data/blocksworld-ipc08/p01.pddl
+[2021-12-13 01:06:37,588][DEBUG]: name=p01
+[2021-12-13 01:06:37,588][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 01:06:37,588][DEBUG]: problem=data/blocksworld-ipc08/p01.pddl
+[2021-12-13 01:06:37,588][DEBUG]: formula=None
+[2021-12-13 01:06:37,588][DEBUG]: mapping=None
+[2021-12-13 01:06:37,588][DEBUG]: timeout=600.0
+[2021-12-13 01:06:37,588][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 01:06:38,121][INFO]: name=p01
+status=Status.SUCCESS
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=0.5168095999997604
+nb_node_expanded=12
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p01.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p01
+[2021-12-13 01:06:38,121][INFO]: ====================================================================================================
+[2021-12-13 01:06:38,121][INFO]: Time: 2021-12-13 01:06:38.121309
+[2021-12-13 01:06:38,121][INFO]: Processing problem data/blocksworld-ipc08/p02.pddl
+[2021-12-13 01:06:38,121][DEBUG]: name=p02
+[2021-12-13 01:06:38,121][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 01:06:38,121][DEBUG]: problem=data/blocksworld-ipc08/p02.pddl
+[2021-12-13 01:06:38,121][DEBUG]: formula=None
+[2021-12-13 01:06:38,121][DEBUG]: mapping=None
+[2021-12-13 01:06:38,121][DEBUG]: timeout=600.0
+[2021-12-13 01:06:38,121][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 01:06:38,640][INFO]: name=p02
+status=Status.SUCCESS
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=0.5169691599985526
+nb_node_expanded=8
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p02.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p02
+[2021-12-13 01:06:38,640][INFO]: ====================================================================================================
+[2021-12-13 01:06:38,640][INFO]: Time: 2021-12-13 01:06:38.640880
+[2021-12-13 01:06:38,641][INFO]: Processing problem data/blocksworld-ipc08/p03.pddl
+[2021-12-13 01:06:38,641][DEBUG]: name=p03
+[2021-12-13 01:06:38,641][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 01:06:38,641][DEBUG]: problem=data/blocksworld-ipc08/p03.pddl
+[2021-12-13 01:06:38,641][DEBUG]: formula=None
+[2021-12-13 01:06:38,641][DEBUG]: mapping=None
+[2021-12-13 01:06:38,641][DEBUG]: timeout=600.0
+[2021-12-13 01:06:38,641][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 01:06:39,160][INFO]: name=p03
+status=Status.SUCCESS
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=0.516920816999118
+nb_node_expanded=10
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p03.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p03
+[2021-12-13 01:06:39,160][INFO]: ====================================================================================================
+[2021-12-13 01:06:39,160][INFO]: Time: 2021-12-13 01:06:39.160819
+[2021-12-13 01:06:39,160][INFO]: Processing problem data/blocksworld-ipc08/p04.pddl
+[2021-12-13 01:06:39,161][DEBUG]: name=p04
+[2021-12-13 01:06:39,161][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 01:06:39,161][DEBUG]: problem=data/blocksworld-ipc08/p04.pddl
+[2021-12-13 01:06:39,161][DEBUG]: formula=None
+[2021-12-13 01:06:39,161][DEBUG]: mapping=None
+[2021-12-13 01:06:39,161][DEBUG]: timeout=600.0
+[2021-12-13 01:06:39,161][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 01:06:39,980][INFO]: name=p04
+status=Status.SUCCESS
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=0.8174925000002986
+nb_node_expanded=200
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p04.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p04
+[2021-12-13 01:06:39,980][INFO]: ====================================================================================================
+[2021-12-13 01:06:39,980][INFO]: Time: 2021-12-13 01:06:39.980923
+[2021-12-13 01:06:39,981][INFO]: Processing problem data/blocksworld-ipc08/p05.pddl
+[2021-12-13 01:06:39,981][DEBUG]: name=p05
+[2021-12-13 01:06:39,981][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 01:06:39,981][DEBUG]: problem=data/blocksworld-ipc08/p05.pddl
+[2021-12-13 01:06:39,981][DEBUG]: formula=None
+[2021-12-13 01:06:39,981][DEBUG]: mapping=None
+[2021-12-13 01:06:39,981][DEBUG]: timeout=600.0
+[2021-12-13 01:06:39,981][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 01:06:40,500][INFO]: name=p05
+status=Status.SUCCESS
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=0.516811672001495
+nb_node_expanded=16
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p05.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p05
+[2021-12-13 01:06:40,500][INFO]: ====================================================================================================
+[2021-12-13 01:06:40,500][INFO]: Time: 2021-12-13 01:06:40.500437
+[2021-12-13 01:06:40,500][INFO]: Processing problem data/blocksworld-ipc08/p06.pddl
+[2021-12-13 01:06:40,500][DEBUG]: name=p06
+[2021-12-13 01:06:40,500][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 01:06:40,500][DEBUG]: problem=data/blocksworld-ipc08/p06.pddl
+[2021-12-13 01:06:40,500][DEBUG]: formula=None
+[2021-12-13 01:06:40,500][DEBUG]: mapping=None
+[2021-12-13 01:06:40,500][DEBUG]: timeout=600.0
+[2021-12-13 01:06:40,501][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 01:06:41,071][INFO]: name=p06
+status=Status.SUCCESS
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=0.5681707730000198
+nb_node_expanded=31
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p06.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p06
+[2021-12-13 01:06:41,071][INFO]: ====================================================================================================
+[2021-12-13 01:06:41,071][INFO]: Time: 2021-12-13 01:06:41.071542
+[2021-12-13 01:06:41,071][INFO]: Processing problem data/blocksworld-ipc08/p07.pddl
+[2021-12-13 01:06:41,071][DEBUG]: name=p07
+[2021-12-13 01:06:41,071][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 01:06:41,071][DEBUG]: problem=data/blocksworld-ipc08/p07.pddl
+[2021-12-13 01:06:41,071][DEBUG]: formula=None
+[2021-12-13 01:06:41,072][DEBUG]: mapping=None
+[2021-12-13 01:06:41,072][DEBUG]: timeout=600.0
+[2021-12-13 01:06:41,072][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 01:06:41,641][INFO]: name=p07
+status=Status.SUCCESS
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=0.5670124869993742
+nb_node_expanded=60
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p07.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p07
+[2021-12-13 01:06:41,641][INFO]: ====================================================================================================
+[2021-12-13 01:06:41,641][INFO]: Time: 2021-12-13 01:06:41.641711
+[2021-12-13 01:06:41,641][INFO]: Processing problem data/blocksworld-ipc08/p08.pddl
+[2021-12-13 01:06:41,641][DEBUG]: name=p08
+[2021-12-13 01:06:41,642][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 01:06:41,642][DEBUG]: problem=data/blocksworld-ipc08/p08.pddl
+[2021-12-13 01:06:41,642][DEBUG]: formula=None
+[2021-12-13 01:06:41,642][DEBUG]: mapping=None
+[2021-12-13 01:06:41,642][DEBUG]: timeout=600.0
+[2021-12-13 01:06:41,642][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 01:06:42,211][INFO]: name=p08
+status=Status.SUCCESS
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=0.5670925419999548
+nb_node_expanded=57
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p08.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p08
+[2021-12-13 01:06:42,212][INFO]: ====================================================================================================
+[2021-12-13 01:06:42,212][INFO]: Time: 2021-12-13 01:06:42.212115
+[2021-12-13 01:06:42,212][INFO]: Processing problem data/blocksworld-ipc08/p09.pddl
+[2021-12-13 01:06:42,212][DEBUG]: name=p09
+[2021-12-13 01:06:42,212][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 01:06:42,212][DEBUG]: problem=data/blocksworld-ipc08/p09.pddl
+[2021-12-13 01:06:42,212][DEBUG]: formula=None
+[2021-12-13 01:06:42,212][DEBUG]: mapping=None
+[2021-12-13 01:06:42,212][DEBUG]: timeout=600.0
+[2021-12-13 01:06:42,212][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 01:06:42,732][INFO]: name=p09
+status=Status.SUCCESS
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=0.5171194279992051
+nb_node_expanded=8
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p09.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p09
+[2021-12-13 01:06:42,732][INFO]: ====================================================================================================
+[2021-12-13 01:06:42,732][INFO]: Time: 2021-12-13 01:06:42.732359
+[2021-12-13 01:06:42,732][INFO]: Processing problem data/blocksworld-ipc08/p10.pddl
+[2021-12-13 01:06:42,732][DEBUG]: name=p10
+[2021-12-13 01:06:42,732][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 01:06:42,732][DEBUG]: problem=data/blocksworld-ipc08/p10.pddl
+[2021-12-13 01:06:42,732][DEBUG]: formula=None
+[2021-12-13 01:06:42,732][DEBUG]: mapping=None
+[2021-12-13 01:06:42,732][DEBUG]: timeout=600.0
+[2021-12-13 01:06:42,732][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 01:06:43,252][INFO]: name=p10
+status=Status.SUCCESS
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=0.5170405170010781
+nb_node_expanded=10
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p10.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p10
+[2021-12-13 01:06:43,252][INFO]: ====================================================================================================
+[2021-12-13 01:06:43,252][INFO]: Time: 2021-12-13 01:06:43.252392
+[2021-12-13 01:06:43,252][INFO]: Processing problem data/blocksworld-ipc08/p11.pddl
+[2021-12-13 01:06:43,252][DEBUG]: name=p11
+[2021-12-13 01:06:43,252][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 01:06:43,252][DEBUG]: problem=data/blocksworld-ipc08/p11.pddl
+[2021-12-13 01:06:43,252][DEBUG]: formula=None
+[2021-12-13 01:06:43,252][DEBUG]: mapping=None
+[2021-12-13 01:06:43,252][DEBUG]: timeout=600.0
+[2021-12-13 01:06:43,252][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 01:06:44,620][INFO]: name=p11
+status=Status.SUCCESS
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=1.3192371549994277
+nb_node_expanded=75
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p11.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p11
+[2021-12-13 01:06:44,621][INFO]: ====================================================================================================
+[2021-12-13 01:06:44,621][INFO]: Time: 2021-12-13 01:06:44.621149
+[2021-12-13 01:06:44,621][INFO]: Processing problem data/blocksworld-ipc08/p12.pddl
+[2021-12-13 01:06:44,621][DEBUG]: name=p12
+[2021-12-13 01:06:44,621][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 01:06:44,621][DEBUG]: problem=data/blocksworld-ipc08/p12.pddl
+[2021-12-13 01:06:44,621][DEBUG]: formula=None
+[2021-12-13 01:06:44,621][DEBUG]: mapping=None
+[2021-12-13 01:06:44,621][DEBUG]: timeout=600.0
+[2021-12-13 01:06:44,621][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 01:16:44,648][INFO]: name=p12
+status=Status.TIMEOUT
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=600.0036023550001
+nb_node_expanded=None
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p12.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p12
+[2021-12-13 01:16:44,649][INFO]: ====================================================================================================
+[2021-12-13 01:16:44,649][INFO]: Time: 2021-12-13 01:16:44.649145
+[2021-12-13 01:16:44,649][INFO]: Processing problem data/blocksworld-ipc08/p13.pddl
+[2021-12-13 01:16:44,649][DEBUG]: name=p13
+[2021-12-13 01:16:44,649][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 01:16:44,649][DEBUG]: problem=data/blocksworld-ipc08/p13.pddl
+[2021-12-13 01:16:44,649][DEBUG]: formula=None
+[2021-12-13 01:16:44,649][DEBUG]: mapping=None
+[2021-12-13 01:16:44,649][DEBUG]: timeout=600.0
+[2021-12-13 01:16:44,649][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 01:16:47,046][INFO]: name=p13
+status=Status.SUCCESS
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=2.377284296000653
+nb_node_expanded=216
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p13.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p13
+[2021-12-13 01:16:47,047][INFO]: ====================================================================================================
+[2021-12-13 01:16:47,047][INFO]: Time: 2021-12-13 01:16:47.047307
+[2021-12-13 01:16:47,047][INFO]: Processing problem data/blocksworld-ipc08/p14.pddl
+[2021-12-13 01:16:47,047][DEBUG]: name=p14
+[2021-12-13 01:16:47,047][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 01:16:47,047][DEBUG]: problem=data/blocksworld-ipc08/p14.pddl
+[2021-12-13 01:16:47,047][DEBUG]: formula=None
+[2021-12-13 01:16:47,047][DEBUG]: mapping=None
+[2021-12-13 01:16:47,047][DEBUG]: timeout=600.0
+[2021-12-13 01:16:47,047][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 01:16:48,266][INFO]: name=p14
+status=Status.SUCCESS
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=1.1686978199995792
+nb_node_expanded=29
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p14.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p14
+[2021-12-13 01:16:48,266][INFO]: ====================================================================================================
+[2021-12-13 01:16:48,266][INFO]: Time: 2021-12-13 01:16:48.266926
+[2021-12-13 01:16:48,267][INFO]: Processing problem data/blocksworld-ipc08/p15.pddl
+[2021-12-13 01:16:48,267][DEBUG]: name=p15
+[2021-12-13 01:16:48,267][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 01:16:48,267][DEBUG]: problem=data/blocksworld-ipc08/p15.pddl
+[2021-12-13 01:16:48,267][DEBUG]: formula=None
+[2021-12-13 01:16:48,267][DEBUG]: mapping=None
+[2021-12-13 01:16:48,267][DEBUG]: timeout=600.0
+[2021-12-13 01:16:48,267][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 01:17:03,428][INFO]: name=p15
+status=Status.SUCCESS
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=15.158169014999658
+nb_node_expanded=1068
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p15.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p15
+[2021-12-13 01:17:03,428][INFO]: ====================================================================================================
+[2021-12-13 01:17:03,428][INFO]: Time: 2021-12-13 01:17:03.428642
+[2021-12-13 01:17:03,428][INFO]: Processing problem data/blocksworld-ipc08/p16.pddl
+[2021-12-13 01:17:03,428][DEBUG]: name=p16
+[2021-12-13 01:17:03,428][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 01:17:03,428][DEBUG]: problem=data/blocksworld-ipc08/p16.pddl
+[2021-12-13 01:17:03,429][DEBUG]: formula=None
+[2021-12-13 01:17:03,429][DEBUG]: mapping=None
+[2021-12-13 01:17:03,429][DEBUG]: timeout=600.0
+[2021-12-13 01:17:03,429][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 01:27:03,458][INFO]: name=p16
+status=Status.TIMEOUT
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=600.0037019529991
+nb_node_expanded=None
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p16.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p16
+[2021-12-13 01:27:03,458][INFO]: ====================================================================================================
+[2021-12-13 01:27:03,458][INFO]: Time: 2021-12-13 01:27:03.458611
+[2021-12-13 01:27:03,458][INFO]: Processing problem data/blocksworld-ipc08/p17.pddl
+[2021-12-13 01:27:03,458][DEBUG]: name=p17
+[2021-12-13 01:27:03,458][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 01:27:03,459][DEBUG]: problem=data/blocksworld-ipc08/p17.pddl
+[2021-12-13 01:27:03,459][DEBUG]: formula=None
+[2021-12-13 01:27:03,459][DEBUG]: mapping=None
+[2021-12-13 01:27:03,459][DEBUG]: timeout=600.0
+[2021-12-13 01:27:03,459][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 01:27:11,323][INFO]: name=p17
+status=Status.SUCCESS
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=7.838918315999763
+nb_node_expanded=682
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p17.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p17
+[2021-12-13 01:27:11,323][INFO]: ====================================================================================================
+[2021-12-13 01:27:11,323][INFO]: Time: 2021-12-13 01:27:11.323601
+[2021-12-13 01:27:11,323][INFO]: Processing problem data/blocksworld-ipc08/p18.pddl
+[2021-12-13 01:27:11,323][DEBUG]: name=p18
+[2021-12-13 01:27:11,323][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 01:27:11,324][DEBUG]: problem=data/blocksworld-ipc08/p18.pddl
+[2021-12-13 01:27:11,324][DEBUG]: formula=None
+[2021-12-13 01:27:11,324][DEBUG]: mapping=None
+[2021-12-13 01:27:11,324][DEBUG]: timeout=600.0
+[2021-12-13 01:27:11,324][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 01:37:11,352][INFO]: name=p18
+status=Status.TIMEOUT
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=600.0040752209989
+nb_node_expanded=None
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p18.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p18
+[2021-12-13 01:37:11,352][INFO]: ====================================================================================================
+[2021-12-13 01:37:11,352][INFO]: Time: 2021-12-13 01:37:11.352517
+[2021-12-13 01:37:11,352][INFO]: Processing problem data/blocksworld-ipc08/p19.pddl
+[2021-12-13 01:37:11,352][DEBUG]: name=p19
+[2021-12-13 01:37:11,352][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 01:37:11,353][DEBUG]: problem=data/blocksworld-ipc08/p19.pddl
+[2021-12-13 01:37:11,353][DEBUG]: formula=None
+[2021-12-13 01:37:11,353][DEBUG]: mapping=None
+[2021-12-13 01:37:11,353][DEBUG]: timeout=600.0
+[2021-12-13 01:37:11,353][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 01:47:11,393][INFO]: name=p19
+status=Status.TIMEOUT
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=600.0038433929985
+nb_node_expanded=None
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p19.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p19
+[2021-12-13 01:47:11,393][INFO]: ====================================================================================================
+[2021-12-13 01:47:11,394][INFO]: Time: 2021-12-13 01:47:11.394020
+[2021-12-13 01:47:11,394][INFO]: Processing problem data/blocksworld-ipc08/p20.pddl
+[2021-12-13 01:47:11,394][DEBUG]: name=p20
+[2021-12-13 01:47:11,394][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 01:47:11,394][DEBUG]: problem=data/blocksworld-ipc08/p20.pddl
+[2021-12-13 01:47:11,394][DEBUG]: formula=None
+[2021-12-13 01:47:11,394][DEBUG]: mapping=None
+[2021-12-13 01:47:11,394][DEBUG]: timeout=600.0
+[2021-12-13 01:47:11,394][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 01:57:11,424][INFO]: name=p20
+status=Status.TIMEOUT
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=600.0033836769999
+nb_node_expanded=None
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p20.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p20
+[2021-12-13 01:57:11,424][INFO]: ====================================================================================================
+[2021-12-13 01:57:11,424][INFO]: Time: 2021-12-13 01:57:11.424696
+[2021-12-13 01:57:11,424][INFO]: Processing problem data/blocksworld-ipc08/p21.pddl
+[2021-12-13 01:57:11,424][DEBUG]: name=p21
+[2021-12-13 01:57:11,424][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 01:57:11,425][DEBUG]: problem=data/blocksworld-ipc08/p21.pddl
+[2021-12-13 01:57:11,425][DEBUG]: formula=None
+[2021-12-13 01:57:11,425][DEBUG]: mapping=None
+[2021-12-13 01:57:11,425][DEBUG]: timeout=600.0
+[2021-12-13 01:57:11,425][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 02:07:11,496][INFO]: name=p21
+status=Status.TIMEOUT
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=600.0037725279999
+nb_node_expanded=None
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p21.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p21
+[2021-12-13 02:07:11,497][INFO]: ====================================================================================================
+[2021-12-13 02:07:11,497][INFO]: Time: 2021-12-13 02:07:11.497144
+[2021-12-13 02:07:11,497][INFO]: Processing problem data/blocksworld-ipc08/p22.pddl
+[2021-12-13 02:07:11,497][DEBUG]: name=p22
+[2021-12-13 02:07:11,497][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 02:07:11,497][DEBUG]: problem=data/blocksworld-ipc08/p22.pddl
+[2021-12-13 02:07:11,497][DEBUG]: formula=None
+[2021-12-13 02:07:11,497][DEBUG]: mapping=None
+[2021-12-13 02:07:11,497][DEBUG]: timeout=600.0
+[2021-12-13 02:07:11,497][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 02:17:11,588][INFO]: name=p22
+status=Status.TIMEOUT
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=600.0036538860004
+nb_node_expanded=None
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p22.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p22
+[2021-12-13 02:17:11,588][INFO]: ====================================================================================================
+[2021-12-13 02:17:11,588][INFO]: Time: 2021-12-13 02:17:11.588724
+[2021-12-13 02:17:11,588][INFO]: Processing problem data/blocksworld-ipc08/p23.pddl
+[2021-12-13 02:17:11,588][DEBUG]: name=p23
+[2021-12-13 02:17:11,589][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 02:17:11,589][DEBUG]: problem=data/blocksworld-ipc08/p23.pddl
+[2021-12-13 02:17:11,589][DEBUG]: formula=None
+[2021-12-13 02:17:11,589][DEBUG]: mapping=None
+[2021-12-13 02:17:11,589][DEBUG]: timeout=600.0
+[2021-12-13 02:17:11,589][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 02:27:11,621][INFO]: name=p23
+status=Status.TIMEOUT
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=600.003601593
+nb_node_expanded=None
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p23.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p23
+[2021-12-13 02:27:11,621][INFO]: ====================================================================================================
+[2021-12-13 02:27:11,621][INFO]: Time: 2021-12-13 02:27:11.621631
+[2021-12-13 02:27:11,621][INFO]: Processing problem data/blocksworld-ipc08/p24.pddl
+[2021-12-13 02:27:11,621][DEBUG]: name=p24
+[2021-12-13 02:27:11,621][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 02:27:11,622][DEBUG]: problem=data/blocksworld-ipc08/p24.pddl
+[2021-12-13 02:27:11,622][DEBUG]: formula=None
+[2021-12-13 02:27:11,622][DEBUG]: mapping=None
+[2021-12-13 02:27:11,622][DEBUG]: timeout=600.0
+[2021-12-13 02:27:11,622][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 02:31:52,804][INFO]: name=p24
+status=Status.SUCCESS
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=281.17939841299994
+nb_node_expanded=3626
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p24.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p24
+[2021-12-13 02:31:52,805][INFO]: ====================================================================================================
+[2021-12-13 02:31:52,805][INFO]: Time: 2021-12-13 02:31:52.805564
+[2021-12-13 02:31:52,805][INFO]: Processing problem data/blocksworld-ipc08/p25.pddl
+[2021-12-13 02:31:52,806][DEBUG]: name=p25
+[2021-12-13 02:31:52,806][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 02:31:52,806][DEBUG]: problem=data/blocksworld-ipc08/p25.pddl
+[2021-12-13 02:31:52,806][DEBUG]: formula=None
+[2021-12-13 02:31:52,806][DEBUG]: mapping=None
+[2021-12-13 02:31:52,807][DEBUG]: timeout=600.0
+[2021-12-13 02:31:52,807][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 02:41:52,841][INFO]: name=p25
+status=Status.TIMEOUT
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=600.0054030339998
+nb_node_expanded=None
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p25.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p25
+[2021-12-13 02:41:52,841][INFO]: ====================================================================================================
+[2021-12-13 02:41:52,841][INFO]: Time: 2021-12-13 02:41:52.841890
+[2021-12-13 02:41:52,841][INFO]: Processing problem data/blocksworld-ipc08/p26.pddl
+[2021-12-13 02:41:52,842][DEBUG]: name=p26
+[2021-12-13 02:41:52,842][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 02:41:52,842][DEBUG]: problem=data/blocksworld-ipc08/p26.pddl
+[2021-12-13 02:41:52,842][DEBUG]: formula=None
+[2021-12-13 02:41:52,842][DEBUG]: mapping=None
+[2021-12-13 02:41:52,842][DEBUG]: timeout=600.0
+[2021-12-13 02:41:52,842][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 02:43:46,616][INFO]: name=p26
+status=Status.SUCCESS
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=113.77024923800127
+nb_node_expanded=2330
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p26.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p26
+[2021-12-13 02:43:46,616][INFO]: ====================================================================================================
+[2021-12-13 02:43:46,616][INFO]: Time: 2021-12-13 02:43:46.616874
+[2021-12-13 02:43:46,617][INFO]: Processing problem data/blocksworld-ipc08/p27.pddl
+[2021-12-13 02:43:46,617][DEBUG]: name=p27
+[2021-12-13 02:43:46,617][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 02:43:46,617][DEBUG]: problem=data/blocksworld-ipc08/p27.pddl
+[2021-12-13 02:43:46,617][DEBUG]: formula=None
+[2021-12-13 02:43:46,617][DEBUG]: mapping=None
+[2021-12-13 02:43:46,617][DEBUG]: timeout=600.0
+[2021-12-13 02:43:46,618][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 02:53:46,651][INFO]: name=p27
+status=Status.TIMEOUT
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=600.0052013730001
+nb_node_expanded=None
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p27.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p27
+[2021-12-13 02:53:46,651][INFO]: ====================================================================================================
+[2021-12-13 02:53:46,651][INFO]: Time: 2021-12-13 02:53:46.651425
+[2021-12-13 02:53:46,651][INFO]: Processing problem data/blocksworld-ipc08/p28.pddl
+[2021-12-13 02:53:46,651][DEBUG]: name=p28
+[2021-12-13 02:53:46,651][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 02:53:46,651][DEBUG]: problem=data/blocksworld-ipc08/p28.pddl
+[2021-12-13 02:53:46,652][DEBUG]: formula=None
+[2021-12-13 02:53:46,652][DEBUG]: mapping=None
+[2021-12-13 02:53:46,652][DEBUG]: timeout=600.0
+[2021-12-13 02:53:46,652][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 02:54:13,136][INFO]: name=p28
+status=Status.SUCCESS
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=26.481918254999982
+nb_node_expanded=1036
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p28.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p28
+[2021-12-13 02:54:13,136][INFO]: ====================================================================================================
+[2021-12-13 02:54:13,137][INFO]: Time: 2021-12-13 02:54:13.137002
+[2021-12-13 02:54:13,137][INFO]: Processing problem data/blocksworld-ipc08/p29.pddl
+[2021-12-13 02:54:13,137][DEBUG]: name=p29
+[2021-12-13 02:54:13,137][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 02:54:13,137][DEBUG]: problem=data/blocksworld-ipc08/p29.pddl
+[2021-12-13 02:54:13,137][DEBUG]: formula=None
+[2021-12-13 02:54:13,137][DEBUG]: mapping=None
+[2021-12-13 02:54:13,137][DEBUG]: timeout=600.0
+[2021-12-13 02:54:13,137][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 02:55:28,462][INFO]: name=p29
+status=Status.SUCCESS
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=75.32097318100023
+nb_node_expanded=1872
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p29.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p29
+[2021-12-13 02:55:28,463][INFO]: ====================================================================================================
+[2021-12-13 02:55:28,463][INFO]: Time: 2021-12-13 02:55:28.463235
+[2021-12-13 02:55:28,463][INFO]: Processing problem data/blocksworld-ipc08/p30.pddl
+[2021-12-13 02:55:28,463][DEBUG]: name=p30
+[2021-12-13 02:55:28,463][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 02:55:28,464][DEBUG]: problem=data/blocksworld-ipc08/p30.pddl
+[2021-12-13 02:55:28,464][DEBUG]: formula=None
+[2021-12-13 02:55:28,464][DEBUG]: mapping=None
+[2021-12-13 02:55:28,464][DEBUG]: timeout=600.0
+[2021-12-13 02:55:28,464][DEBUG]: tool=mynd-sc-ff
+[2021-12-13 02:56:51,361][INFO]: name=p30
+status=Status.SUCCESS
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=82.89397659300084
+nb_node_expanded=1888
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d data/blocksworld-ipc08/domain.pddl -p data/blocksworld-ipc08/p30.pddl --algorithm laostar --heuristic ff --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/mynd-sc-ff/p30
+[2021-12-13 02:56:51,438][INFO]: ====================================================================================================
+[2021-12-13 02:56:51,438][INFO]: Time: 2021-12-13 02:56:51.438947
+[2021-12-13 02:56:51,439][INFO]: Processing problem data/blocksworld-ipc08/p01.pddl
+[2021-12-13 02:56:51,439][DEBUG]: name=p01
+[2021-12-13 02:56:51,439][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 02:56:51,439][DEBUG]: problem=data/blocksworld-ipc08/p01.pddl
+[2021-12-13 02:56:51,439][DEBUG]: formula=emptyhand & on_b1_b2 & on_b2_b5 & on-table_b3 & on-table_b4 & on-table_b5 & clear_b1 & clear_b3 & clear_b4
+[2021-12-13 02:56:51,439][DEBUG]: mapping=None
+[2021-12-13 02:56:51,439][DEBUG]: timeout=600.0
+[2021-12-13 02:56:51,439][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 02:56:52,251][INFO]: name=p01
+status=Status.SUCCESS
+time_compilation=0.34477710723876953
+time_tool=0.366942
+time_end2end=0.711719
+nb_node_expanded=21
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p01.pddl --formula emptyhand & on_b1_b2 & on_b2_b5 & on-table_b3 & on-table_b4 & on-table_b5 & clear_b1 & clear_b3 & clear_b4 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p01 --algorithm laostar --heuristic ff
+[2021-12-13 02:56:52,319][INFO]: ====================================================================================================
+[2021-12-13 02:56:52,319][INFO]: Time: 2021-12-13 02:56:52.319667
+[2021-12-13 02:56:52,319][INFO]: Processing problem data/blocksworld-ipc08/p02.pddl
+[2021-12-13 02:56:52,319][DEBUG]: name=p02
+[2021-12-13 02:56:52,319][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 02:56:52,319][DEBUG]: problem=data/blocksworld-ipc08/p02.pddl
+[2021-12-13 02:56:52,319][DEBUG]: formula=emptyhand & on-table_b1 & on-table_b2 & on-table_b3 & on_b4_b1 & on_b5_b2 & clear_b3 & clear_b4 & clear_b5
+[2021-12-13 02:56:52,319][DEBUG]: mapping=None
+[2021-12-13 02:56:52,320][DEBUG]: timeout=600.0
+[2021-12-13 02:56:52,320][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 02:56:53,139][INFO]: name=p02
+status=Status.SUCCESS
+time_compilation=0.34516286849975586
+time_tool=0.382402
+time_end2end=0.727565
+nb_node_expanded=63
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p02.pddl --formula emptyhand & on-table_b1 & on-table_b2 & on-table_b3 & on_b4_b1 & on_b5_b2 & clear_b3 & clear_b4 & clear_b5 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p02 --algorithm laostar --heuristic ff
+[2021-12-13 02:56:53,204][INFO]: ====================================================================================================
+[2021-12-13 02:56:53,204][INFO]: Time: 2021-12-13 02:56:53.204721
+[2021-12-13 02:56:53,204][INFO]: Processing problem data/blocksworld-ipc08/p03.pddl
+[2021-12-13 02:56:53,204][DEBUG]: name=p03
+[2021-12-13 02:56:53,204][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 02:56:53,204][DEBUG]: problem=data/blocksworld-ipc08/p03.pddl
+[2021-12-13 02:56:53,205][DEBUG]: formula=emptyhand & on-table_b1 & on-table_b2 & on_b3_b1 & on-table_b4 & on_b5_b3 & clear_b2 & clear_b4 & clear_b5
+[2021-12-13 02:56:53,205][DEBUG]: mapping=None
+[2021-12-13 02:56:53,205][DEBUG]: timeout=600.0
+[2021-12-13 02:56:53,205][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 02:56:54,024][INFO]: name=p03
+status=Status.SUCCESS
+time_compilation=0.34990811347961426
+time_tool=0.390288
+time_end2end=0.740196
+nb_node_expanded=71
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p03.pddl --formula emptyhand & on-table_b1 & on-table_b2 & on_b3_b1 & on-table_b4 & on_b5_b3 & clear_b2 & clear_b4 & clear_b5 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p03 --algorithm laostar --heuristic ff
+[2021-12-13 02:56:54,077][INFO]: ====================================================================================================
+[2021-12-13 02:56:54,077][INFO]: Time: 2021-12-13 02:56:54.077118
+[2021-12-13 02:56:54,077][INFO]: Processing problem data/blocksworld-ipc08/p04.pddl
+[2021-12-13 02:56:54,077][DEBUG]: name=p04
+[2021-12-13 02:56:54,077][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 02:56:54,077][DEBUG]: problem=data/blocksworld-ipc08/p04.pddl
+[2021-12-13 02:56:54,077][DEBUG]: formula=emptyhand & on_b1_b5 & on_b2_b3 & on_b3_b1 & on_b4_b2 & on-table_b5 & clear_b4
+[2021-12-13 02:56:54,077][DEBUG]: mapping=None
+[2021-12-13 02:56:54,077][DEBUG]: timeout=600.0
+[2021-12-13 02:56:54,077][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 02:56:55,712][INFO]: name=p04
+status=Status.SUCCESS
+time_compilation=0.345106840133667
+time_tool=1.189707
+time_end2end=1.534814
+nb_node_expanded=684
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p04.pddl --formula emptyhand & on_b1_b5 & on_b2_b3 & on_b3_b1 & on_b4_b2 & on-table_b5 & clear_b4 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p04 --algorithm laostar --heuristic ff
+[2021-12-13 02:56:55,781][INFO]: ====================================================================================================
+[2021-12-13 02:56:55,781][INFO]: Time: 2021-12-13 02:56:55.781859
+[2021-12-13 02:56:55,781][INFO]: Processing problem data/blocksworld-ipc08/p05.pddl
+[2021-12-13 02:56:55,782][DEBUG]: name=p05
+[2021-12-13 02:56:55,782][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 02:56:55,782][DEBUG]: problem=data/blocksworld-ipc08/p05.pddl
+[2021-12-13 02:56:55,782][DEBUG]: formula=emptyhand & on_b1_b3 & on_b2_b4 & on-table_b3 & on_b4_b1 & on-table_b5 & clear_b2 & clear_b5
+[2021-12-13 02:56:55,782][DEBUG]: mapping=None
+[2021-12-13 02:56:55,782][DEBUG]: timeout=600.0
+[2021-12-13 02:56:55,782][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 02:56:56,651][INFO]: name=p05
+status=Status.SUCCESS
+time_compilation=0.344494104385376
+time_tool=0.443313
+time_end2end=0.787807
+nb_node_expanded=93
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p05.pddl --formula emptyhand & on_b1_b3 & on_b2_b4 & on-table_b3 & on_b4_b1 & on-table_b5 & clear_b2 & clear_b5 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p05 --algorithm laostar --heuristic ff
+[2021-12-13 02:56:56,711][INFO]: ====================================================================================================
+[2021-12-13 02:56:56,711][INFO]: Time: 2021-12-13 02:56:56.711729
+[2021-12-13 02:56:56,711][INFO]: Processing problem data/blocksworld-ipc08/p06.pddl
+[2021-12-13 02:56:56,711][DEBUG]: name=p06
+[2021-12-13 02:56:56,711][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 02:56:56,711][DEBUG]: problem=data/blocksworld-ipc08/p06.pddl
+[2021-12-13 02:56:56,711][DEBUG]: formula=emptyhand & on-table_b1 & on_b2_b4 & on-table_b3 & on_b4_b3 & on_b5_b1 & clear_b2 & clear_b5
+[2021-12-13 02:56:56,711][DEBUG]: mapping=None
+[2021-12-13 02:56:56,712][DEBUG]: timeout=600.0
+[2021-12-13 02:56:56,712][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 02:56:57,530][INFO]: name=p06
+status=Status.SUCCESS
+time_compilation=0.34434986114501953
+time_tool=0.424412
+time_end2end=0.768762
+nb_node_expanded=50
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p06.pddl --formula emptyhand & on-table_b1 & on_b2_b4 & on-table_b3 & on_b4_b3 & on_b5_b1 & clear_b2 & clear_b5 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p06 --algorithm laostar --heuristic ff
+[2021-12-13 02:56:57,573][INFO]: ====================================================================================================
+[2021-12-13 02:56:57,573][INFO]: Time: 2021-12-13 02:56:57.573809
+[2021-12-13 02:56:57,573][INFO]: Processing problem data/blocksworld-ipc08/p07.pddl
+[2021-12-13 02:56:57,573][DEBUG]: name=p07
+[2021-12-13 02:56:57,573][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 02:56:57,574][DEBUG]: problem=data/blocksworld-ipc08/p07.pddl
+[2021-12-13 02:56:57,574][DEBUG]: formula=emptyhand & on-table_b1 & on_b2_b5 & on_b3_b4 & on-table_b4 & on_b5_b3 & clear_b1 & clear_b2
+[2021-12-13 02:56:57,574][DEBUG]: mapping=None
+[2021-12-13 02:56:57,574][DEBUG]: timeout=600.0
+[2021-12-13 02:56:57,574][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 02:57:02,236][INFO]: name=p07
+status=Status.SUCCESS
+time_compilation=0.344865083694458
+time_tool=4.217553
+time_end2end=4.562418
+nb_node_expanded=1458
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p07.pddl --formula emptyhand & on-table_b1 & on_b2_b5 & on_b3_b4 & on-table_b4 & on_b5_b3 & clear_b1 & clear_b2 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p07 --algorithm laostar --heuristic ff
+[2021-12-13 02:57:02,300][INFO]: ====================================================================================================
+[2021-12-13 02:57:02,300][INFO]: Time: 2021-12-13 02:57:02.300289
+[2021-12-13 02:57:02,300][INFO]: Processing problem data/blocksworld-ipc08/p08.pddl
+[2021-12-13 02:57:02,300][DEBUG]: name=p08
+[2021-12-13 02:57:02,300][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 02:57:02,300][DEBUG]: problem=data/blocksworld-ipc08/p08.pddl
+[2021-12-13 02:57:02,300][DEBUG]: formula=emptyhand & on-table_b1 & on-table_b2 & on_b3_b2 & on_b4_b3 & on_b5_b4 & clear_b1 & clear_b5
+[2021-12-13 02:57:02,300][DEBUG]: mapping=None
+[2021-12-13 02:57:02,300][DEBUG]: timeout=600.0
+[2021-12-13 02:57:02,300][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 02:57:09,087][INFO]: name=p08
+status=Status.SUCCESS
+time_compilation=0.35584402084350586
+time_tool=6.340287
+time_end2end=6.696131
+nb_node_expanded=1834
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p08.pddl --formula emptyhand & on-table_b1 & on-table_b2 & on_b3_b2 & on_b4_b3 & on_b5_b4 & clear_b1 & clear_b5 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p08 --algorithm laostar --heuristic ff
+[2021-12-13 02:57:09,152][INFO]: ====================================================================================================
+[2021-12-13 02:57:09,152][INFO]: Time: 2021-12-13 02:57:09.152271
+[2021-12-13 02:57:09,152][INFO]: Processing problem data/blocksworld-ipc08/p09.pddl
+[2021-12-13 02:57:09,152][DEBUG]: name=p09
+[2021-12-13 02:57:09,152][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 02:57:09,152][DEBUG]: problem=data/blocksworld-ipc08/p09.pddl
+[2021-12-13 02:57:09,152][DEBUG]: formula=emptyhand & on_b1_b4 & on-table_b2 & on_b3_b2 & on-table_b4 & on-table_b5 & clear_b1 & clear_b3 & clear_b5
+[2021-12-13 02:57:09,152][DEBUG]: mapping=None
+[2021-12-13 02:57:09,152][DEBUG]: timeout=600.0
+[2021-12-13 02:57:09,152][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 02:57:09,972][INFO]: name=p09
+status=Status.SUCCESS
+time_compilation=0.35852599143981934
+time_tool=0.361224
+time_end2end=0.71975
+nb_node_expanded=16
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p09.pddl --formula emptyhand & on_b1_b4 & on-table_b2 & on_b3_b2 & on-table_b4 & on-table_b5 & clear_b1 & clear_b3 & clear_b5 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p09 --algorithm laostar --heuristic ff
+[2021-12-13 02:57:10,039][INFO]: ====================================================================================================
+[2021-12-13 02:57:10,039][INFO]: Time: 2021-12-13 02:57:10.039220
+[2021-12-13 02:57:10,039][INFO]: Processing problem data/blocksworld-ipc08/p10.pddl
+[2021-12-13 02:57:10,039][DEBUG]: name=p10
+[2021-12-13 02:57:10,039][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 02:57:10,039][DEBUG]: problem=data/blocksworld-ipc08/p10.pddl
+[2021-12-13 02:57:10,039][DEBUG]: formula=emptyhand & on_b1_b2 & on-table_b2 & on_b3_b5 & on-table_b4 & on-table_b5 & clear_b1 & clear_b3 & clear_b4
+[2021-12-13 02:57:10,039][DEBUG]: mapping=None
+[2021-12-13 02:57:10,039][DEBUG]: timeout=600.0
+[2021-12-13 02:57:10,039][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 02:57:10,909][INFO]: name=p10
+status=Status.SUCCESS
+time_compilation=0.35904693603515625
+time_tool=0.413395
+time_end2end=0.772442
+nb_node_expanded=73
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p10.pddl --formula emptyhand & on_b1_b2 & on-table_b2 & on_b3_b5 & on-table_b4 & on-table_b5 & clear_b1 & clear_b3 & clear_b4 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p10 --algorithm laostar --heuristic ff
+[2021-12-13 02:57:10,970][INFO]: ====================================================================================================
+[2021-12-13 02:57:10,970][INFO]: Time: 2021-12-13 02:57:10.970325
+[2021-12-13 02:57:10,970][INFO]: Processing problem data/blocksworld-ipc08/p11.pddl
+[2021-12-13 02:57:10,970][DEBUG]: name=p11
+[2021-12-13 02:57:10,970][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 02:57:10,970][DEBUG]: problem=data/blocksworld-ipc08/p11.pddl
+[2021-12-13 02:57:10,970][DEBUG]: formula=emptyhand & on_b1_b9 & on-table_b2 & on_b3_b1 & on_b4_b7 & on_b5_b4 & on_b6_b8 & on_b7_b10 & on_b8_b5 & on_b9_b6 & on-table_b10 & clear_b2 & clear_b3
+[2021-12-13 02:57:10,970][DEBUG]: mapping=None
+[2021-12-13 02:57:10,970][DEBUG]: timeout=600.0
+[2021-12-13 02:57:10,970][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 02:57:13,996][INFO]: name=p11
+status=Status.SUCCESS
+time_compilation=0.35196590423583984
+time_tool=2.595304
+time_end2end=2.94727
+nb_node_expanded=511
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p11.pddl --formula emptyhand & on_b1_b9 & on-table_b2 & on_b3_b1 & on_b4_b7 & on_b5_b4 & on_b6_b8 & on_b7_b10 & on_b8_b5 & on_b9_b6 & on-table_b10 & clear_b2 & clear_b3 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p11 --algorithm laostar --heuristic ff
+[2021-12-13 02:57:14,066][INFO]: ====================================================================================================
+[2021-12-13 02:57:14,066][INFO]: Time: 2021-12-13 02:57:14.066770
+[2021-12-13 02:57:14,066][INFO]: Processing problem data/blocksworld-ipc08/p12.pddl
+[2021-12-13 02:57:14,066][DEBUG]: name=p12
+[2021-12-13 02:57:14,066][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 02:57:14,066][DEBUG]: problem=data/blocksworld-ipc08/p12.pddl
+[2021-12-13 02:57:14,066][DEBUG]: formula=emptyhand & on_b1_b3 & on_b2_b9 & on-table_b3 & on_b4_b10 & on_b5_b7 & on_b6_b4 & on-table_b7 & on_b8_b2 & on_b9_b1 & on_b10_b8 & clear_b5 & clear_b6
+[2021-12-13 02:57:14,067][DEBUG]: mapping=None
+[2021-12-13 02:57:14,067][DEBUG]: timeout=600.0
+[2021-12-13 02:57:14,067][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 03:07:14,092][INFO]: name=p12
+status=Status.TIMEOUT
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=600.0033936529999
+nb_node_expanded=None
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p12.pddl --formula emptyhand & on_b1_b3 & on_b2_b9 & on-table_b3 & on_b4_b10 & on_b5_b7 & on_b6_b4 & on-table_b7 & on_b8_b2 & on_b9_b1 & on_b10_b8 & clear_b5 & clear_b6 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p12 --algorithm laostar --heuristic ff
+[2021-12-13 03:07:14,152][INFO]: ====================================================================================================
+[2021-12-13 03:07:14,153][INFO]: Time: 2021-12-13 03:07:14.153073
+[2021-12-13 03:07:14,153][INFO]: Processing problem data/blocksworld-ipc08/p13.pddl
+[2021-12-13 03:07:14,153][DEBUG]: name=p13
+[2021-12-13 03:07:14,153][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 03:07:14,153][DEBUG]: problem=data/blocksworld-ipc08/p13.pddl
+[2021-12-13 03:07:14,153][DEBUG]: formula=emptyhand & on_b1_b7 & on_b2_b8 & on_b3_b10 & on-table_b4 & on_b5_b4 & on_b6_b3 & on_b7_b6 & on-table_b8 & on-table_b9 & on_b10_b5 & clear_b1 & clear_b2 & clear_b9
+[2021-12-13 03:07:14,153][DEBUG]: mapping=None
+[2021-12-13 03:07:14,153][DEBUG]: timeout=600.0
+[2021-12-13 03:07:14,153][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 03:17:14,176][INFO]: name=p13
+status=Status.TIMEOUT
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=600.0032574950019
+nb_node_expanded=None
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p13.pddl --formula emptyhand & on_b1_b7 & on_b2_b8 & on_b3_b10 & on-table_b4 & on_b5_b4 & on_b6_b3 & on_b7_b6 & on-table_b8 & on-table_b9 & on_b10_b5 & clear_b1 & clear_b2 & clear_b9 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p13 --algorithm laostar --heuristic ff
+[2021-12-13 03:17:14,233][INFO]: ====================================================================================================
+[2021-12-13 03:17:14,233][INFO]: Time: 2021-12-13 03:17:14.233922
+[2021-12-13 03:17:14,233][INFO]: Processing problem data/blocksworld-ipc08/p14.pddl
+[2021-12-13 03:17:14,234][DEBUG]: name=p14
+[2021-12-13 03:17:14,234][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 03:17:14,234][DEBUG]: problem=data/blocksworld-ipc08/p14.pddl
+[2021-12-13 03:17:14,234][DEBUG]: formula=emptyhand & on-table_b1 & on-table_b2 & on_b3_b8 & on_b4_b1 & on_b5_b10 & on-table_b6 & on_b7_b6 & on-table_b8 & on_b9_b2 & on_b10_b4 & clear_b3 & clear_b5 & clear_b7 & clear_b9
+[2021-12-13 03:17:14,234][DEBUG]: mapping=None
+[2021-12-13 03:17:14,234][DEBUG]: timeout=600.0
+[2021-12-13 03:17:14,234][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 03:25:50,028][INFO]: name=p14
+status=Status.SUCCESS
+time_compilation=0.34456586837768555
+time_tool=515.369112
+time_end2end=515.713678
+nb_node_expanded=6656
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p14.pddl --formula emptyhand & on-table_b1 & on-table_b2 & on_b3_b8 & on_b4_b1 & on_b5_b10 & on-table_b6 & on_b7_b6 & on-table_b8 & on_b9_b2 & on_b10_b4 & clear_b3 & clear_b5 & clear_b7 & clear_b9 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p14 --algorithm laostar --heuristic ff
+[2021-12-13 03:25:50,092][INFO]: ====================================================================================================
+[2021-12-13 03:25:50,092][INFO]: Time: 2021-12-13 03:25:50.092196
+[2021-12-13 03:25:50,092][INFO]: Processing problem data/blocksworld-ipc08/p15.pddl
+[2021-12-13 03:25:50,092][DEBUG]: name=p15
+[2021-12-13 03:25:50,092][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 03:25:50,092][DEBUG]: problem=data/blocksworld-ipc08/p15.pddl
+[2021-12-13 03:25:50,092][DEBUG]: formula=emptyhand & on_b1_b9 & on_b2_b5 & on_b3_b2 & on_b4_b3 & on_b5_b6 & on-table_b6 & on_b7_b4 & on_b8_b7 & on-table_b9 & on_b10_b1 & clear_b8 & clear_b10
+[2021-12-13 03:25:50,092][DEBUG]: mapping=None
+[2021-12-13 03:25:50,092][DEBUG]: timeout=600.0
+[2021-12-13 03:25:50,092][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 03:30:17,310][INFO]: name=p15
+status=Status.SUCCESS
+time_compilation=0.345797061920166
+time_tool=266.774569
+time_end2end=267.120366
+nb_node_expanded=5034
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p15.pddl --formula emptyhand & on_b1_b9 & on_b2_b5 & on_b3_b2 & on_b4_b3 & on_b5_b6 & on-table_b6 & on_b7_b4 & on_b8_b7 & on-table_b9 & on_b10_b1 & clear_b8 & clear_b10 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p15 --algorithm laostar --heuristic ff
+[2021-12-13 03:30:17,380][INFO]: ====================================================================================================
+[2021-12-13 03:30:17,380][INFO]: Time: 2021-12-13 03:30:17.380637
+[2021-12-13 03:30:17,380][INFO]: Processing problem data/blocksworld-ipc08/p16.pddl
+[2021-12-13 03:30:17,380][DEBUG]: name=p16
+[2021-12-13 03:30:17,380][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 03:30:17,380][DEBUG]: problem=data/blocksworld-ipc08/p16.pddl
+[2021-12-13 03:30:17,380][DEBUG]: formula=emptyhand & on_b1_b7 & on_b2_b8 & on_b3_b10 & on-table_b4 & on_b5_b4 & on_b6_b9 & on_b7_b2 & on_b8_b3 & on_b9_b5 & on-table_b10 & clear_b1 & clear_b6
+[2021-12-13 03:30:17,380][DEBUG]: mapping=None
+[2021-12-13 03:30:17,381][DEBUG]: timeout=600.0
+[2021-12-13 03:30:17,381][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 03:40:17,400][INFO]: name=p16
+status=Status.TIMEOUT
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=600.0031004530028
+nb_node_expanded=None
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p16.pddl --formula emptyhand & on_b1_b7 & on_b2_b8 & on_b3_b10 & on-table_b4 & on_b5_b4 & on_b6_b9 & on_b7_b2 & on_b8_b3 & on_b9_b5 & on-table_b10 & clear_b1 & clear_b6 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p16 --algorithm laostar --heuristic ff
+[2021-12-13 03:40:17,448][INFO]: ====================================================================================================
+[2021-12-13 03:40:17,448][INFO]: Time: 2021-12-13 03:40:17.448364
+[2021-12-13 03:40:17,448][INFO]: Processing problem data/blocksworld-ipc08/p17.pddl
+[2021-12-13 03:40:17,448][DEBUG]: name=p17
+[2021-12-13 03:40:17,448][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 03:40:17,448][DEBUG]: problem=data/blocksworld-ipc08/p17.pddl
+[2021-12-13 03:40:17,448][DEBUG]: formula=emptyhand & on_b1_b8 & on-table_b2 & on_b3_b6 & on_b4_b2 & on-table_b5 & on_b6_b10 & on_b7_b1 & on_b8_b5 & on-table_b9 & on-table_b10 & clear_b3 & clear_b4 & clear_b7 & clear_b9
+[2021-12-13 03:40:17,448][DEBUG]: mapping=None
+[2021-12-13 03:40:17,448][DEBUG]: timeout=600.0
+[2021-12-13 03:40:17,448][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 03:45:38,558][INFO]: name=p17
+status=Status.SUCCESS
+time_compilation=0.353485107421875
+time_tool=320.662941
+time_end2end=321.016426
+nb_node_expanded=5831
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p17.pddl --formula emptyhand & on_b1_b8 & on-table_b2 & on_b3_b6 & on_b4_b2 & on-table_b5 & on_b6_b10 & on_b7_b1 & on_b8_b5 & on-table_b9 & on-table_b10 & clear_b3 & clear_b4 & clear_b7 & clear_b9 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p17 --algorithm laostar --heuristic ff
+[2021-12-13 03:45:38,625][INFO]: ====================================================================================================
+[2021-12-13 03:45:38,625][INFO]: Time: 2021-12-13 03:45:38.625248
+[2021-12-13 03:45:38,625][INFO]: Processing problem data/blocksworld-ipc08/p18.pddl
+[2021-12-13 03:45:38,625][DEBUG]: name=p18
+[2021-12-13 03:45:38,625][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 03:45:38,625][DEBUG]: problem=data/blocksworld-ipc08/p18.pddl
+[2021-12-13 03:45:38,625][DEBUG]: formula=emptyhand & on-table_b1 & on_b2_b4 & on_b3_b5 & on-table_b4 & on_b5_b8 & on-table_b6 & on-table_b7 & on_b8_b1 & on_b9_b6 & on_b10_b7 & clear_b2 & clear_b3 & clear_b9 & clear_b10
+[2021-12-13 03:45:38,625][DEBUG]: mapping=None
+[2021-12-13 03:45:38,625][DEBUG]: timeout=600.0
+[2021-12-13 03:45:38,625][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 03:45:44,007][INFO]: name=p18
+status=Status.SUCCESS
+time_compilation=0.34615588188171387
+time_tool=4.958504
+time_end2end=5.30466
+nb_node_expanded=911
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p18.pddl --formula emptyhand & on-table_b1 & on_b2_b4 & on_b3_b5 & on-table_b4 & on_b5_b8 & on-table_b6 & on-table_b7 & on_b8_b1 & on_b9_b6 & on_b10_b7 & clear_b2 & clear_b3 & clear_b9 & clear_b10 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p18 --algorithm laostar --heuristic ff
+[2021-12-13 03:45:44,063][INFO]: ====================================================================================================
+[2021-12-13 03:45:44,063][INFO]: Time: 2021-12-13 03:45:44.063248
+[2021-12-13 03:45:44,063][INFO]: Processing problem data/blocksworld-ipc08/p19.pddl
+[2021-12-13 03:45:44,063][DEBUG]: name=p19
+[2021-12-13 03:45:44,063][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 03:45:44,063][DEBUG]: problem=data/blocksworld-ipc08/p19.pddl
+[2021-12-13 03:45:44,063][DEBUG]: formula=emptyhand & on-table_b1 & on_b2_b9 & on_b3_b7 & on_b4_b10 & on_b5_b2 & on_b6_b1 & on-table_b7 & on_b8_b4 & on-table_b9 & on_b10_b6 & clear_b3 & clear_b5 & clear_b8
+[2021-12-13 03:45:44,063][DEBUG]: mapping=None
+[2021-12-13 03:45:44,063][DEBUG]: timeout=600.0
+[2021-12-13 03:45:44,063][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 03:55:44,081][INFO]: name=p19
+status=Status.TIMEOUT
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=600.0028088100007
+nb_node_expanded=None
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p19.pddl --formula emptyhand & on-table_b1 & on_b2_b9 & on_b3_b7 & on_b4_b10 & on_b5_b2 & on_b6_b1 & on-table_b7 & on_b8_b4 & on-table_b9 & on_b10_b6 & clear_b3 & clear_b5 & clear_b8 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p19 --algorithm laostar --heuristic ff
+[2021-12-13 03:55:44,136][INFO]: ====================================================================================================
+[2021-12-13 03:55:44,136][INFO]: Time: 2021-12-13 03:55:44.136614
+[2021-12-13 03:55:44,136][INFO]: Processing problem data/blocksworld-ipc08/p20.pddl
+[2021-12-13 03:55:44,136][DEBUG]: name=p20
+[2021-12-13 03:55:44,136][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 03:55:44,136][DEBUG]: problem=data/blocksworld-ipc08/p20.pddl
+[2021-12-13 03:55:44,136][DEBUG]: formula=emptyhand & on_b1_b9 & on_b2_b1 & on-table_b3 & on-table_b4 & on-table_b5 & on_b6_b7 & on-table_b7 & on-table_b8 & on_b9_b6 & on_b10_b3 & clear_b2 & clear_b4 & clear_b5 & clear_b8 & clear_b10
+[2021-12-13 03:55:44,136][DEBUG]: mapping=None
+[2021-12-13 03:55:44,136][DEBUG]: timeout=600.0
+[2021-12-13 03:55:44,136][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 04:05:44,159][INFO]: name=p20
+status=Status.TIMEOUT
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=600.0035110100034
+nb_node_expanded=None
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p20.pddl --formula emptyhand & on_b1_b9 & on_b2_b1 & on-table_b3 & on-table_b4 & on-table_b5 & on_b6_b7 & on-table_b7 & on-table_b8 & on_b9_b6 & on_b10_b3 & clear_b2 & clear_b4 & clear_b5 & clear_b8 & clear_b10 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p20 --algorithm laostar --heuristic ff
+[2021-12-13 04:05:44,211][INFO]: ====================================================================================================
+[2021-12-13 04:05:44,211][INFO]: Time: 2021-12-13 04:05:44.211369
+[2021-12-13 04:05:44,211][INFO]: Processing problem data/blocksworld-ipc08/p21.pddl
+[2021-12-13 04:05:44,211][DEBUG]: name=p21
+[2021-12-13 04:05:44,211][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 04:05:44,211][DEBUG]: problem=data/blocksworld-ipc08/p21.pddl
+[2021-12-13 04:05:44,211][DEBUG]: formula=emptyhand & on_b1_b6 & on_b2_b1 & on_b3_b12 & on-table_b4 & on_b5_b3 & on-table_b6 & on-table_b7 & on_b8_b9 & on-table_b9 & on_b10_b5 & on_b11_b2 & on_b12_b8 & on_b13_b15 & on_b14_b11 & on_b15_b14 & clear_b4 & clear_b7 & clear_b10 & clear_b13
+[2021-12-13 04:05:44,211][DEBUG]: mapping=None
+[2021-12-13 04:05:44,211][DEBUG]: timeout=600.0
+[2021-12-13 04:05:44,211][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 04:15:44,239][INFO]: name=p21
+status=Status.TIMEOUT
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=600.0032104929996
+nb_node_expanded=None
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p21.pddl --formula emptyhand & on_b1_b6 & on_b2_b1 & on_b3_b12 & on-table_b4 & on_b5_b3 & on-table_b6 & on-table_b7 & on_b8_b9 & on-table_b9 & on_b10_b5 & on_b11_b2 & on_b12_b8 & on_b13_b15 & on_b14_b11 & on_b15_b14 & clear_b4 & clear_b7 & clear_b10 & clear_b13 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p21 --algorithm laostar --heuristic ff
+[2021-12-13 04:15:44,293][INFO]: ====================================================================================================
+[2021-12-13 04:15:44,293][INFO]: Time: 2021-12-13 04:15:44.293867
+[2021-12-13 04:15:44,293][INFO]: Processing problem data/blocksworld-ipc08/p22.pddl
+[2021-12-13 04:15:44,294][DEBUG]: name=p22
+[2021-12-13 04:15:44,294][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 04:15:44,294][DEBUG]: problem=data/blocksworld-ipc08/p22.pddl
+[2021-12-13 04:15:44,294][DEBUG]: formula=emptyhand & on_b1_b11 & on_b2_b12 & on_b3_b9 & on_b4_b14 & on_b5_b7 & on-table_b6 & on-table_b7 & on_b8_b4 & on_b9_b10 & on_b10_b6 & on_b11_b15 & on_b12_b3 & on_b13_b2 & on-table_b14 & on_b15_b5 & clear_b1 & clear_b8 & clear_b13
+[2021-12-13 04:15:44,294][DEBUG]: mapping=None
+[2021-12-13 04:15:44,294][DEBUG]: timeout=600.0
+[2021-12-13 04:15:44,294][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 04:25:44,324][INFO]: name=p22
+status=Status.TIMEOUT
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=600.0033526070001
+nb_node_expanded=None
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p22.pddl --formula emptyhand & on_b1_b11 & on_b2_b12 & on_b3_b9 & on_b4_b14 & on_b5_b7 & on-table_b6 & on-table_b7 & on_b8_b4 & on_b9_b10 & on_b10_b6 & on_b11_b15 & on_b12_b3 & on_b13_b2 & on-table_b14 & on_b15_b5 & clear_b1 & clear_b8 & clear_b13 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p22 --algorithm laostar --heuristic ff
+[2021-12-13 04:25:44,379][INFO]: ====================================================================================================
+[2021-12-13 04:25:44,380][INFO]: Time: 2021-12-13 04:25:44.380075
+[2021-12-13 04:25:44,380][INFO]: Processing problem data/blocksworld-ipc08/p23.pddl
+[2021-12-13 04:25:44,380][DEBUG]: name=p23
+[2021-12-13 04:25:44,380][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 04:25:44,380][DEBUG]: problem=data/blocksworld-ipc08/p23.pddl
+[2021-12-13 04:25:44,380][DEBUG]: formula=emptyhand & on_b1_b12 & on_b2_b10 & on-table_b3 & on_b4_b7 & on_b5_b15 & on_b6_b5 & on-table_b7 & on-table_b8 & on_b9_b3 & on_b10_b13 & on_b11_b8 & on-table_b12 & on_b13_b11 & on_b14_b4 & on_b15_b14 & clear_b1 & clear_b2 & clear_b6 & clear_b9
+[2021-12-13 04:25:44,380][DEBUG]: mapping=None
+[2021-12-13 04:25:44,380][DEBUG]: timeout=600.0
+[2021-12-13 04:25:44,380][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 04:35:44,407][INFO]: name=p23
+status=Status.TIMEOUT
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=600.0034534929982
+nb_node_expanded=None
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p23.pddl --formula emptyhand & on_b1_b12 & on_b2_b10 & on-table_b3 & on_b4_b7 & on_b5_b15 & on_b6_b5 & on-table_b7 & on-table_b8 & on_b9_b3 & on_b10_b13 & on_b11_b8 & on-table_b12 & on_b13_b11 & on_b14_b4 & on_b15_b14 & clear_b1 & clear_b2 & clear_b6 & clear_b9 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p23 --algorithm laostar --heuristic ff
+[2021-12-13 04:35:44,460][INFO]: ====================================================================================================
+[2021-12-13 04:35:44,460][INFO]: Time: 2021-12-13 04:35:44.460220
+[2021-12-13 04:35:44,460][INFO]: Processing problem data/blocksworld-ipc08/p24.pddl
+[2021-12-13 04:35:44,460][DEBUG]: name=p24
+[2021-12-13 04:35:44,460][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 04:35:44,460][DEBUG]: problem=data/blocksworld-ipc08/p24.pddl
+[2021-12-13 04:35:44,460][DEBUG]: formula=emptyhand & on_b1_b14 & on_b2_b4 & on_b3_b9 & on_b4_b12 & on-table_b5 & on_b6_b1 & on_b7_b6 & on_b8_b10 & on_b9_b15 & on_b10_b7 & on-table_b11 & on_b12_b13 & on_b13_b8 & on-table_b14 & on-table_b15 & clear_b2 & clear_b3 & clear_b5 & clear_b11
+[2021-12-13 04:35:44,460][DEBUG]: mapping=None
+[2021-12-13 04:35:44,460][DEBUG]: timeout=600.0
+[2021-12-13 04:35:44,460][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 04:45:44,488][INFO]: name=p24
+status=Status.TIMEOUT
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=600.0030563279979
+nb_node_expanded=None
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p24.pddl --formula emptyhand & on_b1_b14 & on_b2_b4 & on_b3_b9 & on_b4_b12 & on-table_b5 & on_b6_b1 & on_b7_b6 & on_b8_b10 & on_b9_b15 & on_b10_b7 & on-table_b11 & on_b12_b13 & on_b13_b8 & on-table_b14 & on-table_b15 & clear_b2 & clear_b3 & clear_b5 & clear_b11 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p24 --algorithm laostar --heuristic ff
+[2021-12-13 04:45:44,542][INFO]: ====================================================================================================
+[2021-12-13 04:45:44,542][INFO]: Time: 2021-12-13 04:45:44.542505
+[2021-12-13 04:45:44,542][INFO]: Processing problem data/blocksworld-ipc08/p25.pddl
+[2021-12-13 04:45:44,542][DEBUG]: name=p25
+[2021-12-13 04:45:44,542][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 04:45:44,542][DEBUG]: problem=data/blocksworld-ipc08/p25.pddl
+[2021-12-13 04:45:44,542][DEBUG]: formula=emptyhand & on-table_b1 & on_b2_b9 & on_b3_b7 & on_b4_b5 & on_b5_b12 & on_b6_b1 & on_b7_b15 & on_b8_b11 & on_b9_b10 & on_b10_b8 & on_b11_b13 & on_b12_b3 & on-table_b13 & on_b14_b2 & on_b15_b6 & clear_b4 & clear_b14
+[2021-12-13 04:45:44,542][DEBUG]: mapping=None
+[2021-12-13 04:45:44,542][DEBUG]: timeout=600.0
+[2021-12-13 04:45:44,542][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 04:55:44,569][INFO]: name=p25
+status=Status.TIMEOUT
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=600.0032774109968
+nb_node_expanded=None
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p25.pddl --formula emptyhand & on-table_b1 & on_b2_b9 & on_b3_b7 & on_b4_b5 & on_b5_b12 & on_b6_b1 & on_b7_b15 & on_b8_b11 & on_b9_b10 & on_b10_b8 & on_b11_b13 & on_b12_b3 & on-table_b13 & on_b14_b2 & on_b15_b6 & clear_b4 & clear_b14 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p25 --algorithm laostar --heuristic ff
+[2021-12-13 04:55:44,623][INFO]: ====================================================================================================
+[2021-12-13 04:55:44,623][INFO]: Time: 2021-12-13 04:55:44.623322
+[2021-12-13 04:55:44,623][INFO]: Processing problem data/blocksworld-ipc08/p26.pddl
+[2021-12-13 04:55:44,623][DEBUG]: name=p26
+[2021-12-13 04:55:44,623][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 04:55:44,623][DEBUG]: problem=data/blocksworld-ipc08/p26.pddl
+[2021-12-13 04:55:44,623][DEBUG]: formula=emptyhand & on-table_b1 & on_b2_b12 & on-table_b3 & on_b4_b9 & on_b5_b15 & on_b6_b10 & on_b7_b6 & on_b8_b11 & on_b9_b5 & on-table_b10 & on_b11_b3 & on-table_b12 & on_b13_b14 & on_b14_b7 & on-table_b15 & clear_b1 & clear_b2 & clear_b4 & clear_b8 & clear_b13
+[2021-12-13 04:55:44,623][DEBUG]: mapping=None
+[2021-12-13 04:55:44,623][DEBUG]: timeout=600.0
+[2021-12-13 04:55:44,623][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 05:05:44,651][INFO]: name=p26
+status=Status.TIMEOUT
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=600.0032292590004
+nb_node_expanded=None
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p26.pddl --formula emptyhand & on-table_b1 & on_b2_b12 & on-table_b3 & on_b4_b9 & on_b5_b15 & on_b6_b10 & on_b7_b6 & on_b8_b11 & on_b9_b5 & on-table_b10 & on_b11_b3 & on-table_b12 & on_b13_b14 & on_b14_b7 & on-table_b15 & clear_b1 & clear_b2 & clear_b4 & clear_b8 & clear_b13 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p26 --algorithm laostar --heuristic ff
+[2021-12-13 05:05:44,704][INFO]: ====================================================================================================
+[2021-12-13 05:05:44,704][INFO]: Time: 2021-12-13 05:05:44.704734
+[2021-12-13 05:05:44,704][INFO]: Processing problem data/blocksworld-ipc08/p27.pddl
+[2021-12-13 05:05:44,704][DEBUG]: name=p27
+[2021-12-13 05:05:44,704][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 05:05:44,705][DEBUG]: problem=data/blocksworld-ipc08/p27.pddl
+[2021-12-13 05:05:44,705][DEBUG]: formula=emptyhand & on_b1_b8 & on_b2_b10 & on_b3_b15 & on_b4_b14 & on_b5_b11 & on-table_b6 & on_b7_b4 & on_b8_b3 & on_b9_b1 & on_b10_b9 & on_b11_b6 & on_b12_b7 & on_b13_b5 & on-table_b14 & on-table_b15 & clear_b2 & clear_b12 & clear_b13
+[2021-12-13 05:05:44,705][DEBUG]: mapping=None
+[2021-12-13 05:05:44,705][DEBUG]: timeout=600.0
+[2021-12-13 05:05:44,705][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 05:15:44,731][INFO]: name=p27
+status=Status.TIMEOUT
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=600.0031833430003
+nb_node_expanded=None
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p27.pddl --formula emptyhand & on_b1_b8 & on_b2_b10 & on_b3_b15 & on_b4_b14 & on_b5_b11 & on-table_b6 & on_b7_b4 & on_b8_b3 & on_b9_b1 & on_b10_b9 & on_b11_b6 & on_b12_b7 & on_b13_b5 & on-table_b14 & on-table_b15 & clear_b2 & clear_b12 & clear_b13 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p27 --algorithm laostar --heuristic ff
+[2021-12-13 05:15:44,789][INFO]: ====================================================================================================
+[2021-12-13 05:15:44,789][INFO]: Time: 2021-12-13 05:15:44.789644
+[2021-12-13 05:15:44,789][INFO]: Processing problem data/blocksworld-ipc08/p28.pddl
+[2021-12-13 05:15:44,789][DEBUG]: name=p28
+[2021-12-13 05:15:44,789][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 05:15:44,789][DEBUG]: problem=data/blocksworld-ipc08/p28.pddl
+[2021-12-13 05:15:44,789][DEBUG]: formula=emptyhand & on-table_b1 & on_b2_b11 & on_b3_b15 & on_b4_b1 & on-table_b5 & on_b6_b14 & on_b7_b4 & on_b8_b7 & on-table_b9 & on-table_b10 & on_b11_b9 & on_b12_b2 & on-table_b13 & on_b14_b5 & on_b15_b8 & clear_b3 & clear_b6 & clear_b10 & clear_b12 & clear_b13
+[2021-12-13 05:15:44,789][DEBUG]: mapping=None
+[2021-12-13 05:15:44,789][DEBUG]: timeout=600.0
+[2021-12-13 05:15:44,790][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 05:25:44,817][INFO]: name=p28
+status=Status.TIMEOUT
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=600.0032563839995
+nb_node_expanded=None
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p28.pddl --formula emptyhand & on-table_b1 & on_b2_b11 & on_b3_b15 & on_b4_b1 & on-table_b5 & on_b6_b14 & on_b7_b4 & on_b8_b7 & on-table_b9 & on-table_b10 & on_b11_b9 & on_b12_b2 & on-table_b13 & on_b14_b5 & on_b15_b8 & clear_b3 & clear_b6 & clear_b10 & clear_b12 & clear_b13 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p28 --algorithm laostar --heuristic ff
+[2021-12-13 05:25:44,870][INFO]: ====================================================================================================
+[2021-12-13 05:25:44,870][INFO]: Time: 2021-12-13 05:25:44.870128
+[2021-12-13 05:25:44,870][INFO]: Processing problem data/blocksworld-ipc08/p29.pddl
+[2021-12-13 05:25:44,870][DEBUG]: name=p29
+[2021-12-13 05:25:44,870][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 05:25:44,870][DEBUG]: problem=data/blocksworld-ipc08/p29.pddl
+[2021-12-13 05:25:44,870][DEBUG]: formula=emptyhand & on_b1_b7 & on_b2_b5 & on_b3_b8 & on_b4_b3 & on_b5_b14 & on_b6_b1 & on_b7_b2 & on_b8_b9 & on_b9_b6 & on-table_b10 & on-table_b11 & on-table_b12 & on_b13_b15 & on-table_b14 & on_b15_b10 & clear_b4 & clear_b11 & clear_b12 & clear_b13
+[2021-12-13 05:25:44,870][DEBUG]: mapping=None
+[2021-12-13 05:25:44,870][DEBUG]: timeout=600.0
+[2021-12-13 05:25:44,870][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 05:35:44,897][INFO]: name=p29
+status=Status.TIMEOUT
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=600.0031066170013
+nb_node_expanded=None
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p29.pddl --formula emptyhand & on_b1_b7 & on_b2_b5 & on_b3_b8 & on_b4_b3 & on_b5_b14 & on_b6_b1 & on_b7_b2 & on_b8_b9 & on_b9_b6 & on-table_b10 & on-table_b11 & on-table_b12 & on_b13_b15 & on-table_b14 & on_b15_b10 & clear_b4 & clear_b11 & clear_b12 & clear_b13 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p29 --algorithm laostar --heuristic ff
+[2021-12-13 05:35:44,955][INFO]: ====================================================================================================
+[2021-12-13 05:35:44,955][INFO]: Time: 2021-12-13 05:35:44.955615
+[2021-12-13 05:35:44,955][INFO]: Processing problem data/blocksworld-ipc08/p30.pddl
+[2021-12-13 05:35:44,955][DEBUG]: name=p30
+[2021-12-13 05:35:44,955][DEBUG]: domain=data/blocksworld-ipc08/domain.pddl
+[2021-12-13 05:35:44,955][DEBUG]: problem=data/blocksworld-ipc08/p30.pddl
+[2021-12-13 05:35:44,955][DEBUG]: formula=emptyhand & on-table_b1 & on_b2_b6 & on_b3_b15 & on-table_b4 & on_b5_b9 & on_b6_b11 & on_b7_b13 & on-table_b8 & on_b9_b14 & on-table_b10 & on_b11_b1 & on_b12_b7 & on_b13_b2 & on_b14_b3 & on-table_b15 & clear_b4 & clear_b5 & clear_b8 & clear_b10 & clear_b12
+[2021-12-13 05:35:44,955][DEBUG]: mapping=None
+[2021-12-13 05:35:44,955][DEBUG]: timeout=600.0
+[2021-12-13 05:35:44,955][DEBUG]: tool=p4p-mynd-sc-ff
+[2021-12-13 05:45:44,984][INFO]: name=p30
+status=Status.TIMEOUT
+time_compilation=-1.0
+time_tool=-1.0
+time_end2end=600.0033824750026
+nb_node_expanded=None
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past --domain data/blocksworld-ipc08/domain.pddl --problem data/blocksworld-ipc08/p30.pddl --formula emptyhand & on-table_b1 & on_b2_b6 & on_b3_b15 & on-table_b4 & on_b5_b9 & on_b6_b11 & on_b7_b13 & on-table_b8 & on_b9_b14 & on-table_b10 & on_b11_b1 & on_b12_b7 & on_b13_b2 & on_b14_b3 & on-table_b15 & clear_b4 & clear_b5 & clear_b8 & clear_b10 & clear_b12 --working-dir results/experiment-type-2-2021-12-13T01:06:37.586069/p4p-mynd-sc-ff/p30 --algorithm laostar --heuristic ff
