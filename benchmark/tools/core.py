@@ -343,8 +343,8 @@ def extract_from_fd(output):
     )
 
     timed_out_match = re.search("Timed out.", output)
-    solution_found_match = re.search("Search exit code: 0", output)
-    no_solution_match = re.search("Search exit code: 12", output)
+    solution_found_match = re.search("search exit code: 0", output)
+    no_solution_match = re.search("search exit code: 12", output)
     if solution_found_match is not None:
         status = Status.SUCCESS
     elif no_solution_match is not None:
