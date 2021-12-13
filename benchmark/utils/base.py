@@ -104,5 +104,5 @@ def generate_problems(
 
 def is_deterministic(domain_path: Path):
     content = domain_path.read_text()
-    match = re.match("\Wnon-deterministic\W", content)
+    match = re.search("\W:non-deterministic\W", content)
     return match is None
