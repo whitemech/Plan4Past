@@ -25,7 +25,12 @@ def plan(domain_path, problem_path, algorithm, heuristic, working_dir):
     """Planning for temporally extended goals (LTLf or PLTLf)."""
     domain_path = str(Path(domain_path).absolute())
     problem_path = str(Path(problem_path).absolute())
-    working_dir = working_dir if working_dir is not None else tempfile.tempdir
+    if working_dir:
+        working_dir = Path(args.working_dir)
+        working_dir.mkdir(exist_ok=True)
+    else:
+        working_dir = Path(tempfile.mkdtemp())
+
     translate_command = [sys.executable, f"{MYND_DIR}/translator-fond/translate.py", f"{domain_path}",
                          f"{problem_path}"]
     launch(translate_command, cwd=working_dir)
@@ -52,7 +57,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Wrapper for mynd.")
     parser.add_argument('-d', dest='domain_path', type=Path, required=True)
     parser.add_argument('-p', dest='problem_path', type=Path, required=True)
-    parser.add_argument('-a', dest='algorithm', type=str, choices=ALGORITHMS, default="laostar")
+    parser.add_argument('-a', "--algorithm", dest='algorithm', type=str, choices=ALGORITHMS, default="laostar")
     parser.add_argument('--heuristic', dest='heuristic', type=str, choices=HEURISTICS, default="ff")
     parser.add_argument('--working-dir', dest='working_dir', type=str, default=None)
     args = parser.parse_args()

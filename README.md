@@ -31,6 +31,11 @@ For development: install `pddl` in development mode:
 pip install -e third_party/pddl
 ```
 
+Also install other local dependencies:
+```
+./scripts/update-local-dependencies.sh
+```
+
 ### Planners
 
 Run:

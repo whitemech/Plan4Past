@@ -1,6 +1,12 @@
 import operator
 import re
 from pathlib import Path
+<<<<<<< HEAD
+
+from pddl.logic.base import And
+from pddl.parser.problem import ProblemParser
+=======
+>>>>>>> benchmark
 
 nan = float("nan")
 CTRL_C_EXIT_CODE = -15
@@ -18,6 +24,16 @@ def try_to_get_float(pattern: str, text: str, default=-1.0) -> float:
     return number
 
 
+def get_reachability_goal(problem_path: Path) -> str:
+    """Get reachability goal from problem."""
+    problem_obj = ProblemParser()(problem_path.read_text())
+    goal_formula = problem_obj.goal
+    if isinstance(goal_formula, And):
+        # [1:-1] to remove brackets
+        return " & ".join([str(atom)[1:-1].replace(" ", "_") for atom in goal_formula.operands])
+    raise ValueError("expected an 'and' goal")
+
+
 def get_tools(benchmark_dir: Path):
     tool_to_tsv = {}
     tool_dirs = list(filter(operator.methodcaller("is_dir"), benchmark_dir.iterdir()))
@@ -27,4 +43,3 @@ def get_tools(benchmark_dir: Path):
         tsv_file = tsv_files[0]
         tool_to_tsv[tool_dir.name] = tsv_file
     return tool_to_tsv
-

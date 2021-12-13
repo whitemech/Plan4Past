@@ -16,3 +16,6 @@
 [submodule "third_party/spot"]
 	path = third_party/spot
 	url = https://gitlab.lrde.epita.fr/spot/spot
+[submodule "third_party/pylogics"]
+	path = third_party/pylogics
+	url = https://github.com/whitemech/pylogics.git

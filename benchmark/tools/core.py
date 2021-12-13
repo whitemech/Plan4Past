@@ -9,12 +9,13 @@ from enum import Enum
 from pathlib import Path
 from typing import List, Dict, Type, Union, Optional, Any
 
-from benchmark.utils.base import CTRL_C_EXIT_CODE, try_to_get_float
+from benchmark.utils.base import try_to_get_float
 
 
 class ToolID(Enum):
     FAST_DOWNWARD = "fast-downward"
-    MYND = "mynd"
+    MYND_STRONG_FF = "mynd-s-ff"
+    MYND_STRONG_CYCLIC_FF = "mynd-sc-ff"
     FOND4LTLfPLTLf_MYND_STRONG_FF = "f4lp-mynd-s-ff"
     FOND4LTLfPLTLf_MYND_STRONG_HMAX = "f4lp-mynd-s-hmax"
     FOND4LTLfPLTLf_MYND_STORNG_CYCLIC_FF = "f4lp-mynd-sc-ff"

@@ -53,3 +53,11 @@ Print data as table:
 ```
 python benchmark/plotting/table.py --directory output --timeout 60.0
 ```
+
+## Experiment type 2
+
+### Blocksworld 
+
+```
+python benchmark/experiments/experiment-type-2.py --timeout 60.0 --dataset-dir data/blocksworld-ipc08
+```
