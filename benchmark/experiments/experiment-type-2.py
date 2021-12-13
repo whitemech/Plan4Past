@@ -108,7 +108,7 @@ def run_experiments(dataset_dir, timeout, output_dir):
     domain_file = dataset_dir / "domain.pddl"
     problem_files = sorted(set(dataset_dir.glob("*.pddl")) - {domain_file})
 
-    # run_mynd(output_dir, problem_files, domain_file, timeout)
+    run_mynd(output_dir, problem_files, domain_file, timeout)
     run_p4p(output_dir, problem_files, domain_file, timeout)
 
 
