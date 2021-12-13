@@ -2,18 +2,18 @@
   (:requirements :typing :strips :non-deterministic)
   (:types location)
   (:predicates (vehicleat ?loc - location)
-	       (spare-in ?loc - location)
+	       (sparein ?loc - location)
 	       (road ?from - location ?to - location)
-	       (not-flattire))
+	       (notflattire))
   (:action move-car
     :parameters (?from - location ?to - location)
-    :precondition (and (vehicleat ?from) (road ?from ?to) (not-flattire))
+    :precondition (and (vehicleat ?from) (road ?from ?to) (notflattire))
     :effect (and 
 		 (oneof (and (vehicleat ?to) (not (vehicleat ?from)))
-			(and (vehicleat ?to) (not (vehicleat ?from)) (not (not-flattire))))))
+			(and (vehicleat ?to) (not (vehicleat ?from)) (not (notflattire))))))
 
   (:action changetire
     :parameters (?loc - location)
-    :precondition (and (spare-in ?loc) (vehicleat ?loc))
-    :effect (and (not (spare-in ?loc)) (not-flattire))))
+    :precondition (and (sparein ?loc) (vehicleat ?loc))
+    :effect (and (not (sparein ?loc)) (notflattire))))
 
