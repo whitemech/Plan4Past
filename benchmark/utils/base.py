@@ -1,12 +1,9 @@
 import operator
 import re
 from pathlib import Path
-<<<<<<< HEAD
 
 from pddl.logic.base import And
 from pddl.parser.problem import ProblemParser
-=======
->>>>>>> benchmark
 
 nan = float("nan")
 CTRL_C_EXIT_CODE = -15
