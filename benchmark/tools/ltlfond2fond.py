@@ -4,7 +4,7 @@ from enum import Enum
 from pathlib import Path
 from typing import List, Optional, Union
 
-from benchmark.tools.core import Tool, Result, Status, ToolID, SearchAlg, Heuristic, extract_from_mynd
+from benchmark.tools.core import Tool, Result, Status, ToolID, SearchAlg, Heuristic, extract_from_mynd, extract_from_fd
 from benchmark.utils.base import try_to_get_float
 from planning_with_past import REPO_ROOT
 
@@ -12,6 +12,7 @@ DEFAULT_BIN_LF2F_PATH = (REPO_ROOT / "bin" / "ltlfond2fond_wrapper").absolute()
 
 
 class SupportedPlanners:
+    FD = "fd"
     MYND = "mynd"
 
 
@@ -50,6 +51,37 @@ class LTLFond2FondTool(Tool, ABC):
         if working_dir:
             cli_args += ["--working-dir", working_dir]
         return cli_args
+
+
+class LTLFond2FondFDTool(LTLFond2FondTool):
+
+    NAME = "LF2F-FD"
+
+    def __init__(
+        self, binary_path: str, search: Union[SearchAlg, str] = SearchAlg.ASTAR, heuristic: Union[Heuristic, str] = Heuristic.FF
+    ):
+        """Initialize the tool."""
+        super().__init__(binary_path, SupportedPlanners.FD)
+
+        self.search = SearchAlg(search)
+        self.heuristic = Heuristic(heuristic)
+
+    def get_cli_args(
+        self,
+        domain: Path,
+        problem: Path,
+        formula: Optional[str] = None,
+        mapping: Optional[Path] = None,
+        working_dir: Optional[str] = None
+    ) -> List[str]:
+        """Get CLI arguments."""
+        cli_args = super().get_cli_args(domain, problem, formula, mapping, working_dir)
+        cli_args += ["--search", f"{self.search.value}({self.heuristic.value}())"]
+        return cli_args
+
+    def collect_statistics(self, output: str) -> Result:
+        """Collect statistics."""
+        return extract_from_fd(output)
 
 
 class LTLFond2FondMyNDTool(LTLFond2FondTool):

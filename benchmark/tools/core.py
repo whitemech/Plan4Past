@@ -13,17 +13,24 @@ from benchmark.utils.base import try_to_get_float
 
 
 class ToolID(Enum):
-    FAST_DOWNWARD = "fast-downward"
+    FAST_DOWNWARD_FF = "fd-ff"
+    FAST_DOWNWARD_HMAX = "fd-hmax"
     MYND_STRONG_FF = "mynd-s-ff"
     MYND_STRONG_CYCLIC_FF = "mynd-sc-ff"
+    FOND4LTLfPLTLf_FD_FF = "f4lp-fd-ff"
+    FOND4LTLfPLTLf_FD_HMAX = "f4lp-fd-hmax"
     FOND4LTLfPLTLf_MYND_STRONG_FF = "f4lp-mynd-s-ff"
     FOND4LTLfPLTLf_MYND_STRONG_HMAX = "f4lp-mynd-s-hmax"
     FOND4LTLfPLTLf_MYND_STORNG_CYCLIC_FF = "f4lp-mynd-sc-ff"
     FOND4LTLfPLTLf_MYND_STORNG_CYCLIC_HMAX = "f4lp-mynd-sc-hmax"
+    PLAN4PAST_FD_FF = "p4p-fd-ff"
+    PLAN4PAST_FD_HMAX = "p4p-fd-hmax"
     PLAN4PAST_MYND_STRONG_FF = "p4p-mynd-s-ff"
     PLAN4PAST_MYND_STRONG_HMAX = "p4p-mynd-s-hmax"
     PLAN4PAST_MYND_STORNG_CYCLIC_FF = "p4p-mynd-sc-ff"
     PLAN4PAST_MYND_STORNG_CYCLIC_HMAX = "p4p-mynd-sc-hmax"
+    LTLFOND2FOND_FD_FF = "lf2f-fd-ff"
+    LTLFOND2FOND_FD_HMAX = "lf2f-fd-hmax"
     LTLFOND2FOND_MYND_STRONG_FF = "lf2f-mynd-s-ff"
     LTLFOND2FOND_MYND_STRONG_HMAX = "lf2f-mynd-s-hmax"
     LTLFOND2FOND_MYND_STORNG_CYCLIC_FF = "lf2f-mynd-sc-ff"
@@ -38,15 +45,14 @@ class Status(Enum):
 
 
 class SearchAlg(Enum):
-    """MyND Search algorithms"""
-
+    """Search algorithms"""
+    ASTAR = "astar"
     LAOSTAR = "laostar"
     AOSTAR = "aostar"
 
 
 class Heuristic(Enum):
-    """MyND heuristics"""
-
+    """Heuristics"""
     FF = "ff"
     HMAX = "hmax"
 
@@ -326,3 +332,32 @@ def extract_from_mynd(output):
 
     return Result("", [], compilation_time, tool_time, end2end_time, nb_nodes_expansions, status)
 
+
+def extract_from_fd(output):
+    tool_time = try_to_get_float("Total time: (.*)s", output)
+    compilation_time = try_to_get_float(
+        "Compilation time: +([0-9.]+) seconds", output
+    )
+    end2end_time = try_to_get_float(
+        "Total time: +([0-9.]+) seconds", output, default=None
+    )
+
+    timed_out_match = re.search("Timed out.", output)
+    solution_found_match = re.search("Search exit code: 0", output)
+    no_solution_match = re.search("Search exit code: 12", output)
+    if solution_found_match is not None:
+        status = Status.SUCCESS
+    elif no_solution_match is not None:
+        status = Status.FAILURE
+    elif timed_out_match is not None:
+        status = Status.TIMEOUT
+    else:
+        status = Status.ERROR
+
+    nb_nodes_expansion_match = re.search("Expanded ([0-9]+) state\(s\).", output)
+    if nb_nodes_expansion_match:
+        nb_nodes_expansions = int(nb_nodes_expansion_match.group(1))
+    else:
+        nb_nodes_expansions = None
+
+    return Result("", [], compilation_time, tool_time, end2end_time, nb_nodes_expansions, status)
