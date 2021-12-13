@@ -14,7 +14,8 @@ from benchmark.utils.base import (
     TSV_FILENAME,
     default_output_dir,
     generate_problems,
-    REPO_ROOT, ExperimentType,
+    REPO_ROOT,
+    ExperimentType,
 )
 from benchmark.utils.generate import get_generator
 
@@ -36,7 +37,6 @@ def run_experiments(
     configure_logging(str(output_dir / "output.log"))
     logging.info(f"Using timeout {timeout}, writing to {output_dir}")
     logging.info(f"Tools: {tools}")
-
 
     domain_path = output_dir / "domain.pddl"
     generator = get_generator(experiment_type, dataset_name)
@@ -115,7 +115,17 @@ def main(
     max_param: int,
     step: int,
 ):
-    run_experiments(dataset_name, dataset_dir, timeout, output_dir, tool, ExperimentType(experiment_type), min_param, max_param, step)
+    run_experiments(
+        dataset_name,
+        dataset_dir,
+        timeout,
+        output_dir,
+        tool,
+        ExperimentType(experiment_type),
+        min_param,
+        max_param,
+        step,
+    )
 
 
 if __name__ == "__main__":

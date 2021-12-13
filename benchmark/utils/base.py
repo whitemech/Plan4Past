@@ -86,7 +86,11 @@ def get_dataset_dir(tool_id: str, dataset_dir_root: Path, dataset_name: str) -> 
 
 
 def generate_problems(
-    min_param: int, max_param: int, step: int, output_dir: Path, generate_problem_callable
+    min_param: int,
+    max_param: int,
+    step: int,
+    output_dir: Path,
+    generate_problem_callable,
 ) -> List[Path]:
     """Generate problems"""
     result = []
@@ -102,4 +106,3 @@ def is_deterministic(domain_path: Path):
     content = domain_path.read_text()
     match = re.match("\Wnon-deterministic\W", content)
     return match is None
-

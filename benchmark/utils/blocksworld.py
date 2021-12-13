@@ -1,5 +1,3 @@
-
-
 def generate_problem_blocksworld(nb_blocks: int) -> str:
     objects = [f"b{i}" for i in range(1, nb_blocks + 1)]
     init_on_table = [f"(ontable b{i})" for i in range(1, nb_blocks + 1)]

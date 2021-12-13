@@ -2,7 +2,11 @@ from abc import ABC, abstractmethod
 from typing import Dict, Type
 
 from benchmark.utils.base import ExperimentType
-from benchmark.utils.blocksworld import generate_problem_blocksworld, generate_formula, generate_future_formula
+from benchmark.utils.blocksworld import (
+    generate_problem_blocksworld,
+    generate_formula,
+    generate_future_formula,
+)
 
 
 def get_generator(experiment_type: ExperimentType, dataset_name: str):
@@ -14,7 +18,6 @@ def get_generator(experiment_type: ExperimentType, dataset_name: str):
 
 
 class ExperimentGenerator(ABC):
-
     @classmethod
     @abstractmethod
     def generate_problem(cls, i: int):
@@ -27,11 +30,9 @@ class ExperimentGenerator(ABC):
 
 
 class BlocksworldGenerator1A(ExperimentGenerator):
-
     @classmethod
     def generate_problem(cls, i: int):
         return generate_problem_blocksworld(i)
-
 
     @classmethod
     def generate_formula(cls, tool_id: str, param: int):
@@ -42,7 +43,6 @@ class BlocksworldGenerator1A(ExperimentGenerator):
 
 
 class BlocksworldGenerator1B(ExperimentGenerator):
-
     @classmethod
     def generate_problem(cls, i: int):
         return generate_problem_blocksworld(i)
@@ -53,7 +53,6 @@ class BlocksworldGenerator1B(ExperimentGenerator):
         if future:
             return generate_future_formula(nb_blocks)
         return generate_formula(nb_blocks)
-
 
 
 _GENERATORS_1A: Dict[str, Type[ExperimentGenerator]] = {

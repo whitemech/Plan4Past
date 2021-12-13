@@ -10,7 +10,8 @@ from benchmark.utils.base import (
     get_reachability_goal,
     TSV_FILENAME,
     configure_logging,
-    default_output_dir, is_deterministic,
+    default_output_dir,
+    is_deterministic,
 )
 
 
@@ -62,16 +63,8 @@ def run_experiments(dataset_dir, timeout, output_dir):
         baseline_tool = ToolID.MYND_STRONG_CYCLIC_FF
         new_tool = ToolID.PLAN4PAST_MYND_STORNG_CYCLIC_FF
 
-    run_tool(baseline_tool.value,
-             output_dir,
-             problem_files,
-             domain_file,
-             timeout)
-    run_tool(new_tool.value,
-             output_dir,
-             problem_files,
-             domain_file,
-             timeout)
+    run_tool(baseline_tool.value, output_dir, problem_files, domain_file, timeout)
+    run_tool(new_tool.value, output_dir, problem_files, domain_file, timeout)
 
 
 @click.command()
