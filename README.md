@@ -12,12 +12,13 @@ Planning for temporal goals in past temporal logic.
 First, clone the repository:
 ```
 git clone git@github.com:whitemech/planning-for-past-temporal-goals --recursive
+git submodule update --init --recursive
 ```
 
 Then, use Pipenv to set up the development environment:
 
 ```
-pipenv shell --python=python3.7 && pipnev install --dev
+pipenv shell --python=python3.7 && pipenv install --dev
 ```
 
 Install the package:
@@ -28,6 +29,11 @@ pip install .
 For development: install `pddl` in development mode:
 ```
 pip install -e third_party/pddl
+```
+
+Also install other local dependencies:
+```
+./scripts/update-local-dependencies.sh
 ```
 
 ### Planners
@@ -60,6 +66,32 @@ edge_labels = dict([((n1, n2), action)
 nx.draw_networkx_edge_labels(plan.graph, pos, edge_labels=edge_labels)
 plt.show()
 ```
+
+## Use the planner
+
+The main entrypoint for our planner is `./bin/pltlf-planner`. Usage: 
+
+```
+./bin/pltlf-planner
+    --domain PDDL_DOMAIN_FILEPATH
+    --problem PDDL_PROBLEM_FILEPATH
+    --map MAP_FILEPATH
+    --formula PLTL_FORMULA
+    [--output-dir OUTPUT_DIR]
+```
+
+E.g.:
+
+```
+./bin/pltlf-planner \
+    --domain examples/pddl/fond-domain.pddl \
+    --problem examples/pddl/fond-p-0.pddl \
+    --map examples/pddl/fond-p-0.map \
+    --formula "vehicleat_l22 & O(vehicleat_l31)" \
+    --output-dir output \
+    --force
+```
+
 
 ## Tests
 
