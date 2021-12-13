@@ -37,7 +37,7 @@
     D
     C
     A
-    B
+    B - blocks
 )
 (:init
     (CLEAR S)

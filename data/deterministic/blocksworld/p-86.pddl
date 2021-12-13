@@ -42,7 +42,7 @@
     D
     C
     A
-    B
+    B - blocks
 )
 (:init
     (CLEAR N1)

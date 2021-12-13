@@ -1,6 +1,6 @@
 (define (problem BLOCKS-11-1)
 (:domain blocks-domain)
-(:objects B C E A H K I G D F J )
+(:objects B C E A H K I G D F J - block)
 (:INIT (CLEAR J) (CLEAR F) (CLEAR D) (CLEAR G) (ONTABLE I) (ONTABLE K)
  (ONTABLE H) (ONTABLE A) (ON J I) (ON F E) (ON E K) (ON D C) (ON C H) (ON G B)
  (ON B A) (EMPTYHAND))
