@@ -1,7 +1,7 @@
 
 (define (problem triangle-tire-2)
   (:domain triangle-tire)
-  (:objects l-1-1 l-1-2 l-1-3 l-1-4 l-1-5 l-2-1 l-2-2 l-2-3 l-2-4 l-2-5 l-3-1 l-3-2 l-3-3 l-3-4 l-3-5 l-4-1 l-4-2 l-4-3 l-4-4 l-4-5 l-5-1 l-5-2 l-5-3 l-5-4 l-5-5 - location)
-  (:init (vehicle-at l-1-1)(road l-1-1 l-1-2)(road l-1-2 l-1-3)(road l-1-3 l-1-4)(road l-1-4 l-1-5)(road l-1-1 l-2-1)(road l-1-2 l-2-2)(road l-1-3 l-2-3)(road l-1-4 l-2-4)(road l-2-1 l-1-2)(road l-2-2 l-1-3)(road l-2-3 l-1-4)(road l-2-4 l-1-5)(sparein l-2-1)(sparein l-2-2)(sparein l-2-3)(sparein l-2-4)(road l-3-1 l-3-2)(road l-3-2 l-3-3)(road l-2-1 l-3-1)(road l-2-3 l-3-3)(road l-3-1 l-2-2)(road l-3-3 l-2-4)(sparein l-3-1)(sparein l-3-3)(road l-3-1 l-4-1)(road l-3-2 l-4-2)(road l-4-1 l-3-2)(road l-4-2 l-3-3)(sparein l-4-1)(sparein l-4-2)(road l-4-1 l-5-1)(road l-5-1 l-4-2)(sparein l-5-1)(sparein l-5-1)(notflattire))
-  (:goal (vehicle-at l-1-5)))
+  (:objects l1x1 l1x2 l1x3 l1x4 l1x5 l2x1 l2x2 l2x3 l2x4 l2x5 l3x1 l3x2 l3x3 l3x4 l3x5 l4x1 l4x2 l4x3 l4x4 l4x5 l5x1 l5x2 l5x3 l5x4 l5x5 - location)
+  (:init (vehicleat l1x1)(road l1x1 l1x2)(road l1x2 l1x3)(road l1x3 l1x4)(road l1x4 l1x5)(road l1x1 l2x1)(road l1x2 l2x2)(road l1x3 l2x3)(road l1x4 l2x4)(road l2x1 l1x2)(road l2x2 l1x3)(road l2x3 l1x4)(road l2x4 l1x5)(sparein l2x1)(sparein l2x2)(sparein l2x3)(sparein l2x4)(road l3x1 l3x2)(road l3x2 l3x3)(road l2x1 l3x1)(road l2x3 l3x3)(road l3x1 l2x2)(road l3x3 l2x4)(sparein l3x1)(sparein l3x3)(road l3x1 l4x1)(road l3x2 l4x2)(road l4x1 l3x2)(road l4x2 l3x3)(sparein l4x1)(sparein l4x2)(road l4x1 l5x1)(road l5x1 l4x2)(sparein l5x1)(sparein l5x1)(notflattire))
+  (:goal (vehicleat l1x5)))
 
