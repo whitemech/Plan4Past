@@ -30,7 +30,7 @@ class FastDownwardTool(Tool):
         assert formula is None, "formula argument not supported"
         assert mapping is None, "mapping argument not supported"
         cli_args = [self.binary_path, domain, problem,
-                    "--search", f"{self.search.value}({self.heuristic.value}())"]
+                    "--search", f'"{self.search.value}({self.heuristic.value}())"']
         if working_dir:
             cli_args += ["--working-dir", working_dir]
         return cli_args
