@@ -36,10 +36,23 @@ You may need `export PYTHONPATH=.` before running the commands.
 
 ## Blocksworld 1
 
+To run the experiments:
+
 ```
-python benchmark/experiments/blocksworld1a.py --timeout 60.0 --max-nb-blocks 20 -t 'f4lp-mynd-sc-ff' -t 'p4p-mynd-sc-ff' -t 'lf2f-mynd-sc-ff'
+python benchmark/experiments/blocksworld1a.py --timeout 60.0 --max-nb-blocks 20 -t 'f4lp-mynd-sc-ff' -t 'p4p-mynd-sc-ff' -t 'lf2f-mynd-sc-ff' --output-dir output
 ```
 
+Produce the plot:
+
+```
+python benchmark/plotting/plot.py output --output output.pdf --xlabel "Parameter: Number of blocks" --ylabel "Time (seconds)"
+```
+
+Print data as table:
+
+```
+python benchmark/plotting/table.py --directory output --timeout 60.0
+```
 
 ## Experiment type 2
 

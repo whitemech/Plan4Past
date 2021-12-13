@@ -10,7 +10,8 @@ import tempfile
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from bin.utils import ALGORITHMS, HEURISTICS, PLTLF_WRAPPER_PATH, MYND_WRAPPER_PATH, launch
+from bin.utils import ALGORITHMS, HEURISTICS, PLTLF_WRAPPER_PATH, MYND_WRAPPER_PATH, launch, FD_WRAPPER_PATH, \
+    SUPPORTED_PLANNERS
 
 DEFAULT_OUTPUT_DIR: str = "output"
 BIN_DIR = Path(inspect.getframeinfo(inspect.currentframe()).filename).parent
@@ -39,6 +40,7 @@ def parse_args():
     parser.add_argument("--formula", type=str, required=True)
     parser.add_argument("--map", dest="map_file", type=is_valid_file, default=None, required=False)
     parser.add_argument("--output-dir", type=str, default=DEFAULT_OUTPUT_DIR)
+    parser.add_argument('-t', dest='planner', type=str, choices=SUPPORTED_PLANNERS, required=True)
     parser.add_argument('-a', "--algorithm", dest='algorithm', type=str, choices=ALGORITHMS, default="laostar")
     parser.add_argument('--heuristic', dest='heuristic', type=str, choices=HEURISTICS, default="ff")
     parser.add_argument('--working-dir', dest='working_dir', type=str, default=None)
@@ -79,12 +81,23 @@ if __name__ == '__main__':
     elapsed_time_compilation = (end_compilation.timestamp() - start.timestamp())
     print(f"Compilation time: {elapsed_time_compilation} seconds")
 
-    cli_args = [str(MYND_WRAPPER_PATH),
-                "-d", str(new_domain_file),
-                "-p", str(new_problem_file),
-                "-a", str(args.algorithm),
-                "--heuristic", str(args.heuristic),
-                "--working-dir", str(working_dir)]
+    cli_args = []
+    if args.planner == "mynd":
+        cli_args = [str(MYND_WRAPPER_PATH),
+                    "-d", str(new_domain_file),
+                    "-p", str(new_problem_file),
+                    "-a", str(args.algorithm),
+                    "--heuristic", str(args.heuristic),
+                    "--working-dir", str(working_dir)]
+    elif args.planner == "fd":
+        cli_args = [str(FD_WRAPPER_PATH),
+                    "-d", str(new_domain_file),
+                    "-p", str(new_problem_file),
+                    "-a", str(args.algorithm),
+                    "--heuristic", str(args.heuristic),
+                    "--working-dir", str(working_dir)]
+    else:
+        raise ValueError
     launch(cli_args)
     end_tool = datetime.datetime.now()
     end_tool_time = end_tool - end_compilation

@@ -52,7 +52,7 @@ def plan(domain_path, problem_path, algorithm, heuristic, working_dir):
 
 if __name__ == '__main__':
     """
-    Usage: python mynd_wrapper.py -d <DOMAIN-PATH> -p <PROBLEM-PATH> -s <STRONG>
+    Usage: python mynd_wrapper.py -d <DOMAIN-PATH> -p <PROBLEM-PATH> -a <ALG> --heuristic <H> --working-dir <WD>
     """
     parser = argparse.ArgumentParser(description="Wrapper for mynd.")
     parser.add_argument('-d', dest='domain_path', type=Path, required=True)
