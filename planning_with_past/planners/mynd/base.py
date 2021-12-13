@@ -82,7 +82,9 @@ class MyNDPlanner(Planner):
         """Return the heuristic argument."""
         return self._heuristic
 
-    def plan(self, domain: Path, problem: Path, **_options: Dict[str, str]) -> Plan:
+    def plan(
+        self, domain: Path, problem: Path, **_options: Dict[str, str]
+    ) -> Plan:
         """
         Compute a (non-deterministic) policy.
 

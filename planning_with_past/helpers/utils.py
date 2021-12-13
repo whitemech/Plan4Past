@@ -25,13 +25,7 @@ import contextlib
 import os
 from os import PathLike
 from pathlib import Path
-from typing import Dict, Generator
-
-from pddl.logic import Predicate, constants
-from pylogics.syntax.base import Formula
-from pylogics.syntax.pltl import Atomic as PLTLAtomic
-
-from planning_with_past.utils.atoms_visitor import find_atoms
+from typing import Generator
 
 
 @contextlib.contextmanager
@@ -65,16 +59,3 @@ def replace_symbols(name: str):
         .replace("~", "not-")
         .replace(" ", "-")
     )
-
-
-def default_mapping(f: Formula) -> Dict[PLTLAtomic, Predicate]:
-    """Compute mapping from atoms to fluents using underscores."""
-    symbols = find_atoms(f)
-    from_atoms_to_fluents = dict()
-    for symbol in symbols:
-        name, *cons = symbol.name.split("_")
-        if cons:
-            from_atoms_to_fluents[symbol] = Predicate(name, *constants(" ".join(cons)))
-        else:
-            from_atoms_to_fluents[symbol] = Predicate(name)
-    return from_atoms_to_fluents

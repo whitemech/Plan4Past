@@ -27,12 +27,13 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Dict
 
-from planning_with_past import REPO_ROOT
+from planning_with_past import PACKAGE_ROOT
 from planning_with_past.helpers.utils import cd
 from planning_with_past.planners.base import Planner
 from planning_with_past.plans import Plan
 
-DEFAULT_BIN_FAST_DOWNWARD_PATH = (REPO_ROOT / "bin" / "fast-downward").absolute()
+repo_root = PACKAGE_ROOT.parent
+DEFAULT_BIN_DOWNWARD_PATH = (repo_root / "bin" / "fast-downward").absolute()
 DEFAULT_HEURISTIC = "ff()"
 DEFAULT_SEARCH = f"astar({DEFAULT_HEURISTIC})"
 
@@ -43,7 +44,7 @@ class DownwardPlanner(Planner):
     """Wrapper to Downward planner."""
 
     def __init__(
-        self, bin_path: Path = DEFAULT_BIN_FAST_DOWNWARD_PATH, search: str = DEFAULT_SEARCH
+        self, bin_path: Path = DEFAULT_BIN_DOWNWARD_PATH, search: str = DEFAULT_SEARCH
     ) -> None:
         """
         Initialize the planner.

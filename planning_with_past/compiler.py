@@ -32,11 +32,7 @@ from pylogics.syntax.base import Formula, Logic
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
 from pylogics.utils.to_string import to_string
 
-from planning_with_past.helpers.utils import (
-    add_val_prefix,
-    default_mapping,
-    replace_symbols,
-)
+from planning_with_past.helpers.utils import add_val_prefix, replace_symbols
 from planning_with_past.utils.derived_visitor import derived_predicates
 from planning_with_past.utils.predicates_visitor import predicates
 from planning_with_past.utils.val_predicates_visitor import val_predicates
@@ -50,7 +46,7 @@ class Compiler:
         domain: Domain,
         problem: Problem,
         formula: Formula,
-        from_atoms_to_fluent: Optional[Dict[PLTLAtomic, Predicate]] = None,
+        from_atoms_to_fluent: Dict[PLTLAtomic, Predicate],
     ) -> None:
         """
         Initialize the compiler.
@@ -58,16 +54,12 @@ class Compiler:
         :param domain: the domain
         :param problem: the problem
         :param formula: the formula
-        :param from_atoms_to_fluent: optional mapping from atoms to fluent
         """
         self.domain = domain
         self.problem = problem
         self.formula = formula
-        if from_atoms_to_fluent:
-            self.from_atoms_to_fluent = from_atoms_to_fluent
-            self.validate_mapping(domain, formula, from_atoms_to_fluent)
-        else:
-            self.from_atoms_to_fluent = default_mapping(self.formula)
+        self.from_atoms_to_fluent = from_atoms_to_fluent
+        self.validate_mapping(domain, formula, from_atoms_to_fluent)
 
         assert self.formula.logic == Logic.PLTL, "only PLTL is supported!"
 
@@ -176,8 +168,8 @@ class Compiler:
             requirements=self.problem.requirements,
             objects=[*self.problem.objects],
             init=new_init,
-            goal=And(
-                Predicate(add_val_prefix(replace_symbols(to_string(self.formula)))), act
+            goal=Predicate(
+                add_val_prefix(replace_symbols(to_string(self.formula)))
             ),
         )
 
