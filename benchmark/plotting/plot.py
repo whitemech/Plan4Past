@@ -26,6 +26,24 @@ TOOL_TO_COLOR = {
     ToolID.PLAN4PAST_MYND_STORNG_CYCLIC_FF: "red",
     ToolID.LTLFOND2FOND_MYND_STORNG_CYCLIC_FF: "blue",
 }
+
+def get_marker(tool_id):
+    if "p4p" in tool_id:
+        return "v"
+    if "f4lp" in tool_id:
+        return "o"
+    if "lf2f" in tool_id:
+        return "X"
+
+def get_color(tool_id):
+    if "p4p" in tool_id:
+        return "red"
+    if "f4lp" in tool_id:
+        return "green"
+    if "lf2f" in tool_id:
+        return "blue"
+
+
 MARKER_CONFIGS = dict(
     markersize=5.0, markeredgewidth=0.5, markeredgecolor=(0.0, 0.0, 0.0, 1)
 )
@@ -88,8 +106,8 @@ def main(
     for idx, label in enumerate(labels):
         tool = tool_registry.make(label)
         tool_name = tool.NAME
-        tool_color = TOOL_TO_COLOR[ToolID(label)]
-        tool_marker = TOOL_TO_MARKER[ToolID(label)]
+        tool_color = get_color(label)
+        tool_marker = get_marker(label)
         plt.plot(
             x_axis,
             cactus[:, idx],
