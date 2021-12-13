@@ -44,9 +44,11 @@ def run_planner(
     working_dir: Optional[str] = None
 ) -> Result:
     tool = tool_registry.make(tool_id, **config)
-    if working_dir is not None and Path(working_dir).mkdir(exist_ok=True):
-        raise ValueError(f"Working dir {working_dir} already exists, please remove")
-    if working_dir is None:
+    if working_dir is not None:
+        if Path(working_dir).exists():
+            raise ValueError(f"Working dir {working_dir} already exists, please remove")
+        Path(working_dir).mkdir(exist_ok=False)
+    else:
         working_dir = tempfile.mkdtemp()
 
     logging.debug(f"name={name}")
