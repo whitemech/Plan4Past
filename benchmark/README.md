@@ -39,7 +39,7 @@ You may need `export PYTHONPATH=.` before running the commands.
 To run the experiments:
 
 ```
-python benchmark/experiments/blocksworld1a.py --timeout 60.0 --max-nb-blocks 20 -t 'f4lp-mynd-sc-ff' -t 'p4p-mynd-sc-ff' -t 'lf2f-mynd-sc-ff' --output-dir output
+python benchmark/experiments/experiment-1a.py --timeout 60.0 --max-nb-blocks 20 -t 'f4lp-mynd-sc-ff' -t 'p4p-mynd-sc-ff' -t 'lf2f-mynd-sc-ff' --output-dir output
 ```
 
 Produce the plot:

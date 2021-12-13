@@ -46,6 +46,7 @@ class Status(Enum):
 
 class SearchAlg(Enum):
     """Search algorithms"""
+
     ASTAR = "astar"
     LAOSTAR = "laostar"
     AOSTAR = "aostar"
@@ -53,6 +54,7 @@ class SearchAlg(Enum):
 
 class Heuristic(Enum):
     """Heuristics"""
+
     FF = "ff"
     HMAX = "hmax"
 
@@ -99,14 +101,10 @@ class Result:
             else "None"
         )
         time_tool_str = (
-            f"{self.time_tool:10.6f}"
-            if self.time_tool is not None
-            else "None"
+            f"{self.time_tool:10.6f}" if self.time_tool is not None else "None"
         )
         time_end2end_str = (
-            f"{self.time_end2end:10.6f}"
-            if self.time_end2end is not None
-            else "None"
+            f"{self.time_end2end:10.6f}" if self.time_end2end is not None else "None"
         )
         return (
             f"{self.name}\t"
@@ -165,7 +163,7 @@ class Tool(ABC):
         timeout: float = 5.0,
         cwd: Optional[str] = None,
         name: Optional[str] = None,
-        working_dir: Optional[str] = None
+        working_dir: Optional[str] = None,
     ) -> Result:
         """
         Apply the tool to a file.
@@ -239,7 +237,7 @@ class Tool(ABC):
         problem: Path,
         formula: Optional[str] = None,
         mapping: Optional[Path] = None,
-        working_dir: Optional[str] = None
+        working_dir: Optional[str] = None,
     ) -> List[str]:
         """Get CLI arguments."""
 
@@ -305,9 +303,7 @@ class ToolRegistry:
 
 def extract_from_mynd(output):
     tool_time = try_to_get_float("Tool time: +([0-9.]+) seconds", output)
-    compilation_time = try_to_get_float(
-        "Compilation time: +([0-9.]+) seconds", output
-    )
+    compilation_time = try_to_get_float("Compilation time: +([0-9.]+) seconds", output)
     end2end_time = try_to_get_float(
         "Total time: +([0-9.]+) seconds", output, default=None
     )
@@ -330,14 +326,14 @@ def extract_from_mynd(output):
     else:
         nb_nodes_expansions = None
 
-    return Result("", [], compilation_time, tool_time, end2end_time, nb_nodes_expansions, status)
+    return Result(
+        "", [], compilation_time, tool_time, end2end_time, nb_nodes_expansions, status
+    )
 
 
 def extract_from_fd(output):
     tool_time = try_to_get_float("Total time: (.*)s", output)
-    compilation_time = try_to_get_float(
-        "Compilation time: +([0-9.]+) seconds", output
-    )
+    compilation_time = try_to_get_float("Compilation time: +([0-9.]+) seconds", output)
     end2end_time = try_to_get_float(
         "Total time: +([0-9.]+) seconds", output, default=None
     )
@@ -360,4 +356,6 @@ def extract_from_fd(output):
     else:
         nb_nodes_expansions = None
 
-    return Result("", [], compilation_time, tool_time, end2end_time, nb_nodes_expansions, status)
+    return Result(
+        "", [], compilation_time, tool_time, end2end_time, nb_nodes_expansions, status
+    )

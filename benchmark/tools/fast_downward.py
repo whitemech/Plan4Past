@@ -2,7 +2,15 @@ import re
 from pathlib import Path
 from typing import List, Optional, Union
 
-from benchmark.tools.core import Tool, ToolID, Result, Status, SearchAlg, Heuristic, extract_from_fd
+from benchmark.tools.core import (
+    Tool,
+    ToolID,
+    Result,
+    Status,
+    SearchAlg,
+    Heuristic,
+    extract_from_fd,
+)
 
 
 class FastDownwardTool(Tool):
@@ -10,8 +18,12 @@ class FastDownwardTool(Tool):
 
     NAME = "FastDownward"
 
-    def __init__(self, binary_path: str, search: Union[SearchAlg, str] = SearchAlg.ASTAR,
-                 heuristic: Union[Heuristic, str] = Heuristic.FF):
+    def __init__(
+        self,
+        binary_path: str,
+        search: Union[SearchAlg, str] = SearchAlg.ASTAR,
+        heuristic: Union[Heuristic, str] = Heuristic.FF,
+    ):
         """Initialize the tool."""
         super().__init__(binary_path)
 
@@ -24,13 +36,18 @@ class FastDownwardTool(Tool):
         problem: Path,
         formula: Optional[str] = None,
         mapping: Optional[Path] = None,
-        working_dir: Optional[str] = None
+        working_dir: Optional[str] = None,
     ) -> List[str]:
         """Get CLI arguments."""
         assert formula is None, "formula argument not supported"
         assert mapping is None, "mapping argument not supported"
-        cli_args = [self.binary_path, domain, problem,
-                    "--search", f'"{self.search.value}({self.heuristic.value}())"']
+        cli_args = [
+            self.binary_path,
+            domain,
+            problem,
+            "--search",
+            f'"{self.search.value}({self.heuristic.value}())"',
+        ]
         if working_dir:
             cli_args += ["--working-dir", working_dir]
         return cli_args

@@ -41,7 +41,7 @@ def run_planner(
     timeout: float,
     tool_id: str,
     config: Dict,
-    working_dir: Optional[str] = None
+    working_dir: Optional[str] = None,
 ) -> Result:
     tool = tool_registry.make(tool_id, **config)
     logging.debug(f"name={name}")
@@ -55,7 +55,15 @@ def run_planner(
     logging.debug(f"working_dir={working_dir}")
 
     try:
-        result = tool.plan(domain, problem, formula, mapping, timeout=timeout, name=name, working_dir=working_dir)
+        result = tool.plan(
+            domain,
+            problem,
+            formula,
+            mapping,
+            timeout=timeout,
+            name=name,
+            working_dir=working_dir,
+        )
         return result
     except KeyboardInterrupt:
         logging.info("Interrupted!")
@@ -104,7 +112,16 @@ def run_planner(
 @click.option("--config", default="{}", type=str)
 @click.option("--working-dir", default=None, type=str)
 def main(
-    name, domain, problem, formula, formula_str, mapping, timeout, tool_id, config, working_dir
+    name,
+    domain,
+    problem,
+    formula,
+    formula_str,
+    mapping,
+    timeout,
+    tool_id,
+    config,
+    working_dir,
 ):
     """Compute times."""
     domain = Path(domain)
@@ -113,7 +130,15 @@ def main(
     mapping = Path(mapping) if mapping else None
     json_config = json.loads(config)
     result = run_planner(
-        name, domain, problem, formula, mapping, timeout, tool_id, json_config, working_dir
+        name,
+        domain,
+        problem,
+        formula,
+        mapping,
+        timeout,
+        tool_id,
+        json_config,
+        working_dir,
     )
     print(result.to_rows())
 

@@ -7,7 +7,12 @@ import click
 
 from benchmark.run_planner import run_planner
 from benchmark.tools.core import save_data, ToolID
-from benchmark.utils.base import get_reachability_goal
+from benchmark.utils.base import (
+    get_reachability_goal,
+    TSV_FILENAME,
+    configure_logging,
+    default_output_dir,
+)
 from planning_with_past import REPO_ROOT
 
 import logging
@@ -15,26 +20,6 @@ import logging
 DATASET_DIR = REPO_ROOT / "data" / "blocksworld-ipc08"
 DOMAIN_FILE = DATASET_DIR / "domain.pddl"
 PROBLEM_FILES = sorted(DATASET_DIR.glob("p*.pddl"), key=lambda p: p.name)
-
-TSV_FILENAME = "output.tsv"
-
-
-def configure_logging(filename):
-    console = logging.StreamHandler()
-    file = logging.FileHandler(filename)
-    logging.basicConfig(
-        format="[%(asctime)s][%(levelname)s]: %(message)s",
-        level=logging.DEBUG,
-        handlers=[console, file]
-    )
-
-
-def filename() -> str:
-    return Path(__file__).stem
-
-
-def default_output_dir():
-    return Path("results") / (filename() + "-" + datetime.datetime.now().isoformat())
 
 
 def run_mynd(output_dir, problem_files, domain_file, timeout):
@@ -59,7 +44,7 @@ def run_mynd(output_dir, problem_files, domain_file, timeout):
                 timeout,
                 tool_id.value,
                 {},
-                problem_working_dir
+                problem_working_dir,
             )
             logging.info(result.to_rows())
             data.append(result)
@@ -90,7 +75,7 @@ def run_p4p(output_dir, problem_files, domain_file, timeout):
                 timeout,
                 tool_id.value,
                 {},
-                problem_working_dir
+                problem_working_dir,
             )
             logging.info(result.to_rows())
             data.append(result)
@@ -115,7 +100,9 @@ def run_experiments(dataset_dir, timeout, output_dir):
 @click.command()
 @click.option("--dataset-dir", type=click.Path(exists=True, file_okay=False))
 @click.option("--timeout", type=float, default=60.0)
-@click.option("--output-dir", type=click.Path(exists=False), default=default_output_dir())
+@click.option(
+    "--output-dir", type=click.Path(exists=False), default=default_output_dir(__file__)
+)
 def main(dataset_dir: str, output_dir: str, timeout: float):
     run_experiments(dataset_dir, timeout, output_dir)
 
