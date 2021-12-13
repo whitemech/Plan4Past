@@ -52,7 +52,7 @@
     (ON H C)
     (ON C E)
     (ON E K)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON C T)

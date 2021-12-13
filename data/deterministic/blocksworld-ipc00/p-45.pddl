@@ -51,7 +51,7 @@
     (ON K O)
     (ON O F)
     (ON F E)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON H O)

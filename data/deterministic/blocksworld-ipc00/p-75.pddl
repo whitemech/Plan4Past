@@ -79,7 +79,7 @@
     (ON R Y)
     (ON Y G1)
     (ON C1 K)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON T K1)

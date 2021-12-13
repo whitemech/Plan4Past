@@ -97,7 +97,7 @@
     (ON I1 Z)
     (ON Z Q1)
     (ON Q1 F1)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON I X)

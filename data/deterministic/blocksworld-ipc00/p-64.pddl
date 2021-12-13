@@ -70,7 +70,7 @@
     (ON K U)
     (ON N J)
     (ON J S)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON J G)

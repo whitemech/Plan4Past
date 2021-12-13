@@ -42,7 +42,7 @@
     (ON Q P)
     (ON P C)
     (ON C H)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON H J)

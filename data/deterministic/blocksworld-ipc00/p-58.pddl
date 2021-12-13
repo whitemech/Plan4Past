@@ -62,7 +62,7 @@
     (ON M H)
     (ON H P)
     (ON P L)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON A X)

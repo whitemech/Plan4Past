@@ -91,7 +91,7 @@
     (ON B S)
     (ON Q K)
     (ON K G1)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON L N1)

@@ -73,7 +73,7 @@
     (ON N E)
     (ON E C1)
     (ON A1 I)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON V C)

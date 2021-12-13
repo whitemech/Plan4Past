@@ -78,7 +78,7 @@
     (ON Y E)
     (ON E B1)
     (ON H1 G1)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON C1 H)

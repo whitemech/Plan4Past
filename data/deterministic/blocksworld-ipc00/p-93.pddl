@@ -106,7 +106,7 @@
     (ON C1 F)
     (ON F G1)
     (ON G1 M1)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON C1 C)

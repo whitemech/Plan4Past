@@ -54,7 +54,7 @@
     (ON R W)
     (ON F H)
     (ON H S)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON E K)

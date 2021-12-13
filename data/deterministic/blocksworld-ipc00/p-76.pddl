@@ -82,7 +82,7 @@
     (ON K C)
     (ON C N)
     (ON I L)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON F Z)

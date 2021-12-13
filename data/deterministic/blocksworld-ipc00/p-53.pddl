@@ -60,7 +60,7 @@
     (ON M T)
     (ON T J)
     (ON F P)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON X E)

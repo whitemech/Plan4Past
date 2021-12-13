@@ -63,7 +63,7 @@
     (ON S E)
     (ON E M)
     (ON M B1)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON B1 N)

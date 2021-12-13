@@ -46,7 +46,7 @@
     (ON D H)
     (ON P R)
     (ON R K)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON K E)

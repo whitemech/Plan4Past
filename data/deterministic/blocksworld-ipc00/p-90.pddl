@@ -95,7 +95,7 @@
     (ON Q J)
     (ON J L)
     (ON L M)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON O X)

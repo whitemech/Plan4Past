@@ -70,7 +70,7 @@
     (ON B V)
     (ON V L)
     (ON M O)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON C1 I)

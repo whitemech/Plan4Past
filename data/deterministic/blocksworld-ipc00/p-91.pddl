@@ -95,7 +95,7 @@
     (ON P O1)
     (ON O1 D1)
     (ON D1 K1)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON W P)

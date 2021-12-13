@@ -85,7 +85,7 @@
     (ON P D)
     (ON L1 O)
     (ON O J)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON C1 U)
