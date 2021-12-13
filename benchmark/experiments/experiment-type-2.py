@@ -1,7 +1,6 @@
 import datetime
-import shutil
+import logging
 from pathlib import Path
-from typing import List
 
 import click
 
@@ -11,58 +10,20 @@ from benchmark.utils.base import (
     get_reachability_goal,
     TSV_FILENAME,
     configure_logging,
-    default_output_dir,
+    default_output_dir, is_deterministic,
 )
-from planning_with_past import REPO_ROOT
-
-import logging
-
-DATASET_DIR = REPO_ROOT / "data" / "blocksworld-ipc08"
-DOMAIN_FILE = DATASET_DIR / "domain.pddl"
-PROBLEM_FILES = sorted(DATASET_DIR.glob("p*.pddl"), key=lambda p: p.name)
 
 
-def run_mynd(output_dir, problem_files, domain_file, timeout):
-    # run MyND
+def run_tool(tool_id, output_dir, problem_files, domain_file, timeout):
     data = []
-    tool_id = ToolID.MYND_STRONG_CYCLIC_FF
-    tool_dir = output_dir / tool_id.value
-    print(f"Run experiments with {tool_id.value}")
+    tool_dir = output_dir / tool_id
     tool_dir.mkdir()
+    print(f"Run experiments with {tool_id}")
     try:
         for index, problem_path in list(enumerate(problem_files)):
             problem_working_dir = tool_dir / problem_path.stem
-            logging.info("=" * 100)
-            logging.info(f"Time: {datetime.datetime.now()}")
-            logging.info(f"Processing problem {problem_path}")
-            result = run_planner(
-                problem_path.stem,
-                domain_file,
-                problem_path,
-                None,
-                None,
-                timeout,
-                tool_id.value,
-                {},
-                problem_working_dir,
-            )
-            logging.info(result.to_rows())
-            data.append(result)
-    finally:
-        save_data(data, tool_dir / TSV_FILENAME)
-
-
-def run_p4p(output_dir, problem_files, domain_file, timeout):
-    # run P4P
-    data = []
-    tool_id = ToolID.PLAN4PAST_MYND_STORNG_CYCLIC_FF
-    tool_dir = output_dir / tool_id.value
-    tool_dir.mkdir()
-    print(f"Run experiments with {tool_id.value}")
-    try:
-        for index, problem_path in list(enumerate(problem_files)):
-            problem_working_dir = tool_dir / problem_path.stem
-            formula = get_reachability_goal(problem_path)
+            problem_working_dir.mkdir()
+            formula = get_reachability_goal(problem_path) if "p4p" in tool_id else None
             logging.info("=" * 100)
             logging.info(f"Time: {datetime.datetime.now()}")
             logging.info(f"Processing problem {problem_path}")
@@ -73,7 +34,7 @@ def run_p4p(output_dir, problem_files, domain_file, timeout):
                 formula,
                 None,
                 timeout,
-                tool_id.value,
+                tool_id,
                 {},
                 problem_working_dir,
             )
@@ -91,10 +52,26 @@ def run_experiments(dataset_dir, timeout, output_dir):
     logging.info(f"Using timeout {timeout}, writing to {output_dir}")
 
     domain_file = dataset_dir / "domain.pddl"
+    is_domain_deterministic = is_deterministic(domain_file)
     problem_files = sorted(set(dataset_dir.glob("*.pddl")) - {domain_file})
 
-    run_mynd(output_dir, problem_files, domain_file, timeout)
-    run_p4p(output_dir, problem_files, domain_file, timeout)
+    if is_domain_deterministic:
+        baseline_tool = ToolID.FAST_DOWNWARD_FF
+        new_tool = ToolID.PLAN4PAST_FD_FF
+    else:
+        baseline_tool = ToolID.MYND_STRONG_CYCLIC_FF
+        new_tool = ToolID.PLAN4PAST_MYND_STORNG_CYCLIC_FF
+
+    run_tool(baseline_tool.value,
+             output_dir,
+             problem_files,
+             domain_file,
+             timeout)
+    run_tool(new_tool.value,
+             output_dir,
+             problem_files,
+             domain_file,
+             timeout)
 
 
 @click.command()

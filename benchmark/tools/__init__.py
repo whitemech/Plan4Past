@@ -1,5 +1,5 @@
 from benchmark.tools.core import ToolRegistry, ToolID, SearchAlg, Heuristic
-from benchmark.tools.fast_downward import FastDownwardTool
+from benchmark.tools.fast_downward import FastDownwardTool, DEFAULT_BIN_FD_PATH
 from benchmark.tools.fond4ltlfpltlf import (
     Fond4LtlfPltlfMyND,
     DEFAULT_BIN_F4LP_PATH,
@@ -17,7 +17,6 @@ from benchmark.tools.plan4past import (
     DEFAULT_BIN_P4P_PATH,
     Plan4PastToolFD,
 )
-from planning_with_past.planners.downward import DEFAULT_BIN_FAST_DOWNWARD_PATH
 
 tool_registry = ToolRegistry()
 
@@ -25,14 +24,14 @@ tool_registry = ToolRegistry()
 tool_registry.register(
     ToolID.FAST_DOWNWARD_FF,
     tool_cls=FastDownwardTool,
-    binary_path=DEFAULT_BIN_FAST_DOWNWARD_PATH,
+    binary_path=DEFAULT_BIN_FD_PATH,
     search=SearchAlg.ASTAR,
     heuristic=Heuristic.FF,
 )
 tool_registry.register(
-    ToolID.FAST_DOWNWARD_FF,
+    ToolID.FAST_DOWNWARD_HMAX,
     tool_cls=FastDownwardTool,
-    binary_path=DEFAULT_BIN_FAST_DOWNWARD_PATH,
+    binary_path=DEFAULT_BIN_FD_PATH,
     search=SearchAlg.ASTAR,
     heuristic=Heuristic.HMAX,
 )

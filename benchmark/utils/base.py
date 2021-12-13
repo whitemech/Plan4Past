@@ -96,3 +96,10 @@ def generate_problems(
         problem_path.write_text(problem_i)
         result.append(problem_path)
     return result
+
+
+def is_deterministic(domain_path: Path):
+    content = domain_path.read_text()
+    match = re.match("\Wnon-deterministic\W", content)
+    return match is None
+
