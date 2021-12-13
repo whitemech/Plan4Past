@@ -4,7 +4,16 @@ from enum import Enum
 from pathlib import Path
 from typing import List, Optional, Union
 
-from benchmark.tools.core import Tool, Result, Status, ToolID, SearchAlg, Heuristic, extract_from_mynd, extract_from_fd
+from benchmark.tools.core import (
+    Tool,
+    Result,
+    Status,
+    ToolID,
+    SearchAlg,
+    Heuristic,
+    extract_from_mynd,
+    extract_from_fd,
+)
 from benchmark.utils.base import try_to_get_float
 from planning_with_past import REPO_ROOT
 
@@ -31,7 +40,7 @@ class Fond4LtlfPltlfTool(Tool, ABC):
         problem: Path,
         formula: Optional[str] = None,
         mapping: Optional[Path] = None,
-        working_dir: Optional[str] = None
+        working_dir: Optional[str] = None,
     ) -> List[str]:
         """Get CLI arguments."""
         assert formula is not None, "formula argument must be specified"
@@ -58,7 +67,10 @@ class Fond4LtlfPltlfFD(Fond4LtlfPltlfTool):
     NAME = "F4LP-FD"
 
     def __init__(
-        self, binary_path: str, search: Union[SearchAlg, str] = SearchAlg.ASTAR, heuristic: Union[Heuristic, str] = Heuristic.FF
+        self,
+        binary_path: str,
+        search: Union[SearchAlg, str] = SearchAlg.ASTAR,
+        heuristic: Union[Heuristic, str] = Heuristic.FF,
     ):
         """Initialize the tool."""
         super().__init__(binary_path, SupportedPlanners.FD)
@@ -72,7 +84,7 @@ class Fond4LtlfPltlfFD(Fond4LtlfPltlfTool):
         problem: Path,
         formula: Optional[str] = None,
         mapping: Optional[Path] = None,
-        working_dir: Optional[str] = None
+        working_dir: Optional[str] = None,
     ) -> List[str]:
         """Get CLI arguments."""
         cli_args = super().get_cli_args(domain, problem, formula, mapping, working_dir)
@@ -90,7 +102,10 @@ class Fond4LtlfPltlfMyND(Fond4LtlfPltlfTool):
     NAME = "F4LP-MyND"
 
     def __init__(
-        self, binary_path: str, search: Union[SearchAlg, str] = SearchAlg.LAOSTAR, heuristic: Union[Heuristic, str] = Heuristic.FF
+        self,
+        binary_path: str,
+        search: Union[SearchAlg, str] = SearchAlg.LAOSTAR,
+        heuristic: Union[Heuristic, str] = Heuristic.FF,
     ):
         """Initialize the tool."""
         super().__init__(binary_path, SupportedPlanners.MYND)
@@ -104,7 +119,7 @@ class Fond4LtlfPltlfMyND(Fond4LtlfPltlfTool):
         problem: Path,
         formula: Optional[str] = None,
         mapping: Optional[Path] = None,
-        working_dir: Optional[str] = None
+        working_dir: Optional[str] = None,
     ) -> List[str]:
         """Get CLI arguments."""
         cli_args = super().get_cli_args(domain, problem, formula, mapping, working_dir)
