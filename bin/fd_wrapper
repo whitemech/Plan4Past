@@ -9,17 +9,6 @@ from typing import Generator
 from bin.utils import launch, FD_DIR, FD_DRIVER, ALGORITHMS, HEURISTICS
 
 
-@contextlib.contextmanager
-def cd(path: os.PathLike) -> Generator:  # pylint: disable=invalid-name
-    """Change working directory temporarily."""
-    old_path = Path.cwd()
-    os.chdir(path)
-    try:
-        yield
-    finally:
-        os.chdir(str(old_path))
-
-
 def plan(domain_path, problem_path, algorithm, heuristic, working_dir):
     """Planning for temporally extended goals (LTLf or PLTLf)."""
     domain_path = str(Path(domain_path).absolute())
