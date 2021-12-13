@@ -13,6 +13,11 @@ def plan(domain_path, problem_path, algorithm, heuristic, working_dir):
     """Planning for temporally extended goals (LTLf or PLTLf)."""
     domain_path = str(Path(domain_path).absolute())
     problem_path = str(Path(problem_path).absolute())
+    # if working_dir:
+    #     working_dir = Path(args.working_dir)
+    #     working_dir.mkdir(exist_ok=True)
+    # else:
+    #     working_dir = Path(tempfile.mkdtemp())
     planner_command = [f"{FD_DRIVER}",
                        str(domain_path),
                        str(problem_path),

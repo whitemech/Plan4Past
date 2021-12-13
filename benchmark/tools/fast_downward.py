@@ -1,26 +1,22 @@
 import re
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, Union
 
-from benchmark.tools.core import Tool, ToolID, Result, Status
+from benchmark.tools.core import Tool, ToolID, Result, Status, SearchAlg, Heuristic, extract_from_fd
 
 
 class FastDownwardTool(Tool):
     """Implement Downward experiments and configurations."""
 
-    TOOL_ID = ToolID.FAST_DOWNWARD
     NAME = "FastDownward"
 
-    def __init__(self, binary_path: str, search: str = "astar(blind())"):
+    def __init__(self, binary_path: str, search: Union[SearchAlg, str] = SearchAlg.ASTAR,
+                 heuristic: Union[Heuristic, str] = Heuristic.FF):
         """Initialize the tool."""
         super().__init__(binary_path)
 
-        self.search = search
-
-    @classmethod
-    def get_tool_id(cls) -> ToolID:
-        """Get tool ID."""
-        return ToolID.FAST_DOWNWARD
+        self.search = SearchAlg(search)
+        self.heuristic = Heuristic(heuristic)
 
     def get_cli_args(
         self,
@@ -28,21 +24,17 @@ class FastDownwardTool(Tool):
         problem: Path,
         formula: Optional[str] = None,
         mapping: Optional[Path] = None,
+        working_dir: Optional[str] = None
     ) -> List[str]:
         """Get CLI arguments."""
         assert formula is None, "formula argument not supported"
         assert mapping is None, "mapping argument not supported"
-        return [self.binary_path, domain, problem, "--search", self.search]
+        cli_args = [self.binary_path, domain, problem,
+                    "--search", f'"{self.search.value}({self.heuristic.value}())"']
+        if working_dir:
+            cli_args += ["--working-dir", working_dir]
+        return cli_args
 
     def collect_statistics(self, output: str) -> Result:
         """Collect statistics."""
-        match = re.search("Total time: (.*)s", output)
-        tool_time = float(match.group(1))
-
-        solution_found_match = re.search("Solution found.", output)
-        if solution_found_match is not None:
-            status = Status.SUCCESS
-        else:
-            status = Status.FAILURE
-
-        return Result("", [], tool_time * 1000, None, status)
+        return extract_from_fd(output)
