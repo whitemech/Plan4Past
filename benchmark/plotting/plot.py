@@ -80,7 +80,8 @@ def main(benchmark_dir: str, output: str, title: str, timeout: int, xlabel: str,
         for i, t in enumerate(times):
             t = t if t != "None" and nb_node_expanded[i] != 'None' else timeout
             current_time = float(t)
-            max_reached = max_reached or current_time >= timeout
+            # max_reached = max_reached or current_time >= timeout
+            max_reached = False
             total_time = timeout if max_reached else min([current_time, timeout])
             total_times.append(total_time)
         cactus[:, idx] = np.asarray(total_times)

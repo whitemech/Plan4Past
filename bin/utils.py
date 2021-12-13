@@ -66,3 +66,17 @@ def launch(cmd, cwd=None):
         if process.returncode != 0:
             print(f"return code {process.returncode}")
             exit(1)
+
+
+def is_valid_file(arg):
+    """Argparse validator for files to check for their existence."""
+    if not os.path.exists(arg):
+        raise FileNotFoundError("The file %s does not exist!" % arg)
+    return Path(arg)
+
+
+def does_not_exists(arg):
+    """Argparse validator for files to check they do not exist."""
+    if os.path.exists(arg):
+        raise FileExistsError("The file %s already exists!" % arg)
+    return Path(arg)

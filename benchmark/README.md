@@ -34,7 +34,7 @@ You may need `export PYTHONPATH=.` before running the commands.
 ./benchmark/run_planner.py --tool-id p4p-mynd --domain examples/pddl/domain.pddl --problem examples/pddl/p-0.pddl --formula-str "on_c_b & O(on_b_a)"
 ```
 
-## Blocksworld 1
+## Blocksworld 1a
 
 To run the experiments:
 
@@ -52,6 +52,14 @@ Print data as table:
 
 ```
 python benchmark/plotting/table.py --directory output --timeout 60.0
+```
+
+## Blocksworld 1b
+
+To run the experiments:
+
+```
+python benchmark/experiments/blocksworld1b.py --timeout 60.0 --max-nb-blocks 10 -t 'f4lp-mynd-sc-ff' -t 'p4p-mynd-sc-ff' -t 'lf2f-mynd-sc-ff' --output-dir output
 ```
 
 ## Experiment type 2

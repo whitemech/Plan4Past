@@ -4,12 +4,13 @@ import datetime
 import tempfile
 from pathlib import Path
 
-from bin.utils import MYND_WRAPPER_PATH, launch, SUPPORTED_PLANNERS, ALGORITHMS, HEURISTICS, FD_WRAPPER_PATH
+from bin.utils import MYND_WRAPPER_PATH, launch, SUPPORTED_PLANNERS, ALGORITHMS, HEURISTICS, FD_WRAPPER_PATH, \
+    is_valid_file
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Wrapper for FOND4LTLfPLTLf.")
-    parser.add_argument('-d', dest='domain_path', type=Path, required=True)
-    parser.add_argument('-p', dest='problem_path', type=Path, required=True)
+    parser.add_argument('-d', dest='domain_path', type=is_valid_file, required=True)
+    parser.add_argument('-p', dest='problem_path', type=is_valid_file, required=True)
     parser.add_argument('-g', dest='goal', type=str, required=True)
     parser.add_argument('-t', dest='planner', type=str, choices=SUPPORTED_PLANNERS, required=True)
     parser.add_argument('-a', "--algorithm", dest='algorithm', type=str, choices=ALGORITHMS, required=True)

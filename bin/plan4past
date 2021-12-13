@@ -11,25 +11,11 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from bin.utils import ALGORITHMS, HEURISTICS, PLTLF_WRAPPER_PATH, MYND_WRAPPER_PATH, launch, FD_WRAPPER_PATH, \
-    SUPPORTED_PLANNERS
+    SUPPORTED_PLANNERS, is_valid_file
 
 DEFAULT_OUTPUT_DIR: str = "output"
 BIN_DIR = Path(inspect.getframeinfo(inspect.currentframe()).filename).parent
 REPO_ROOT = BIN_DIR.parent
-
-
-def is_valid_file(arg):
-    """Argparse validator for files to check for their existence."""
-    if not os.path.exists(arg):
-        raise FileNotFoundError("The file %s does not exist!" % arg)
-    return Path(arg)
-
-
-def does_not_exists(arg):
-    """Argparse validator for files to check they do not exist."""
-    if os.path.exists(arg):
-        raise FileExistsError("The file %s already exists!" % arg)
-    return Path(arg)
 
 
 def parse_args():
@@ -45,15 +31,6 @@ def parse_args():
     parser.add_argument('--heuristic', dest='heuristic', type=str, choices=HEURISTICS, default="ff")
     parser.add_argument('--working-dir', dest='working_dir', type=str, default=None)
     return parser.parse_args()
-
-
-def _process_output_dir(output_path: str, force: bool):
-    """Process the output directory argument."""
-    if force:
-        shutil.rmtree(output_path, ignore_errors=True)
-    elif os.path.exists(output_path):
-        raise FileExistsError("The file %s already exists!" % output_path)
-    Path(output_path).mkdir(parents=True)
 
 
 if __name__ == '__main__':

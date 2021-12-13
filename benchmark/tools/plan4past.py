@@ -37,6 +37,8 @@ class Plan4PastTool(Tool, ABC):
 
         cli_args = [
             self.binary_path,
+            "-t",
+            self.planner_id,
             "--domain",
             domain,
             "--problem",
