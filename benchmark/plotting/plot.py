@@ -27,6 +27,7 @@ TOOL_TO_COLOR = {
     ToolID.LTLFOND2FOND_MYND_STORNG_CYCLIC_FF: "blue",
 }
 
+
 def get_marker(tool_id):
     if "p4p" in tool_id:
         return "v"
@@ -34,6 +35,7 @@ def get_marker(tool_id):
         return "o"
     if "lf2f" in tool_id:
         return "X"
+
 
 def get_color(tool_id):
     if "p4p" in tool_id:
