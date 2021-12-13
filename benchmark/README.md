@@ -73,5 +73,5 @@ python benchmark/experiments/experiment-1.py --timeout 60.0 --min-param 2 --max-
 ### Blocksworld 
 
 ```
-python benchmark/experiments/experiment-type-2.py --timeout 60.0 --dataset-dir data/blocksworld-ipc08
+python benchmark/experiments/experiment-2.py --timeout 60.0 --dataset-dir data/deterministic/blocksworld
 ```
