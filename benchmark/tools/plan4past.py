@@ -38,6 +38,8 @@ class Plan4PastTool(Tool, ABC):
 
         cli_args = [
             self.binary_path,
+            "-t",
+            self.planner_id,
             "--domain",
             domain,
             "--problem",
@@ -75,7 +77,8 @@ class Plan4PastToolFD(Plan4PastTool):
     ) -> List[str]:
         """Get CLI arguments."""
         cli_args = super().get_cli_args(domain, problem, formula, mapping, working_dir)
-        cli_args += ["--search", f'"{self.search.value}({self.heuristic.value}())"']
+        cli_args += ["--algorithm", self.search.value]
+        cli_args += ["--heuristic", self.heuristic.value]
         return cli_args
 
     def collect_statistics(self, output: str) -> Result:

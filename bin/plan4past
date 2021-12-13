@@ -34,7 +34,7 @@ def does_not_exists(arg):
 
 def parse_args():
     """Parse command-line arguments."""
-    parser = argparse.ArgumentParser("pltlf-planner", description="A FOND planner for temporal goals in PLTLf")
+    parser = argparse.ArgumentParser("plan4past", description="A FOND planner for temporal goals in PLTLf")
     parser.add_argument("--domain", type=is_valid_file, required=True)
     parser.add_argument("--problem", type=is_valid_file, required=True)
     parser.add_argument("--formula", type=str, required=True)
