@@ -127,7 +127,7 @@ def run_experiments(timeout, output_dir, tools: List[str], max_nb_blocks: int):
     ToolID.PLAN4PAST_MYND_STORNG_CYCLIC_FF.value,
     ToolID.LTLFOND2FOND_MYND_STORNG_CYCLIC_FF.value
 ])
-@click.option("--max-nb-blocks", type=int, default=3)
+@click.option("--max-nb-blocks", type=int, default=20)
 def main(output_dir: str, timeout: float, tool: List[str], max_nb_blocks: int):
     run_experiments(timeout, output_dir, tool, max_nb_blocks)
 

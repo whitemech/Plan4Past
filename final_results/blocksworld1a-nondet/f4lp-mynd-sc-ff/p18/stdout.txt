@@ -1,0 +1,79 @@
+Parsing...
+Parsing: [0.000s CPU, 0.003s wall-clock]
+Normalizing task... [0.000s CPU, 0.000s wall-clock]
+Instantiating...
+Generating Datalog program... [0.000s CPU, 0.000s wall-clock]
+Normalizing Datalog program...
+Normalizing Datalog program: [0.010s CPU, 0.003s wall-clock]
+Preparing model... [0.000s CPU, 0.001s wall-clock]
+Generated 76 rules.
+Computing model... [0.180s CPU, 0.178s wall-clock]
+13115 relevant atoms
+8922 auxiliary atoms
+22037 final queue length
+60655 total queue pushes
+Completing instantiation... [0.840s CPU, 0.844s wall-clock]
+Instantiating: [1.040s CPU, 1.031s wall-clock]
+Computing fact groups...
+Finding invariants...
+23 initial candidates
+Finding invariants: [0.010s CPU, 0.009s wall-clock]
+Checking invariant weight... [0.000s CPU, 0.000s wall-clock]
+Instantiating groups... [0.000s CPU, 0.001s wall-clock]
+Collecting mutex groups... [0.000s CPU, 0.000s wall-clock]
+Choosing groups...
+20 uncovered facts
+Choosing groups: [0.000s CPU, 0.001s wall-clock]
+Building translation key... [0.000s CPU, 0.000s wall-clock]
+Computing fact groups: [0.010s CPU, 0.012s wall-clock]
+Building STRIPS to SAS dictionary... [0.000s CPU, 0.000s wall-clock]
+Building dictionary for full mutex groups... [0.000s CPU, 0.000s wall-clock]
+Building mutex information...
+Building mutex information: [0.000s CPU, 0.000s wall-clock]
+Translating task...
+Processing axioms...
+Simplifying axioms... [0.000s CPU, 0.000s wall-clock]
+Processing axioms: [0.050s CPU, 0.044s wall-clock]
+Translating task: [1.200s CPU, 1.205s wall-clock]
+35658 effect conditions simplified
+0 implied preconditions added
+Detecting unreachable propositions...
+2 operators removed
+19 propositions removed
+Detecting unreachable propositions: [0.180s CPU, 0.176s wall-clock]
+Translator variables: 39
+Translator derived variables: 0
+Translator facts: 403
+Translator goal facts: 2
+Translator mutex groups: 27
+Translator total mutex groups size: 399
+Translator operators: 12047
+Translator axioms: 0
+Translator task size: 186798
+Translator peak memory: 117028 KB
+Writing output... [0.200s CPU, 0.222s wall-clock]
+Done! [2.680s CPU, 2.697s wall-clock]
+Heuristic: FF-heuristic.
+Algorithm: LAO*-search
+INITIAL IS PROVEN!
+
+Result: Strong cyclic plan found.
+
+Time needed for preprocess (Parsing, PDBs, ...):    0.357 seconds.
+Time needed for search:                             3.964 seconds.
+Time needed:                                        4.321 seconds.
+Total Garbage Collections: 5
+Total Garbage Collection Time: 0 seconds.
+
+Out of 759 nodes, 91 are proven
+Number of node expansions: 129
+Policy entries: 10
+Number of sensing applications in policy: 0
+Running command:  /home/marcofavorito/.virtualenvs/planning-with-past-code-T52wX1kq/bin/python3 /home/marcofavorito/workfolder/planning-with-past-code/third_party/myND/translator-fond/translate.py /home/marcofavorito/workfolder/planning-with-past-code/results/blocksworld1a-2021-12-12T21:46:57.657819/f4lp-mynd-sc-ff/p18/new_domain.pddl /home/marcofavorito/workfolder/planning-with-past-code/results/blocksworld1a-2021-12-12T21:46:57.657819/f4lp-mynd-sc-ff/p18/new_problem.pddl
+Start planner
+Running command:  java -Xmx4g -jar /home/marcofavorito/workfolder/planning-with-past-code/third_party/mynd.jar /home/marcofavorito/workfolder/planning-with-past-code/results/blocksworld1a-2021-12-12T21:46:57.657819/f4lp-mynd-sc-ff/p18/output.sas -search laostar -heuristic ff
+Running command:  fond4ltlfpltlf -d results/blocksworld1a-2021-12-12T21:46:57.657819/domain.pddl -p results/blocksworld1a-2021-12-12T21:46:57.657819/p18.pddl -g O(on_b1_b2 & Y(O(on_b2_b3))) -outd results/blocksworld1a-2021-12-12T21:46:57.657819/f4lp-mynd-sc-ff/p18/new_domain.pddl -outp results/blocksworld1a-2021-12-12T21:46:57.657819/f4lp-mynd-sc-ff/p18/new_problem.pddl
+Compilation time: 0.4462251663208008 seconds
+Running command:  /home/marcofavorito/workfolder/planning-with-past-code/bin/mynd_wrapper -d results/blocksworld1a-2021-12-12T21:46:57.657819/f4lp-mynd-sc-ff/p18/new_domain.pddl -p results/blocksworld1a-2021-12-12T21:46:57.657819/f4lp-mynd-sc-ff/p18/new_problem.pddl -a laostar --heuristic ff --working-dir results/blocksworld1a-2021-12-12T21:46:57.657819/f4lp-mynd-sc-ff/p18
+Tool time: 7.686674 seconds
+Total time: 8.132899 seconds
