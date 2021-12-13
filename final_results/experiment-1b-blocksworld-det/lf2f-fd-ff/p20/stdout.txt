@@ -1,0 +1,4 @@
+Could not find the value, .*DFA for formula with free variables:[\s]*(.*?)
+.*, in the text provided
+Running command:  /home/marcofavorito/.virtualenvs/planning-with-past-code-T52wX1kq/bin/python3 /home/marcofavorito/workfolder/planning-with-past-code/third_party/ltlfond2fond/convert-finite.py /home/marcofavorito/workfolder/planning-with-past-code/results/experiment-1-2021-12-13T16:06:04.643119/domain.pddl /home/marcofavorito/workfolder/planning-with-past-code/results/experiment-1-2021-12-13T16:06:04.643119/p20.pddl /home/marcofavorito/workfolder/planning-with-past-code/results/experiment-1-2021-12-13T16:06:04.643119/lf2f-fd-ff/p20/goal.ltl
+return code 1

@@ -1,0 +1,722 @@
+[2021-12-13 13:08:33,447][INFO]: Using timeout 60.0, writing to results/blocksworld1a-2021-12-13T13:08:33.445275
+[2021-12-13 13:08:33,447][INFO]: Tools: ('f4lp-fd-ff', 'p4p-fd-ff')
+[2021-12-13 13:08:33,453][INFO]: ====================================================================================================
+[2021-12-13 13:08:33,453][INFO]: Time: 2021-12-13 13:08:33.453338
+[2021-12-13 13:08:33,453][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p03.pddl
+[2021-12-13 13:08:33,453][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:33,453][DEBUG]: name=p03
+[2021-12-13 13:08:33,453][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:08:33,453][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p03.pddl
+[2021-12-13 13:08:33,454][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:33,454][DEBUG]: mapping=None
+[2021-12-13 13:08:33,454][DEBUG]: timeout=60.0
+[2021-12-13 13:08:33,454][DEBUG]: tool=f4lp-fd-ff
+[2021-12-13 13:08:33,454][DEBUG]: config={}
+[2021-12-13 13:08:33,454][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p03
+[2021-12-13 13:08:34,626][INFO]: name=p03
+status=Status.SUCCESS
+time_compilation=0.7431168556213379
+time_tool=0.00257428
+time_end2end=1.066675
+nb_node_expanded=11
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/fond4ltlfpltlf_wrapper -t fd -d results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl -p results/blocksworld1a-2021-12-13T13:08:33.445275/p03.pddl -g O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p03 --algorithm astar --heuristic ff
+[2021-12-13 13:08:34,627][INFO]: ====================================================================================================
+[2021-12-13 13:08:34,627][INFO]: Time: 2021-12-13 13:08:34.627126
+[2021-12-13 13:08:34,627][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p04.pddl
+[2021-12-13 13:08:34,627][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:34,627][DEBUG]: name=p04
+[2021-12-13 13:08:34,627][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:08:34,627][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p04.pddl
+[2021-12-13 13:08:34,627][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:34,627][DEBUG]: mapping=None
+[2021-12-13 13:08:34,628][DEBUG]: timeout=60.0
+[2021-12-13 13:08:34,628][DEBUG]: tool=f4lp-fd-ff
+[2021-12-13 13:08:34,628][DEBUG]: config={}
+[2021-12-13 13:08:34,628][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p04
+[2021-12-13 13:08:35,699][INFO]: name=p04
+status=Status.SUCCESS
+time_compilation=0.6829888820648193
+time_tool=0.0027049
+time_end2end=0.97898
+nb_node_expanded=11
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/fond4ltlfpltlf_wrapper -t fd -d results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl -p results/blocksworld1a-2021-12-13T13:08:33.445275/p04.pddl -g O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p04 --algorithm astar --heuristic ff
+[2021-12-13 13:08:35,699][INFO]: ====================================================================================================
+[2021-12-13 13:08:35,699][INFO]: Time: 2021-12-13 13:08:35.699498
+[2021-12-13 13:08:35,699][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p05.pddl
+[2021-12-13 13:08:35,699][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:35,699][DEBUG]: name=p05
+[2021-12-13 13:08:35,699][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:08:35,700][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p05.pddl
+[2021-12-13 13:08:35,700][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:35,700][DEBUG]: mapping=None
+[2021-12-13 13:08:35,700][DEBUG]: timeout=60.0
+[2021-12-13 13:08:35,700][DEBUG]: tool=f4lp-fd-ff
+[2021-12-13 13:08:35,700][DEBUG]: config={}
+[2021-12-13 13:08:35,700][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p05
+[2021-12-13 13:08:36,770][INFO]: name=p05
+status=Status.SUCCESS
+time_compilation=0.6747260093688965
+time_tool=0.00313616
+time_end2end=0.981183
+nb_node_expanded=11
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/fond4ltlfpltlf_wrapper -t fd -d results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl -p results/blocksworld1a-2021-12-13T13:08:33.445275/p05.pddl -g O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p05 --algorithm astar --heuristic ff
+[2021-12-13 13:08:36,771][INFO]: ====================================================================================================
+[2021-12-13 13:08:36,771][INFO]: Time: 2021-12-13 13:08:36.771168
+[2021-12-13 13:08:36,771][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p06.pddl
+[2021-12-13 13:08:36,771][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:36,771][DEBUG]: name=p06
+[2021-12-13 13:08:36,771][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:08:36,771][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p06.pddl
+[2021-12-13 13:08:36,771][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:36,771][DEBUG]: mapping=None
+[2021-12-13 13:08:36,771][DEBUG]: timeout=60.0
+[2021-12-13 13:08:36,771][DEBUG]: tool=f4lp-fd-ff
+[2021-12-13 13:08:36,771][DEBUG]: config={}
+[2021-12-13 13:08:36,772][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p06
+[2021-12-13 13:08:37,892][INFO]: name=p06
+status=Status.SUCCESS
+time_compilation=0.6848969459533691
+time_tool=0.00321845
+time_end2end=0.993983
+nb_node_expanded=11
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/fond4ltlfpltlf_wrapper -t fd -d results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl -p results/blocksworld1a-2021-12-13T13:08:33.445275/p06.pddl -g O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p06 --algorithm astar --heuristic ff
+[2021-12-13 13:08:37,892][INFO]: ====================================================================================================
+[2021-12-13 13:08:37,893][INFO]: Time: 2021-12-13 13:08:37.893030
+[2021-12-13 13:08:37,893][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p07.pddl
+[2021-12-13 13:08:37,893][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:37,893][DEBUG]: name=p07
+[2021-12-13 13:08:37,893][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:08:37,893][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p07.pddl
+[2021-12-13 13:08:37,893][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:37,893][DEBUG]: mapping=None
+[2021-12-13 13:08:37,893][DEBUG]: timeout=60.0
+[2021-12-13 13:08:37,894][DEBUG]: tool=f4lp-fd-ff
+[2021-12-13 13:08:37,894][DEBUG]: config={}
+[2021-12-13 13:08:37,894][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p07
+[2021-12-13 13:08:39,015][INFO]: name=p07
+status=Status.SUCCESS
+time_compilation=0.6951100826263428
+time_tool=0.00374256
+time_end2end=1.009396
+nb_node_expanded=11
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/fond4ltlfpltlf_wrapper -t fd -d results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl -p results/blocksworld1a-2021-12-13T13:08:33.445275/p07.pddl -g O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p07 --algorithm astar --heuristic ff
+[2021-12-13 13:08:39,015][INFO]: ====================================================================================================
+[2021-12-13 13:08:39,015][INFO]: Time: 2021-12-13 13:08:39.015677
+[2021-12-13 13:08:39,015][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p08.pddl
+[2021-12-13 13:08:39,015][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:39,016][DEBUG]: name=p08
+[2021-12-13 13:08:39,016][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:08:39,016][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p08.pddl
+[2021-12-13 13:08:39,016][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:39,016][DEBUG]: mapping=None
+[2021-12-13 13:08:39,016][DEBUG]: timeout=60.0
+[2021-12-13 13:08:39,016][DEBUG]: tool=f4lp-fd-ff
+[2021-12-13 13:08:39,016][DEBUG]: config={}
+[2021-12-13 13:08:39,016][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p08
+[2021-12-13 13:08:40,137][INFO]: name=p08
+status=Status.SUCCESS
+time_compilation=0.6969089508056641
+time_tool=0.00598153
+time_end2end=1.028065
+nb_node_expanded=11
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/fond4ltlfpltlf_wrapper -t fd -d results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl -p results/blocksworld1a-2021-12-13T13:08:33.445275/p08.pddl -g O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p08 --algorithm astar --heuristic ff
+[2021-12-13 13:08:40,137][INFO]: ====================================================================================================
+[2021-12-13 13:08:40,137][INFO]: Time: 2021-12-13 13:08:40.137395
+[2021-12-13 13:08:40,137][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p09.pddl
+[2021-12-13 13:08:40,137][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:40,137][DEBUG]: name=p09
+[2021-12-13 13:08:40,137][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:08:40,137][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p09.pddl
+[2021-12-13 13:08:40,137][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:40,137][DEBUG]: mapping=None
+[2021-12-13 13:08:40,138][DEBUG]: timeout=60.0
+[2021-12-13 13:08:40,138][DEBUG]: tool=f4lp-fd-ff
+[2021-12-13 13:08:40,138][DEBUG]: config={}
+[2021-12-13 13:08:40,138][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p09
+[2021-12-13 13:08:41,308][INFO]: name=p09
+status=Status.SUCCESS
+time_compilation=0.6936240196228027
+time_tool=0.00491629
+time_end2end=1.03323
+nb_node_expanded=11
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/fond4ltlfpltlf_wrapper -t fd -d results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl -p results/blocksworld1a-2021-12-13T13:08:33.445275/p09.pddl -g O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p09 --algorithm astar --heuristic ff
+[2021-12-13 13:08:41,308][INFO]: ====================================================================================================
+[2021-12-13 13:08:41,309][INFO]: Time: 2021-12-13 13:08:41.309053
+[2021-12-13 13:08:41,309][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p10.pddl
+[2021-12-13 13:08:41,309][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:41,309][DEBUG]: name=p10
+[2021-12-13 13:08:41,309][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:08:41,309][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p10.pddl
+[2021-12-13 13:08:41,309][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:41,309][DEBUG]: mapping=None
+[2021-12-13 13:08:41,309][DEBUG]: timeout=60.0
+[2021-12-13 13:08:41,309][DEBUG]: tool=f4lp-fd-ff
+[2021-12-13 13:08:41,309][DEBUG]: config={}
+[2021-12-13 13:08:41,310][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p10
+[2021-12-13 13:08:42,480][INFO]: name=p10
+status=Status.SUCCESS
+time_compilation=0.6903250217437744
+time_tool=0.00538909
+time_end2end=1.037371
+nb_node_expanded=11
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/fond4ltlfpltlf_wrapper -t fd -d results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl -p results/blocksworld1a-2021-12-13T13:08:33.445275/p10.pddl -g O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p10 --algorithm astar --heuristic ff
+[2021-12-13 13:08:42,480][INFO]: ====================================================================================================
+[2021-12-13 13:08:42,480][INFO]: Time: 2021-12-13 13:08:42.480795
+[2021-12-13 13:08:42,480][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p11.pddl
+[2021-12-13 13:08:42,480][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:42,481][DEBUG]: name=p11
+[2021-12-13 13:08:42,481][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:08:42,481][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p11.pddl
+[2021-12-13 13:08:42,481][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:42,481][DEBUG]: mapping=None
+[2021-12-13 13:08:42,481][DEBUG]: timeout=60.0
+[2021-12-13 13:08:42,481][DEBUG]: tool=f4lp-fd-ff
+[2021-12-13 13:08:42,481][DEBUG]: config={}
+[2021-12-13 13:08:42,481][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p11
+[2021-12-13 13:08:43,656][INFO]: name=p11
+status=Status.SUCCESS
+time_compilation=0.6940920352935791
+time_tool=0.00611684
+time_end2end=1.051049
+nb_node_expanded=11
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/fond4ltlfpltlf_wrapper -t fd -d results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl -p results/blocksworld1a-2021-12-13T13:08:33.445275/p11.pddl -g O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p11 --algorithm astar --heuristic ff
+[2021-12-13 13:08:43,657][INFO]: ====================================================================================================
+[2021-12-13 13:08:43,657][INFO]: Time: 2021-12-13 13:08:43.657260
+[2021-12-13 13:08:43,657][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p12.pddl
+[2021-12-13 13:08:43,657][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:43,657][DEBUG]: name=p12
+[2021-12-13 13:08:43,657][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:08:43,657][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p12.pddl
+[2021-12-13 13:08:43,657][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:43,658][DEBUG]: mapping=None
+[2021-12-13 13:08:43,658][DEBUG]: timeout=60.0
+[2021-12-13 13:08:43,658][DEBUG]: tool=f4lp-fd-ff
+[2021-12-13 13:08:43,658][DEBUG]: config={}
+[2021-12-13 13:08:43,658][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p12
+[2021-12-13 13:08:44,829][INFO]: name=p12
+status=Status.SUCCESS
+time_compilation=0.6919679641723633
+time_tool=0.00669561
+time_end2end=1.059524
+nb_node_expanded=11
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/fond4ltlfpltlf_wrapper -t fd -d results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl -p results/blocksworld1a-2021-12-13T13:08:33.445275/p12.pddl -g O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p12 --algorithm astar --heuristic ff
+[2021-12-13 13:08:44,829][INFO]: ====================================================================================================
+[2021-12-13 13:08:44,829][INFO]: Time: 2021-12-13 13:08:44.829329
+[2021-12-13 13:08:44,829][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p13.pddl
+[2021-12-13 13:08:44,829][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:44,829][DEBUG]: name=p13
+[2021-12-13 13:08:44,829][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:08:44,829][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p13.pddl
+[2021-12-13 13:08:44,829][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:44,829][DEBUG]: mapping=None
+[2021-12-13 13:08:44,830][DEBUG]: timeout=60.0
+[2021-12-13 13:08:44,830][DEBUG]: tool=f4lp-fd-ff
+[2021-12-13 13:08:44,830][DEBUG]: config={}
+[2021-12-13 13:08:44,830][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p13
+[2021-12-13 13:08:46,000][INFO]: name=p13
+status=Status.SUCCESS
+time_compilation=0.6857450008392334
+time_tool=0.00790344
+time_end2end=1.051715
+nb_node_expanded=11
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/fond4ltlfpltlf_wrapper -t fd -d results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl -p results/blocksworld1a-2021-12-13T13:08:33.445275/p13.pddl -g O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p13 --algorithm astar --heuristic ff
+[2021-12-13 13:08:46,001][INFO]: ====================================================================================================
+[2021-12-13 13:08:46,001][INFO]: Time: 2021-12-13 13:08:46.001237
+[2021-12-13 13:08:46,001][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p14.pddl
+[2021-12-13 13:08:46,001][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:46,001][DEBUG]: name=p14
+[2021-12-13 13:08:46,001][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:08:46,001][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p14.pddl
+[2021-12-13 13:08:46,001][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:46,002][DEBUG]: mapping=None
+[2021-12-13 13:08:46,002][DEBUG]: timeout=60.0
+[2021-12-13 13:08:46,002][DEBUG]: tool=f4lp-fd-ff
+[2021-12-13 13:08:46,002][DEBUG]: config={}
+[2021-12-13 13:08:46,002][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p14
+[2021-12-13 13:08:47,223][INFO]: name=p14
+status=Status.SUCCESS
+time_compilation=0.6891660690307617
+time_tool=0.00889595
+time_end2end=1.086158
+nb_node_expanded=11
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/fond4ltlfpltlf_wrapper -t fd -d results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl -p results/blocksworld1a-2021-12-13T13:08:33.445275/p14.pddl -g O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p14 --algorithm astar --heuristic ff
+[2021-12-13 13:08:47,223][INFO]: ====================================================================================================
+[2021-12-13 13:08:47,223][INFO]: Time: 2021-12-13 13:08:47.223359
+[2021-12-13 13:08:47,223][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p15.pddl
+[2021-12-13 13:08:47,223][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:47,223][DEBUG]: name=p15
+[2021-12-13 13:08:47,223][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:08:47,223][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p15.pddl
+[2021-12-13 13:08:47,224][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:47,224][DEBUG]: mapping=None
+[2021-12-13 13:08:47,224][DEBUG]: timeout=60.0
+[2021-12-13 13:08:47,224][DEBUG]: tool=f4lp-fd-ff
+[2021-12-13 13:08:47,224][DEBUG]: config={}
+[2021-12-13 13:08:47,224][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p15
+[2021-12-13 13:08:48,445][INFO]: name=p15
+status=Status.SUCCESS
+time_compilation=0.701617956161499
+time_tool=0.0103743
+time_end2end=1.101162
+nb_node_expanded=11
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/fond4ltlfpltlf_wrapper -t fd -d results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl -p results/blocksworld1a-2021-12-13T13:08:33.445275/p15.pddl -g O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p15 --algorithm astar --heuristic ff
+[2021-12-13 13:08:48,445][INFO]: ====================================================================================================
+[2021-12-13 13:08:48,445][INFO]: Time: 2021-12-13 13:08:48.445541
+[2021-12-13 13:08:48,445][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p16.pddl
+[2021-12-13 13:08:48,445][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:48,446][DEBUG]: name=p16
+[2021-12-13 13:08:48,446][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:08:48,446][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p16.pddl
+[2021-12-13 13:08:48,446][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:48,446][DEBUG]: mapping=None
+[2021-12-13 13:08:48,446][DEBUG]: timeout=60.0
+[2021-12-13 13:08:48,446][DEBUG]: tool=f4lp-fd-ff
+[2021-12-13 13:08:48,446][DEBUG]: config={}
+[2021-12-13 13:08:48,446][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p16
+[2021-12-13 13:08:49,717][INFO]: name=p16
+status=Status.SUCCESS
+time_compilation=0.7076959609985352
+time_tool=0.0107659
+time_end2end=1.137536
+nb_node_expanded=11
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/fond4ltlfpltlf_wrapper -t fd -d results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl -p results/blocksworld1a-2021-12-13T13:08:33.445275/p16.pddl -g O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p16 --algorithm astar --heuristic ff
+[2021-12-13 13:08:49,717][INFO]: ====================================================================================================
+[2021-12-13 13:08:49,717][INFO]: Time: 2021-12-13 13:08:49.717900
+[2021-12-13 13:08:49,718][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p17.pddl
+[2021-12-13 13:08:49,718][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:49,718][DEBUG]: name=p17
+[2021-12-13 13:08:49,718][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:08:49,718][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p17.pddl
+[2021-12-13 13:08:49,718][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:49,718][DEBUG]: mapping=None
+[2021-12-13 13:08:49,718][DEBUG]: timeout=60.0
+[2021-12-13 13:08:49,718][DEBUG]: tool=f4lp-fd-ff
+[2021-12-13 13:08:49,719][DEBUG]: config={}
+[2021-12-13 13:08:49,719][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p17
+[2021-12-13 13:08:50,939][INFO]: name=p17
+status=Status.SUCCESS
+time_compilation=0.6839320659637451
+time_tool=0.0125795
+time_end2end=1.130597
+nb_node_expanded=11
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/fond4ltlfpltlf_wrapper -t fd -d results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl -p results/blocksworld1a-2021-12-13T13:08:33.445275/p17.pddl -g O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p17 --algorithm astar --heuristic ff
+[2021-12-13 13:08:50,940][INFO]: ====================================================================================================
+[2021-12-13 13:08:50,940][INFO]: Time: 2021-12-13 13:08:50.940175
+[2021-12-13 13:08:50,940][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p18.pddl
+[2021-12-13 13:08:50,940][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:50,940][DEBUG]: name=p18
+[2021-12-13 13:08:50,940][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:08:50,940][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p18.pddl
+[2021-12-13 13:08:50,940][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:50,940][DEBUG]: mapping=None
+[2021-12-13 13:08:50,940][DEBUG]: timeout=60.0
+[2021-12-13 13:08:50,940][DEBUG]: tool=f4lp-fd-ff
+[2021-12-13 13:08:50,940][DEBUG]: config={}
+[2021-12-13 13:08:50,941][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p18
+[2021-12-13 13:08:52,111][INFO]: name=p18
+status=Status.SUCCESS
+time_compilation=0.6676468849182129
+time_tool=0.014316
+time_end2end=1.068794
+nb_node_expanded=11
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/fond4ltlfpltlf_wrapper -t fd -d results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl -p results/blocksworld1a-2021-12-13T13:08:33.445275/p18.pddl -g O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p18 --algorithm astar --heuristic ff
+[2021-12-13 13:08:52,111][INFO]: ====================================================================================================
+[2021-12-13 13:08:52,111][INFO]: Time: 2021-12-13 13:08:52.111484
+[2021-12-13 13:08:52,111][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p19.pddl
+[2021-12-13 13:08:52,111][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:52,111][DEBUG]: name=p19
+[2021-12-13 13:08:52,111][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:08:52,112][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p19.pddl
+[2021-12-13 13:08:52,112][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:52,112][DEBUG]: mapping=None
+[2021-12-13 13:08:52,112][DEBUG]: timeout=60.0
+[2021-12-13 13:08:52,112][DEBUG]: tool=f4lp-fd-ff
+[2021-12-13 13:08:52,112][DEBUG]: config={}
+[2021-12-13 13:08:52,112][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p19
+[2021-12-13 13:08:53,433][INFO]: name=p19
+status=Status.SUCCESS
+time_compilation=0.6968140602111816
+time_tool=0.0157389
+time_end2end=1.19081
+nb_node_expanded=11
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/fond4ltlfpltlf_wrapper -t fd -d results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl -p results/blocksworld1a-2021-12-13T13:08:33.445275/p19.pddl -g O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p19 --algorithm astar --heuristic ff
+[2021-12-13 13:08:53,433][INFO]: ====================================================================================================
+[2021-12-13 13:08:53,433][INFO]: Time: 2021-12-13 13:08:53.433690
+[2021-12-13 13:08:53,433][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p20.pddl
+[2021-12-13 13:08:53,433][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:53,434][DEBUG]: name=p20
+[2021-12-13 13:08:53,434][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:08:53,434][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p20.pddl
+[2021-12-13 13:08:53,434][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:53,434][DEBUG]: mapping=None
+[2021-12-13 13:08:53,434][DEBUG]: timeout=60.0
+[2021-12-13 13:08:53,434][DEBUG]: tool=f4lp-fd-ff
+[2021-12-13 13:08:53,434][DEBUG]: config={}
+[2021-12-13 13:08:53,434][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p20
+[2021-12-13 13:08:54,705][INFO]: name=p20
+status=Status.SUCCESS
+time_compilation=0.6866879463195801
+time_tool=0.0178149
+time_end2end=1.181015
+nb_node_expanded=11
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/fond4ltlfpltlf_wrapper -t fd -d results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl -p results/blocksworld1a-2021-12-13T13:08:33.445275/p20.pddl -g O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/f4lp-fd-ff/p20 --algorithm astar --heuristic ff
+[2021-12-13 13:08:54,706][INFO]: ====================================================================================================
+[2021-12-13 13:08:54,706][INFO]: Time: 2021-12-13 13:08:54.706946
+[2021-12-13 13:08:54,707][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p03.pddl
+[2021-12-13 13:08:54,707][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:54,707][DEBUG]: name=p03
+[2021-12-13 13:08:54,707][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:08:54,707][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p03.pddl
+[2021-12-13 13:08:54,707][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:54,707][DEBUG]: mapping=None
+[2021-12-13 13:08:54,707][DEBUG]: timeout=60.0
+[2021-12-13 13:08:54,707][DEBUG]: tool=p4p-fd-ff
+[2021-12-13 13:08:54,707][DEBUG]: config={}
+[2021-12-13 13:08:54,707][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p03
+[2021-12-13 13:08:55,677][INFO]: name=p03
+status=Status.SUCCESS
+time_compilation=0.5854020118713379
+time_tool=0.00257529
+time_end2end=0.86077
+nb_node_expanded=13
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past -t fd --domain results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl --problem results/blocksworld1a-2021-12-13T13:08:33.445275/p03.pddl --formula O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p03 --algorithm astar --heuristic ff
+[2021-12-13 13:08:55,678][INFO]: ====================================================================================================
+[2021-12-13 13:08:55,678][INFO]: Time: 2021-12-13 13:08:55.678118
+[2021-12-13 13:08:55,678][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p04.pddl
+[2021-12-13 13:08:55,678][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:55,678][DEBUG]: name=p04
+[2021-12-13 13:08:55,678][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:08:55,678][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p04.pddl
+[2021-12-13 13:08:55,678][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:55,678][DEBUG]: mapping=None
+[2021-12-13 13:08:55,678][DEBUG]: timeout=60.0
+[2021-12-13 13:08:55,678][DEBUG]: tool=p4p-fd-ff
+[2021-12-13 13:08:55,679][DEBUG]: config={}
+[2021-12-13 13:08:55,679][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p04
+[2021-12-13 13:08:56,648][INFO]: name=p04
+status=Status.SUCCESS
+time_compilation=0.5952119827270508
+time_tool=0.00285657
+time_end2end=0.882287
+nb_node_expanded=14
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past -t fd --domain results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl --problem results/blocksworld1a-2021-12-13T13:08:33.445275/p04.pddl --formula O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p04 --algorithm astar --heuristic ff
+[2021-12-13 13:08:56,649][INFO]: ====================================================================================================
+[2021-12-13 13:08:56,649][INFO]: Time: 2021-12-13 13:08:56.649241
+[2021-12-13 13:08:56,649][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p05.pddl
+[2021-12-13 13:08:56,649][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:56,649][DEBUG]: name=p05
+[2021-12-13 13:08:56,649][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:08:56,649][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p05.pddl
+[2021-12-13 13:08:56,649][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:56,649][DEBUG]: mapping=None
+[2021-12-13 13:08:56,649][DEBUG]: timeout=60.0
+[2021-12-13 13:08:56,649][DEBUG]: tool=p4p-fd-ff
+[2021-12-13 13:08:56,650][DEBUG]: config={}
+[2021-12-13 13:08:56,650][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p05
+[2021-12-13 13:08:57,670][INFO]: name=p05
+status=Status.SUCCESS
+time_compilation=0.5944678783416748
+time_tool=0.00415581
+time_end2end=0.884189
+nb_node_expanded=15
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past -t fd --domain results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl --problem results/blocksworld1a-2021-12-13T13:08:33.445275/p05.pddl --formula O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p05 --algorithm astar --heuristic ff
+[2021-12-13 13:08:57,670][INFO]: ====================================================================================================
+[2021-12-13 13:08:57,670][INFO]: Time: 2021-12-13 13:08:57.670894
+[2021-12-13 13:08:57,671][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p06.pddl
+[2021-12-13 13:08:57,671][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:57,671][DEBUG]: name=p06
+[2021-12-13 13:08:57,671][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:08:57,671][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p06.pddl
+[2021-12-13 13:08:57,671][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:57,671][DEBUG]: mapping=None
+[2021-12-13 13:08:57,671][DEBUG]: timeout=60.0
+[2021-12-13 13:08:57,671][DEBUG]: tool=p4p-fd-ff
+[2021-12-13 13:08:57,671][DEBUG]: config={}
+[2021-12-13 13:08:57,671][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p06
+[2021-12-13 13:08:58,692][INFO]: name=p06
+status=Status.SUCCESS
+time_compilation=0.5880498886108398
+time_tool=0.00347974
+time_end2end=0.881569
+nb_node_expanded=16
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past -t fd --domain results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl --problem results/blocksworld1a-2021-12-13T13:08:33.445275/p06.pddl --formula O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p06 --algorithm astar --heuristic ff
+[2021-12-13 13:08:58,692][INFO]: ====================================================================================================
+[2021-12-13 13:08:58,692][INFO]: Time: 2021-12-13 13:08:58.692386
+[2021-12-13 13:08:58,692][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p07.pddl
+[2021-12-13 13:08:58,692][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:58,692][DEBUG]: name=p07
+[2021-12-13 13:08:58,692][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:08:58,692][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p07.pddl
+[2021-12-13 13:08:58,692][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:58,693][DEBUG]: mapping=None
+[2021-12-13 13:08:58,693][DEBUG]: timeout=60.0
+[2021-12-13 13:08:58,693][DEBUG]: tool=p4p-fd-ff
+[2021-12-13 13:08:58,693][DEBUG]: config={}
+[2021-12-13 13:08:58,693][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p07
+[2021-12-13 13:08:59,663][INFO]: name=p07
+status=Status.SUCCESS
+time_compilation=0.5723438262939453
+time_tool=0.00459299
+time_end2end=0.859592
+nb_node_expanded=17
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past -t fd --domain results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl --problem results/blocksworld1a-2021-12-13T13:08:33.445275/p07.pddl --formula O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p07 --algorithm astar --heuristic ff
+[2021-12-13 13:08:59,663][INFO]: ====================================================================================================
+[2021-12-13 13:08:59,663][INFO]: Time: 2021-12-13 13:08:59.663619
+[2021-12-13 13:08:59,663][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p08.pddl
+[2021-12-13 13:08:59,663][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:59,664][DEBUG]: name=p08
+[2021-12-13 13:08:59,664][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:08:59,664][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p08.pddl
+[2021-12-13 13:08:59,664][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:08:59,664][DEBUG]: mapping=None
+[2021-12-13 13:08:59,664][DEBUG]: timeout=60.0
+[2021-12-13 13:08:59,664][DEBUG]: tool=p4p-fd-ff
+[2021-12-13 13:08:59,664][DEBUG]: config={}
+[2021-12-13 13:08:59,664][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p08
+[2021-12-13 13:09:00,684][INFO]: name=p08
+status=Status.SUCCESS
+time_compilation=0.5852799415588379
+time_tool=0.00437022
+time_end2end=0.894597
+nb_node_expanded=18
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past -t fd --domain results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl --problem results/blocksworld1a-2021-12-13T13:08:33.445275/p08.pddl --formula O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p08 --algorithm astar --heuristic ff
+[2021-12-13 13:09:00,685][INFO]: ====================================================================================================
+[2021-12-13 13:09:00,685][INFO]: Time: 2021-12-13 13:09:00.685187
+[2021-12-13 13:09:00,685][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p09.pddl
+[2021-12-13 13:09:00,685][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:09:00,685][DEBUG]: name=p09
+[2021-12-13 13:09:00,685][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:09:00,685][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p09.pddl
+[2021-12-13 13:09:00,685][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:09:00,685][DEBUG]: mapping=None
+[2021-12-13 13:09:00,685][DEBUG]: timeout=60.0
+[2021-12-13 13:09:00,686][DEBUG]: tool=p4p-fd-ff
+[2021-12-13 13:09:00,686][DEBUG]: config={}
+[2021-12-13 13:09:00,686][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p09
+[2021-12-13 13:09:01,756][INFO]: name=p09
+status=Status.SUCCESS
+time_compilation=0.5859110355377197
+time_tool=0.00499056
+time_end2end=0.968663
+nb_node_expanded=19
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past -t fd --domain results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl --problem results/blocksworld1a-2021-12-13T13:08:33.445275/p09.pddl --formula O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p09 --algorithm astar --heuristic ff
+[2021-12-13 13:09:01,757][INFO]: ====================================================================================================
+[2021-12-13 13:09:01,757][INFO]: Time: 2021-12-13 13:09:01.757095
+[2021-12-13 13:09:01,757][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p10.pddl
+[2021-12-13 13:09:01,757][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:09:01,757][DEBUG]: name=p10
+[2021-12-13 13:09:01,757][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:09:01,757][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p10.pddl
+[2021-12-13 13:09:01,757][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:09:01,757][DEBUG]: mapping=None
+[2021-12-13 13:09:01,758][DEBUG]: timeout=60.0
+[2021-12-13 13:09:01,758][DEBUG]: tool=p4p-fd-ff
+[2021-12-13 13:09:01,758][DEBUG]: config={}
+[2021-12-13 13:09:01,758][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p10
+[2021-12-13 13:09:02,778][INFO]: name=p10
+status=Status.SUCCESS
+time_compilation=0.5964460372924805
+time_tool=0.00541315
+time_end2end=0.923928
+nb_node_expanded=20
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past -t fd --domain results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl --problem results/blocksworld1a-2021-12-13T13:08:33.445275/p10.pddl --formula O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p10 --algorithm astar --heuristic ff
+[2021-12-13 13:09:02,778][INFO]: ====================================================================================================
+[2021-12-13 13:09:02,778][INFO]: Time: 2021-12-13 13:09:02.778869
+[2021-12-13 13:09:02,778][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p11.pddl
+[2021-12-13 13:09:02,779][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:09:02,779][DEBUG]: name=p11
+[2021-12-13 13:09:02,779][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:09:02,779][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p11.pddl
+[2021-12-13 13:09:02,779][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:09:02,779][DEBUG]: mapping=None
+[2021-12-13 13:09:02,779][DEBUG]: timeout=60.0
+[2021-12-13 13:09:02,779][DEBUG]: tool=p4p-fd-ff
+[2021-12-13 13:09:02,779][DEBUG]: config={}
+[2021-12-13 13:09:02,779][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p11
+[2021-12-13 13:09:03,799][INFO]: name=p11
+status=Status.SUCCESS
+time_compilation=0.5825510025024414
+time_tool=0.00644858
+time_end2end=0.930926
+nb_node_expanded=21
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past -t fd --domain results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl --problem results/blocksworld1a-2021-12-13T13:08:33.445275/p11.pddl --formula O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p11 --algorithm astar --heuristic ff
+[2021-12-13 13:09:03,800][INFO]: ====================================================================================================
+[2021-12-13 13:09:03,800][INFO]: Time: 2021-12-13 13:09:03.800318
+[2021-12-13 13:09:03,800][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p12.pddl
+[2021-12-13 13:09:03,800][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:09:03,800][DEBUG]: name=p12
+[2021-12-13 13:09:03,800][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:09:03,800][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p12.pddl
+[2021-12-13 13:09:03,801][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:09:03,801][DEBUG]: mapping=None
+[2021-12-13 13:09:03,801][DEBUG]: timeout=60.0
+[2021-12-13 13:09:03,801][DEBUG]: tool=p4p-fd-ff
+[2021-12-13 13:09:03,801][DEBUG]: config={}
+[2021-12-13 13:09:03,801][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p12
+[2021-12-13 13:09:04,871][INFO]: name=p12
+status=Status.SUCCESS
+time_compilation=0.5894229412078857
+time_tool=0.00723888
+time_end2end=0.950545
+nb_node_expanded=22
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past -t fd --domain results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl --problem results/blocksworld1a-2021-12-13T13:08:33.445275/p12.pddl --formula O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p12 --algorithm astar --heuristic ff
+[2021-12-13 13:09:04,872][INFO]: ====================================================================================================
+[2021-12-13 13:09:04,872][INFO]: Time: 2021-12-13 13:09:04.872155
+[2021-12-13 13:09:04,872][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p13.pddl
+[2021-12-13 13:09:04,872][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:09:04,872][DEBUG]: name=p13
+[2021-12-13 13:09:04,872][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:09:04,872][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p13.pddl
+[2021-12-13 13:09:04,872][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:09:04,872][DEBUG]: mapping=None
+[2021-12-13 13:09:04,873][DEBUG]: timeout=60.0
+[2021-12-13 13:09:04,873][DEBUG]: tool=p4p-fd-ff
+[2021-12-13 13:09:04,873][DEBUG]: config={}
+[2021-12-13 13:09:04,873][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p13
+[2021-12-13 13:09:05,943][INFO]: name=p13
+status=Status.SUCCESS
+time_compilation=0.5827348232269287
+time_tool=0.00819962
+time_end2end=0.955043
+nb_node_expanded=23
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past -t fd --domain results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl --problem results/blocksworld1a-2021-12-13T13:08:33.445275/p13.pddl --formula O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p13 --algorithm astar --heuristic ff
+[2021-12-13 13:09:05,944][INFO]: ====================================================================================================
+[2021-12-13 13:09:05,944][INFO]: Time: 2021-12-13 13:09:05.944224
+[2021-12-13 13:09:05,944][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p14.pddl
+[2021-12-13 13:09:05,944][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:09:05,944][DEBUG]: name=p14
+[2021-12-13 13:09:05,944][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:09:05,944][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p14.pddl
+[2021-12-13 13:09:05,944][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:09:05,944][DEBUG]: mapping=None
+[2021-12-13 13:09:05,944][DEBUG]: timeout=60.0
+[2021-12-13 13:09:05,945][DEBUG]: tool=p4p-fd-ff
+[2021-12-13 13:09:05,945][DEBUG]: config={}
+[2021-12-13 13:09:05,945][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p14
+[2021-12-13 13:09:07,015][INFO]: name=p14
+status=Status.SUCCESS
+time_compilation=0.5782601833343506
+time_tool=0.0103198
+time_end2end=0.965239
+nb_node_expanded=24
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past -t fd --domain results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl --problem results/blocksworld1a-2021-12-13T13:08:33.445275/p14.pddl --formula O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p14 --algorithm astar --heuristic ff
+[2021-12-13 13:09:07,015][INFO]: ====================================================================================================
+[2021-12-13 13:09:07,015][INFO]: Time: 2021-12-13 13:09:07.015970
+[2021-12-13 13:09:07,016][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p15.pddl
+[2021-12-13 13:09:07,016][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:09:07,016][DEBUG]: name=p15
+[2021-12-13 13:09:07,016][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:09:07,016][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p15.pddl
+[2021-12-13 13:09:07,016][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:09:07,016][DEBUG]: mapping=None
+[2021-12-13 13:09:07,016][DEBUG]: timeout=60.0
+[2021-12-13 13:09:07,016][DEBUG]: tool=p4p-fd-ff
+[2021-12-13 13:09:07,016][DEBUG]: config={}
+[2021-12-13 13:09:07,017][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p15
+[2021-12-13 13:09:08,137][INFO]: name=p15
+status=Status.SUCCESS
+time_compilation=0.6023211479187012
+time_tool=0.0103457
+time_end2end=1.001407
+nb_node_expanded=25
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past -t fd --domain results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl --problem results/blocksworld1a-2021-12-13T13:08:33.445275/p15.pddl --formula O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p15 --algorithm astar --heuristic ff
+[2021-12-13 13:09:08,137][INFO]: ====================================================================================================
+[2021-12-13 13:09:08,137][INFO]: Time: 2021-12-13 13:09:08.137819
+[2021-12-13 13:09:08,137][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p16.pddl
+[2021-12-13 13:09:08,138][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:09:08,138][DEBUG]: name=p16
+[2021-12-13 13:09:08,138][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:09:08,138][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p16.pddl
+[2021-12-13 13:09:08,138][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:09:08,138][DEBUG]: mapping=None
+[2021-12-13 13:09:08,138][DEBUG]: timeout=60.0
+[2021-12-13 13:09:08,138][DEBUG]: tool=p4p-fd-ff
+[2021-12-13 13:09:08,138][DEBUG]: config={}
+[2021-12-13 13:09:08,138][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p16
+[2021-12-13 13:09:09,261][INFO]: name=p16
+status=Status.SUCCESS
+time_compilation=0.580686092376709
+time_tool=0.0115338
+time_end2end=0.99412
+nb_node_expanded=26
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past -t fd --domain results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl --problem results/blocksworld1a-2021-12-13T13:08:33.445275/p16.pddl --formula O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p16 --algorithm astar --heuristic ff
+[2021-12-13 13:09:09,261][INFO]: ====================================================================================================
+[2021-12-13 13:09:09,261][INFO]: Time: 2021-12-13 13:09:09.261637
+[2021-12-13 13:09:09,261][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p17.pddl
+[2021-12-13 13:09:09,261][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:09:09,262][DEBUG]: name=p17
+[2021-12-13 13:09:09,262][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:09:09,262][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p17.pddl
+[2021-12-13 13:09:09,262][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:09:09,262][DEBUG]: mapping=None
+[2021-12-13 13:09:09,262][DEBUG]: timeout=60.0
+[2021-12-13 13:09:09,262][DEBUG]: tool=p4p-fd-ff
+[2021-12-13 13:09:09,262][DEBUG]: config={}
+[2021-12-13 13:09:09,262][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p17
+[2021-12-13 13:09:10,382][INFO]: name=p17
+status=Status.SUCCESS
+time_compilation=0.5886249542236328
+time_tool=0.0131948
+time_end2end=1.035163
+nb_node_expanded=27
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past -t fd --domain results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl --problem results/blocksworld1a-2021-12-13T13:08:33.445275/p17.pddl --formula O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p17 --algorithm astar --heuristic ff
+[2021-12-13 13:09:10,383][INFO]: ====================================================================================================
+[2021-12-13 13:09:10,383][INFO]: Time: 2021-12-13 13:09:10.383214
+[2021-12-13 13:09:10,383][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p18.pddl
+[2021-12-13 13:09:10,383][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:09:10,383][DEBUG]: name=p18
+[2021-12-13 13:09:10,383][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:09:10,383][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p18.pddl
+[2021-12-13 13:09:10,383][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:09:10,383][DEBUG]: mapping=None
+[2021-12-13 13:09:10,384][DEBUG]: timeout=60.0
+[2021-12-13 13:09:10,384][DEBUG]: tool=p4p-fd-ff
+[2021-12-13 13:09:10,384][DEBUG]: config={}
+[2021-12-13 13:09:10,384][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p18
+[2021-12-13 13:09:11,554][INFO]: name=p18
+status=Status.SUCCESS
+time_compilation=0.5923101902008057
+time_tool=0.0143816
+time_end2end=1.040905
+nb_node_expanded=28
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past -t fd --domain results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl --problem results/blocksworld1a-2021-12-13T13:08:33.445275/p18.pddl --formula O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p18 --algorithm astar --heuristic ff
+[2021-12-13 13:09:11,555][INFO]: ====================================================================================================
+[2021-12-13 13:09:11,555][INFO]: Time: 2021-12-13 13:09:11.555250
+[2021-12-13 13:09:11,555][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p19.pddl
+[2021-12-13 13:09:11,555][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:09:11,555][DEBUG]: name=p19
+[2021-12-13 13:09:11,555][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:09:11,555][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p19.pddl
+[2021-12-13 13:09:11,555][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:09:11,555][DEBUG]: mapping=None
+[2021-12-13 13:09:11,556][DEBUG]: timeout=60.0
+[2021-12-13 13:09:11,556][DEBUG]: tool=p4p-fd-ff
+[2021-12-13 13:09:11,556][DEBUG]: config={}
+[2021-12-13 13:09:11,556][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p19
+[2021-12-13 13:09:12,727][INFO]: name=p19
+status=Status.SUCCESS
+time_compilation=0.5960581302642822
+time_tool=0.0165935
+time_end2end=1.074699
+nb_node_expanded=29
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past -t fd --domain results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl --problem results/blocksworld1a-2021-12-13T13:08:33.445275/p19.pddl --formula O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p19 --algorithm astar --heuristic ff
+[2021-12-13 13:09:12,727][INFO]: ====================================================================================================
+[2021-12-13 13:09:12,727][INFO]: Time: 2021-12-13 13:09:12.727338
+[2021-12-13 13:09:12,727][INFO]: Processing problem results/blocksworld1a-2021-12-13T13:08:33.445275/p20.pddl
+[2021-12-13 13:09:12,727][INFO]: Using formula: O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:09:12,727][DEBUG]: name=p20
+[2021-12-13 13:09:12,727][DEBUG]: domain=results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl
+[2021-12-13 13:09:12,727][DEBUG]: problem=results/blocksworld1a-2021-12-13T13:08:33.445275/p20.pddl
+[2021-12-13 13:09:12,727][DEBUG]: formula=O(on_b1_b2 & Y(O(on_b2_b3)))
+[2021-12-13 13:09:12,727][DEBUG]: mapping=None
+[2021-12-13 13:09:12,728][DEBUG]: timeout=60.0
+[2021-12-13 13:09:12,728][DEBUG]: tool=p4p-fd-ff
+[2021-12-13 13:09:12,728][DEBUG]: config={}
+[2021-12-13 13:09:12,728][DEBUG]: working_dir=results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p20
+[2021-12-13 13:09:13,899][INFO]: name=p20
+status=Status.SUCCESS
+time_compilation=0.5862340927124023
+time_tool=0.0181808
+time_end2end=1.077867
+nb_node_expanded=30
+command=/home/marcofavorito/workfolder/planning-with-past-code/bin/plan4past -t fd --domain results/blocksworld1a-2021-12-13T13:08:33.445275/domain.pddl --problem results/blocksworld1a-2021-12-13T13:08:33.445275/p20.pddl --formula O(on_b1_b2 & Y(O(on_b2_b3))) --working-dir results/blocksworld1a-2021-12-13T13:08:33.445275/p4p-fd-ff/p20 --algorithm astar --heuristic ff
