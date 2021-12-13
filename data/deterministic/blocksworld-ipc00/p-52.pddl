@@ -56,7 +56,7 @@
     (ON U G)
     (ON S Q)
     (ON Q A)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON P Y)

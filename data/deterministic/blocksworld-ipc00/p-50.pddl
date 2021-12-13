@@ -53,7 +53,7 @@
     (ON X S)
     (ON S L)
     (ON L O)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON L C)

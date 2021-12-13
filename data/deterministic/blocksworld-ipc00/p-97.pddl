@@ -103,7 +103,7 @@
     (ON G1 R)
     (ON H M1)
     (ON M1 P1)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON J1 D)

@@ -56,7 +56,7 @@
     (ON E U)
     (ON U F)
     (ON M H)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON I E)

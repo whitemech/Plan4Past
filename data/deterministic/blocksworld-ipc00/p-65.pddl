@@ -75,7 +75,7 @@
     (ON J H)
     (ON H F)
     (ON K X)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON M P)

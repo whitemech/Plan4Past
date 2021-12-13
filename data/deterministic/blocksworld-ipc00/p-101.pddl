@@ -109,7 +109,7 @@
     (ON B K1)
     (ON E S)
     (ON S J1)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON L1 Q)

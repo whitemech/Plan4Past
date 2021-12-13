@@ -66,7 +66,7 @@
     (ON B1 A1)
     (ON A1 T)
     (ON T S)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON S Z)

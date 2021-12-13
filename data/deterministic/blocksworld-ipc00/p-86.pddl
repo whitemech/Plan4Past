@@ -88,7 +88,7 @@
     (ON H N)
     (ON N U)
     (ON U D1)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON U Q)

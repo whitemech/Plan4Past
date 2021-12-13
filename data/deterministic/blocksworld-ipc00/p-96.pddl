@@ -105,7 +105,7 @@
     (ON B D1)
     (ON D1 S)
     (ON S P1)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON Q L1)

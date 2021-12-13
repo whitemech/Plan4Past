@@ -84,7 +84,7 @@
     (ON A1 Y)
     (ON Y G)
     (ON G B1)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON Q F)

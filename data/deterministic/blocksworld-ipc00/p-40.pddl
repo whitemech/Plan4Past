@@ -44,7 +44,7 @@
     (ON Q D)
     (ON O B)
     (ON B K)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON L C)

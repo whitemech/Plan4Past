@@ -73,7 +73,7 @@
     (ON Q F1)
     (ON F1 E1)
     (ON E1 B1)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON P L)

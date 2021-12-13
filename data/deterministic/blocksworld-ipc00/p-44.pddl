@@ -48,7 +48,7 @@
     (ON C E)
     (ON E N)
     (ON N M)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON Q L)

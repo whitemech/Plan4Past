@@ -69,7 +69,7 @@
     (ON Q U)
     (ON U Y)
     (ON Y J)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON P D1)

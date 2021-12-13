@@ -77,7 +77,7 @@
     (ON V Z)
     (ON C1 D1)
     (ON D1 E1)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON G R)

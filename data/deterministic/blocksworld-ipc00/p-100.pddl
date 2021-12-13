@@ -109,7 +109,7 @@
     (ON R1 G1)
     (ON N L1)
     (ON L1 I1)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON Q L1)

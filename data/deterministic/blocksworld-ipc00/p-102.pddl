@@ -108,7 +108,7 @@
     (ON G1 C)
     (ON C I)
     (ON I D)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON C A)

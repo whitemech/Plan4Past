@@ -57,7 +57,7 @@
     (ON X N)
     (ON N L)
     (ON L E)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON L T)

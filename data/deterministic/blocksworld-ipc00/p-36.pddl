@@ -40,7 +40,7 @@
     (ON L D)
     (ON D A)
     (ON N F)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON P Q)

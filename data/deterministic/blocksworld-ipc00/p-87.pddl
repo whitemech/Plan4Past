@@ -94,7 +94,7 @@
     (ON B1 C)
     (ON H1 I)
     (ON I M)
-    (HANDEMPTY)
+    (EMPTYHAND)
 )
 (:goal (and
     (ON J D)
