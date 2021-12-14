@@ -40,4 +40,4 @@ def generate_future_formula_openstacks(n: int):
     subs = []
     for i in range(1, n + 1):
         subs.append(f'F("shipped o{i}")')
-    return ' & '.join(subs)
+    return '&'.join(subs)
