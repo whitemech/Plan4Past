@@ -7,6 +7,11 @@ from benchmark.utils.blocksworld import (
     generate_formula_blocksworld,
     generate_future_formula_blocksworld,
 )
+from benchmark.utils.openstacks import (
+    generate_formula_openstacks,
+    generate_future_formula_openstacks,
+    generate_problem_openstacks,
+)
 from benchmark.utils.triangletireworld import (
     generate_problem_triangletireworld,
     generate_formula_triangletireworld,
@@ -84,6 +89,32 @@ class TriangleTireworld1B(ExperimentGenerator):
         if future:
             return generate_future_formula_triangletireworld(nb_locs)
         return generate_formula_triangletireworld(nb_locs)
+
+
+class OpenstacksGenerator1A(ExperimentGenerator):
+    @classmethod
+    def generate_problem(cls, i: int):
+        return generate_problem_openstacks(i)
+
+    @classmethod
+    def generate_formula(cls, tool_id: str, param: int):
+        future = "lf2f" in tool_id
+        if future:
+            return 'F("on b2 b3"&X(F("on b1 b2")))'
+        return "O(on_b1_b2 & Y(O(on_b2_b3)))"
+
+
+class OpenstacksGenerator1B(ExperimentGenerator):
+    @classmethod
+    def generate_problem(cls, i: int):
+        return generate_problem_openstacks(i)
+
+    @classmethod
+    def generate_formula(cls, tool_id: str, nb_blocks: int):
+        future = "lf2f" in tool_id
+        if future:
+            return generate_future_formula_openstacks(nb_blocks)
+        return generate_formula_openstacks(nb_blocks)
 
 
 _GENERATORS_1A: Dict[str, Type[ExperimentGenerator]] = {
