@@ -22,12 +22,10 @@
 
 from typing import Dict
 
-from pylogics.syntax.base import Formula
-from pylogics.syntax.pltl import (
-    Atomic as PLTLAtomic,
-)
-
 from pddl.logic import Predicate, constants
+from pylogics.syntax.base import Formula
+from pylogics.syntax.pltl import Atomic as PLTLAtomic
+
 from planning_with_past.utils.atoms_visitor import find_atoms
 
 

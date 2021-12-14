@@ -124,9 +124,7 @@ class Compiler:
 
     def _compile_domain(self):
         """Compute the new domain."""
-        new_predicates = predicates(self.formula).union(
-            val_predicates(self.formula)
-        )
+        new_predicates = predicates(self.formula).union(val_predicates(self.formula))
         new_derived_predicates = derived_predicates(
             self.formula, self.from_atoms_to_fluent
         )
@@ -161,7 +159,9 @@ class Compiler:
             requirements=self.problem.requirements,
             objects=[*self.problem.objects],
             init=new_init,
-            goal=And(Predicate(add_val_prefix(replace_symbols(to_string(self.formula)))))
+            goal=And(
+                Predicate(add_val_prefix(replace_symbols(to_string(self.formula))))
+            ),
         )
 
 
@@ -170,7 +170,9 @@ def _compute_whens(formula: Formula) -> Set[When]:
     return {When(Predicate(add_val_prefix(p.name)), p) for p in predicates(formula)}
 
 
-def _update_domain_actions_det(actions: AbstractSet[Action], progression: Set[When]) -> Set[Action]:
+def _update_domain_actions_det(
+    actions: AbstractSet[Action], progression: Set[When]
+) -> Set[Action]:
     """Update domain action when domain is deterministic."""
     new_actions = set()
     for action in actions:
