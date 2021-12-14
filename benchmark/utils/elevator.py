@@ -23,7 +23,7 @@ def generate_problem_elevator(n: int) -> str:
 def generate_formula_elevator(n: int):
     """Generate formula from a given number."""
     subs = []
-    for i in range(0, n + 1):
+    for i in range(0, n):
         subs.append(f"O(served_p{i})")
     return ' & '.join(subs)
 
@@ -31,6 +31,6 @@ def generate_formula_elevator(n: int):
 def generate_future_formula_elevator(n: int):
     """Generate future from a given number."""
     subs = []
-    for i in range(0, n + 1):
+    for i in range(0, n):
         subs.append(f'F("served p{i}")')
     return '&'.join(subs)
