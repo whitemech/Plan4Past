@@ -1,6 +1,3 @@
-import itertools
-
-
 def _locs_goal_order(nb_locs: int):
     locs_order = []
     for x in range(1, nb_locs + 1):
@@ -15,10 +12,6 @@ def generate_problem_triangletireworld(nb_locs: int) -> str:
     objects = [
         f"l{i - j + 1}x{j}" for i in range(1, nb_locs + 1) for j in range(1, i + 1)
     ]
-    # init_roads = [
-    #     f"(road {i} {j}) (road {j} {i})"
-    #     for i, j in list(itertools.combinations(objects, 2))
-    # ]
     init_roads = []
     for obj in objects:
         obj_split = obj.split("x")

@@ -7,6 +7,11 @@ from benchmark.utils.blocksworld import (
     generate_formula_blocksworld,
     generate_future_formula_blocksworld,
 )
+from benchmark.utils.elevator import (
+    generate_problem_elevator,
+    generate_future_formula_elevator,
+    generate_formula_elevator,
+)
 from benchmark.utils.triangletireworld import (
     generate_problem_triangletireworld,
     generate_formula_triangletireworld,
@@ -86,12 +91,40 @@ class TriangleTireworld1B(ExperimentGenerator):
         return generate_formula_triangletireworld(nb_locs)
 
 
+class ElevatorGenerator1A(ExperimentGenerator):
+    @classmethod
+    def generate_problem(cls, i: int):
+        return generate_problem_elevator(i)
+
+    @classmethod
+    def generate_formula(cls, tool_id: str, param: int):
+        future = "lf2f" in tool_id
+        if future:
+            return 'F("served p0")&F("served p1")&F("served p2")'
+        return "O(served_p0) & O(served_p1) & O(served_p2)"
+
+
+class ElevatorGenerator1B(ExperimentGenerator):
+    @classmethod
+    def generate_problem(cls, i: int):
+        return generate_problem_elevator(i)
+
+    @classmethod
+    def generate_formula(cls, tool_id: str, nb_blocks: int):
+        future = "lf2f" in tool_id
+        if future:
+            return generate_future_formula_elevator(nb_blocks)
+        return generate_formula_elevator(nb_blocks)
+
+
 _GENERATORS_1A: Dict[str, Type[ExperimentGenerator]] = {
     "blocksworld": BlocksworldGenerator1A,
     "triangle-tireworld": TriangleTireworld1A,
+    "elevator": ElevatorGenerator1A,
 }
 
 _GENERATORS_1B: Dict[str, Type[ExperimentGenerator]] = {
     "blocksworld": BlocksworldGenerator1B,
     "triangle-tireworld": TriangleTireworld1B,
+    "elevator": ElevatorGenerator1B,
 }
