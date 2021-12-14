@@ -108,7 +108,7 @@ def run_experiments(
 @click.option("--min-param", type=int)
 @click.option("--max-param", type=int)
 @click.option("--step", type=int, default=1)
-@click.option("--stop-on-timeout", type=bool, default=False)
+@click.option("--stop-on-timeout", type=bool, is_flag=True, default=False)
 def main(
     dataset_name: str,
     dataset_dir: str,

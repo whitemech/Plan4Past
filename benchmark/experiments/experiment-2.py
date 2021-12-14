@@ -75,7 +75,7 @@ def run_experiments(dataset_dir, timeout, output_dir, tools: List[str], stop_on_
     type=click.Choice(list(map(itemgetter("value"), ToolID))),
     required=True
 )
-@click.option("--stop-on-timeout", type=bool, default=False)
+@click.option("--stop-on-timeout", type=bool, is_flag=True, default=False)
 def main(dataset_dir: str, output_dir: str, timeout: float, tool: List[str], stop_on_timeout: bool):
     run_experiments(dataset_dir, timeout, output_dir, tool, stop_on_timeout)
 
