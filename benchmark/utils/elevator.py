@@ -5,7 +5,7 @@ def generate_problem_elevator(n: int) -> str:
     for i in range(0, len(floors)):
         for j in range(1 + i, len(floors)):
             init_aboves.append(f"(above f{i} f{j})")
-    init_origin = [f"(origin p{i} f0)" for i in range]
+    init_origin = [f"(origin p{i} f0)" for i in range(0, n)]
     init_dest = []
     nb_dst = list(range(1, len(floors), 2))
     for i in range(0, n):
