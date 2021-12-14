@@ -74,6 +74,18 @@ Non-deterministic:
 python benchmark/experiments/experiment-1.py --timeout 600.0 --min-param 2 --max-param 20 --dataset-name blocksworld --experiment-type b -t 'f4lp-mynd-sc-ff' -t 'p4p-mynd-sc-ff' -t 'lf2f-mynd-sc-ff' --output-dir experiment-1b-blocksworld-nondet
 ```
 
+## Triangle Tireworld 1a
+
+```
+python ./benchmark/experiments/experiment-1.py --timeout 300.0 --min-param 2 --max-param 10 --dataset-name triangle-tireworld --experiment-type a -t f4lp-mynd-sc-ff -t p4p-mynd-sc-ff -t lf2f-mynd-sc-ff
+```
+
+## Triangle Tireworld 1b
+
+```
+python ./benchmark/experiments/experiment-1.py --timeout 300.0 --min-param 2 --max-param 10 --dataset-name triangle-tireworld --experiment-type b -t f4lp-mynd-sc-ff -t p4p-mynd-sc-ff -t lf2f-mynd-sc-ff
+```
+
 ## Experiment type 2
 
 ### Blocksworld 
@@ -86,4 +98,10 @@ python benchmark/experiments/experiment-2.py --timeout 60.0 --dataset-dir data/d
 Non-deterministic:
 ```
 python benchmark/experiments/experiment-2.py --timeout 60.0 --dataset-dir data/non-deterministic/blocksworld
+```
+
+## Triangle Tireworld
+
+```
+python benchmark/experiments/experiment-2.py --timeout 300.0 --dataset-dir data/non-deterministic/triangle-tireworld
 ```

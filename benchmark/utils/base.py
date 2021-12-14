@@ -7,7 +7,7 @@ from enum import Enum
 from pathlib import Path
 from typing import List
 
-from pddl.logic.base import And
+from pddl.logic.base import And, Atomic
 from pddl.parser.problem import ProblemParser
 
 BENCHMARK_ROOT = Path(inspect.getframeinfo(inspect.currentframe()).filename).parent.parent  # type: ignore
@@ -50,6 +50,8 @@ def get_reachability_goal(problem_path: Path) -> str:
         return " & ".join(
             [str(atom)[1:-1].replace(" ", "_") for atom in goal_formula.operands]
         )
+    elif isinstance(goal_formula, Atomic):
+        return str(goal_formula)[1:-1].replace(" ", "_")
     raise ValueError("expected an 'and' goal")
 
 
