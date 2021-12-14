@@ -39,5 +39,5 @@ def generate_future_formula_openstacks(n: int):
     """Generate future from a given number."""
     subs = []
     for i in range(1, n + 1):
-        subs.append(f"F(shipped o{i})")
+        subs.append(f'F("shipped o{i}")')
     return ' & '.join(subs)
