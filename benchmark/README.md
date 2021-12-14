@@ -82,12 +82,12 @@ python benchmark/plotting/plot.py output --output output.pdf --xlabel "Parameter
 ## Triangle Tireworld 1a
 
 ```
-python ./benchmark/experiments/experiment-1.py --timeout 300.0 --min-param 2 --max-param 10 --dataset-name triangle-tireworld --experiment-type a -t f4lp-mynd-sc-ff -t p4p-mynd-sc-ff -t lf2f-mynd-sc-ff --stop-on-timeout --output-dir output
+python ./benchmark/experiments/experiment-1.py --timeout 300.0 --min-param 3 --max-param 10 --dataset-name triangle-tireworld --experiment-type a -t f4lp-mynd-sc-ff -t p4p-mynd-sc-ff -t lf2f-mynd-sc-ff --stop-on-timeout --output-dir output
 ```
 
 Plot the results:
 ```
-python benchmark/plotting/plot.py output --output output.pdf --xlabel "Parameter: Triangle size" --ylabel "Time (seconds)" --xtick-start 2 --stop-on-timeout --timeout 300
+python benchmark/plotting/plot.py output --output output.pdf --xlabel "Parameter: Triangle size" --ylabel "Time (seconds)" --xtick-start 3 --stop-on-timeout --timeout 300
 ```
 
 ## Triangle Tireworld 1b
