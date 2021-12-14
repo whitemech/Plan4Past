@@ -1,3 +1,4 @@
+from itertools import zip_longest
 
 
 def _locs_goal_order(nb_locs: int):
@@ -7,6 +8,35 @@ def _locs_goal_order(nb_locs: int):
     for x in range(1, nb_locs):
         locs_order.append(f"l{nb_locs - x}x{x + 1}")
     return locs_order
+
+
+def _locs_goal_order_zigzag_old(nb_locs: int):
+    assert nb_locs >= 2
+    nb_twins = (nb_locs + 1) // 2
+    nb_siblings = nb_locs // 2
+    twins = [f"l{i}x{i}" for i in range(1, nb_twins + 1)]
+    siblings = [f"l{i + 1}x{i}" for i in range(1, nb_siblings + 1)]
+    result = []
+    for twin, sibling in zip_longest(twins, siblings, fillvalue=None):
+        if twin is not None:
+            result.append(twin)
+        if sibling is not None:
+            result.append(sibling)
+    return result
+
+
+def _locs_goal_order_zigzag(nb_locs: int):
+    assert nb_locs >= 2
+    result = []
+    i = 1
+    j = 1
+    while i + j <= nb_locs + 1:
+        result.append(f"l{i}x{j}")
+        if i == j:
+            i += 1
+        elif i - j == 1:
+            j += 1
+    return result
 
 
 def generate_problem_triangletireworld(nb_locs: int) -> str:
@@ -63,7 +93,7 @@ def generate_problem_triangletireworld(nb_locs: int) -> str:
 def generate_formula_triangletireworld(nb_locs: int):
     """Generate formula from number of locations of a triangle side."""
     assert nb_locs >= 2
-    order = list(_locs_goal_order(nb_locs))
+    order = list(_locs_goal_order_zigzag(nb_locs))
     formula = f"vehicleat_{order[0]}"
     for i in range(1, len(order)):
         formula = f"vehicleat_{order[i]} & Y(O({formula}))"
@@ -74,7 +104,7 @@ def generate_formula_triangletireworld(nb_locs: int):
 def generate_future_formula_triangletireworld(nb_locs: int):
     """Generate formula from number of locations of a triangle side."""
     assert nb_locs >= 2
-    order = list(reversed(_locs_goal_order(nb_locs)))
+    order = list(reversed(_locs_goal_order_zigzag(nb_locs)))
     formula = f'"vehicleat {order[0]}"'
     for i in range(1, len(order)):
         formula = f'"vehicleat {order[i]}"&X(F({formula}))'
