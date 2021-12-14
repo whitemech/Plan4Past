@@ -7,17 +7,16 @@ from typing import List
 import click
 
 from benchmark.run_planner import run_planner
-from benchmark.tools.core import save_data, ToolID
+from benchmark.tools.core import save_data, ToolID, Status
 from benchmark.utils.base import (
     get_reachability_goal,
     TSV_FILENAME,
     configure_logging,
     default_output_dir,
-    is_deterministic,
 )
 
 
-def run_tool(tool_id, output_dir, problem_files, domain_file, timeout):
+def run_tool(tool_id, output_dir, problem_files, domain_file, timeout, stop_on_timeout: bool):
     data = []
     tool_dir = output_dir / tool_id
     tool_dir.mkdir()
@@ -42,11 +41,14 @@ def run_tool(tool_id, output_dir, problem_files, domain_file, timeout):
             )
             logging.info(result.to_rows())
             data.append(result)
+            if stop_on_timeout and result.status in {Status.ERROR, Status.TIMEOUT}:
+                logging.info(f"Stop on timeout, status={result.status}")
+                break
     finally:
         save_data(data, tool_dir / TSV_FILENAME)
 
 
-def run_experiments(dataset_dir, timeout, output_dir, tools: List[str]):
+def run_experiments(dataset_dir, timeout, output_dir, tools: List[str], stop_on_timeout: bool):
     dataset_dir = Path(dataset_dir)
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=False)
@@ -57,7 +59,7 @@ def run_experiments(dataset_dir, timeout, output_dir, tools: List[str]):
     problem_files = sorted(set(dataset_dir.glob("*.pddl")) - {domain_file})
 
     for tool in tools:
-        run_tool(tool, output_dir, problem_files, domain_file, timeout)
+        run_tool(tool, output_dir, problem_files, domain_file, timeout, stop_on_timeout)
 
 
 @click.command()
@@ -73,8 +75,9 @@ def run_experiments(dataset_dir, timeout, output_dir, tools: List[str]):
     type=click.Choice(list(map(itemgetter("value"), ToolID))),
     required=True
 )
-def main(dataset_dir: str, output_dir: str, timeout: float, tool: List[str]):
-    run_experiments(dataset_dir, timeout, output_dir, tool)
+@click.option("--stop-on-timeout", type=bool, default=False)
+def main(dataset_dir: str, output_dir: str, timeout: float, tool: List[str], stop_on_timeout: bool):
+    run_experiments(dataset_dir, timeout, output_dir, tool, stop_on_timeout)
 
 
 if __name__ == "__main__":
