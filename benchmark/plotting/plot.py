@@ -67,7 +67,7 @@ def trunc(values, decimals=0):
 )
 @click.option("--output", default="output.svg")
 @click.option("--title", default=None)
-@click.option("--timeout", type=int, default=300)
+@click.option("--timeout", type=int, default=600)
 @click.option("--xlabel", type=str, required=True)
 @click.option("--ylabel", type=str, required=True)
 def main(
