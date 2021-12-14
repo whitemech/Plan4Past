@@ -124,33 +124,14 @@ class Compiler:
 
     def _compile_domain(self):
         """Compute the new domain."""
-        act = Predicate("act")
-        if self._nondeterministic:
-            new_predicates = predicates(self.formula).union(
-                {act}, val_predicates(self.formula)
-            )
-        else:
-            new_predicates = predicates(self.formula).union(
-                val_predicates(self.formula)
-            )
-
+        new_predicates = predicates(self.formula).union(
+            val_predicates(self.formula)
+        )
         new_derived_predicates = derived_predicates(
             self.formula, self.from_atoms_to_fluent
         )
-
         new_whens = _compute_whens(self.formula)
-
-        if self._nondeterministic:
-            domain_actions = _update_domain_actions_nondet(self.domain.actions, act)
-            prog_action = Action(
-                name="prog",
-                parameters=[],
-                precondition=~act,
-                effect=And(*new_whens, act),
-            )
-            domain_actions = domain_actions.union({prog_action})
-        else:
-            domain_actions = _update_domain_actions_det(self.domain.actions, new_whens)
+        domain_actions = _update_domain_actions_det(self.domain.actions, new_whens)
 
         self._result_domain = Domain(
             name=self.domain.name,
@@ -172,17 +153,7 @@ class Compiler:
 
     def _compile_problem(self):
         """Compute the new problem."""
-        act = Predicate("act")
-
         new_init = set(self.problem.init)
-        new_goal = And()
-        if self._nondeterministic:
-            new_init = new_init.union({act})
-            new_goal = And(
-                Predicate(add_val_prefix(replace_symbols(to_string(self.formula)))), act
-            )
-        else:
-            new_goal = Predicate(add_val_prefix(replace_symbols(to_string(self.formula))))
 
         self._result_problem = Problem(
             name=self.problem.name,
@@ -190,28 +161,13 @@ class Compiler:
             requirements=self.problem.requirements,
             objects=[*self.problem.objects],
             init=new_init,
-            goal=new_goal,
+            goal=And(Predicate(add_val_prefix(replace_symbols(to_string(self.formula)))))
         )
 
 
 def _compute_whens(formula: Formula) -> Set[When]:
     """Compute conditional effects for formula progression."""
     return {When(Predicate(add_val_prefix(p.name)), p) for p in predicates(formula)}
-
-
-def _update_domain_actions_nondet(actions: AbstractSet[Action], act: Predicate) -> Set[Action]:
-    """Update domain actions when domain is non-deterministic."""
-    new_actions = set()
-    for action in actions:
-        new_actions.add(
-            Action(
-                name=action.name,
-                parameters=[*action.parameters],
-                precondition=And(action.precondition, act),
-                effect=AndEffect(action.effect, Not(act)),
-            )
-        )
-    return new_actions
 
 
 def _update_domain_actions_det(actions: AbstractSet[Action], progression: Set[When]) -> Set[Action]:
