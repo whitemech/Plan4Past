@@ -1,6 +1,6 @@
 import datetime
 import logging
-from operator import itemgetter
+from operator import attrgetter
 from pathlib import Path
 from typing import List
 
@@ -72,7 +72,7 @@ def run_experiments(dataset_dir, timeout, output_dir, tools: List[str], stop_on_
     "--tool",
     "-t",
     multiple=True,
-    type=click.Choice(list(map(itemgetter("value"), ToolID))),
+    type=click.Choice(list(map(attrgetter("value"), ToolID))),
     required=True
 )
 @click.option("--stop-on-timeout", type=bool, is_flag=True, default=False)

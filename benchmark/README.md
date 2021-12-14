@@ -51,13 +51,13 @@ python benchmark/experiments/experiment-1.py --timeout 300.0 --min-param 3 --max
 Produce the plot:
 
 ```
-python benchmark/plotting/plot.py output --output output.pdf --xlabel "Parameter: Number of blocks" --ylabel "Time (seconds)"
+python benchmark/plotting/plot.py output --output output.pdf --xlabel "Parameter: Number of blocks" --ylabel "Time (seconds)" --xtick-start 3 --timeout 300
 ```
 
 Print data as table:
 
 ```
-python benchmark/plotting/table.py --directory output --timeout 60.0
+python benchmark/plotting/table.py --directory output --timeout 300.0
 ```
 
 ## Blocksworld 1b
@@ -76,19 +76,29 @@ python benchmark/experiments/experiment-1.py --timeout 300.0 --min-param 2 --max
 
 Plot the results:
 ```
-python benchmark/plotting/plot.py output --output output.pdf --xlabel "Parameter: Number of blocks" --ylabel "Time (seconds)" --timeout 300 --xlimit-min 1
+python benchmark/plotting/plot.py output --output output.pdf --xlabel "Parameter: Number of blocks" --ylabel "Time (seconds)" --xtick-start 3 --stop-on-timeout --timeout 300
 ```
 
 ## Triangle Tireworld 1a
 
 ```
-python ./benchmark/experiments/experiment-1.py --timeout 300.0 --min-param 2 --max-param 10 --dataset-name triangle-tireworld --experiment-type a -t f4lp-mynd-sc-ff -t p4p-mynd-sc-ff -t lf2f-mynd-sc-ff
+python ./benchmark/experiments/experiment-1.py --timeout 300.0 --min-param 2 --max-param 10 --dataset-name triangle-tireworld --experiment-type a -t f4lp-mynd-sc-ff -t p4p-mynd-sc-ff -t lf2f-mynd-sc-ff --stop-on-timeout --output-dir output
+```
+
+Plot the results:
+```
+python benchmark/plotting/plot.py output --output output.pdf --xlabel "Parameter: Triangle size" --ylabel "Time (seconds)" --xtick-start 2 --stop-on-timeout --timeout 300
 ```
 
 ## Triangle Tireworld 1b
 
 ```
-python ./benchmark/experiments/experiment-1.py --timeout 300.0 --min-param 2 --max-param 10 --dataset-name triangle-tireworld --experiment-type b -t f4lp-mynd-sc-ff -t p4p-mynd-sc-ff -t lf2f-mynd-sc-ff
+python ./benchmark/experiments/experiment-1.py --timeout 300.0 --min-param 2 --max-param 10 --dataset-name triangle-tireworld --experiment-type b -t f4lp-mynd-sc-ff -t p4p-mynd-sc-ff -t lf2f-mynd-sc-ff --stop-on-timeout --output-dir output
+```
+
+Plot the results:
+```
+python benchmark/plotting/plot.py output --output output.pdf --xlabel "Parameter: Path lengh/Triangle size" --ylabel "Time (seconds)" --xtick-start 2 --stop-on-timeout --timeout 300
 ```
 
 ## Experiment type 2
@@ -97,16 +107,21 @@ python ./benchmark/experiments/experiment-1.py --timeout 300.0 --min-param 2 --m
 
 Deterministic:
 ```
-python benchmark/experiments/experiment-2.py --timeout 60.0 --dataset-dir data/deterministic/blocksworld
+python benchmark/experiments/experiment-2.py --timeout 300.0 --dataset-dir data/deterministic/blocksworld -t fd-ff -t p4p-fd-ff 
 ```
 
 Non-deterministic:
 ```
-python benchmark/experiments/experiment-2.py --timeout 60.0 --dataset-dir data/non-deterministic/blocksworld
+python benchmark/experiments/experiment-2.py --timeout 300.0 --dataset-dir data/non-deterministic/blocksworld -t mynd-sc-ff -t p4p-mynd-sc-ff
+```
+
+Plot the results:
+```
+python benchmark/plotting/plot.py output --output output.pdf --xlabel "Parameter: Problem id" --ylabel "Time (seconds)" --xtick-start 1 --timeout 300
 ```
 
 ## Triangle Tireworld
 
 ```
-python benchmark/experiments/experiment-2.py --timeout 300.0 --dataset-dir data/non-deterministic/triangle-tireworld
+python benchmark/experiments/experiment-2.py --timeout 300.0 --dataset-dir data/non-deterministic/triangle-tireworld -t mynd-sc-ff -t p4p-mynd-sc-ff
 ```

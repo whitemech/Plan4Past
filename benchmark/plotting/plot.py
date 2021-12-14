@@ -71,9 +71,10 @@ def trunc(values, decimals=0):
 @click.option("--timeout", type=int, default=600)
 @click.option("--xlabel", type=str, required=True)
 @click.option("--ylabel", type=str, required=True)
-@click.option("--stop-on-timeout", type=bool, default=False)
+@click.option("--xtick-start", type=int, default=0)
+@click.option("--stop-on-timeout", type=bool, is_flag=True, default=False)
 def main(
-    benchmark_dir: str, output: str, title: str, timeout: int, xlabel: str, ylabel: str, stop_on_timeout: bool
+    benchmark_dir: str, output: str, title: str, timeout: int, xlabel: str, ylabel: str, xtick_start: int, stop_on_timeout: bool
 ):
     """Plot results from benchmark directory."""
     benchmark_dir = try_unzip(benchmark_dir)
@@ -105,7 +106,7 @@ def main(
             total_times.append(total_time)
         cactus[:, idx] = np.asarray(total_times)
 
-    x_axis = np.arange(1, max_nb_rows + 1)
+    x_axis = np.arange(0, max_nb_rows) + xtick_start
     for idx, label in enumerate(labels):
         tool = tool_registry.make(label)
         tool_name = tool.NAME
@@ -122,8 +123,8 @@ def main(
             **MARKER_CONFIGS,
         )
     plt.plot(x_axis, [timeout] * max_nb_rows, linestyle=":", color="black")
-    plt.xlim((1, max_nb_rows))
-    plt.xticks(np.arange(1, max_nb_rows + 1, step=1.0))
+    plt.xlim((xtick_start, max_nb_rows + xtick_start - 1))
+    plt.xticks(np.arange(xtick_start, max_nb_rows + xtick_start, step=1.0))
     plt.yscale("log")
     plt.legend()
     plt.xlabel(xlabel)
