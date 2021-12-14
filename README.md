@@ -95,7 +95,7 @@ E.g.:
 ## Docker image
 
 ```
-docker build -t icaps-2022 .
+docker build --cpuset-cpus 0-7 -t icaps-2022 .
 ```
 
 ```
