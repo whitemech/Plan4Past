@@ -92,6 +92,16 @@ E.g.:
     --force
 ```
 
+## Docker image
+
+```
+docker build --cpuset-cpus 0-7 -t icaps-2022 .
+```
+
+```
+docker run --rm -it icaps-2022 /bin/bash
+```
+
 
 ## Tests
 
