@@ -19,8 +19,7 @@ def generate_problem_openstacks(n: int) -> str:
     problem = f"""(define (problem os_{n})
   (:domain openstacks-sequencedstrips)
   (:objects {' '.join(counts)} - counts {' '.join(orders)} - order {' '.join(products)} - product)
-  (:init (machineavailable) {' '.join(init_nextcounts)} {' '.join(init_stacksavail)} {' '.join(init_waitings)} 
-  {' '.join(init_includes)})
+  (:init (machineavailable) {' '.join(init_nextcounts)} {' '.join(init_stacksavail)} {' '.join(init_waitings)} {' '.join(init_includes)})
   (:goal (and (shipped o1)))
 )
 """

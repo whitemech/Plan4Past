@@ -101,6 +101,42 @@ Plot the results:
 python benchmark/plotting/plot.py output --output output.pdf --xlabel "Parameter: Path lengh/Triangle size" --ylabel "Time (seconds)" --xtick-start 2 --stop-on-timeout --timeout 300
 ```
 
+## Elevator 1a
+
+To run the experiments:
+
+Deterministic:
+```
+python benchmark/experiments/experiment-1.py --timeout 300.0 --min-param 3 --max-param 20 --dataset-name elevator --experiment-type a -t 'f4lp-fd-ff' -t 'p4p-fd-ff' -t 'lf2f-fd-ff' --stop-on-timeout --output-dir output
+```
+
+Produce the plot:
+
+```
+python benchmark/plotting/plot.py output --output output.pdf --xlabel "Parameter: Number of blocks" --ylabel "Time (seconds)" --xtick-start 3 --timeout 300
+```
+
+Print data as table:
+
+```
+python benchmark/plotting/table.py --directory output --timeout 300.0
+```
+
+## Elevator 1b
+
+To run the experiments:
+
+Deterministic:
+```
+python benchmark/experiments/experiment-1.py --timeout 300.0 --min-param 2 --max-param 20 --dataset-name elevator --experiment-type b -t 'f4lp-fd-ff' -t 'p4p-fd-ff' -t 'lf2f-fd-ff' --stop-on-timeout --output-dir output
+```
+
+Plot the results:
+```
+python benchmark/plotting/plot.py output --output output.pdf --xlabel "Parameter: Number of blocks" --ylabel "Time (seconds)" --xtick-start 3 --stop-on-timeout --timeout 300
+```
+
+
 ## Experiment type 2
 
 ### Blocksworld 
@@ -120,8 +156,20 @@ Plot the results:
 python benchmark/plotting/plot.py output --output output.pdf --xlabel "Parameter: Problem id" --ylabel "Time (seconds)" --xtick-start 1 --timeout 300
 ```
 
-## Triangle Tireworld
+### Triangle Tireworld
 
 ```
 python benchmark/experiments/experiment-2.py --timeout 300.0 --dataset-dir data/non-deterministic/triangle-tireworld -t mynd-sc-ff -t p4p-mynd-sc-ff
+```
+
+### Elevator 
+
+Deterministic:
+```
+python benchmark/experiments/experiment-2.py --timeout 300.0 --dataset-dir data/deterministic/elevator -t fd-ff -t p4p-fd-ff 
+```
+
+Plot the results:
+```
+python benchmark/plotting/plot.py output --output output.pdf --xlabel "Parameter: Problem id" --ylabel "Time (seconds)" --xtick-start 1 --timeout 300
 ```

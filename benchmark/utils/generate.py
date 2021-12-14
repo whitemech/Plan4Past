@@ -7,10 +7,10 @@ from benchmark.utils.blocksworld import (
     generate_formula_blocksworld,
     generate_future_formula_blocksworld,
 )
-from benchmark.utils.openstacks import (
-    generate_formula_openstacks,
-    generate_future_formula_openstacks,
-    generate_problem_openstacks,
+from benchmark.utils.elevator import (
+    generate_problem_elevator,
+    generate_future_formula_elevator,
+    generate_formula_elevator,
 )
 from benchmark.utils.triangletireworld import (
     generate_problem_triangletireworld,
@@ -91,38 +91,40 @@ class TriangleTireworld1B(ExperimentGenerator):
         return generate_formula_triangletireworld(nb_locs)
 
 
-class OpenstacksGenerator1A(ExperimentGenerator):
+class ElevatorGenerator1A(ExperimentGenerator):
     @classmethod
     def generate_problem(cls, i: int):
-        return generate_problem_openstacks(i)
+        return generate_problem_elevator(i)
 
     @classmethod
     def generate_formula(cls, tool_id: str, param: int):
         future = "lf2f" in tool_id
         if future:
-            return 'F("on b2 b3"&X(F("on b1 b2")))'
-        return "O(on_b1_b2 & Y(O(on_b2_b3)))"
+            return 'F("served o1")&F("served o2")&F("served o3")'
+        return "O(served_o1) & O(served_o2) & O(served_o3    )"
 
 
-class OpenstacksGenerator1B(ExperimentGenerator):
+class ElevatorGenerator1B(ExperimentGenerator):
     @classmethod
     def generate_problem(cls, i: int):
-        return generate_problem_openstacks(i)
+        return generate_problem_elevator(i)
 
     @classmethod
     def generate_formula(cls, tool_id: str, nb_blocks: int):
         future = "lf2f" in tool_id
         if future:
-            return generate_future_formula_openstacks(nb_blocks)
-        return generate_formula_openstacks(nb_blocks)
+            return generate_future_formula_elevator(nb_blocks)
+        return generate_formula_elevator(nb_blocks)
 
 
 _GENERATORS_1A: Dict[str, Type[ExperimentGenerator]] = {
     "blocksworld": BlocksworldGenerator1A,
     "triangle-tireworld": TriangleTireworld1A,
+    "elevator": ElevatorGenerator1A,
 }
 
 _GENERATORS_1B: Dict[str, Type[ExperimentGenerator]] = {
     "blocksworld": BlocksworldGenerator1B,
     "triangle-tireworld": TriangleTireworld1B,
+    "elevator": ElevatorGenerator1B,
 }
