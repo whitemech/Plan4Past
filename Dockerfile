@@ -106,7 +106,9 @@ RUN wget http://www.lrde.epita.fr/dload/spot/spot-2.10.2.tar.gz              &&\
     echo "Install spot"                                                      &&\
     ./configure --disable-doc                                                &&\
     sudo make -j4                                                            &&\
-    sudo make install
+    sudo make install                                                        &&\
+    cd ../                                                                   &&\
+    rm -r spot-2.10.2 spot-2.10.2.tar.gz
 
 # install ltlfond2fond
 RUN echo "Building ltlfond2fond..." &&\
