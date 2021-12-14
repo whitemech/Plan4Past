@@ -42,7 +42,9 @@ from planning_with_past.planners.mynd.base import MyNDPlanner
 from pathlib import Path
 
 from planning_with_past.utils.atoms_visitor import find_atoms
+from bin.utils import launch, REPO_ROOT
 
+MYND_WRAPPER_PATH = (REPO_ROOT / "bin" / "mynd_wrapper").absolute()
 EXAMPLES_DIR = PACKAGE_ROOT.parent / "examples"
 OUTPUT_DIR = PACKAGE_ROOT.parent / "examples" / "compiled_pddl"
 
@@ -69,15 +71,15 @@ def mapping_parser(text: str, formula: Formula) -> Dict[PLTLAtomic, Predicate]:
 if __name__ == "__main__":
 
     # formula = parse_pltl("on_b_a & O(ontable_c)")
-    formula = parse_pltl("O(on_b1_b2 & Y(O(on_b2_b3 & Y(O(on_b3_b4 & Y(O(on_b4_b5 & Y(O(on_b5_b6 & Y(O(on_b6_b7 & Y(O(on_b7_b8 & Y(O(on_b8_b9 & Y(O(on_b9_b10)))))))))))))))))")
-    # formula = parse_pltl("vehicleat_l22 & O(vehicleat_l31)")
+    # formula = parse_pltl("O(on_b1_b2 & Y(O(on_b2_b3 & Y(O(on_b3_b4 & Y(O(on_b4_b5 & Y(O(on_b5_b6 & Y(O(on_b6_b7 & Y(O(on_b7_b8 & Y(O(on_b8_b9 & Y(O(on_b9_b10)))))))))))))))))")
+    formula = parse_pltl("vehicleat_l22 & O(vehicleat_l31)")
 
     domain_parser = DomainParser()
     problem_parser = ProblemParser()
     # domain = domain_parser((EXAMPLES_DIR / "pddl" / "domain.pddl").read_text())
     # problem = problem_parser((EXAMPLES_DIR / "pddl" / "p-0.pddl").read_text())
-    domain = domain_parser((EXAMPLES_DIR / "pddl" / "domain.pddl").read_text())
-    problem = problem_parser((EXAMPLES_DIR / "pddl" / "p-10.pddl").read_text())
+    domain = domain_parser((EXAMPLES_DIR / "pddl" / "fond-domain.pddl").read_text())
+    problem = problem_parser((EXAMPLES_DIR / "pddl" / "fond-p-0.pddl").read_text())
     mapping = mapping_parser((EXAMPLES_DIR / "pddl" / "p-0.map").read_text(), formula)
 
     compiler = Compiler(domain, problem, formula)
@@ -95,9 +97,16 @@ if __name__ == "__main__":
         )
 
     if Requirements.NON_DETERMINISTIC in domain.requirements:
-        planner = MyNDPlanner()
-        plan = planner.plan(Path("compiled_pddl/new_domain.pddl"), Path("compiled_pddl/new_problem.pddl"))
-        # TODO: complete here
+        # planner = MyNDPlanner()
+        # plan = planner.plan(Path("compiled_pddl/new_domain.pddl"), Path("compiled_pddl/new_problem.pddl"))
+        command = [
+            MYND_WRAPPER_PATH,
+            "-d",
+            str(Path("compiled_pddl/new_domain.pddl")),
+            "-p",
+            str(Path("compiled_pddl/new_problem.pddl"))
+        ]
+        launch(command)
     else:
         planner = DownwardPlanner()
         plan = planner.plan(Path("compiled_pddl/new_domain.pddl"), Path("compiled_pddl/new_problem.pddl"))

@@ -43,7 +43,9 @@ class DownwardPlanner(Planner):
     """Wrapper to Downward planner."""
 
     def __init__(
-        self, bin_path: Path = DEFAULT_BIN_FAST_DOWNWARD_PATH, search: str = DEFAULT_SEARCH
+        self,
+        bin_path: Path = DEFAULT_BIN_FAST_DOWNWARD_PATH,
+        search: str = DEFAULT_SEARCH,
     ) -> None:
         """
         Initialize the planner.
