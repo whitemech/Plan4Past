@@ -9,7 +9,9 @@ ARG TOKEN
 ENV DEBIAN_FRONTEND noninteractive
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
-ENV PATH="/usr/local/bin:${PATH}"
+ENV PATH="${PATH}:/usr/local/bin:/home/default/.local/bin"
+ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/lib"
+ENV PYTHONPATH="${PYTHONPATH}:/usr/local/lib/python3.8/site-packages"
 
 RUN apt-get update &&                                                        \
     apt-get install -y dialog &&                                             \
@@ -29,11 +31,6 @@ RUN HOME=/home/default &&                                                    \
     usermod -a -G sudo default &&                                            \
     echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
-RUN apt-get update && \
-    apt-get install -y dialog && \
-    apt-get install -y apt-utils && \
-    apt-get upgrade -y && \
-    apt-get install -y sudo
 
 RUN apt-get install -y                                                           \
       build-essential                                                            \
@@ -49,6 +46,7 @@ RUN apt-get install -y                                                          
       flex                                                                       \
       bison                                                                      \
       wget                                                                       \
+      vim                                                                        \
       curl                                                                       \
       libboost-dev                                                               \
       python3                                                                    \
@@ -66,6 +64,7 @@ RUN apt-get install -y                                                          
       python3-venv                                                               \
       python3-pip                                                                \
       python3-dev                                                                \
+      openjdk-8-jdk                                                              \
       graphviz                                                                   \
       libgraphviz-dev
 
@@ -75,6 +74,9 @@ RUN apt-get install -y                                                       \
        libxft-dev                                                            \
        libfreetype6                                                          \
        libfreetype6-dev
+
+RUN rm -f /usr/bin/python && ln -s /usr/bin/python3 /usr/bin/python && \
+    rm -f /usr/bin/pip && ln -s /usr/bin/pip3 /usr/bin/pip
 
 RUN pip3 install pipenv
 
@@ -131,8 +133,6 @@ RUN echo "Building ltlfond2fond..." &&\
   sudo ldconfig                                                                   &&\
   cd ../../../../../
 
-RUN sudo apt-get install -y openjdk-8-jdk
-
 RUN mkdir /home/default/work
 RUN mkdir /home/default/work/third_party
 WORKDIR /home/default/work
@@ -156,13 +156,6 @@ RUN git clone https://github.com/whitemech/pylogics.git ./third_party/pylogics &
 # clone pddl
 RUN git clone https://github.com/whitemech/pddl.git ./third_party/pddl &&\
     cd third_party/pddl && git checkout 41a8531 && cd ../../
-
-# TODO move above
-ENV PATH="${PATH}:/home/default/.local/bin"
-ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/lib"
-ENV PYTHONPATH="${PYTHONPATH}:/usr/local/lib/python3.8/site-packages"
-RUN alias python=python3
-RUN sudo apt-get install -y vim
 
 COPY benchmark ./benchmark
 COPY bin ./bin
