@@ -1,0 +1,75 @@
+Parsing...
+Warning: Atom sparein(l13x1) is specified twice in initial state specification
+Parsing: [0.000s CPU, 0.002s wall-clock]
+Normalizing task... [0.000s CPU, 0.000s wall-clock]
+Instantiating...
+Generating Datalog program... [0.000s CPU, 0.001s wall-clock]
+Normalizing Datalog program...
+Normalizing Datalog program: [0.000s CPU, 0.001s wall-clock]
+Preparing model... [0.010s CPU, 0.004s wall-clock]
+Generated 10 rules.
+Computing model... [0.000s CPU, 0.009s wall-clock]
+1042 relevant atoms
+480 auxiliary atoms
+1522 final queue length
+1821 total queue pushes
+Completing instantiation... [0.010s CPU, 0.008s wall-clock]
+Instantiating: [0.020s CPU, 0.024s wall-clock]
+Computing fact groups...
+Finding invariants...
+5 initial candidates
+Finding invariants: [0.000s CPU, 0.001s wall-clock]
+Checking invariant weight... [0.000s CPU, 0.000s wall-clock]
+Instantiating groups... [0.000s CPU, 0.000s wall-clock]
+Collecting mutex groups... [0.000s CPU, 0.000s wall-clock]
+Choosing groups...
+54 uncovered facts
+Choosing groups: [0.000s CPU, 0.000s wall-clock]
+Building translation key... [0.000s CPU, 0.000s wall-clock]
+Computing fact groups: [0.010s CPU, 0.003s wall-clock]
+Building STRIPS to SAS dictionary... [0.000s CPU, 0.000s wall-clock]
+Building dictionary for full mutex groups... [0.000s CPU, 0.000s wall-clock]
+Building mutex information...
+Building mutex information: [0.000s CPU, 0.000s wall-clock]
+Translating task...
+Processing axioms...
+Simplifying axioms... [0.000s CPU, 0.000s wall-clock]
+Processing axioms: [0.000s CPU, 0.001s wall-clock]
+Translating task: [0.010s CPU, 0.013s wall-clock]
+221 effect conditions simplified
+0 implied preconditions added
+Detecting unreachable propositions...
+0 operators removed
+1 propositions removed
+Detecting unreachable propositions: [0.000s CPU, 0.002s wall-clock]
+Translator variables: 55
+Translator derived variables: 0
+Translator facts: 199
+Translator goal facts: 1
+Translator mutex groups: 1
+Translator total mutex groups size: 91
+Translator operators: 221
+Translator axioms: 0
+Translator task size: 2176
+Translator peak memory: 20148 KB
+Writing output... [0.010s CPU, 0.003s wall-clock]
+Done! [0.050s CPU, 0.050s wall-clock]
+Heuristic: FF-heuristic.
+Algorithm: LAO*-search
+INITIAL IS PROVEN!
+
+Result: Strong cyclic plan found.
+
+Time needed for preprocess (Parsing, PDBs, ...):    0.028 seconds.
+Time needed for search:                             6.377 seconds.
+Time needed:                                        6.405 seconds.
+Total Garbage Collections: 9
+Total Garbage Collection Time: 0 seconds.
+
+Out of 20637 nodes, 20511 are proven
+Number of node expansions: 12349
+Policy entries: 12319
+Number of sensing applications in policy: 0
+Running command:  /home/marcofavorito/.virtualenvs/planning-with-past-code-T52wX1kq/bin/python3 /home/marcofavorito/workfolder/planning-with-past-code/third_party/myND/translator-fond/translate.py /home/marcofavorito/workfolder/planning-with-past-code/data/non-deterministic/triangle-tireworld/domain.pddl /home/marcofavorito/workfolder/planning-with-past-code/data/non-deterministic/triangle-tireworld/p06.pddl
+Start planner
+Running command:  java -Xmx4g -jar /home/marcofavorito/workfolder/planning-with-past-code/third_party/mynd.jar /home/marcofavorito/workfolder/planning-with-past-code/results/experiment-2-2021-12-14T01:15:15.848121/mynd-sc-ff/p06/output.sas -search laostar -heuristic ff
