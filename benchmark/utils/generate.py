@@ -69,8 +69,8 @@ class TriangleTireworld1A(ExperimentGenerator):
     def generate_formula(cls, tool_id: str, param: int):
         future = "lf2f" in tool_id
         if future:
-            return 'F("vehicleat_l2x1"&X(F("vehicleat_l3x1"&X(F("vehicleat_l2x2"&X(F("vehicleat_l1x3")))))))'
-        return "O(vehicleat_l1x3 & Y(O(vehicleat_l2x2 & Y(O(vehicleat_l3x1 & Y(O(vehicleat_l2x1)))))))"
+            return 'F("vehicleat l1x1"&X(F("vehicleat l2x1"&X(F("vehicleat l1x2")))))'
+        return "O(vehicleat_l1x2 & Y(O(vehicleat_l2x1 & Y(O(vehicleat_l1x1)))))"
 
 
 class TriangleTireworld1B(ExperimentGenerator):
@@ -88,10 +88,10 @@ class TriangleTireworld1B(ExperimentGenerator):
 
 _GENERATORS_1A: Dict[str, Type[ExperimentGenerator]] = {
     "blocksworld": BlocksworldGenerator1A,
-    "tireworld": BlocksworldGenerator1A,
+    "triangle-tireworld": TriangleTireworld1A,
 }
 
 _GENERATORS_1B: Dict[str, Type[ExperimentGenerator]] = {
     "blocksworld": BlocksworldGenerator1B,
-    "tireworld": BlocksworldGenerator1B,
+    "triangle-tireworld": TriangleTireworld1B,
 }

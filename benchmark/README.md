@@ -68,6 +68,18 @@ To run the experiments:
 python benchmark/experiments/experiment-1.py --timeout 60.0 --min-param 2 --max-param 20 --dataset-name blocksworld --experiment-type b -t 'f4lp-fd-ff' -t 'p4p-fd-ff' -t 'lf2f-fd-ff' --output-dir output
 ```
 
+## Triangle Tireworld 1a
+
+```
+python ./benchmark/experiments/experiment-1.py --timeout 300.0 --min-param 2 --max-param 10 --dataset-name triangle-tireworld --experiment-type b -t f4lp-mynd-sc-ff -t p4p-mynd-sc-ff -t lf2f-mynd-sc-ff
+```
+
+## Triangle Tireworld 1b
+
+```
+python ./benchmark/experiments/experiment-1.py --timeout 300.0 --min-param 2 --max-param 10 --dataset-name triangle-tireworld --experiment-type b -t f4lp-mynd-sc-ff -t p4p-mynd-sc-ff -t lf2f-mynd-sc-ff
+```
+
 ## Experiment type 2
 
 ### Blocksworld 
