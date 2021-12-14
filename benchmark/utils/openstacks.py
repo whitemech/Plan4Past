@@ -31,7 +31,7 @@ def generate_formula_openstacks(n: int):
     """Generate formula from a given number."""
     subs = []
     for i in range(1, n + 1):
-        subs.append(f"O(shipped o{i})")
+        subs.append(f"O(shipped_o{i})")
     return ' & '.join(subs)
 
 
