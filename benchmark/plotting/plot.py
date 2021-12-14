@@ -63,15 +63,16 @@ def trunc(values, decimals=0):
 
 @click.command("plot")
 @click.argument(
-    "benchmark_dir", type=click.Path(exists=True, file_okay=False, dir_okay=True)
+    "benchmark_dir", type=click.Path(exists=True)
 )
 @click.option("--output", default="output.svg")
 @click.option("--title", default=None)
 @click.option("--timeout", type=int, default=600)
 @click.option("--xlabel", type=str, required=True)
 @click.option("--ylabel", type=str, required=True)
+@click.option("--stop-on-timeout", type=bool, default=False)
 def main(
-    benchmark_dir: str, output: str, title: str, timeout: int, xlabel: str, ylabel: str
+    benchmark_dir: str, output: str, title: str, timeout: int, xlabel: str, ylabel: str, stop_on_timeout: bool
 ):
     """Plot results from benchmark directory."""
     benchmark_dir = Path(benchmark_dir)
@@ -98,8 +99,7 @@ def main(
         for i, t in enumerate(times):
             t = t if t != "None" and nb_node_expanded[i] != "None" else timeout
             current_time = float(t)
-            # max_reached = max_reached or current_time >= timeout
-            max_reached = False
+            max_reached = (max_reached or current_time >= timeout) and stop_on_timeout
             total_time = timeout if max_reached else min([current_time, timeout])
             total_times.append(total_time)
         cactus[:, idx] = np.asarray(total_times)
