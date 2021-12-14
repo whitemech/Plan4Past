@@ -69,8 +69,8 @@ class TriangleTireworld1A(ExperimentGenerator):
     def generate_formula(cls, tool_id: str, param: int):
         future = "lf2f" in tool_id
         if future:
-            return 'F("vehicleat l1x1"&X(F("vehicleat l2x1"&X(F("vehicleat l1x2")))))'
-        return "O(vehicleat_l1x2 & Y(O(vehicleat_l2x1 & Y(O(vehicleat_l1x1)))))"
+            return 'F("vehicleat l1x2")&F("vehicleat l2x1")&F("vehicleat l3x1")&F("vehicleat l2x2")&F("vehicleat l1x3")'
+        return "O(vehicleat_l1x2) & O(vehicleat_l2x1) & O(vehicleat_l3x1) & O(vehicleat_l2x2) & O(vehicleat_l1x3)"
 
 
 class TriangleTireworld1B(ExperimentGenerator):
