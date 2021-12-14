@@ -1,6 +1,0 @@
-(define (problem t-tw_4)
-    (:domain triangle-tire)
-    (:objects l1x1 l1x2 l1x3 l1x4 l2x1 l2x2 l2x3 l3x1 l3x2 l4x1)
-    (:init (act) (notflattire) (road l1x1 l1x2) (road l1x1 l2x1) (road l1x2 l1x1) (road l1x2 l1x3) (road l1x2 l2x1) (road l1x2 l2x2) (road l1x3 l1x2) (road l1x3 l1x4) (road l1x3 l2x2) (road l1x3 l2x3) (road l1x4 l1x3) (road l1x4 l2x3) (road l2x1 l1x1) (road l2x1 l1x2) (road l2x1 l2x2) (road l2x1 l3x1) (road l2x2 l1x2) (road l2x2 l1x3) (road l2x2 l2x1) (road l2x2 l2x3) (road l2x2 l3x1) (road l2x2 l3x2) (road l2x3 l1x3) (road l2x3 l1x4) (road l2x3 l2x2) (road l2x3 l3x2) (road l3x1 l2x1) (road l3x1 l2x2) (road l3x1 l3x2) (road l3x1 l4x1) (road l3x2 l2x2) (road l3x2 l2x3) (road l3x2 l3x1) (road l3x2 l4x1) (road l4x1 l3x1) (road l4x1 l3x2) (sparein l1x1) (sparein l1x2) (sparein l1x3) (sparein l1x4) (sparein l2x1) (sparein l2x2) (sparein l2x3) (sparein l3x1) (sparein l3x2) (sparein l4x1) (vehicleat l1x1))
-    (:goal (and (val_Ovehicleat_l1x4-and-YOvehicleat_l2x3-and-YOvehicleat_l3x2-and-YOvehicleat_l4x1-and-YOvehicleat_l3x1-and-YOvehicleat_l2x1-and-YOvehicleat_l1x1) (act)))
-)

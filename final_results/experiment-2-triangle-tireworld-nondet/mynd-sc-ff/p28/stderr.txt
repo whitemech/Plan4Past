@@ -1,1 +1,0 @@
-Exception in thread "main" java.lang.OutOfMemoryError: GC overhead limit exceeded

@@ -1,2 +1,0 @@
-
-Warning: :types specification not allowed here (cf. PDDL BNF)

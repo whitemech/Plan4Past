@@ -1,6 +1,0 @@
-(define (problem t-tw_2)
-  (:domain triangle-tire)
-  (:objects l1x1 l2x1 l1x2 - location)
-  (:init (vehicleat l1x1) (notflattire) (road l1x1 l1x2) (road l1x1 l2x1) (road l2x1 l1x1) (road l2x1 l1x2) (road l1x2 l1x1) (road l1x2 l2x1) (sparein l1x1) (sparein l2x1) (sparein l1x2))
-  (:goal (and (vehicleat l1x2)))
-)
