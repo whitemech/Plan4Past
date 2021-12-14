@@ -9,6 +9,7 @@ import pandas as pd
 
 from benchmark.tools import tool_registry, ToolID
 from benchmark.utils.base import get_tools
+from benchmark.utils.plot_utils import try_unzip
 
 matplotlib.rcParams["ps.useafm"] = True
 matplotlib.rcParams["pdf.use14corefonts"] = True
@@ -75,7 +76,7 @@ def main(
     benchmark_dir: str, output: str, title: str, timeout: int, xlabel: str, ylabel: str, stop_on_timeout: bool
 ):
     """Plot results from benchmark directory."""
-    benchmark_dir = Path(benchmark_dir)
+    benchmark_dir = try_unzip(benchmark_dir)
     dataset_name = benchmark_dir.name
     tool_to_tsv = get_tools(benchmark_dir)
     labels = list(tool_to_tsv.keys())
