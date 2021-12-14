@@ -9,6 +9,7 @@ import pandas as pd
 
 from benchmark.tools import tool_registry, ToolID
 from benchmark.utils.base import get_tools
+from benchmark.utils.plot_utils import try_unzip
 
 matplotlib.rcParams["ps.useafm"] = True
 matplotlib.rcParams["pdf.use14corefonts"] = True
@@ -63,18 +64,20 @@ def trunc(values, decimals=0):
 
 @click.command("plot")
 @click.argument(
-    "benchmark_dir", type=click.Path(exists=True, file_okay=False, dir_okay=True)
+    "benchmark_dir", type=click.Path(exists=True)
 )
 @click.option("--output", default="output.svg")
 @click.option("--title", default=None)
 @click.option("--timeout", type=int, default=600)
 @click.option("--xlabel", type=str, required=True)
 @click.option("--ylabel", type=str, required=True)
+@click.option("--xtick-start", type=int, default=0)
+@click.option("--stop-on-timeout", type=bool, is_flag=True, default=False)
 def main(
-    benchmark_dir: str, output: str, title: str, timeout: int, xlabel: str, ylabel: str
+    benchmark_dir: str, output: str, title: str, timeout: int, xlabel: str, ylabel: str, xtick_start: int, stop_on_timeout: bool
 ):
     """Plot results from benchmark directory."""
-    benchmark_dir = Path(benchmark_dir)
+    benchmark_dir = try_unzip(benchmark_dir)
     dataset_name = benchmark_dir.name
     tool_to_tsv = get_tools(benchmark_dir)
     labels = list(tool_to_tsv.keys())
@@ -98,13 +101,12 @@ def main(
         for i, t in enumerate(times):
             t = t if t != "None" and nb_node_expanded[i] != "None" else timeout
             current_time = float(t)
-            # max_reached = max_reached or current_time >= timeout
-            max_reached = False
+            max_reached = (max_reached or current_time >= timeout) and stop_on_timeout
             total_time = timeout if max_reached else min([current_time, timeout])
             total_times.append(total_time)
         cactus[:, idx] = np.asarray(total_times)
 
-    x_axis = np.arange(1, max_nb_rows + 1)
+    x_axis = np.arange(0, max_nb_rows) + xtick_start
     for idx, label in enumerate(labels):
         tool = tool_registry.make(label)
         tool_name = tool.NAME
@@ -121,8 +123,8 @@ def main(
             **MARKER_CONFIGS,
         )
     plt.plot(x_axis, [timeout] * max_nb_rows, linestyle=":", color="black")
-    plt.xlim((1, max_nb_rows))
-    plt.xticks(np.arange(1, max_nb_rows + 1, step=1.0))
+    plt.xlim((xtick_start, max_nb_rows + xtick_start - 1))
+    plt.xticks(np.arange(xtick_start, max_nb_rows + xtick_start, step=1.0))
     plt.yscale("log")
     plt.legend()
     plt.xlabel(xlabel)

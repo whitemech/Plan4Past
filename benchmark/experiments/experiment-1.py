@@ -7,7 +7,7 @@ from typing import List
 import click
 
 from benchmark.run_planner import run_planner
-from benchmark.tools.core import save_data, ToolID
+from benchmark.tools.core import save_data, ToolID, Status
 from benchmark.utils.base import (
     configure_logging,
     get_dataset_dir,
@@ -30,6 +30,7 @@ def run_experiments(
     min_param: int,
     max_param: int,
     step: int,
+    stop_on_timeout: bool,
 ):
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=False)
@@ -75,6 +76,9 @@ def run_experiments(
                 )
                 logging.info(result.to_rows())
                 data.append(result)
+                if stop_on_timeout and result.status in {Status.ERROR, Status.TIMEOUT}:
+                    logging.info(f"Stop on timeout, status={result.status}")
+                    break
         finally:
             save_data(data, tool_dir / TSV_FILENAME)
 
@@ -104,6 +108,7 @@ def run_experiments(
 @click.option("--min-param", type=int)
 @click.option("--max-param", type=int)
 @click.option("--step", type=int, default=1)
+@click.option("--stop-on-timeout", type=bool, is_flag=True, default=False)
 def main(
     dataset_name: str,
     dataset_dir: str,
@@ -114,6 +119,7 @@ def main(
     min_param: int,
     max_param: int,
     step: int,
+    stop_on_timeout: bool
 ):
     run_experiments(
         dataset_name,
@@ -125,6 +131,7 @@ def main(
         min_param,
         max_param,
         step,
+        stop_on_timeout
     )
 
 

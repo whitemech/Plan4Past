@@ -1,21 +1,22 @@
 import datetime
 import logging
+from operator import attrgetter
 from pathlib import Path
+from typing import List
 
 import click
 
 from benchmark.run_planner import run_planner
-from benchmark.tools.core import save_data, ToolID
+from benchmark.tools.core import save_data, ToolID, Status
 from benchmark.utils.base import (
     get_reachability_goal,
     TSV_FILENAME,
     configure_logging,
     default_output_dir,
-    is_deterministic,
 )
 
 
-def run_tool(tool_id, output_dir, problem_files, domain_file, timeout):
+def run_tool(tool_id, output_dir, problem_files, domain_file, timeout, stop_on_timeout: bool):
     data = []
     tool_dir = output_dir / tool_id
     tool_dir.mkdir()
@@ -40,11 +41,14 @@ def run_tool(tool_id, output_dir, problem_files, domain_file, timeout):
             )
             logging.info(result.to_rows())
             data.append(result)
+            if stop_on_timeout and result.status in {Status.ERROR, Status.TIMEOUT}:
+                logging.info(f"Stop on timeout, status={result.status}")
+                break
     finally:
         save_data(data, tool_dir / TSV_FILENAME)
 
 
-def run_experiments(dataset_dir, timeout, output_dir):
+def run_experiments(dataset_dir, timeout, output_dir, tools: List[str], stop_on_timeout: bool):
     dataset_dir = Path(dataset_dir)
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=False)
@@ -52,18 +56,10 @@ def run_experiments(dataset_dir, timeout, output_dir):
     logging.info(f"Using timeout {timeout}, writing to {output_dir}")
 
     domain_file = dataset_dir / "domain.pddl"
-    is_domain_deterministic = is_deterministic(domain_file)
     problem_files = sorted(set(dataset_dir.glob("*.pddl")) - {domain_file})
 
-    if is_domain_deterministic:
-        baseline_tool = ToolID.FAST_DOWNWARD_FF
-        new_tool = ToolID.PLAN4PAST_FD_FF
-    else:
-        baseline_tool = ToolID.MYND_STRONG_CYCLIC_FF
-        new_tool = ToolID.PLAN4PAST_MYND_STORNG_CYCLIC_FF
-
-    run_tool(baseline_tool.value, output_dir, problem_files, domain_file, timeout)
-    run_tool(new_tool.value, output_dir, problem_files, domain_file, timeout)
+    for tool in tools:
+        run_tool(tool, output_dir, problem_files, domain_file, timeout, stop_on_timeout)
 
 
 @click.command()
@@ -72,8 +68,16 @@ def run_experiments(dataset_dir, timeout, output_dir):
 @click.option(
     "--output-dir", type=click.Path(exists=False), default=default_output_dir(__file__)
 )
-def main(dataset_dir: str, output_dir: str, timeout: float):
-    run_experiments(dataset_dir, timeout, output_dir)
+@click.option(
+    "--tool",
+    "-t",
+    multiple=True,
+    type=click.Choice(list(map(attrgetter("value"), ToolID))),
+    required=True
+)
+@click.option("--stop-on-timeout", type=bool, is_flag=True, default=False)
+def main(dataset_dir: str, output_dir: str, timeout: float, tool: List[str], stop_on_timeout: bool):
+    run_experiments(dataset_dir, timeout, output_dir, tool, stop_on_timeout)
 
 
 if __name__ == "__main__":
