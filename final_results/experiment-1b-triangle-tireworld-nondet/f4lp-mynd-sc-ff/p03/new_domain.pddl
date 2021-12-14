@@ -1,0 +1,45 @@
+(define (domain triangle-tire)
+	(:requirements :typing :strips :non-deterministic)
+	(:types location)
+	(:predicates (vehicleat ?loc - location) (sparein ?loc - location) (road ?from - location ?to - location) (notflattire) (q1 ?loc-00 - location ?loc-01 - location ?loc-02 - location ?loc-03 - location ?loc-04 - location) (q2 ?loc-00 - location ?loc-01 - location ?loc-02 - location ?loc-03 - location ?loc-04 - location) (q3 ?loc-00 - location ?loc-01 - location ?loc-02 - location ?loc-03 - location ?loc-04 - location) (q4 ?loc-00 - location ?loc-01 - location ?loc-02 - location ?loc-03 - location ?loc-04 - location) (q5 ?loc-00 - location ?loc-01 - location ?loc-02 - location ?loc-03 - location ?loc-04 - location) (q6 ?loc-00 - location ?loc-01 - location ?loc-02 - location ?loc-03 - location ?loc-04 - location) (turnDomain))
+	(:action move-car
+		:parameters (?from - location ?to - location)
+		:precondition (and (vehicleat ?from) (road ?from ?to) (notflattire) (turnDomain))
+		:effect (and (oneof (and (vehicleat ?to) (not (vehicleat ?from))) (and (vehicleat ?to) (not (vehicleat ?from)) (not (notflattire)))) (not (turnDomain)))
+	)
+	(:action changetire
+		:parameters (?loc - location)
+		:precondition (and (sparein ?loc) (vehicleat ?loc) (turnDomain))
+		:effect (and (not (sparein ?loc)) (notflattire) (not (turnDomain)))
+	)
+	(:action trans-0
+		:parameters (?loc-00 - location ?loc-01 - location ?loc-02 - location ?loc-03 - location ?loc-04 - location)
+		:precondition (and (q1 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04) (not (vehicleat ?loc-04)) (not (turnDomain)))
+		:effect (and (q1 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04) (not (q2 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (not (q3 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (not (q4 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (not (q5 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (not (q6 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (turnDomain))
+	)
+	(:action trans-1
+		:parameters (?loc-00 - location ?loc-01 - location ?loc-02 - location ?loc-03 - location ?loc-04 - location)
+		:precondition (and (or (and (q1 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04) (vehicleat ?loc-04)) (and (q2 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04) (not (vehicleat ?loc-03)))) (not (turnDomain)))
+		:effect (and (q2 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04) (not (q1 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (not (q3 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (not (q4 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (not (q5 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (not (q6 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (turnDomain))
+	)
+	(:action trans-2
+		:parameters (?loc-00 - location ?loc-01 - location ?loc-02 - location ?loc-03 - location ?loc-04 - location)
+		:precondition (and (or (and (q2 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04) (vehicleat ?loc-03)) (and (q3 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04) (not (vehicleat ?loc-02)))) (not (turnDomain)))
+		:effect (and (q3 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04) (not (q1 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (not (q2 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (not (q4 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (not (q5 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (not (q6 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (turnDomain))
+	)
+	(:action trans-3
+		:parameters (?loc-00 - location ?loc-01 - location ?loc-02 - location ?loc-03 - location ?loc-04 - location)
+		:precondition (and (or (and (q3 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04) (vehicleat ?loc-02)) (and (q4 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04) (not (vehicleat ?loc-01)))) (not (turnDomain)))
+		:effect (and (q4 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04) (not (q1 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (not (q2 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (not (q3 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (not (q5 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (not (q6 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (turnDomain))
+	)
+	(:action trans-4
+		:parameters (?loc-00 - location ?loc-01 - location ?loc-02 - location ?loc-03 - location ?loc-04 - location)
+		:precondition (and (or (and (q4 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04) (vehicleat ?loc-01)) (and (q5 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04) (not (vehicleat ?loc-00)))) (not (turnDomain)))
+		:effect (and (q5 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04) (not (q1 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (not (q2 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (not (q3 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (not (q4 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (not (q6 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (turnDomain))
+	)
+	(:action trans-5
+		:parameters (?loc-00 - location ?loc-01 - location ?loc-02 - location ?loc-03 - location ?loc-04 - location)
+		:precondition (and (or (and (q5 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04) (vehicleat ?loc-00)) (q6 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (not (turnDomain)))
+		:effect (and (q6 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04) (not (q1 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (not (q2 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (not (q3 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (not (q4 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (not (q5 ?loc-00 ?loc-01 ?loc-02 ?loc-03 ?loc-04)) (turnDomain))
+	)
+)

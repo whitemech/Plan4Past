@@ -1,0 +1,6 @@
+(define (problem t-tw_3)
+(:domain triangle-tire)
+(:objects l1x1 l2x1 l1x2 l3x1 l2x2 l1x3 - location q0 - qstate q1 - qstate q2 - qstate q3 - qstate q4 - qstate q5 - qstate q6 - qstate q7 - qstate q8 - qstate)
+(:init (vehicleat l1x1) (notflattire) (road l1x1 l1x2) (road l1x1 l2x1) (road l2x1 l1x1) (road l2x1 l1x2) (road l2x1 l2x2) (road l2x1 l3x1) (road l1x2 l1x1) (road l1x2 l2x1) (road l1x2 l1x3) (road l1x2 l2x2) (road l3x1 l2x1) (road l3x1 l2x2) (road l2x2 l1x2) (road l2x2 l2x1) (road l2x2 l1x3) (road l2x2 l3x1) (road l1x3 l1x2) (road l1x3 l2x2) (sparein l1x1) (sparein l2x1) (sparein l1x2) (sparein l3x1) (sparein l2x2) (sparein l1x3) (prev_autstate q1) (is_accepting q7))
+(:goal (dummy_goal))
+)

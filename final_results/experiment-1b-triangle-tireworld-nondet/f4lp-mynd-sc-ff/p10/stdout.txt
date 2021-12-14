@@ -1,0 +1,18 @@
+Parsing...
+Parsing: [0.030s CPU, 0.027s wall-clock]
+Normalizing task... [0.000s CPU, 0.005s wall-clock]
+Instantiating...
+Generating Datalog program... [0.010s CPU, 0.004s wall-clock]
+Normalizing Datalog program...
+Normalizing Datalog program: [0.120s CPU, 0.128s wall-clock]
+Preparing model... [0.040s CPU, 0.038s wall-clock]
+Generated 849 rules.
+Computing model... [0.210s CPU, 0.214s wall-clock]
+932 relevant atoms
+2452 auxiliary atoms
+3384 final queue length
+3984 total queue pushes
+Completing instantiation... [0.030s CPU, 0.037s wall-clock]
+Instantiating: [0.430s CPU, 0.427s wall-clock]
+Computing fact groups...
+Finding invariants...
