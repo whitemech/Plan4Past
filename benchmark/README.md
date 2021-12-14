@@ -40,12 +40,12 @@ To run the experiments:
 
 Nondeterministic
 ```
-python benchmark/experiments/experiment-1.py --timeout 60.0 --min-param 3 --max-param 20 --dataset-name blocksworld --experiment-type a -t 'f4lp-mynd-sc-ff' -t 'p4p-mynd-sc-ff' -t 'lf2f-mynd-sc-ff' --output-dir output 
+python benchmark/experiments/experiment-1.py --timeout 300.0 --min-param 3 --max-param 20 --dataset-name blocksworld --experiment-type a -t 'f4lp-mynd-sc-ff' -t 'p4p-mynd-sc-ff' -t 'lf2f-mynd-sc-ff' --stop-on-timeout --output-dir output 
 ```
 
 Deterministic:
 ```
-python benchmark/experiments/experiment-1.py --timeout 60.0 --min-param 3 --max-param 20 --dataset-name blocksworld --experiment-type a -t 'f4lp-fd-ff' -t 'p4p-fd-ff' -t 'lf2f-fd-ff' --output-dir output
+python benchmark/experiments/experiment-1.py --timeout 300.0 --min-param 3 --max-param 20 --dataset-name blocksworld --experiment-type a -t 'f4lp-fd-ff' -t 'p4p-fd-ff' -t 'lf2f-fd-ff' --stop-on-timeout --output-dir output
 ```
 
 Produce the plot:
@@ -66,12 +66,17 @@ To run the experiments:
 
 Deterministic
 ```
-python benchmark/experiments/experiment-1.py --timeout 600.0 --min-param 2 --max-param 20 --dataset-name blocksworld --experiment-type b -t 'f4lp-fd-ff' -t 'p4p-fd-ff' -t 'lf2f-fd-ff' --output-dir output
+python benchmark/experiments/experiment-1.py --timeout 300.0 --min-param 2 --max-param 20 --dataset-name blocksworld --experiment-type b -t 'f4lp-fd-ff' -t 'p4p-fd-ff' -t 'lf2f-fd-ff' --stop-on-timeout --output-dir output
 ```
 
 Non-deterministic:
 ```
-python benchmark/experiments/experiment-1.py --timeout 600.0 --min-param 2 --max-param 20 --dataset-name blocksworld --experiment-type b -t 'f4lp-mynd-sc-ff' -t 'p4p-mynd-sc-ff' -t 'lf2f-mynd-sc-ff' --output-dir experiment-1b-blocksworld-nondet
+python benchmark/experiments/experiment-1.py --timeout 300.0 --min-param 2 --max-param 20 --dataset-name blocksworld --experiment-type b -t 'f4lp-mynd-sc-ff' -t 'p4p-mynd-sc-ff' -t 'lf2f-mynd-sc-ff' --stop-on-timeout --output-dir output
+```
+
+Plot the results:
+```
+python benchmark/plotting/plot.py output --output output.pdf --xlabel "Parameter: Number of blocks" --ylabel "Time (seconds)" --timeout 300 --xlimit-min 1
 ```
 
 ## Triangle Tireworld 1a
