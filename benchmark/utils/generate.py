@@ -100,8 +100,8 @@ class ElevatorGenerator1A(ExperimentGenerator):
     def generate_formula(cls, tool_id: str, param: int):
         future = "lf2f" in tool_id
         if future:
-            return 'F("served o1")&F("served o2")&F("served o3")'
-        return "O(served_o1) & O(served_o2) & O(served_o3    )"
+            return 'F("served p0")&F("served p1")&F("served p2")'
+        return "O(served_p0) & O(served_p1) & O(served_p2)"
 
 
 class ElevatorGenerator1B(ExperimentGenerator):

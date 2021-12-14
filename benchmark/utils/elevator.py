@@ -14,7 +14,7 @@ def generate_problem_elevator(n: int) -> str:
   (:domain elevator)
   (:objects {' '.join(passengers)} - passenger {' '.join(floors)} - floor)
   (:init (lift-at f0) {' '.join(init_aboves)} {' '.join(init_origin)} {' '.join(init_dest)})
-  (:goal (and (served o1)))
+  (:goal (and (served p0)))
 )
 """
     return problem
