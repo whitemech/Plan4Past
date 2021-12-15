@@ -15,15 +15,18 @@ from benchmark.utils.plot_utils import try_unzip
 matplotlib.rcParams["ps.useafm"] = True
 matplotlib.rcParams["pdf.use14corefonts"] = True
 matplotlib.rcParams["text.usetex"] = True
-font = {"size": 14}
-matplotlib.rc("font", **font)
+font_config = {"size": 10}
 
 TOOL_TO_MARKER = {
+    ToolID.FAST_DOWNWARD_FF.value: "s",
+    ToolID.MYND_STRONG_CYCLIC_FF.value: "D",
     ToolID.FOND4LTLfPLTLf_MYND_STORNG_CYCLIC_FF: "o",
     ToolID.PLAN4PAST_MYND_STORNG_CYCLIC_FF: "v",
     ToolID.LTLFOND2FOND_MYND_STORNG_CYCLIC_FF: "X",
 }
 TOOL_TO_COLOR = {
+    ToolID.FAST_DOWNWARD_FF.value: "orange",
+    ToolID.MYND_STRONG_CYCLIC_FF.value: "gold",
     ToolID.FOND4LTLfPLTLf_MYND_STORNG_CYCLIC_FF: "green",
     ToolID.PLAN4PAST_MYND_STORNG_CYCLIC_FF: "red",
     ToolID.LTLFOND2FOND_MYND_STORNG_CYCLIC_FF: "blue",
@@ -37,6 +40,7 @@ def get_marker(tool_id):
         return "o"
     if "lf2f" in tool_id:
         return "X"
+    return TOOL_TO_MARKER.get(tool_id, None)
 
 
 def get_color(tool_id):
@@ -46,6 +50,7 @@ def get_color(tool_id):
         return "green"
     if "lf2f" in tool_id:
         return "blue"
+    return TOOL_TO_COLOR.get(tool_id, None)
 
 
 MARKER_CONFIGS = dict(
@@ -55,7 +60,7 @@ MARKER_CONFIGS = dict(
 
 def line_width(tool_id):
     if any(x in tool_id for x in {"p4p"}):
-        return "4"
+        return "1"
     return "1"
 
 
@@ -75,11 +80,14 @@ def trunc(values, decimals=0):
 @click.option("--xtick-start", type=int, default=0)
 @click.option("--max-xtick", type=int, default=None)
 @click.option("--stop-on-timeout", type=bool, is_flag=True, default=False)
+@click.option("--font", type=int, default=14)
+@click.option("--stepsize", type=int, default=1)
 def main(
-    benchmark_dir: str, output: str, title: str, timeout: int, xlabel: str, ylabel: str, xtick_start: int, max_xtick: Optional[int], stop_on_timeout: bool
+    benchmark_dir: str, output: str, title: str, timeout: int, xlabel: str, ylabel: str, xtick_start: int, max_xtick: Optional[int], stop_on_timeout: bool, font: int, stepsize: int
 ):
     """Plot results from benchmark directory."""
-    assert xtick_start < max_xtick
+    assert max_xtick is None or xtick_start < max_xtick
+    matplotlib.rc("font", **dict(size=font))
     benchmark_dir = try_unzip(benchmark_dir)
     dataset_name = benchmark_dir.name
     tool_to_tsv = get_tools(benchmark_dir)
@@ -112,6 +120,7 @@ def main(
 
     x_axis = np.arange(0, total_nb_rows) + xtick_start
     for idx, label in enumerate(labels):
+        print(f"Processing {label}")
         tool = tool_registry.make(label)
         tool_name = tool.NAME
         tool_color = get_color(label)
@@ -128,7 +137,10 @@ def main(
         )
     plt.plot(x_axis, [timeout] * total_nb_rows, linestyle=":", color="black")
     plt.xlim((xtick_start, max_xtick))
-    plt.xticks(np.arange(xtick_start, total_nb_rows + 1, step=1.0))
+    ticks = np.arange(xtick_start, max_xtick + 1, step=stepsize) - 1
+    ticks[0] += 1
+    plt.xticks(ticks)
+    # plt.xticks(np.arange(xtick_start, max_xtick + 1, step=stepsize))
     plt.yscale("log")
     plt.legend()
     plt.xlabel(xlabel)
