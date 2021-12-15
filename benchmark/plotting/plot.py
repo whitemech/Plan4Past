@@ -26,7 +26,7 @@ TOOL_TO_MARKER = {
 }
 TOOL_TO_COLOR = {
     ToolID.FAST_DOWNWARD_FF.value: "orange",
-    ToolID.MYND_STRONG_CYCLIC_FF.value: "gold",
+    ToolID.MYND_STRONG_CYCLIC_FF.value: "deepskyblue",
     ToolID.FOND4LTLfPLTLf_MYND_STORNG_CYCLIC_FF: "green",
     ToolID.PLAN4PAST_MYND_STORNG_CYCLIC_FF: "red",
     ToolID.LTLFOND2FOND_MYND_STORNG_CYCLIC_FF: "blue",
@@ -98,6 +98,8 @@ def main(
 
     max_nb_rows = max(df.shape[0] for df in dataframes)
     total_nb_rows = max_nb_rows if max_xtick is None else max(max_nb_rows, max_xtick)
+    if max_xtick is None:
+        max_xtick = max_nb_rows
     cactus = np.zeros((total_nb_rows, len(dataframes)))
 
     for idx, df in enumerate(dataframes):
@@ -137,10 +139,11 @@ def main(
         )
     plt.plot(x_axis, [timeout] * total_nb_rows, linestyle=":", color="black")
     plt.xlim((xtick_start, max_xtick))
-    ticks = np.arange(xtick_start, max_xtick + 1, step=stepsize) - 1
-    ticks[0] += 1
-    plt.xticks(ticks)
+    # ticks = np.arange(xtick_start, max_xtick + 2, step=stepsize) - 1
+    # ticks[0] += 1
+    # plt.xticks(ticks)
     # plt.xticks(np.arange(xtick_start, max_xtick + 1, step=stepsize))
+    plt.xticks(np.arange(xtick_start, max_xtick + 1, step=stepsize))
     plt.yscale("log")
     plt.legend()
     plt.xlabel(xlabel)
