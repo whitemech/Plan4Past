@@ -5,7 +5,7 @@ import re
 import inspect
 from enum import Enum
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 from pddl.logic.base import And, Atomic
 from pddl.parser.problem import ProblemParser
@@ -55,9 +55,11 @@ def get_reachability_goal(problem_path: Path) -> str:
     raise ValueError("expected an 'and' goal")
 
 
-def get_tools(benchmark_dir: Path):
+def get_tools(benchmark_dir: Path, order: Optional[List[str]] = None):
     tool_to_tsv = {}
     tool_dirs = list(filter(operator.methodcaller("is_dir"), benchmark_dir.iterdir()))
+    if order:
+        tool_dirs = sorted(tool_dirs, key=lambda x: -1 if x.name not in order else order.index(x.name))
     for tool_dir in tool_dirs:
         tsv_files = list(tool_dir.glob("*.tsv"))
         assert len(tsv_files) == 1
