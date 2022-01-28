@@ -5,3 +5,7 @@ results
 results-old
 third_party
 !third_party/mynd.jar
+__pycache__/
+*.py[cod]
+*$py.class
+
