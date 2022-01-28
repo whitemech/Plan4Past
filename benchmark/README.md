@@ -163,6 +163,11 @@ python benchmark/plotting/plot.py output --output output.pdf --xlabel "Parameter
 python benchmark/experiments/experiment-2.py --timeout 300.0 --dataset-dir data/non-deterministic/triangle-tireworld -t mynd-sc-ff -t p4p-mynd-sc-ff
 ```
 
+Plot the results:
+```
+python benchmark/plotting/plot.py output --output output.pdf --xlabel "Parameter: Problem id" --ylabel "Time (seconds)" --timeout 300 --xtick-start 1 --max-xtick 40 --font 14 --stepsize 2
+```
+
 ### Elevator 
 
 Deterministic:

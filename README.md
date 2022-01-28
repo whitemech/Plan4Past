@@ -4,7 +4,15 @@
 
 ## Foreword
 
-- We updated the benchmawrk results for the `l2lf` tool. TODO
+- We updated the benchmark results for the `l2lf` tool
+  for the following experiments (you can find them in `new-final-results`:
+  - `experiment-1a-blocksworld-nondet.zip`
+  - `experiment-1b-blocksworld-det.zip`   
+  - `experiment-1b-blocksworld-nondet.zip`
+  - `experiment-1b-elevator.zip`          
+  - `experiment-2-blocksworld-det.zip`
+
+- You can find the updated plots in `new-final-plots/` 
 
 ## Repository structure
 
@@ -17,6 +25,9 @@
 - `examples/`: some examples
 - `scripts/`: auxiliary scripts
 - `supplementary-material/`: the supplementary material of the submission
+- `final_results/`: results before rebuttals
+- `new-final-results/`: results after rebuttals (updated, see above)
+- `new-final-plots/`: new plots after rebuttals
 
 
 ## Reproduce experiments Docker image (RECOMMENDED)
