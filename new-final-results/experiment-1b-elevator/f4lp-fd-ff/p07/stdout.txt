@@ -1,0 +1,23 @@
+INFO     Running translator.
+INFO     translator stdin: None
+INFO     translator time limit: None
+INFO     translator memory limit: None
+INFO     translator command line string: /home/francesco/.local/share/virtualenvs/planning-for-past-temporal-goals-uQ4G02hf/bin/python3 /home/francesco/Projects/planning-for-past-temporal-goals/third_party/downward/builds/release/bin/translate/translate.py /home/francesco/Projects/planning-for-past-temporal-goals/experiment-1b-elevator/f4lp-fd-ff/p07/new_domain.pddl /home/francesco/Projects/planning-for-past-temporal-goals/experiment-1b-elevator/f4lp-fd-ff/p07/new_problem.pddl --sas-file output.sas
+Parsing...
+Parsing: [1.540s CPU, 1.533s wall-clock]
+Normalizing task... [0.510s CPU, 0.514s wall-clock]
+Instantiating...
+Generating Datalog program... [0.370s CPU, 0.368s wall-clock]
+Normalizing Datalog program...
+Normalizing Datalog program: [1.700s CPU, 1.695s wall-clock]
+Preparing model... [0.930s CPU, 0.937s wall-clock]
+Generated 24808 rules.
+Computing model... [1.530s CPU, 1.532s wall-clock]
+2709 relevant atoms
+49298 auxiliary atoms
+52007 final queue length
+56423 total queue pushes
+Completing instantiation... [3.380s CPU, 3.377s wall-clock]
+Instantiating: [8.010s CPU, 8.009s wall-clock]
+Computing fact groups...
+Finding invariants...

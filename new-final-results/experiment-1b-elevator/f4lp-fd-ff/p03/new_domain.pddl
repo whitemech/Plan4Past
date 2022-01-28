@@ -1,0 +1,65 @@
+(define (domain elevator)
+	(:requirements :strips)
+	(:types passenger floor)
+	(:predicates (origin ?person - passenger ?floor - floor) (destin ?person - passenger ?floor - floor) (above ?floor1 - floor ?floor2 - floor) (boarded ?person - passenger) (not-boarded ?person - passenger) (served ?person - passenger) (not-served ?person - passenger) (lift-at ?floor - floor) (q1 ?person-00 - passenger ?person-01 - passenger ?person-02 - passenger) (q2 ?person-00 - passenger ?person-01 - passenger ?person-02 - passenger) (q3 ?person-00 - passenger ?person-01 - passenger ?person-02 - passenger) (q4 ?person-00 - passenger ?person-01 - passenger ?person-02 - passenger) (q5 ?person-00 - passenger ?person-01 - passenger ?person-02 - passenger) (q6 ?person-00 - passenger ?person-01 - passenger ?person-02 - passenger) (q7 ?person-00 - passenger ?person-01 - passenger ?person-02 - passenger) (q8 ?person-00 - passenger ?person-01 - passenger ?person-02 - passenger) (turnDomain))
+	(:action board
+		:parameters (?f - floor ?p - passenger)
+		:precondition (and (lift-at ?f) (origin ?p ?f) (turnDomain))
+		:effect (and (boarded ?p) (not (turnDomain)))
+	)
+	(:action depart
+		:parameters (?f - floor ?p - passenger)
+		:precondition (and (lift-at ?f) (destin ?p ?f) (boarded ?p) (turnDomain))
+		:effect (and (not (boarded ?p)) (served ?p) (not (turnDomain)))
+	)
+	(:action up
+		:parameters (?f1 - floor ?f2 - floor)
+		:precondition (and (lift-at ?f1) (above ?f1 ?f2) (turnDomain))
+		:effect (and (lift-at ?f2) (not (lift-at ?f1)) (not (turnDomain)))
+	)
+	(:action down
+		:parameters (?f1 - floor ?f2 - floor)
+		:precondition (and (lift-at ?f1) (above ?f2 ?f1) (turnDomain))
+		:effect (and (lift-at ?f2) (not (lift-at ?f1)) (not (turnDomain)))
+	)
+	(:action trans-0
+		:parameters (?person-00 - passenger ?person-01 - passenger ?person-02 - passenger)
+		:precondition (and (q1 ?person-00 ?person-01 ?person-02) (not (served ?person-00)) (not (served ?person-01)) (not (served ?person-02)) (not (turnDomain)))
+		:effect (and (q1 ?person-00 ?person-01 ?person-02) (not (q2 ?person-00 ?person-01 ?person-02)) (not (q3 ?person-00 ?person-01 ?person-02)) (not (q4 ?person-00 ?person-01 ?person-02)) (not (q5 ?person-00 ?person-01 ?person-02)) (not (q6 ?person-00 ?person-01 ?person-02)) (not (q7 ?person-00 ?person-01 ?person-02)) (not (q8 ?person-00 ?person-01 ?person-02)) (turnDomain))
+	)
+	(:action trans-1
+		:parameters (?person-00 - passenger ?person-01 - passenger ?person-02 - passenger)
+		:precondition (and (or (and (q1 ?person-00 ?person-01 ?person-02) (not (served ?person-00)) (not (served ?person-01)) (served ?person-02)) (and (q2 ?person-00 ?person-01 ?person-02) (not (served ?person-00)) (not (served ?person-01)))) (not (turnDomain)))
+		:effect (and (q2 ?person-00 ?person-01 ?person-02) (not (q1 ?person-00 ?person-01 ?person-02)) (not (q3 ?person-00 ?person-01 ?person-02)) (not (q4 ?person-00 ?person-01 ?person-02)) (not (q5 ?person-00 ?person-01 ?person-02)) (not (q6 ?person-00 ?person-01 ?person-02)) (not (q7 ?person-00 ?person-01 ?person-02)) (not (q8 ?person-00 ?person-01 ?person-02)) (turnDomain))
+	)
+	(:action trans-2
+		:parameters (?person-00 - passenger ?person-01 - passenger ?person-02 - passenger)
+		:precondition (and (or (and (q1 ?person-00 ?person-01 ?person-02) (not (served ?person-00)) (served ?person-01) (not (served ?person-02))) (and (q3 ?person-00 ?person-01 ?person-02) (not (served ?person-00)) (not (served ?person-02)))) (not (turnDomain)))
+		:effect (and (q3 ?person-00 ?person-01 ?person-02) (not (q1 ?person-00 ?person-01 ?person-02)) (not (q2 ?person-00 ?person-01 ?person-02)) (not (q4 ?person-00 ?person-01 ?person-02)) (not (q5 ?person-00 ?person-01 ?person-02)) (not (q6 ?person-00 ?person-01 ?person-02)) (not (q7 ?person-00 ?person-01 ?person-02)) (not (q8 ?person-00 ?person-01 ?person-02)) (turnDomain))
+	)
+	(:action trans-3
+		:parameters (?person-00 - passenger ?person-01 - passenger ?person-02 - passenger)
+		:precondition (and (or (and (q1 ?person-00 ?person-01 ?person-02) (not (served ?person-00)) (served ?person-01) (served ?person-02)) (and (q2 ?person-00 ?person-01 ?person-02) (not (served ?person-00)) (served ?person-01)) (and (q3 ?person-00 ?person-01 ?person-02) (not (served ?person-00)) (served ?person-02)) (and (q4 ?person-00 ?person-01 ?person-02) (not (served ?person-00)))) (not (turnDomain)))
+		:effect (and (q4 ?person-00 ?person-01 ?person-02) (not (q1 ?person-00 ?person-01 ?person-02)) (not (q2 ?person-00 ?person-01 ?person-02)) (not (q3 ?person-00 ?person-01 ?person-02)) (not (q5 ?person-00 ?person-01 ?person-02)) (not (q6 ?person-00 ?person-01 ?person-02)) (not (q7 ?person-00 ?person-01 ?person-02)) (not (q8 ?person-00 ?person-01 ?person-02)) (turnDomain))
+	)
+	(:action trans-4
+		:parameters (?person-00 - passenger ?person-01 - passenger ?person-02 - passenger)
+		:precondition (and (or (and (q1 ?person-00 ?person-01 ?person-02) (served ?person-00) (not (served ?person-01)) (not (served ?person-02))) (and (q5 ?person-00 ?person-01 ?person-02) (not (served ?person-01)) (not (served ?person-02)))) (not (turnDomain)))
+		:effect (and (q5 ?person-00 ?person-01 ?person-02) (not (q1 ?person-00 ?person-01 ?person-02)) (not (q2 ?person-00 ?person-01 ?person-02)) (not (q3 ?person-00 ?person-01 ?person-02)) (not (q4 ?person-00 ?person-01 ?person-02)) (not (q6 ?person-00 ?person-01 ?person-02)) (not (q7 ?person-00 ?person-01 ?person-02)) (not (q8 ?person-00 ?person-01 ?person-02)) (turnDomain))
+	)
+	(:action trans-5
+		:parameters (?person-00 - passenger ?person-01 - passenger ?person-02 - passenger)
+		:precondition (and (or (and (q1 ?person-00 ?person-01 ?person-02) (served ?person-00) (not (served ?person-01)) (served ?person-02)) (and (q2 ?person-00 ?person-01 ?person-02) (served ?person-00) (not (served ?person-01))) (and (q5 ?person-00 ?person-01 ?person-02) (not (served ?person-01)) (served ?person-02)) (and (q6 ?person-00 ?person-01 ?person-02) (not (served ?person-01)))) (not (turnDomain)))
+		:effect (and (q6 ?person-00 ?person-01 ?person-02) (not (q1 ?person-00 ?person-01 ?person-02)) (not (q2 ?person-00 ?person-01 ?person-02)) (not (q3 ?person-00 ?person-01 ?person-02)) (not (q4 ?person-00 ?person-01 ?person-02)) (not (q5 ?person-00 ?person-01 ?person-02)) (not (q7 ?person-00 ?person-01 ?person-02)) (not (q8 ?person-00 ?person-01 ?person-02)) (turnDomain))
+	)
+	(:action trans-6
+		:parameters (?person-00 - passenger ?person-01 - passenger ?person-02 - passenger)
+		:precondition (and (or (and (q1 ?person-00 ?person-01 ?person-02) (served ?person-00) (served ?person-01) (not (served ?person-02))) (and (q3 ?person-00 ?person-01 ?person-02) (served ?person-00) (not (served ?person-02))) (and (q5 ?person-00 ?person-01 ?person-02) (served ?person-01) (not (served ?person-02))) (and (q7 ?person-00 ?person-01 ?person-02) (not (served ?person-02)))) (not (turnDomain)))
+		:effect (and (q7 ?person-00 ?person-01 ?person-02) (not (q1 ?person-00 ?person-01 ?person-02)) (not (q2 ?person-00 ?person-01 ?person-02)) (not (q3 ?person-00 ?person-01 ?person-02)) (not (q4 ?person-00 ?person-01 ?person-02)) (not (q5 ?person-00 ?person-01 ?person-02)) (not (q6 ?person-00 ?person-01 ?person-02)) (not (q8 ?person-00 ?person-01 ?person-02)) (turnDomain))
+	)
+	(:action trans-7
+		:parameters (?person-00 - passenger ?person-01 - passenger ?person-02 - passenger)
+		:precondition (and (or (and (q1 ?person-00 ?person-01 ?person-02) (served ?person-00) (served ?person-01) (served ?person-02)) (and (q2 ?person-00 ?person-01 ?person-02) (served ?person-00) (served ?person-01)) (and (q3 ?person-00 ?person-01 ?person-02) (served ?person-00) (served ?person-02)) (and (q4 ?person-00 ?person-01 ?person-02) (served ?person-00)) (and (q5 ?person-00 ?person-01 ?person-02) (served ?person-01) (served ?person-02)) (and (q6 ?person-00 ?person-01 ?person-02) (served ?person-01)) (and (q7 ?person-00 ?person-01 ?person-02) (served ?person-02)) (q8 ?person-00 ?person-01 ?person-02)) (not (turnDomain)))
+		:effect (and (q8 ?person-00 ?person-01 ?person-02) (not (q1 ?person-00 ?person-01 ?person-02)) (not (q2 ?person-00 ?person-01 ?person-02)) (not (q3 ?person-00 ?person-01 ?person-02)) (not (q4 ?person-00 ?person-01 ?person-02)) (not (q5 ?person-00 ?person-01 ?person-02)) (not (q6 ?person-00 ?person-01 ?person-02)) (not (q7 ?person-00 ?person-01 ?person-02)) (turnDomain))
+	)
+)

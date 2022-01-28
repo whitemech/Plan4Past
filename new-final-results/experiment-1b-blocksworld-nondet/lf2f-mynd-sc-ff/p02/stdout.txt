@@ -1,0 +1,79 @@
+Parsing...
+Parsing: [0.040s CPU, 0.043s wall-clock]
+Normalizing task... [0.000s CPU, 0.004s wall-clock]
+Instantiating...
+Generating Datalog program... [0.010s CPU, 0.003s wall-clock]
+Normalizing Datalog program...
+Normalizing Datalog program: [0.010s CPU, 0.013s wall-clock]
+Preparing model... [0.010s CPU, 0.012s wall-clock]
+Generated 554 rules.
+Computing model... [0.010s CPU, 0.008s wall-clock]
+70 relevant atoms
+310 auxiliary atoms
+380 final queue length
+1527 total queue pushes
+Completing instantiation... [0.020s CPU, 0.021s wall-clock]
+Instantiating: [0.060s CPU, 0.058s wall-clock]
+Computing fact groups...
+Finding invariants...
+13 initial candidates
+Finding invariants: [0.020s CPU, 0.020s wall-clock]
+Checking invariant weight... [0.000s CPU, 0.000s wall-clock]
+Instantiating groups... [0.000s CPU, 0.000s wall-clock]
+Collecting mutex groups... [0.000s CPU, 0.000s wall-clock]
+Choosing groups...
+6 uncovered facts
+Choosing groups: [0.000s CPU, 0.000s wall-clock]
+Building translation key... [0.000s CPU, 0.000s wall-clock]
+Computing fact groups: [0.020s CPU, 0.020s wall-clock]
+Building STRIPS to SAS dictionary... [0.000s CPU, 0.000s wall-clock]
+Building dictionary for full mutex groups... [0.000s CPU, 0.000s wall-clock]
+Building mutex information...
+Building mutex information: [0.000s CPU, 0.000s wall-clock]
+Translating task...
+Processing axioms...
+Simplifying axioms... [0.000s CPU, 0.000s wall-clock]
+Processing axioms: [0.000s CPU, 0.001s wall-clock]
+Translating task: [0.010s CPU, 0.013s wall-clock]
+58 effect conditions simplified
+0 implied preconditions added
+Detecting unreachable propositions...
+0 operators removed
+2 propositions removed
+Detecting unreachable propositions: [0.010s CPU, 0.003s wall-clock]
+Translator variables: 8
+Translator derived variables: 0
+Translator facts: 20
+Translator goal facts: 1
+Translator mutex groups: 3
+Translator total mutex groups size: 11
+Translator operators: 23
+Translator axioms: 0
+Translator task size: 1655
+Translator peak memory: 20356 KB
+Writing output... [0.000s CPU, 0.003s wall-clock]
+Done! [0.140s CPU, 0.144s wall-clock]
+Heuristic: FF-heuristic.
+Algorithm: LAO*-search
+INITIAL IS PROVEN!
+
+Result: Strong cyclic plan found.
+
+Time needed for preprocess (Parsing, PDBs, ...):    0.026 seconds.
+Time needed for search:                             0.008 seconds.
+Time needed:                                        0.034 seconds.
+Total Garbage Collections: 2
+Total Garbage Collection Time: 0 seconds.
+
+Out of 12 nodes, 7 are proven
+Number of node expansions: 5
+Policy entries: 5
+Number of sensing applications in policy: 0
+Running command:  /home/francesco/.virtualenvs/planning-for-past-temporal-goals-uQ4G02hf/bin/python3 /home/francesco/Projects/planning-for-past-temporal-goals/third_party/myND/translator-fond/translate.py /home/francesco/Projects/planning-for-past-temporal-goals/results/experiment-1b-blocksworld-nondet/lf2f-mynd-sc-ff/p02/compiled_domain.pddl /home/francesco/Projects/planning-for-past-temporal-goals/results/experiment-1b-blocksworld-nondet/lf2f-mynd-sc-ff/p02/compiled_problem.pddl
+Start planner
+Running command:  java -Xmx4g -jar /home/francesco/Projects/planning-for-past-temporal-goals/third_party/mynd.jar /home/francesco/Projects/planning-for-past-temporal-goals/results/experiment-1b-blocksworld-nondet/lf2f-mynd-sc-ff/p02/output.sas -search laostar -heuristic ff
+Running command:  /home/francesco/.virtualenvs/planning-for-past-temporal-goals-uQ4G02hf/bin/python3 /home/francesco/Projects/planning-for-past-temporal-goals/third_party/ltlfond2fond/convert-finite.py /home/francesco/Projects/planning-for-past-temporal-goals/results/experiment-1b-blocksworld-nondet/domain.pddl /home/francesco/Projects/planning-for-past-temporal-goals/results/experiment-1b-blocksworld-nondet/p02.pddl /home/francesco/Projects/planning-for-past-temporal-goals/results/experiment-1b-blocksworld-nondet/lf2f-mynd-sc-ff/p02/goal.ltl
+Compilation time: 0.20898795127868652 seconds
+Running command:  /home/francesco/Projects/planning-for-past-temporal-goals/bin/mynd_wrapper -d results/experiment-1b-blocksworld-nondet/lf2f-mynd-sc-ff/p02/compiled_domain.pddl -p results/experiment-1b-blocksworld-nondet/lf2f-mynd-sc-ff/p02/compiled_problem.pddl -a laostar --heuristic ff --working-dir results/experiment-1b-blocksworld-nondet/lf2f-mynd-sc-ff/p02
+Tool time: 0.760963 seconds
+Total time: 0.969951 seconds

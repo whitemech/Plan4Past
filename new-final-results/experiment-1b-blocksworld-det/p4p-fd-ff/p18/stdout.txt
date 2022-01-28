@@ -1,0 +1,226 @@
+INFO     Running translator.
+INFO     translator stdin: None
+INFO     translator time limit: None
+INFO     translator memory limit: None
+INFO     translator command line string: /home/marcofavorito/.virtualenvs/planning-with-past-code-T52wX1kq/bin/python3 /home/marcofavorito/workfolder/planning-with-past-code/third_party/downward/builds/release/bin/translate/translate.py /home/marcofavorito/workfolder/planning-with-past-code/results/experiment-1-2021-12-13T17:27:10.750540/p4p-fd-ff/p18/new_domain.pddl /home/marcofavorito/workfolder/planning-with-past-code/results/experiment-1-2021-12-13T17:27:10.750540/p4p-fd-ff/p18/new_problem.pddl --sas-file output.sas
+Parsing...
+Parsing: [0.010s CPU, 0.004s wall-clock]
+Normalizing task... [0.000s CPU, 0.001s wall-clock]
+Instantiating...
+Generating Datalog program... [0.000s CPU, 0.001s wall-clock]
+Normalizing Datalog program...
+Normalizing Datalog program: [0.000s CPU, 0.004s wall-clock]
+Preparing model... [0.000s CPU, 0.002s wall-clock]
+Generated 323 rules.
+Computing model... [0.030s CPU, 0.027s wall-clock]
+1266 relevant atoms
+806 auxiliary atoms
+2072 final queue length
+15050 total queue pushes
+Completing instantiation... [0.070s CPU, 0.070s wall-clock]
+Instantiating: [0.100s CPU, 0.105s wall-clock]
+Computing fact groups...
+Finding invariants...
+27 initial candidates
+Finding invariants: [0.000s CPU, 0.007s wall-clock]
+Checking invariant weight... [0.000s CPU, 0.000s wall-clock]
+Instantiating groups... [0.010s CPU, 0.001s wall-clock]
+Collecting mutex groups... [0.000s CPU, 0.000s wall-clock]
+Choosing groups...
+102 uncovered facts
+Choosing groups: [0.000s CPU, 0.001s wall-clock]
+Building translation key... [0.000s CPU, 0.001s wall-clock]
+Computing fact groups: [0.010s CPU, 0.012s wall-clock]
+Building STRIPS to SAS dictionary... [0.000s CPU, 0.000s wall-clock]
+Building dictionary for full mutex groups... [0.000s CPU, 0.001s wall-clock]
+Building mutex information...
+Building mutex information: [0.000s CPU, 0.000s wall-clock]
+Translating task...
+Processing axioms...
+Simplifying axioms... [0.000s CPU, 0.000s wall-clock]
+Translator axioms removed by simplifying: 0
+Computing negative axioms... [0.000s CPU, 0.000s wall-clock]
+Processing axioms: [0.030s CPU, 0.027s wall-clock]
+Translating task: [0.140s CPU, 0.144s wall-clock]
+954 effect conditions simplified
+0 implied preconditions added
+Detecting unreachable propositions...
+0 operators removed
+34 axioms removed
+36 propositions removed
+Detecting unreachable propositions: [0.070s CPU, 0.066s wall-clock]
+Reordering and filtering variables...
+120 of 120 variables necessary.
+19 of 37 mutex groups necessary.
+648 of 648 operators necessary.
+454 of 454 axiom rules necessary.
+Reordering and filtering variables: [0.030s CPU, 0.030s wall-clock]
+Translator variables: 120
+Translator derived variables: 66
+Translator facts: 546
+Translator goal facts: 1
+Translator mutex groups: 19
+Translator total mutex groups size: 361
+Translator operators: 648
+Translator axioms: 454
+Translator task size: 28807
+Translator peak memory: 45776 KB
+Writing output... [0.030s CPU, 0.031s wall-clock]
+Done! [0.390s CPU, 0.398s wall-clock]
+translate exit code: 0
+
+INFO     Running search (release).
+INFO     search stdin: output.sas
+INFO     search time limit: None
+INFO     search memory limit: None
+INFO     search command line string: /home/marcofavorito/workfolder/planning-with-past-code/third_party/downward/builds/release/bin/downward --search 'astar(ff())' --internal-plan-file sas_plan < output.sas
+[t=2.158e-05s, 14128 KB] reading input...
+[t=0.0104919s, 15440 KB] done reading input!
+[t=0.012199s, 16612 KB] Simplifying 14026 unary operators... done! [8212 unary operators]
+[t=0.0212476s, 17800 KB] time to simplify: 0.0090729s
+[t=0.0214085s, 17800 KB] Initializing additive heuristic...
+[t=0.0214224s, 17800 KB] Initializing FF heuristic...
+[t=0.0214605s, 17800 KB] Building successor generator...done!
+[t=0.0216855s, 17800 KB] peak memory difference for successor generator creation: 0 KB
+[t=0.0216953s, 17800 KB] time for successor generation creation: 0.000189494s
+[t=0.0217098s, 17800 KB] Variables: 120
+[t=0.0217208s, 17800 KB] FactPairs: 546
+[t=0.0217302s, 17800 KB] Bytes per state: 24
+[t=0.0217901s, 17800 KB] Conducting best first search with reopening closed nodes, (real) bound = 2147483647
+[t=0.0218978s, 17800 KB] New best heuristic value for ff: 34
+[t=0.0219113s, 17800 KB] g=0, 1 evaluated, 0 expanded
+[t=0.0219219s, 17800 KB] f = 34, 1 evaluated, 0 expanded
+[t=0.0219334s, 17800 KB] Initial heuristic value for ff: 34
+[t=0.0219437s, 17800 KB] pruning method: none
+[t=0.0231007s, 17800 KB] f = 35, 19 evaluated, 1 expanded
+[t=0.0237537s, 17800 KB] New best heuristic value for ff: 33
+[t=0.0237677s, 17800 KB] g=2, 29 evaluated, 2 expanded
+[t=0.0401991s, 17800 KB] New best heuristic value for ff: 32
+[t=0.0402154s, 17800 KB] g=2, 292 evaluated, 18 expanded
+[t=0.0425128s, 17800 KB] New best heuristic value for ff: 31
+[t=0.0425438s, 17800 KB] g=4, 327 evaluated, 20 expanded
+[t=0.0566069s, 17800 KB] New best heuristic value for ff: 30
+[t=0.0566537s, 17800 KB] g=4, 543 evaluated, 34 expanded
+[t=0.0587166s, 17800 KB] New best heuristic value for ff: 29
+[t=0.058731s, 17800 KB] g=6, 576 evaluated, 36 expanded
+[t=0.0695975s, 17800 KB] New best heuristic value for ff: 28
+[t=0.0696177s, 17800 KB] g=6, 749 evaluated, 48 expanded
+[t=0.0715572s, 17800 KB] New best heuristic value for ff: 27
+[t=0.0715724s, 17800 KB] g=8, 780 evaluated, 50 expanded
+[t=0.0799159s, 17800 KB] New best heuristic value for ff: 26
+[t=0.0799308s, 17800 KB] g=8, 914 evaluated, 60 expanded
+[t=0.0817443s, 17800 KB] New best heuristic value for ff: 25
+[t=0.0817578s, 17800 KB] g=10, 943 evaluated, 62 expanded
+[t=0.0879806s, 17800 KB] New best heuristic value for ff: 24
+[t=0.0879952s, 17800 KB] g=10, 1042 evaluated, 70 expanded
+[t=0.0897103s, 17800 KB] New best heuristic value for ff: 23
+[t=0.0897275s, 17800 KB] g=12, 1069 evaluated, 72 expanded
+[t=0.0939769s, 17800 KB] New best heuristic value for ff: 22
+[t=0.0939914s, 17800 KB] g=12, 1137 evaluated, 78 expanded
+[t=0.095569s, 17800 KB] New best heuristic value for ff: 21
+[t=0.0955848s, 17800 KB] g=14, 1162 evaluated, 80 expanded
+[t=0.0981524s, 17800 KB] New best heuristic value for ff: 20
+[t=0.098166s, 17800 KB] g=14, 1203 evaluated, 84 expanded
+[t=0.0996054s, 17800 KB] New best heuristic value for ff: 19
+[t=0.0996189s, 17800 KB] g=16, 1226 evaluated, 86 expanded
+[t=0.100752s, 17800 KB] New best heuristic value for ff: 18
+[t=0.100764s, 17800 KB] g=16, 1244 evaluated, 88 expanded
+[t=0.102077s, 17800 KB] New best heuristic value for ff: 17
+[t=0.10209s, 17800 KB] g=18, 1265 evaluated, 90 expanded
+[t=0.111095s, 17800 KB] New best heuristic value for ff: 16
+[t=0.111111s, 17800 KB] g=19, 1409 evaluated, 107 expanded
+[t=0.111744s, 17800 KB] New best heuristic value for ff: 15
+[t=0.111756s, 17800 KB] g=20, 1419 evaluated, 108 expanded
+[t=0.118826s, 17800 KB] New best heuristic value for ff: 14
+[t=0.118847s, 17800 KB] g=21, 1532 evaluated, 123 expanded
+[t=0.119413s, 17800 KB] New best heuristic value for ff: 13
+[t=0.119426s, 17800 KB] g=22, 1541 evaluated, 124 expanded
+[t=0.124654s, 17800 KB] New best heuristic value for ff: 12
+[t=0.124668s, 17800 KB] g=23, 1626 evaluated, 137 expanded
+[t=0.125143s, 17800 KB] New best heuristic value for ff: 11
+[t=0.125155s, 17800 KB] g=24, 1634 evaluated, 138 expanded
+[t=0.128733s, 17800 KB] New best heuristic value for ff: 10
+[t=0.128747s, 17800 KB] g=25, 1695 evaluated, 149 expanded
+[t=0.129123s, 17800 KB] New best heuristic value for ff: 9
+[t=0.129135s, 17800 KB] g=26, 1702 evaluated, 150 expanded
+[t=0.131361s, 17800 KB] New best heuristic value for ff: 8
+[t=0.131374s, 17800 KB] g=27, 1743 evaluated, 159 expanded
+[t=0.131658s, 17800 KB] New best heuristic value for ff: 7
+[t=0.13167s, 17800 KB] g=28, 1749 evaluated, 160 expanded
+[t=0.13287s, 17800 KB] New best heuristic value for ff: 6
+[t=0.132882s, 17800 KB] g=29, 1774 evaluated, 167 expanded
+[t=0.133091s, 17800 KB] New best heuristic value for ff: 5
+[t=0.133102s, 17800 KB] g=30, 1779 evaluated, 168 expanded
+[t=0.13364s, 17800 KB] New best heuristic value for ff: 4
+[t=0.133652s, 17800 KB] g=31, 1792 evaluated, 173 expanded
+[t=0.133804s, 17800 KB] New best heuristic value for ff: 3
+[t=0.133816s, 17800 KB] g=32, 1796 evaluated, 174 expanded
+[t=0.133989s, 17800 KB] New best heuristic value for ff: 1
+[t=0.134001s, 17800 KB] g=33, 1801 evaluated, 177 expanded
+[t=0.134085s, 17800 KB] New best heuristic value for ff: 0
+[t=0.134096s, 17800 KB] g=34, 1804 evaluated, 178 expanded
+[t=0.134107s, 17800 KB] Solution found!
+[t=0.134118s, 17800 KB] Actual search time: 0.112173s
+pick-up b17 (1)
+stack b17 b18 (1)
+pick-up b16 (1)
+stack b16 b17 (1)
+pick-up b15 (1)
+stack b15 b16 (1)
+pick-up b14 (1)
+stack b14 b15 (1)
+pick-up b13 (1)
+stack b13 b14 (1)
+pick-up b12 (1)
+stack b12 b13 (1)
+pick-up b11 (1)
+stack b11 b12 (1)
+pick-up b10 (1)
+stack b10 b11 (1)
+pick-up b9 (1)
+stack b9 b10 (1)
+pick-up b8 (1)
+stack b8 b9 (1)
+pick-up b7 (1)
+stack b7 b8 (1)
+pick-up b6 (1)
+stack b6 b7 (1)
+pick-up b5 (1)
+stack b5 b6 (1)
+pick-up b4 (1)
+stack b4 b5 (1)
+pick-up b3 (1)
+stack b3 b4 (1)
+pick-up b2 (1)
+stack b2 b3 (1)
+pick-up b1 (1)
+stack b1 b2 (1)
+[t=0.134128s, 17800 KB] Plan length: 34 step(s).
+[t=0.134128s, 17800 KB] Plan cost: 34
+[t=0.134128s, 17800 KB] Expanded 179 state(s).
+[t=0.134128s, 17800 KB] Reopened 0 state(s).
+[t=0.134128s, 17800 KB] Evaluated 1804 state(s).
+[t=0.134128s, 17800 KB] Evaluations: 1804
+[t=0.134128s, 17800 KB] Generated 1948 state(s).
+[t=0.134128s, 17800 KB] Dead ends: 0 state(s).
+[t=0.134128s, 17800 KB] Expanded until last jump: 1 state(s).
+[t=0.134128s, 17800 KB] Reopened until last jump: 0 state(s).
+[t=0.134128s, 17800 KB] Evaluated until last jump: 19 state(s).
+[t=0.134128s, 17800 KB] Generated until last jump: 18 state(s).
+[t=0.134128s, 17800 KB] Number of registered states: 1804
+[t=0.134128s, 17800 KB] Int hash set load factor: 1804/2048 = 0.880859
+[t=0.134128s, 17800 KB] Int hash set resizes: 11
+[t=0.134128s, 17800 KB] Search time: 0.112338s
+[t=0.134128s, 17800 KB] Total time: 0.134128s
+Solution found.
+Peak memory: 17800 KB
+Remove intermediate file output.sas
+search exit code: 0
+
+Start planner
+Running command:  /home/marcofavorito/workfolder/planning-with-past-code/third_party/downward/fast-downward.py /home/marcofavorito/workfolder/planning-with-past-code/results/experiment-1-2021-12-13T17:27:10.750540/p4p-fd-ff/p18/new_domain.pddl /home/marcofavorito/workfolder/planning-with-past-code/results/experiment-1-2021-12-13T17:27:10.750540/p4p-fd-ff/p18/new_problem.pddl --search astar(ff())
+Running command:  /home/marcofavorito/workfolder/planning-with-past-code/bin/pltlf-planner --domain results/experiment-1-2021-12-13T17:27:10.750540/domain.pddl --problem results/experiment-1-2021-12-13T17:27:10.750540/p18.pddl --formula O(on_b1_b2 & Y(O(on_b2_b3 & Y(O(on_b3_b4 & Y(O(on_b4_b5 & Y(O(on_b5_b6 & Y(O(on_b6_b7 & Y(O(on_b7_b8 & Y(O(on_b8_b9 & Y(O(on_b9_b10 & Y(O(on_b10_b11 & Y(O(on_b11_b12 & Y(O(on_b12_b13 & Y(O(on_b13_b14 & Y(O(on_b14_b15 & Y(O(on_b15_b16 & Y(O(on_b16_b17 & Y(O(on_b17_b18))))))))))))))))))))))))))))))))) --output-domain results/experiment-1-2021-12-13T17:27:10.750540/p4p-fd-ff/p18/new_domain.pddl --output-problem results/experiment-1-2021-12-13T17:27:10.750540/p4p-fd-ff/p18/new_problem.pddl
+Compilation time: 0.39372992515563965 seconds
+Running command:  /home/marcofavorito/workfolder/planning-with-past-code/bin/fd_wrapper -d results/experiment-1-2021-12-13T17:27:10.750540/p4p-fd-ff/p18/new_domain.pddl -p results/experiment-1-2021-12-13T17:27:10.750540/p4p-fd-ff/p18/new_problem.pddl -a astar --heuristic ff --working-dir results/experiment-1-2021-12-13T17:27:10.750540/p4p-fd-ff/p18
+Tool time: 0.704198 seconds
+Total time: 1.097928 seconds

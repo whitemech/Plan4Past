@@ -1,0 +1,79 @@
+Parsing...
+Parsing: [0.000s CPU, 0.004s wall-clock]
+Normalizing task... [0.000s CPU, 0.001s wall-clock]
+Instantiating...
+Generating Datalog program... [0.000s CPU, 0.001s wall-clock]
+Normalizing Datalog program...
+Normalizing Datalog program: [0.010s CPU, 0.003s wall-clock]
+Preparing model... [0.000s CPU, 0.002s wall-clock]
+Generated 111 rules.
+Computing model... [0.840s CPU, 0.841s wall-clock]
+30138 relevant atoms
+18648 auxiliary atoms
+48786 final queue length
+254634 total queue pushes
+Completing instantiation... [3.500s CPU, 3.505s wall-clock]
+Instantiating: [4.360s CPU, 4.362s wall-clock]
+Computing fact groups...
+Finding invariants...
+12 initial candidates
+Finding invariants: [0.000s CPU, 0.005s wall-clock]
+Checking invariant weight... [0.000s CPU, 0.000s wall-clock]
+Instantiating groups... [0.010s CPU, 0.002s wall-clock]
+Collecting mutex groups... [0.000s CPU, 0.001s wall-clock]
+Choosing groups...
+33 uncovered facts
+Choosing groups: [0.010s CPU, 0.001s wall-clock]
+Building translation key... [0.000s CPU, 0.001s wall-clock]
+Computing fact groups: [0.020s CPU, 0.013s wall-clock]
+Building STRIPS to SAS dictionary... [0.000s CPU, 0.000s wall-clock]
+Building dictionary for full mutex groups... [0.000s CPU, 0.000s wall-clock]
+Building mutex information...
+Building mutex information: [0.000s CPU, 0.001s wall-clock]
+Translating task...
+Processing axioms...
+Simplifying axioms... [0.000s CPU, 0.000s wall-clock]
+Processing axioms: [0.340s CPU, 0.335s wall-clock]
+Translating task: [5.110s CPU, 5.113s wall-clock]
+28224 effect conditions simplified
+0 implied preconditions added
+Detecting unreachable propositions...
+0 operators removed
+24 propositions removed
+Detecting unreachable propositions: [0.810s CPU, 0.814s wall-clock]
+Translator variables: 57
+Translator derived variables: 6
+Translator facts: 690
+Translator goal facts: 1
+Translator mutex groups: 25
+Translator total mutex groups size: 649
+Translator operators: 28272
+Translator axioms: 8
+Translator task size: 522694
+Translator peak memory: 315400 KB
+Writing output... [0.900s CPU, 0.891s wall-clock]
+Done! [11.390s CPU, 11.391s wall-clock]
+Heuristic: FF-heuristic.
+Algorithm: LAO*-search
+INITIAL IS PROVEN!
+
+Result: Strong cyclic plan found.
+
+Time needed for preprocess (Parsing, PDBs, ...):    1.46 seconds.
+Time needed for search:                             12.018 seconds.
+Time needed:                                        13.478 seconds.
+Total Garbage Collections: 8
+Total Garbage Collection Time: 1 seconds.
+
+Out of 753 nodes, 26 are proven
+Number of node expansions: 33
+Policy entries: 5
+Number of sensing applications in policy: 0
+Running command:  /home/francesco/.virtualenvs/planning-for-past-temporal-goals-uQ4G02hf/bin/python3 /home/francesco/Projects/planning-for-past-temporal-goals/third_party/myND/translator-fond/translate.py /home/francesco/Projects/planning-for-past-temporal-goals/experiment-1a-blocksworld-nondet-new35/p4p-mynd-sc-ff/p24/new_domain.pddl /home/francesco/Projects/planning-for-past-temporal-goals/experiment-1a-blocksworld-nondet-new35/p4p-mynd-sc-ff/p24/new_problem.pddl
+Start planner
+Running command:  java -Xmx4g -jar /home/francesco/Projects/planning-for-past-temporal-goals/third_party/mynd.jar /home/francesco/Projects/planning-for-past-temporal-goals/experiment-1a-blocksworld-nondet-new35/p4p-mynd-sc-ff/p24/output.sas -search laostar -heuristic ff
+Running command:  /home/francesco/Projects/planning-for-past-temporal-goals/bin/pltlf-planner --domain experiment-1a-blocksworld-nondet-new35/domain.pddl --problem experiment-1a-blocksworld-nondet-new35/p24.pddl --formula O(on_b1_b2 & Y(O(on_b2_b3))) --output-domain experiment-1a-blocksworld-nondet-new35/p4p-mynd-sc-ff/p24/new_domain.pddl --output-problem experiment-1a-blocksworld-nondet-new35/p4p-mynd-sc-ff/p24/new_problem.pddl
+Compilation time: 0.5893440246582031 seconds
+Running command:  /home/francesco/Projects/planning-for-past-temporal-goals/bin/mynd_wrapper -d experiment-1a-blocksworld-nondet-new35/p4p-mynd-sc-ff/p24/new_domain.pddl -p experiment-1a-blocksworld-nondet-new35/p4p-mynd-sc-ff/p24/new_problem.pddl -a laostar --heuristic ff --working-dir experiment-1a-blocksworld-nondet-new35/p4p-mynd-sc-ff/p24
+Tool time: 26.597824 seconds
+Total time: 27.187168 seconds

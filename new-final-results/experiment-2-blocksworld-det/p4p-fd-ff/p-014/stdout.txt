@@ -1,0 +1,179 @@
+INFO     Running translator.
+INFO     translator stdin: None
+INFO     translator time limit: None
+INFO     translator memory limit: None
+INFO     translator command line string: /usr/bin/python3 /home/marcofavorito/planning-for-past-temporal-goals/third_party/downward/builds/release/bin/translate/translate.py /home/marcofavorito/planning-for-past-temporal-goals/experiment-2-blocksworld-det/p4p-fd-ff/p-014/new_domain.pddl /home/marcofavorito/planning-for-past-temporal-goals/experiment-2-blocksworld-det/p4p-fd-ff/p-014/new_problem.pddl --sas-file output.sas
+Parsing...
+Parsing: [0.000s CPU, 0.002s wall-clock]
+Normalizing task... [0.000s CPU, 0.000s wall-clock]
+Instantiating...
+Generating Datalog program... [0.000s CPU, 0.000s wall-clock]
+Normalizing Datalog program...
+Normalizing Datalog program: [0.000s CPU, 0.001s wall-clock]
+Preparing model... [0.000s CPU, 0.000s wall-clock]
+Generated 37 rules.
+Computing model... [0.010s CPU, 0.003s wall-clock]
+266 relevant atoms
+168 auxiliary atoms
+434 final queue length
+710 total queue pushes
+Completing instantiation... [0.000s CPU, 0.004s wall-clock]
+Instantiating: [0.010s CPU, 0.010s wall-clock]
+Computing fact groups...
+Finding invariants...
+10 initial candidates
+Finding invariants: [0.000s CPU, 0.003s wall-clock]
+Checking invariant weight... [0.000s CPU, 0.000s wall-clock]
+Instantiating groups... [0.000s CPU, 0.000s wall-clock]
+Collecting mutex groups... [0.000s CPU, 0.000s wall-clock]
+Choosing groups...
+17 uncovered facts
+Choosing groups: [0.000s CPU, 0.000s wall-clock]
+Building translation key... [0.000s CPU, 0.000s wall-clock]
+Computing fact groups: [0.000s CPU, 0.004s wall-clock]
+Building STRIPS to SAS dictionary... [0.000s CPU, 0.000s wall-clock]
+Building dictionary for full mutex groups... [0.000s CPU, 0.000s wall-clock]
+Building mutex information...
+Building mutex information: [0.000s CPU, 0.000s wall-clock]
+Translating task...
+Processing axioms...
+Simplifying axioms... [0.000s CPU, 0.000s wall-clock]
+Translator axioms removed by simplifying: 0
+Computing negative axioms... [0.000s CPU, 0.000s wall-clock]
+Processing axioms: [0.000s CPU, 0.001s wall-clock]
+Translating task: [0.010s CPU, 0.006s wall-clock]
+184 effect conditions simplified
+0 implied preconditions added
+Detecting unreachable propositions...
+0 operators removed
+0 axioms removed
+16 propositions removed
+Detecting unreachable propositions: [0.000s CPU, 0.003s wall-clock]
+Reordering and filtering variables...
+25 of 25 variables necessary.
+9 of 17 mutex groups necessary.
+128 of 128 operators necessary.
+8 of 8 axiom rules necessary.
+Reordering and filtering variables: [0.010s CPU, 0.002s wall-clock]
+Translator variables: 25
+Translator derived variables: 8
+Translator facts: 106
+Translator goal facts: 1
+Translator mutex groups: 9
+Translator total mutex groups size: 81
+Translator operators: 128
+Translator axioms: 8
+Translator task size: 1171
+Translator peak memory: 29560 KB
+Writing output... [0.000s CPU, 0.001s wall-clock]
+Done! [0.030s CPU, 0.030s wall-clock]
+translate exit code: 0
+
+INFO     Running search (release).
+INFO     search stdin: output.sas
+INFO     search time limit: None
+INFO     search memory limit: None
+INFO     search command line string: /home/marcofavorito/planning-for-past-temporal-goals/third_party/downward/builds/release/bin/downward --search 'astar(ff())' --internal-plan-file sas_plan < output.sas
+[t=3.7937e-05s, 9844 KB] reading input...
+[t=0.000875368s, 9844 KB] done reading input!
+[t=0.00208416s, 10232 KB] Simplifying 504 unary operators... done! [392 unary operators]
+[t=0.00240781s, 10232 KB] time to simplify: 0.00035879s
+[t=0.00246865s, 10232 KB] Initializing additive heuristic...
+[t=0.0024896s, 10232 KB] Initializing FF heuristic...
+[t=0.00253585s, 10232 KB] Building successor generator...done!
+[t=0.00265396s, 10232 KB] peak memory difference for successor generator creation: 0 KB
+[t=0.00267167s, 10232 KB] time for successor generation creation: 6.5212e-05s
+[t=0.00269298s, 10232 KB] Variables: 25
+[t=0.00271019s, 10232 KB] FactPairs: 106
+[t=0.00272768s, 10232 KB] Bytes per state: 8
+[t=0.00280974s, 10232 KB] Conducting best first search with reopening closed nodes, (real) bound = 2147483647
+[t=0.00288069s, 10232 KB] New best heuristic value for ff: 13
+[t=0.00290135s, 10232 KB] g=0, 1 evaluated, 0 expanded
+[t=0.00291961s, 10232 KB] f = 13, 1 evaluated, 0 expanded
+[t=0.00294075s, 10232 KB] Initial heuristic value for ff: 13
+[t=0.00295873s, 10232 KB] pruning method: none
+[t=0.00302716s, 10232 KB] f = 14, 5 evaluated, 1 expanded
+[t=0.00308898s, 10232 KB] New best heuristic value for ff: 12
+[t=0.00311614s, 10232 KB] g=2, 9 evaluated, 3 expanded
+[t=0.00324742s, 10232 KB] f = 15, 21 evaluated, 6 expanded
+[t=0.00327818s, 10232 KB] New best heuristic value for ff: 11
+[t=0.00329697s, 10232 KB] g=4, 22 evaluated, 7 expanded
+[t=0.00371178s, 10232 KB] f = 16, 65 evaluated, 22 expanded
+[t=0.00376363s, 10232 KB] New best heuristic value for ff: 10
+[t=0.00378424s, 10232 KB] g=6, 68 evaluated, 23 expanded
+[t=0.00457326s, 10232 KB] f = 17, 152 evaluated, 60 expanded
+[t=0.00633379s, 10232 KB] f = 18, 331 evaluated, 148 expanded
+[t=0.00764602s, 10232 KB] New best heuristic value for ff: 9
+[t=0.00767649s, 10232 KB] g=8, 470 evaluated, 217 expanded
+[t=0.00778265s, 10232 KB] New best heuristic value for ff: 8
+[t=0.00780359s, 10232 KB] g=10, 480 evaluated, 219 expanded
+[t=0.0079441s, 10232 KB] New best heuristic value for ff: 7
+[t=0.00796425s, 10232 KB] g=10, 494 evaluated, 223 expanded
+[t=0.0080279s, 10232 KB] New best heuristic value for ff: 6
+[t=0.00804703s, 10232 KB] g=12, 499 evaluated, 225 expanded
+[t=0.0108858s, 10232 KB] f = 19, 797 evaluated, 355 expanded
+[t=0.0109411s, 10232 KB] New best heuristic value for ff: 5
+[t=0.0109618s, 10232 KB] g=14, 798 evaluated, 356 expanded
+[t=0.0197182s, 10232 KB] f = 20, 1733 evaluated, 784 expanded
+[t=0.0370725s, 10380 KB] f = 21, 3567 evaluated, 1661 expanded
+[t=0.0374922s, 10380 KB] New best heuristic value for ff: 4
+[t=0.0375213s, 10380 KB] g=16, 3604 evaluated, 1679 expanded
+[t=0.0375706s, 10380 KB] New best heuristic value for ff: 3
+[t=0.0375903s, 10380 KB] g=18, 3608 evaluated, 1681 expanded
+[t=0.0376269s, 10380 KB] New best heuristic value for ff: 2
+[t=0.0376467s, 10380 KB] g=18, 3610 evaluated, 1683 expanded
+[t=0.0376765s, 10380 KB] New best heuristic value for ff: 1
+[t=0.0376953s, 10380 KB] g=19, 3612 evaluated, 1684 expanded
+[t=0.0377184s, 10380 KB] New best heuristic value for ff: 0
+[t=0.0377368s, 10380 KB] g=20, 3613 evaluated, 1685 expanded
+[t=0.037755s, 10380 KB] Solution found!
+[t=0.0377751s, 10380 KB] Actual search time: 0.034815s
+unstack e c (1)
+put-down e (1)
+unstack h a (1)
+put-down h (1)
+unstack a b (1)
+stack a e (1)
+pick-up h (1)
+stack h a (1)
+pick-up f (1)
+stack f h (1)
+unstack b g (1)
+put-down b (1)
+pick-up g (1)
+stack g f (1)
+pick-up b (1)
+stack b g (1)
+pick-up d (1)
+stack d b (1)
+pick-up c (1)
+stack c d (1)
+[t=0.0377957s, 10380 KB] Plan length: 20 step(s).
+[t=0.0377957s, 10380 KB] Plan cost: 20
+[t=0.0377957s, 10380 KB] Expanded 1686 state(s).
+[t=0.0377957s, 10380 KB] Reopened 0 state(s).
+[t=0.0377957s, 10380 KB] Evaluated 3613 state(s).
+[t=0.0377957s, 10380 KB] Evaluations: 3613
+[t=0.0377957s, 10380 KB] Generated 6738 state(s).
+[t=0.0377957s, 10380 KB] Dead ends: 0 state(s).
+[t=0.0377957s, 10380 KB] Expanded until last jump: 1661 state(s).
+[t=0.0377957s, 10380 KB] Reopened until last jump: 0 state(s).
+[t=0.0377957s, 10380 KB] Evaluated until last jump: 3567 state(s).
+[t=0.0377957s, 10380 KB] Generated until last jump: 6660 state(s).
+[t=0.0377957s, 10380 KB] Number of registered states: 3613
+[t=0.0377957s, 10380 KB] Int hash set load factor: 3613/4096 = 0.88208
+[t=0.0377957s, 10380 KB] Int hash set resizes: 12
+[t=0.0377957s, 10380 KB] Search time: 0.0349865s
+[t=0.0377957s, 10380 KB] Total time: 0.0377957s
+Solution found.
+Peak memory: 10380 KB
+Remove intermediate file output.sas
+search exit code: 0
+
+Start planner
+Running command:  /home/marcofavorito/planning-for-past-temporal-goals/third_party/downward/fast-downward.py /home/marcofavorito/planning-for-past-temporal-goals/experiment-2-blocksworld-det/p4p-fd-ff/p-014/new_domain.pddl /home/marcofavorito/planning-for-past-temporal-goals/experiment-2-blocksworld-det/p4p-fd-ff/p-014/new_problem.pddl --search astar(ff())
+Running command:  /home/marcofavorito/planning-for-past-temporal-goals/bin/pltlf-planner --domain data/deterministic/blocksworld/domain.pddl --problem data/deterministic/blocksworld/p-014.pddl --formula on_c_d & on_d_b & on_b_g & on_g_f & on_f_h & on_h_a & on_a_e --output-domain experiment-2-blocksworld-det/p4p-fd-ff/p-014/new_domain.pddl --output-problem experiment-2-blocksworld-det/p4p-fd-ff/p-014/new_problem.pddl
+Compilation time: 0.4336690902709961 seconds
+Running command:  /home/marcofavorito/planning-for-past-temporal-goals/bin/fd_wrapper -d experiment-2-blocksworld-det/p4p-fd-ff/p-014/new_domain.pddl -p experiment-2-blocksworld-det/p4p-fd-ff/p-014/new_problem.pddl -a astar --heuristic ff --working-dir experiment-2-blocksworld-det/p4p-fd-ff/p-014
+Tool time: 0.255031 seconds
+Total time: 0.6887 seconds

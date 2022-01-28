@@ -1,0 +1,15 @@
+Killed
+Traceback (most recent call last):
+  File "/home/francesco/Projects/planning-for-past-temporal-goals/third_party/ltlfond2fond/convert-finite.py", line 65, in <module>
+    aut_dynamics = Automaton(fml,isLTLf)
+  File "/home/francesco/Projects/planning-for-past-temporal-goals/third_party/ltlfond2fond/utils/automaton.py", line 42, in __init__
+    automaton_hoa = ltlf2hoa.ltl2hoa(fml)
+  File "/home/francesco/Projects/planning-for-past-temporal-goals/third_party/ltlfond2fond/ext/ltlfkit/ltlf2hoa.py", line 185, in ltl2hoa
+    hoa = Mona2HOA(tmp.name)
+  File "/home/francesco/Projects/planning-for-past-temporal-goals/third_party/ltlfond2fond/ext/ltlfkit/ltlf2hoa.py", line 177, in Mona2HOA
+    hoa = SA2HOA(mona_output)
+  File "/home/francesco/Projects/planning-for-past-temporal-goals/third_party/ltlfond2fond/ext/ltlfkit/ltlf2hoa.py", line 165, in SA2HOA
+    hoa = parse_mona(mona_output)
+  File "/home/francesco/Projects/planning-for-past-temporal-goals/third_party/ltlfond2fond/ext/ltlfkit/ltlf2hoa.py", line 57, in parse_mona
+    assert("alive" in free_variables)
+AssertionError

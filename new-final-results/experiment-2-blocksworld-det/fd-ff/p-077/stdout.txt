@@ -1,0 +1,111 @@
+INFO     Running translator.
+INFO     translator stdin: None
+INFO     translator time limit: None
+INFO     translator memory limit: None
+INFO     translator command line string: /home/francesco/.virtualenvs/planning-for-past-temporal-goals-uQ4G02hf/bin/python3 /home/francesco/Projects/planning-for-past-temporal-goals/third_party/downward/builds/release/bin/translate/translate.py /home/francesco/Projects/planning-for-past-temporal-goals/data/deterministic/blocksworld/domain.pddl /home/francesco/Projects/planning-for-past-temporal-goals/data/deterministic/blocksworld/p-077.pddl --sas-file output.sas
+Parsing...
+Parsing: [0.000s CPU, 0.068s wall-clock]
+Normalizing task... [0.000s CPU, 0.000s wall-clock]
+Instantiating...
+Generating Datalog program... [0.000s CPU, 0.001s wall-clock]
+Normalizing Datalog program...
+Normalizing Datalog program: [0.000s CPU, 0.002s wall-clock]
+Preparing model... [0.010s CPU, 0.003s wall-clock]
+Generated 21 rules.
+Computing model... [0.110s CPU, 0.110s wall-clock]
+4638 relevant atoms
+3078 auxiliary atoms
+7716 final queue length
+13574 total queue pushes
+Completing instantiation... [0.130s CPU, 0.136s wall-clock]
+Instantiating: [0.250s CPU, 0.253s wall-clock]
+Computing fact groups...
+Finding invariants...
+10 initial candidates
+Finding invariants: [0.010s CPU, 0.005s wall-clock]
+Checking invariant weight... [0.000s CPU, 0.001s wall-clock]
+Instantiating groups... [0.010s CPU, 0.006s wall-clock]
+Collecting mutex groups... [0.000s CPU, 0.001s wall-clock]
+Choosing groups...
+39 uncovered facts
+Choosing groups: [0.000s CPU, 0.007s wall-clock]
+Building translation key... [0.000s CPU, 0.002s wall-clock]
+Computing fact groups: [0.040s CPU, 0.038s wall-clock]
+Building STRIPS to SAS dictionary... [0.000s CPU, 0.001s wall-clock]
+Building dictionary for full mutex groups... [0.010s CPU, 0.003s wall-clock]
+Building mutex information...
+Building mutex information: [0.000s CPU, 0.002s wall-clock]
+Translating task...
+Processing axioms...
+Simplifying axioms... [0.000s CPU, 0.000s wall-clock]
+Translator axioms removed by simplifying: 0
+Computing negative axioms... [0.000s CPU, 0.000s wall-clock]
+Processing axioms: [0.000s CPU, 0.006s wall-clock]
+Translating task: [0.170s CPU, 0.174s wall-clock]
+4294 effect conditions simplified
+0 implied preconditions added
+Detecting unreachable propositions...
+0 operators removed
+0 axioms removed
+76 propositions removed
+Detecting unreachable propositions: [0.110s CPU, 0.106s wall-clock]
+Reordering and filtering variables...
+77 of 77 variables necessary.
+39 of 77 mutex groups necessary.
+2888 of 2888 operators necessary.
+0 of 0 axiom rules necessary.
+Reordering and filtering variables: [0.050s CPU, 0.044s wall-clock]
+Translator variables: 77
+Translator derived variables: 0
+Translator facts: 1560
+Translator goal facts: 37
+Translator mutex groups: 39
+Translator total mutex groups size: 1521
+Translator operators: 2888
+Translator axioms: 0
+Translator task size: 24741
+Translator peak memory: 47244 KB
+Writing output... [0.050s CPU, 0.042s wall-clock]
+Done! [0.680s CPU, 0.739s wall-clock]
+translate exit code: 0
+
+INFO     Running search (release).
+INFO     search stdin: output.sas
+INFO     search time limit: None
+INFO     search memory limit: None
+INFO     search command line string: /home/francesco/Projects/planning-for-past-temporal-goals/third_party/downward/builds/release/bin/downward --search 'astar(ff())' --internal-plan-file sas_plan < output.sas
+[t=3.0792e-05s, 9852 KB] reading input...
+[t=0.018364s, 13416 KB] done reading input!
+[t=0.0208501s, 14516 KB] Simplifying 11476 unary operators... done! [8664 unary operators]
+[t=0.0289569s, 15380 KB] time to simplify: 0.00813864s
+[t=0.0292969s, 15380 KB] Initializing additive heuristic...
+[t=0.0293377s, 15380 KB] Initializing FF heuristic...
+[t=0.0293966s, 15380 KB] Building successor generator...done!
+[t=0.0303826s, 15380 KB] peak memory difference for successor generator creation: 0 KB
+[t=0.0304014s, 15380 KB] time for successor generation creation: 0.000924991s
+[t=0.030441s, 15380 KB] Variables: 77
+[t=0.0304612s, 15380 KB] FactPairs: 1560
+[t=0.0304795s, 15380 KB] Bytes per state: 36
+[t=0.0305889s, 15380 KB] Conducting best first search with reopening closed nodes, (real) bound = 2147483647
+[t=0.0308709s, 15380 KB] New best heuristic value for ff: 73
+[t=0.0308989s, 15380 KB] g=0, 1 evaluated, 0 expanded
+[t=0.0309183s, 15380 KB] f = 73, 1 evaluated, 0 expanded
+[t=0.030939s, 15380 KB] Initial heuristic value for ff: 73
+[t=0.0309579s, 15380 KB] pruning method: none
+[t=0.0318992s, 15380 KB] f = 74, 7 evaluated, 1 expanded
+[t=0.0349153s, 15380 KB] New best heuristic value for ff: 72
+[t=0.0349483s, 15380 KB] g=2, 27 evaluated, 5 expanded
+[t=0.0376308s, 15380 KB] f = 75, 45 evaluated, 8 expanded
+[t=0.0654996s, 15380 KB] f = 76, 215 evaluated, 44 expanded
+[t=0.16375s, 15380 KB] f = 77, 846 evaluated, 219 expanded
+[t=0.165091s, 15380 KB] New best heuristic value for ff: 71
+[t=0.165116s, 15380 KB] g=6, 856 evaluated, 221 expanded
+[t=0.467981s, 15380 KB] f = 78, 3182 evaluated, 825 expanded
+[t=1.41101s, 15380 KB] f = 79, 10261 evaluated, 3080 expanded
+[t=4.38328s, 16980 KB] f = 80, 33341 evaluated, 9944 expanded
+[t=12.1644s, 20868 KB] f = 81, 94454 evaluated, 31086 expanded
+[t=35.2352s, 34432 KB] f = 82, 274811 evaluated, 90988 expanded
+[t=90.7103s, 63320 KB] f = 83, 705396 evaluated, 250082 expanded
+[t=244.19s, 164028 KB] f = 84, 1893936 evaluated, 677801 expanded
+Peak memory: 180500 KB
+caught signal 15 -- exiting

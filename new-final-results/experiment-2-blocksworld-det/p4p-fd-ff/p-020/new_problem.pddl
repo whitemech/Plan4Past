@@ -1,0 +1,6 @@
+(define (problem blocks-10-1)
+    (:domain blocks-domain)
+    (:objects a b c d e f g h i j)
+    (:init (clear c) (clear f) (emptyhand) (on a b) (on c g) (on d h) (on e i) (on f d) (on g e) (on i j) (on j a) (ontable b) (ontable h))
+    (:goal (val_on_c_b-and-on_b_d-and-on_d_f-and-on_f_i-and-on_i_a-and-on_a_e-and-on_e_h-and-on_h_g-and-on_g_j))
+)
