@@ -29,7 +29,7 @@ docker build --cpuset-cpus 0-7 -t icaps-2022 .
 docker run -v $(pwd):/home/default/experimental-results --rm -it icaps-2022 ./benchmark/experiments/run-experiments.sh /home/default/experimental-results/output
 ```
 
-The output is in the folder `./output`.
+You will find the output in the folder `./output`.
 
 ## Reproduce experiments on host machine
 
@@ -62,14 +62,32 @@ Also install other local dependencies:
 ./scripts/update-local-dependencies.sh
 ```
 
-### Build the planners
+### Build the dependencies and the planners
 
-Run:
+The tool depends on the following third party dependencies
+(you can find all of them in `third_party/`):
+
+- downward
+- ltlfond2fond
+- myND
+- spot
+- `pddl`
+- `pylogics`
+
+To build all of them, run:
 ```
 ./scripts/build.sh
 ```
 
-to build the required dependencies (in particular planners). 
+The script might not work due to missing build tools or sub-dependencies.
+
+### Run experiments
+
+Finally, to run the experiments:
+
+```
+./benchmark/experiments/run-experiments.sh ./output
+```
 
 ## Use our planner
 
