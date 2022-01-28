@@ -1,6 +1,0 @@
-(define (problem blocks-27-0)
-    (:domain blocks-domain)
-    (:objects a a1 b c d e f g h i j k l m n o p q r s t u v w x y z)
-    (:init (clear a) (clear b) (clear f) (clear h) (clear u) (clear w) (emptyhand) (on a1 e) (on b y) (on d q) (on e l) (on g o) (on h v) (on i k) (on j g) (on k n) (on l x) (on n c) (on o p) (on p r) (on q s) (on r z) (on s i) (on u d) (on v a1) (on w j) (on x m) (on y t) (ontable a) (ontable c) (ontable f) (ontable m) (ontable t) (ontable z))
-    (:goal (val_on_y_f-and-on_f_l-and-on_l_w-and-on_w_v-and-on_v_e-and-on_e_m-and-on_m_q-and-on_q_g-and-on_g_k-and-on_k_s-and-on_s_t-and-on_t_h-and-on_h_r-and-on_r_x-and-on_x_c-and-on_c_p-and-on_p_z-and-on_z_a-and-on_a_a1-and-on_a1_b-and-on_b_d-and-on_d_j-and-on_j_o-and-on_o_u-and-on_u_n-and-on_n_i))
-)

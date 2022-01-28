@@ -1,6 +1,0 @@
-(define (problem blocks-42-1)
-    (:domain blocks-domain)
-    (:objects a a1 b b1 c c1 d d1 e e1 f f1 g g1 h h1 i i1 j j1 k k1 l l1 m m1 n n1 o o1 p p1 q r s t u v w x y z)
-    (:init (clear n1) (emptyhand) (on a k) (on a1 f1) (on b c1) (on b1 b) (on c m) (on c1 i) (on d q) (on e w) (on e1 f) (on f g1) (on f1 a) (on g r) (on g1 v) (on h n) (on h1 c) (on i t) (on i1 j1) (on j y) (on j1 e1) (on k d) (on k1 m1) (on l l1) (on l1 i1) (on m j) (on m1 x) (on n u) (on n1 k1) (on o o1) (on o1 p1) (on p a1) (on p1 h1) (on q s) (on r h) (on s e) (on t g) (on u d1) (on v o) (on w b1) (on x z) (on y p) (on z l) (ontable d1))
-    (:goal (val_on_u_q-and-on_q_a-and-on_a_k1-and-on_k1_m1-and-on_m1_g-and-on_g_p1-and-on_p1_m-and-on_m_w-and-on_w_g1-and-on_g1_j1-and-on_j1_e1-and-on_e1_y-and-on_y_l-and-on_l_n1-and-on_n1_n-and-on_n_j-and-on_j_i-and-on_i_l1-and-on_l1_e-and-on_e_c-and-on_c_b1-and-on_b1_d-and-on_d_h-and-on_h_h1-and-on_h1_f1-and-on_f1_p-and-on_p_o-and-on_o_d1-and-on_d1_i1-and-on_i1_k-and-on_k_z-and-on_z_t-and-on_t_s-and-on_s_c1-and-on_c1_a1-and-on_a1_v-and-on_v_f-and-on_f_r-and-on_r_b-and-on_b_o1-and-on_o1_x))
-)

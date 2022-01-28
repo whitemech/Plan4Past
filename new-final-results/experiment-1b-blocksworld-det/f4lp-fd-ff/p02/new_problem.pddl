@@ -1,6 +1,0 @@
-(define (problem bw_2)
-	(:domain blocks-domain)
-	(:objects b1 - block b2 - block)
-	(:init (clear b1) (clear b2) (emptyhand) (ontable b1) (ontable b2) (q1 b1 b2) (turnDomain))
-(:goal (and (q2 b1 b2) (turnDomain)))
-)

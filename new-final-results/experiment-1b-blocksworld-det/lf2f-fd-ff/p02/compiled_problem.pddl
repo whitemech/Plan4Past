@@ -1,6 +1,0 @@
-(define (problem bw_2)
-(:domain blocks-domain)
-(:objects b1 b2 - block q0 - qstate q1 - qstate q2 - qstate q3 - qstate q4 - qstate)
-(:init (emptyhand) (ontable b1) (ontable b2) (clear b1) (clear b2) (prev_autstate q1) (is_accepting q3))
-(:goal (dummy_goal))
-)

@@ -1,6 +1,0 @@
-(define (problem el_3)
-(:domain elevator)
-(:objects p0 p1 p2 - passenger f0 f1 f2 f3 f4 f5 - floor q0 - qstate q1 - qstate q2 - qstate q3 - qstate q4 - qstate q5 - qstate q6 - qstate q7 - qstate q8 - qstate q9 - qstate q10 - qstate)
-(:init (lift-at f0) (above f0 f1) (above f0 f2) (above f0 f3) (above f0 f4) (above f0 f5) (above f1 f2) (above f1 f3) (above f1 f4) (above f1 f5) (above f2 f3) (above f2 f4) (above f2 f5) (above f3 f4) (above f3 f5) (above f4 f5) (origin p0 f0) (origin p1 f0) (origin p2 f0) (destin p0 f1) (destin p1 f3) (destin p2 f5) (prev_autstate q1) (is_accepting q9))
-(:goal (dummy_goal))
-)
