@@ -2,12 +2,17 @@
   <b>P4P - Classical and FOND Planning for Past Temporal Goals</b>
 </h1>
 
+## Foreword
+
+- We updated the benchmawrk results for the `l2lf` tool. TODO
+
 ## Repository structure
 
-- `planning_with_past/`: code of the compiler
+- `planning_with_past/`: code of the PDDL compiler
 - `benchmark/`: code of the experiment framework
 - `bin/`: executables that wrap several planners.
-  - `bin/plan4past` is the main entrypoint of our planner
+  - `bin/pltlf-planner`: the main entrypoint of the PDDL compiler
+  - `bin/plan4past` is the main entrypoint of our planner (uses `pltlf-planner`)
 - `data/`: datasets for the experiments
 - `examples/`: some examples
 - `scripts/`: auxiliary scripts
