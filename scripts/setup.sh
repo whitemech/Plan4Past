@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
-set -e
+# This script gathers all the commands in the Dockerfile
+# so to make it easier to setup the environment on the local machine.
 
-TOKEN="todo"
+set -e
 
 export DEBIAN_FRONTEND noninteractive
 export LC_ALL C.UTF-8
@@ -129,10 +130,6 @@ echo "Building ltlfond2fond..." &&\
   sudo ldconfig                                                                   &&\
   cd ../../../../../
 
-mkdir ~/work
-mkdir ~/work/third_party
-cd ~/work
-
 # install FOND4LTLfPLTLf
 pip install git+https://github.com/whitemech/FOND4LTLfPLTLf.git
 
@@ -152,20 +149,6 @@ git clone https://github.com/whitemech/pylogics.git ./third_party/pylogics &&\
 # clone pddl
 git clone https://github.com/whitemech/pddl.git ./third_party/pddl &&\
     cd third_party/pddl && git checkout 41a8531 && cd ../../
-
-cd ~
-git clone https://marcofavorito:"${TOKEN}"@github.com/whitemech/planning-for-past-temporal-goals.git
-
-cp -r planning-for-past-temporal-goals/benchmark ./work/benchmark
-cp -r planning-for-past-temporal-goals/bin ./work/bin
-cp -r planning-for-past-temporal-goals/data ./work/data
-cp -r planning-for-past-temporal-goals/planning_with_past ./work/planning_with_past
-cp -r planning-for-past-temporal-goals/scripts ./work/scripts
-cp -r planning-for-past-temporal-goals/third_party/mynd.jar ./work/third_party/mynd.jar
-cp -r planning-for-past-temporal-goals/pyproject.toml ./work/
-cp -r planning-for-past-temporal-goals/setup.cfg ./work/
-cp -r planning-for-past-temporal-goals/setup.py ./work/
-cp -r planning-for-past-temporal-goals/LICENSE ./work/
 
 sudo pip install -e .
 sudo pip install -e third_party/pddl
