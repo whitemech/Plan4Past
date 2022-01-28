@@ -29,6 +29,14 @@
 - `new-final-results/`: results after rebuttals (updated, see above)
 - `new-final-plots/`: new plots after rebuttals
 
+## Clone the repository
+
+First, clone the repository:
+```
+git clone https://github.com/icaps2022-submission-259/submission-259-code/ --recursive
+git submodule update --init --recursive
+```
+
 
 ## Reproduce experiments Docker image (RECOMMENDED)
 
@@ -72,13 +80,7 @@ This will allow you to run all the commands listed in `benchmark/README.md`.
 
 ### Python code
 
-First, clone the repository:
-```
-git clone https://github.com/icaps2022-submission-259/submission-259-code/ --recursive
-git submodule update --init --recursive
-```
-
-Then, use Pipenv to set up the development environment:
+Use Pipenv to set up the development environment:
 
 ```
 pipenv shell --python=python3.7 && pipenv install --dev
