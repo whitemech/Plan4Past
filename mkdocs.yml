@@ -1,6 +1,6 @@
 site_name: My Docs
-repo_name: 'whitemech/planning-with-past'
-repo_url: https://github.com/whitemech/planning-with-past
+repo_name: 'anonymousauthors/planning-with-past'
+repo_url: https://github.com/anonymousauthors/planning-with-past
 
 nav:
 - Home: index.md
