@@ -785,4 +785,4 @@ results/
 !final_results/**/**/output.log
 !final_results/**/**/**/**/output.sas
 !final_results/**/**/**/output.tsv
-!supplementary-material/results
+!supplementary-material/results/*.zip

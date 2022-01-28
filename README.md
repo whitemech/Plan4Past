@@ -1,17 +1,43 @@
 <h1 align="center">
-  <b>Classical and FOND Planning for Past Temporal Goals</b>
+  <b>P4P - Classical and FOND Planning for Past Temporal Goals</b>
 </h1>
 
+## Repository structure
 
-Planning for temporal goals in past temporal logic. 
+- `planning_with_past/`: code of the compiler
+- `benchmark/`: code of the experiment framework
+- `bin/`: executables that wrap several planners.
+  - `bin/plan4past` is the main entrypoint of our planner
+- `data/`: datasets for the experiments
+- `examples/`: some examples
+- `scripts/`: auxiliary scripts
+- `supplementary-material/`: the supplementary material of the submission
 
-## Install
+
+## Reproduce experiments Docker image (RECOMMENDED)
+
+We prepared a Docker image in order to make it easier to reproduce the experiments.
+We highly recommend
+
+- Build the image:
+```
+docker build --cpuset-cpus 0-7 -t icaps-2022 .
+```
+
+- Run the experiments inside the container:
+```
+docker run -v $(pwd):/home/default/experimental-results --rm -it icaps-2022 ./benchmark/experiments/run-experiments.sh /home/default/experimental-results/output
+```
+
+The output is in the folder `./output`.
+
+## Reproduce experiments on host machine
 
 ### Python code
 
 First, clone the repository:
 ```
-git clone git@github.com:whitemech/planning-for-past-temporal-goals --recursive
+git clone https://github.com/icaps2022-submission-259/submission-259-code/ --recursive
 git submodule update --init --recursive
 ```
 
@@ -36,7 +62,7 @@ Also install other local dependencies:
 ./scripts/update-local-dependencies.sh
 ```
 
-### Planners
+### Build the planners
 
 Run:
 ```
@@ -45,34 +71,12 @@ Run:
 
 to build the required dependencies (in particular planners). 
 
-## Quickstart
+## Use our planner
 
-### Classical planning
-
-```python
-import networkx as nx
-import matplotlib.pyplot as plt
-from planning_with_past.planners.downward import DownwardPlanner
-from pathlib import Path
-
-planner = DownwardPlanner()
-plan = planner.plan(Path("examples/compiled_pddl/domain.pddl"), Path("examples/compiled_pddl/p-0.pddl"))
-
-# print the graph
-pos = nx.spring_layout(plan.graph)
-nx.draw_networkx(plan.graph, pos)
-edge_labels = dict([((n1, n2), action)
-                    for n1, n2, action in plan.graph.edges(data="action")])
-nx.draw_networkx_edge_labels(plan.graph, pos, edge_labels=edge_labels)
-plt.show()
-```
-
-## Use the planner
-
-The main entrypoint for our planner is `./bin/pltlf-planner`. Usage: 
+The main entrypoint for our planner is `./bin/plan4past`. Usage: 
 
 ```
-./bin/pltlf-planner
+./bin/plan4past
     --domain PDDL_DOMAIN_FILEPATH
     --problem PDDL_PROBLEM_FILEPATH
     --map MAP_FILEPATH
@@ -83,54 +87,11 @@ The main entrypoint for our planner is `./bin/pltlf-planner`. Usage:
 E.g.:
 
 ```
-./bin/pltlf-planner \
+./bin/plan4past \
     --domain examples/pddl/fond-domain.pddl \
     --problem examples/pddl/fond-p-0.pddl \
+    -t mynd
     --map examples/pddl/fond-p-0.map \
     --formula "vehicleat_l22 & O(vehicleat_l31)" \
-    --output-dir output \
-    --force
+    --output-dir output
 ```
-
-## Docker image
-
-```
-docker build --cpuset-cpus 0-7 -t icaps-2022 .
-```
-
-```
-docker run --rm -it icaps-2022 /bin/bash
-```
-
-
-## Tests
-
-To run tests: `tox`
-
-To run only the code tests: `tox -e py3.7`
-
-To run only the linters: 
-- `tox -e flake8`
-- `tox -e mypy`
-- `tox -e black-check`
-- `tox -e isort-check`
-
-Please look at the `tox.ini` file for the full list of supported commands. 
-
-## Docs
-
-To build the docs: `mkdocs build`
-
-To view documentation in a browser: `mkdocs serve`
-and then go to [http://localhost:8000](http://localhost:8000)
-
-## License
-
-planning-for-past-temporal-goals is released under the GNU Lesser General Public License v3.0 or later (LGPLv3+).
-
-Copyright 2021 WhiteMech
-
-## Authors
-
-- [Francesco Fuggitti](https://francescofuggitti.github.io)
-- [Marco Favorito](https://marcofavorito.me/)
