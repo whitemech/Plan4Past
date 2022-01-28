@@ -2,10 +2,6 @@ FROM ubuntu:20.04
 
 USER root
 
-# needed by Pipenv
-ARG GITHUB_USER="marcofavorito"
-ARG TOKEN
-
 ENV DEBIAN_FRONTEND noninteractive
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
@@ -149,9 +145,9 @@ RUN git clone https://github.com/aibasel/downward.git ./third_party/downward &&\
 RUN git clone https://github.com/robertmattmueller/myND.git ./third_party/myND &&\
     cd third_party/myND && git checkout aa907ec &&\
     grep -rl "time.clock()" . | xargs sed -i 's/time.clock()/time.perf_counter()/g' &&\
-    cd ../../ \
+    cd ../../
 # prepare ltlfond2fond
-RUN mv ../ltlfond2fond third_party/ltlfond2fond
+RUN sudo mv ../ltlfond2fond third_party/ltlfond2fond
 # clone pylogics
 RUN git clone https://github.com/whitemech/pylogics.git ./third_party/pylogics &&\
     cd third_party/pylogics && git checkout 66e4797 && cd ../../
@@ -168,5 +164,5 @@ COPY third_party/mynd.jar third_party/mynd.jar
 COPY pyproject.toml setup.cfg setup.py LICENSE ./
 
 RUN sudo pip install -e .
-RUN sudo pip install -e third_party/pddl
+RUN sudo pip install ./third_party/pddl
 RUN sudo pip install ./third_party/pylogics
