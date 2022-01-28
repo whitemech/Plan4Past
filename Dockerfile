@@ -155,6 +155,9 @@ RUN git clone https://github.com/whitemech/pylogics.git ./third_party/pylogics &
 RUN git clone https://github.com/whitemech/pddl.git ./third_party/pddl &&\
     cd third_party/pddl && git checkout 41a8531 && cd ../../
 
+# for plotting
+RUN sudo apt-get install -y dvipng texlive-latex-extra texlive-fonts-recommended cm-super
+
 COPY benchmark ./benchmark
 COPY bin ./bin
 COPY data ./data

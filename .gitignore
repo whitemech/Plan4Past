@@ -770,6 +770,7 @@ cython_debug/
 # Custom
 
 output
+output.pdf
 output.sas
 plan_numbers_and_cost
 policy.fsap

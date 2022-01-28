@@ -13,25 +13,25 @@ You may need `export PYTHONPATH=.` before running the commands.
 - Run `fast-downward` planner  
 
 ```
-./benchmark/run_planner.py --tool-id fast-downward --domain examples/pddl/domain.pddl --problem examples/pddl/p-0.pddl
+./benchmark/run_planner.py --tool-id fd-ff --domain examples/pddl/domain.pddl --problem examples/pddl/p-0.pddl --working-dir output
 ```
 
 - Run `mynd` planner  
 
 ```
-./benchmark/run_planner.py --tool-id mynd --domain examples/pddl/domain.pddl --problem examples/pddl/p-0.pddl
+./benchmark/run_planner.py --tool-id mynd-sc-ff --domain examples/pddl/domain.pddl --problem examples/pddl/p-0.pddl --working-dir output
 ```
 
 - Run `fond4ltlfpltlf` + `mynd` planner  
 
 ```
-./benchmark/run_planner.py --tool-id f4lp-mynd --domain examples/pddl/domain.pddl --problem examples/pddl/p-0.pddl --formula-str "on_c_b & O(on_b_a)"
+./benchmark/run_planner.py --tool-id f4lp-mynd-sc-ff --domain examples/pddl/domain.pddl --problem examples/pddl/p-0.pddl --formula-str "on_c_b & O(on_b_a)" --working-dir output
 ```
 
 - Run `plan4past` + `mynd` planner  
 
 ```
-./benchmark/run_planner.py --tool-id p4p-mynd --domain examples/pddl/domain.pddl --problem examples/pddl/p-0.pddl --formula-str "on_c_b & O(on_b_a)"
+./benchmark/run_planner.py --tool-id p4p-mynd-sc-ff --domain examples/pddl/domain.pddl --problem examples/pddl/p-0.pddl --formula-str "on_c_b & O(on_b_a)" --working-dir output
 ```
 
 ## Blocksworld 1a
@@ -57,7 +57,8 @@ python benchmark/plotting/plot.py output --output output.pdf --xlabel "Parameter
 Print data as table:
 
 ```
-python benchmark/plotting/table.py --directory output --timeout 300.0
+python benchmark/plotting/table.py --directory output --timeout 300.0 --field time_end2end
+python benchmark/plotting/table.py --directory output --timeout 300.0 --field nb_node_expanded
 ```
 
 ## Blocksworld 1b

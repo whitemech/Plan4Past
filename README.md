@@ -31,6 +31,18 @@ docker run -v $(pwd):/home/default/experimental-results --rm -it icaps-2022 ./be
 
 You will find the output in the folder `./output`.
 
+- Then, to start a shell with all the dependencies in the container, but mounting
+  the directory in the host filesystem inside the container, run:
+```
+docker run -v $(pwd):/home/default/working-dir -w /home/default/working-dir --rm -it icaps-2022 /bin/bash
+```
+Now you need to replace the local `third_party/` folder with the one inside the container:
+```
+rm -rf third_party/
+cp -r ../work/third_party/ ./
+```
+This will allow you to run all the commands listed in `benchmark/README.md`.
+
 ## Reproduce experiments on host machine
 
 ### Python code
