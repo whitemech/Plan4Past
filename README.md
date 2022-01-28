@@ -71,8 +71,6 @@ The tool depends on the following third party dependencies
 - ltlfond2fond
 - myND
 - spot
-- `pddl`
-- `pylogics`
 
 To build all of them, run:
 ```
