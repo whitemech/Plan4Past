@@ -17,16 +17,25 @@
 ## Reproduce experiments Docker image (RECOMMENDED)
 
 We prepared a Docker image in order to make it easier to reproduce the experiments.
-We highly recommend
+We highly recommend using this approach instead of building the dependencies locally.
 
-- Build the image:
+### Option 1: pull from Docker Hub
+
 ```
-docker build --cpuset-cpus 0-7 -t icaps-2022 .
+docker pull icaps2022submission259/icaps-2022
 ```
+
+### Option 2: build from scratch
+
+```
+docker build --cpuset-cpus 0-7 -t icaps2022submission259/icaps-2022 .
+```
+
+### Run the experiments
 
 - Run the experiments inside the container:
 ```
-docker run -v $(pwd):/home/default/experimental-results --rm -it icaps-2022 ./benchmark/experiments/run-experiments.sh /home/default/experimental-results/output
+docker run -v $(pwd):/home/default/experimental-results --rm -it icaps2022submission259/icaps-2022 ./benchmark/experiments/run-experiments.sh /home/default/experimental-results/output
 ```
 
 You will find the output in the folder `./output`.
@@ -34,7 +43,7 @@ You will find the output in the folder `./output`.
 - Then, to start a shell with all the dependencies in the container, but mounting
   the directory in the host filesystem inside the container, run:
 ```
-docker run -v $(pwd):/home/default/working-dir -w /home/default/working-dir --rm -it icaps-2022 /bin/bash
+docker run -v $(pwd):/home/default/working-dir -w /home/default/working-dir --rm -it icaps2022submission259/icaps-2022 /bin/bash
 ```
 Now you need to replace the local `third_party/` folder with the one inside the container:
 ```
