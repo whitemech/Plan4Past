@@ -4,6 +4,15 @@
 
 ## Foreword
 
+- We double-checked the output of our experiments, and we have redone only 
+  the faulty runs due to a misconfiguration of the cloud-based virtual machine 
+  used to run the experiments. Now, all experiments' outputs but the 
+  `experiment-1b-blocksworld-det/lf2f-fd-ff/p19` run are successful. 
+  We have thoroughly investigated the problem of such an instance. We found that 
+  from that instance on the compilation goes to mem/timeout due to the increasing 
+  size of the formula. On the other hand, we directly checked with MONA, 
+  the tool used by the lf2f compiler to build the DFA, to compute the corresponding DFA 
+  and MONA was able to return it in a reasonable amount of time.
 - We updated the benchmark results for the `l2lf` tool
   for the following experiments (you can find them in `new-final-results`:
   - `experiment-1a-blocksworld-nondet.zip`
