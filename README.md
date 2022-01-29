@@ -21,7 +21,7 @@
   - `experiment-1b-elevator.zip`          
   - `experiment-2-blocksworld-det.zip`
 
-- You can find the updated plots in `new-final-plots/` 
+- You can find the updated plots in [`new-final-plots/`](./new-final-plots) 
 
 ## Repository structure
 
