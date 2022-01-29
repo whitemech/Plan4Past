@@ -27,7 +27,7 @@ python benchmark/plotting/plot.py new-final-results/experiment-1a-elevator.zip -
 python benchmark/plotting/plot.py new-final-results/experiment-1b-elevator.zip --output new-final-plots/experiment-1b-elevator.pdf --xlabel "Parameter: Number of passengers" --ylabel "Time (seconds)" --timeout 300 --xtick-start 2 --max-xtick 20 --font 14
 
 # experiment-2-elevator.zip
-python benchmark/plotting/plot.py new-final-results/experiment-2-elevator.zip --output new-final-plots/output.pdf --xlabel "Parameter: Problem id" --ylabel "Time (seconds)" --timeout 300 --xtick-start 1 --max-xtick 100 --font 10 --stepsize 5
+python benchmark/plotting/plot.py new-final-results/experiment-2-elevator.zip --output new-final-plots/experiment-2-elevator.pdf --xlabel "Parameter: Problem id" --ylabel "Time (seconds)" --timeout 300 --xtick-start 1 --max-xtick 100 --font 10 --stepsize 5
 
 # experiment-1a-triangle-tireworld-nondet.zip
 python benchmark/plotting/plot.py new-final-results/experiment-1a-triangle-tireworld-nondet.zip --output new-final-plots/experiment-1a-triangle-tireworld.pdf --xlabel "Parameter: Size of triangle" --ylabel "Time (seconds)" --timeout 300 --xtick-start 3 --max-xtick 10 --font 14
