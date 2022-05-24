@@ -70,9 +70,9 @@ def predicates_or(formula: PLTLOr) -> Set[Predicate]:
 
 
 @predicates.register
-def predicates_not(_formula: PLTLNot) -> Set[Predicate]:
+def predicates_not(formula: PLTLNot) -> Set[Predicate]:
     """Compute predicate for a Not formula."""
-    return set()
+    return predicates(formula.argument)
 
 
 @predicates.register
