@@ -25,6 +25,8 @@ import functools
 from functools import singledispatch
 from typing import Set
 
+from pylogics.parsers import parse_pltl
+
 from pddl.logic.predicates import Predicate
 from pylogics.syntax.base import And as PLTLAnd
 from pylogics.syntax.base import Formula
@@ -78,7 +80,7 @@ def predicates_not(_formula: PLTLNot) -> Set[Predicate]:
 @predicates.register
 def predicates_before(formula: Before) -> Set[Predicate]:
     """Compute predicate for a Before (Yesterday) formula."""
-    quoted = Predicate(replace_symbols(to_string(formula.argument)))
+    quoted = Predicate(replace_symbols(to_string(formula)))
     sub = predicates_unaryop(formula)
     return sub.union({quoted})
 
@@ -91,7 +93,7 @@ def predicates_since(formula: Since) -> Set[Predicate]:
         tail = Since(*formula.operands[1:])
         return predicates(Since(head, tail))
     formula_name = replace_symbols(to_string(formula))
-    quoted = Predicate(formula_name)
+    quoted = Predicate(f"Y-{formula_name}")
     subsinces = predicates_binaryop(formula)
     return {quoted}.union(subsinces)
 
@@ -100,7 +102,7 @@ def predicates_since(formula: Since) -> Set[Predicate]:
 def predicates_once(formula: Once) -> Set[Predicate]:
     """Compute predicate for a Once formula."""
     formula_name = replace_symbols(to_string(formula))
-    quoted = Predicate(formula_name)
+    quoted = Predicate(f"Y-{formula_name}")
     sub = predicates_unaryop(formula)
     return sub.union({quoted})
 
@@ -108,10 +110,14 @@ def predicates_once(formula: Once) -> Set[Predicate]:
 @predicates.register
 def predicates_historically(formula: Historically) -> Set[Predicate]:
     """Compute predicate for a Historically formula."""
-    quoted = Predicate(f"Onot-{to_string(formula.argument)}")
+    formula_name = replace_symbols(to_string(formula))
+    quoted = Predicate(f"Y-{formula_name}")
     sub = predicates_unaryop(formula)
     return sub.union(
         {
             quoted,
         }
     )
+
+if __name__ == '__main__':
+    print(predicates(parse_pltl("a & ~Y(b)")))
