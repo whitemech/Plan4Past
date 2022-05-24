@@ -63,6 +63,7 @@ def replace_symbols(name: str):
         .replace("&", "and")
         .replace("|", "or")
         .replace("~", "not-")
+        .replace("!", "not-")
         .replace(" ", "-")
     )
 
