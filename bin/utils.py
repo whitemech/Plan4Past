@@ -18,6 +18,7 @@ BIN_DIR = Path(inspect.getframeinfo(inspect.currentframe()).filename).parent
 REPO_ROOT = BIN_DIR.parent
 FD_WRAPPER_PATH = BIN_DIR / "fd_wrapper"
 MYND_WRAPPER_PATH = BIN_DIR / "mynd_wrapper"
+PALADINUS_WRAPPER_PATH = BIN_DIR / "paladinus_wrapper"
 
 PACKAGE_ROOT = Path(inspect.getframeinfo(inspect.currentframe()).filename).parent  # type: ignore
 

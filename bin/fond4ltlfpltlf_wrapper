@@ -5,7 +5,7 @@ import tempfile
 from pathlib import Path
 
 from bin.utils import MYND_WRAPPER_PATH, launch, SUPPORTED_PLANNERS, ALGORITHMS, HEURISTICS, FD_WRAPPER_PATH, \
-    is_valid_file
+    is_valid_file, PALADINUS_WRAPPER_PATH
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Wrapper for FOND4LTLfPLTLf.")
@@ -41,6 +41,13 @@ if __name__ == '__main__':
     cli_args = []
     if args.planner == "mynd":
         cli_args = [str(MYND_WRAPPER_PATH),
+                    "-d", str(new_domain_file),
+                    "-p", str(new_problem_file),
+                    "-a", str(args.algorithm),
+                    "--heuristic", str(args.heuristic),
+                    "--working-dir", str(working_dir)]
+    elif args.planner == "paladinus":
+        cli_args = [str(PALADINUS_WRAPPER_PATH),
                     "-d", str(new_domain_file),
                     "-p", str(new_problem_file),
                     "-a", str(args.algorithm),

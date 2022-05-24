@@ -8,7 +8,7 @@ from benchmark.tools.core import (
     Status,
     SearchAlg,
     Heuristic,
-    extract_from_mynd,
+    extract_from_tool,
 )
 from planning_with_past import REPO_ROOT
 
@@ -61,4 +61,4 @@ class MyNDTool(Tool):
 
     def collect_statistics(self, output: str) -> Result:
         """Collect statistics."""
-        return extract_from_mynd(output)
+        return extract_from_tool(output, "mynd")

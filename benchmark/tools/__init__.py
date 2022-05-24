@@ -1,21 +1,22 @@
 from benchmark.tools.core import ToolRegistry, ToolID, SearchAlg, Heuristic
 from benchmark.tools.fast_downward import FastDownwardTool, DEFAULT_BIN_FD_PATH
 from benchmark.tools.fond4ltlfpltlf import (
-    Fond4LtlfPltlfMyND,
+    Fond4LtlfPltlfMyNDTool,
     DEFAULT_BIN_F4LP_PATH,
-    Fond4LtlfPltlfFD,
+    Fond4LtlfPltlfFDTool, Fond4LtlfPltlfPaladinusTool,
 )
 from benchmark.tools.ltlfond2fond import (
     DEFAULT_BIN_LF2F_PATH,
     LTLFond2FondTool,
     LTLFond2FondMyNDTool,
-    LTLFond2FondFDTool,
+    LTLFond2FondFDTool, LTLFond2FondPaladinusTool,
 )
 from benchmark.tools.mynd import MyNDTool, DEFAULT_BIN_MYND_PATH
+from benchmark.tools.paladinus import PaladinusTool, DEFAULT_BIN_PALADINUS_PATH
 from benchmark.tools.plan4past import (
-    Plan4PastToolMyND,
+    Plan4PastMyNDTool,
     DEFAULT_BIN_P4P_PATH,
-    Plan4PastToolFD,
+    Plan4PastFDTool, Plan4PastPaladinusTool,
 )
 
 tool_registry = ToolRegistry()
@@ -51,92 +52,128 @@ tool_registry.register(
     search=SearchAlg.LAOSTAR,
     heuristic=Heuristic.FF,
 )
+# Paladinus + search alg + heuristics
+tool_registry.register(
+    ToolID.PALADINUS_STRONG_CYCLIC_FF,
+    tool_cls=PaladinusTool,
+    binary_path=DEFAULT_BIN_PALADINUS_PATH,
+    search=SearchAlg.ITERATIVE_DFS,
+    heuristic=Heuristic.FF,
+)
 
 # FOND4LTLfPLTLf + search alg + heuristics
 tool_registry.register(
     ToolID.FOND4LTLfPLTLf_FD_FF,
-    tool_cls=Fond4LtlfPltlfFD,
+    tool_cls=Fond4LtlfPltlfFDTool,
     binary_path=DEFAULT_BIN_F4LP_PATH,
     search=SearchAlg.ASTAR,
     heuristic=Heuristic.FF,
 )
 tool_registry.register(
     ToolID.FOND4LTLfPLTLf_FD_HMAX,
-    tool_cls=Fond4LtlfPltlfFD,
+    tool_cls=Fond4LtlfPltlfFDTool,
     binary_path=DEFAULT_BIN_F4LP_PATH,
     search=SearchAlg.ASTAR,
     heuristic=Heuristic.HMAX,
 )
 tool_registry.register(
     ToolID.FOND4LTLfPLTLf_MYND_STRONG_FF,
-    tool_cls=Fond4LtlfPltlfMyND,
+    tool_cls=Fond4LtlfPltlfMyNDTool,
     binary_path=DEFAULT_BIN_F4LP_PATH,
     search=SearchAlg.AOSTAR,
     heuristic=Heuristic.FF,
 )
 tool_registry.register(
     ToolID.FOND4LTLfPLTLf_MYND_STRONG_HMAX,
-    tool_cls=Fond4LtlfPltlfMyND,
+    tool_cls=Fond4LtlfPltlfMyNDTool,
     binary_path=DEFAULT_BIN_F4LP_PATH,
     search=SearchAlg.AOSTAR,
     heuristic=Heuristic.HMAX,
 )
 tool_registry.register(
     ToolID.FOND4LTLfPLTLf_MYND_STORNG_CYCLIC_FF,
-    tool_cls=Fond4LtlfPltlfMyND,
+    tool_cls=Fond4LtlfPltlfMyNDTool,
     binary_path=DEFAULT_BIN_F4LP_PATH,
     search=SearchAlg.LAOSTAR,
     heuristic=Heuristic.FF,
 )
 tool_registry.register(
     ToolID.FOND4LTLfPLTLf_MYND_STORNG_CYCLIC_HMAX,
-    tool_cls=Fond4LtlfPltlfMyND,
+    tool_cls=Fond4LtlfPltlfMyNDTool,
     binary_path=DEFAULT_BIN_F4LP_PATH,
     search=SearchAlg.LAOSTAR,
+    heuristic=Heuristic.HMAX,
+)
+tool_registry.register(
+    ToolID.FOND4LTLfPLTLf_PALADINUS_STORNG_CYCLIC_FF,
+    tool_cls=Fond4LtlfPltlfPaladinusTool,
+    binary_path=DEFAULT_BIN_F4LP_PATH,
+    search=SearchAlg.ITERATIVE_DFS,
+    heuristic=Heuristic.FF,
+)
+tool_registry.register(
+    ToolID.FOND4LTLfPLTLf_PALADINUS_STORNG_CYCLIC_HMAX,
+    tool_cls=Fond4LtlfPltlfPaladinusTool,
+    binary_path=DEFAULT_BIN_F4LP_PATH,
+    search=SearchAlg.ITERATIVE_DFS,
     heuristic=Heuristic.HMAX,
 )
 
 # Plan4Past + search alg + heuristics
 tool_registry.register(
     ToolID.PLAN4PAST_FD_FF,
-    tool_cls=Plan4PastToolFD,
+    tool_cls=Plan4PastFDTool,
     binary_path=DEFAULT_BIN_P4P_PATH,
     search=SearchAlg.ASTAR,
     heuristic=Heuristic.FF,
 )
 tool_registry.register(
     ToolID.PLAN4PAST_FD_HMAX,
-    tool_cls=Plan4PastToolFD,
+    tool_cls=Plan4PastFDTool,
     binary_path=DEFAULT_BIN_P4P_PATH,
     search=SearchAlg.ASTAR,
     heuristic=Heuristic.HMAX,
 )
 tool_registry.register(
     ToolID.PLAN4PAST_MYND_STRONG_FF,
-    tool_cls=Plan4PastToolMyND,
+    tool_cls=Plan4PastMyNDTool,
     binary_path=DEFAULT_BIN_P4P_PATH,
     search=SearchAlg.AOSTAR,
     heuristic=Heuristic.FF,
 )
 tool_registry.register(
     ToolID.PLAN4PAST_MYND_STRONG_HMAX,
-    tool_cls=Plan4PastToolMyND,
+    tool_cls=Plan4PastMyNDTool,
     binary_path=DEFAULT_BIN_P4P_PATH,
     search=SearchAlg.AOSTAR,
     heuristic=Heuristic.HMAX,
 )
 tool_registry.register(
     ToolID.PLAN4PAST_MYND_STORNG_CYCLIC_FF,
-    tool_cls=Plan4PastToolMyND,
+    tool_cls=Plan4PastMyNDTool,
     binary_path=DEFAULT_BIN_P4P_PATH,
     search=SearchAlg.LAOSTAR,
     heuristic=Heuristic.FF,
 )
 tool_registry.register(
     ToolID.PLAN4PAST_MYND_STORNG_CYCLIC_HMAX,
-    tool_cls=Plan4PastToolMyND,
+    tool_cls=Plan4PastMyNDTool,
     binary_path=DEFAULT_BIN_P4P_PATH,
     search=SearchAlg.LAOSTAR,
+    heuristic=Heuristic.HMAX,
+)
+tool_registry.register(
+    ToolID.PLAN4PAST_PALADINUS_STORNG_CYCLIC_FF,
+    tool_cls=Plan4PastPaladinusTool,
+    binary_path=DEFAULT_BIN_P4P_PATH,
+    search=SearchAlg.ITERATIVE_DFS,
+    heuristic=Heuristic.FF,
+)
+tool_registry.register(
+    ToolID.PLAN4PAST_PALADINUS_STORNG_CYCLIC_HMAX,
+    tool_cls=Plan4PastPaladinusTool,
+    binary_path=DEFAULT_BIN_P4P_PATH,
+    search=SearchAlg.ITERATIVE_DFS,
     heuristic=Heuristic.HMAX,
 )
 
@@ -181,5 +218,19 @@ tool_registry.register(
     tool_cls=LTLFond2FondMyNDTool,
     binary_path=DEFAULT_BIN_LF2F_PATH,
     search=SearchAlg.LAOSTAR,
+    heuristic=Heuristic.HMAX,
+)
+tool_registry.register(
+    ToolID.LTLFOND2FOND_PALADINUS_STORNG_CYCLIC_FF,
+    tool_cls=LTLFond2FondPaladinusTool,
+    binary_path=DEFAULT_BIN_LF2F_PATH,
+    search=SearchAlg.ITERATIVE_DFS,
+    heuristic=Heuristic.FF,
+)
+tool_registry.register(
+    ToolID.LTLFOND2FOND_PALADINUS_STORNG_CYCLIC_HMAX,
+    tool_cls=LTLFond2FondPaladinusTool,
+    binary_path=DEFAULT_BIN_LF2F_PATH,
+    search=SearchAlg.ITERATIVE_DFS,
     heuristic=Heuristic.HMAX,
 )
