@@ -25,8 +25,6 @@ import functools
 from functools import singledispatch
 from typing import Set
 
-from pylogics.parsers import parse_pltl
-
 from pddl.logic.predicates import Predicate
 from pylogics.syntax.base import And as PLTLAnd
 from pylogics.syntax.base import Formula
@@ -118,6 +116,3 @@ def predicates_historically(formula: Historically) -> Set[Predicate]:
             quoted,
         }
     )
-
-if __name__ == '__main__':
-    print(predicates(parse_pltl("a & ~Y(b)")))
