@@ -50,6 +50,11 @@ def add_val_prefix(name: str):
     return "val_" + name.replace('"', "")
 
 
+def remove_before_prefix(name: str):
+    """Remove the 'Y' prefix."""
+    return name.replace("Y-", "") if name[1] == "-" else name.replace("Y", "", 1)
+
+
 def remove_val_prefix(name: str):
     """Remove the 'prime' prefix."""
     return name.replace("val_", "")
