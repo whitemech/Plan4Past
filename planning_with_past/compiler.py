@@ -167,7 +167,8 @@ class Compiler:
 
 def _compute_whens(formula: Formula) -> Set[When]:
     """Compute conditional effects for formula progression."""
-    return {When(Predicate(add_val_prefix(p.name)), p) for p in predicates(formula)}
+    return {When(Predicate(add_val_prefix(p.name)), p) for p in predicates(formula)}.union(
+        When(Not(Predicate(add_val_prefix(p.name))), Not(p)) for p in predicates(formula))
 
 
 def _update_domain_actions_det(
