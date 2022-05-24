@@ -6,7 +6,7 @@ from benchmark.tools.core import (
     Result,
     SearchAlg,
     Heuristic,
-    extract_from_fd,
+    extract_from_tool,
 )
 from planning_with_past import REPO_ROOT
 
@@ -58,4 +58,4 @@ class FastDownwardTool(Tool):
 
     def collect_statistics(self, output: str) -> Result:
         """Collect statistics."""
-        return extract_from_fd(output)
+        return extract_from_tool(output, "fd")

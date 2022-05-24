@@ -70,17 +70,18 @@ def mapping_parser(text: str, formula: Formula) -> Dict[PLTLAtomic, Predicate]:
 
 if __name__ == "__main__":
 
-    # formula = parse_pltl("on_b_a & O(ontable_c)")
+    # formula = parse_pltl("O(on_b_a & Y(O(!ontable_c & Y(O(ontable_c)))))")
+    formula = parse_pltl("ontable_c & !Y(!ontable_b)")
     # formula = parse_pltl("O(on_b1_b2 & Y(O(on_b2_b3 & Y(O(on_b3_b4 & Y(O(on_b4_b5 & Y(O(on_b5_b6 & Y(O(on_b6_b7 & Y(O(on_b7_b8 & Y(O(on_b8_b9 & Y(O(on_b9_b10)))))))))))))))))")
-    formula = parse_pltl("vehicleat_l22 & O(vehicleat_l31)")
+    # formula = parse_pltl("vehicleat_l22 & O(vehicleat_l31)")
 
     domain_parser = DomainParser()
     problem_parser = ProblemParser()
-    # domain = domain_parser((EXAMPLES_DIR / "pddl" / "domain.pddl").read_text())
-    # problem = problem_parser((EXAMPLES_DIR / "pddl" / "p-0.pddl").read_text())
-    domain = domain_parser((EXAMPLES_DIR / "pddl" / "fond-domain.pddl").read_text())
-    problem = problem_parser((EXAMPLES_DIR / "pddl" / "fond-p-0.pddl").read_text())
-    mapping = mapping_parser((EXAMPLES_DIR / "pddl" / "p-0.map").read_text(), formula)
+    domain = domain_parser((EXAMPLES_DIR / "pddl" / "domain.pddl").read_text())
+    problem = problem_parser((EXAMPLES_DIR / "pddl" / "p-0.pddl").read_text())
+    # domain = domain_parser((EXAMPLES_DIR / "pddl" / "fond-domain.pddl").read_text())
+    # problem = problem_parser((EXAMPLES_DIR / "pddl" / "fond-p-0.pddl").read_text())
+    # mapping = mapping_parser((EXAMPLES_DIR / "pddl" / "p-0.map").read_text(), formula)
 
     compiler = Compiler(domain, problem, formula)
     compiler.compile()
@@ -96,20 +97,20 @@ if __name__ == "__main__":
             "[ERROR]: Something wrong occurred while writing the compiled domain and problem."
         )
 
-    if Requirements.NON_DETERMINISTIC in domain.requirements:
-        # planner = MyNDPlanner()
-        # plan = planner.plan(Path("compiled_pddl/new_domain.pddl"), Path("compiled_pddl/new_problem.pddl"))
-        command = [
-            MYND_WRAPPER_PATH,
-            "-d",
-            str(Path("compiled_pddl/new_domain.pddl")),
-            "-p",
-            str(Path("compiled_pddl/new_problem.pddl"))
-        ]
-        launch(command)
-    else:
-        planner = DownwardPlanner()
-        plan = planner.plan(Path("compiled_pddl/new_domain.pddl"), Path("compiled_pddl/new_problem.pddl"))
+    # if Requirements.NON_DETERMINISTIC in domain.requirements:
+    #     # planner = MyNDPlanner()
+    #     # plan = planner.plan(Path("compiled_pddl/new_domain.pddl"), Path("compiled_pddl/new_problem.pddl"))
+    #     command = [
+    #         MYND_WRAPPER_PATH,
+    #         "-d",
+    #         str(Path("compiled_pddl/new_domain.pddl")),
+    #         "-p",
+    #         str(Path("compiled_pddl/new_problem.pddl"))
+    #     ]
+    #     launch(command)
+    # else:
+    #     planner = DownwardPlanner()
+    #     plan = planner.plan(Path("compiled_pddl/new_domain.pddl"), Path("compiled_pddl/new_problem.pddl"))
 
         # # print the graph
         # pos = nx.spring_layout(plan.graph)

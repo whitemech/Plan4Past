@@ -10,13 +10,15 @@ from tempfile import TemporaryDirectory
 
 SUPPORTED_PLANNERS = {
     "fd",
-    "mynd"
+    "mynd",
+    "paladinus"
 }
 
 BIN_DIR = Path(inspect.getframeinfo(inspect.currentframe()).filename).parent
 REPO_ROOT = BIN_DIR.parent
 FD_WRAPPER_PATH = BIN_DIR / "fd_wrapper"
 MYND_WRAPPER_PATH = BIN_DIR / "mynd_wrapper"
+PALADINUS_WRAPPER_PATH = BIN_DIR / "paladinus_wrapper"
 
 PACKAGE_ROOT = Path(inspect.getframeinfo(inspect.currentframe()).filename).parent  # type: ignore
 
@@ -26,6 +28,10 @@ FD_DRIVER = (FD_DIR / "fast-downward.py").resolve()
 MYND_JAR = (REPO_ROOT / "third_party" / "mynd.jar").resolve()
 MYND_DIR = (REPO_ROOT / "third_party" / "myND").resolve()  # type: ignore
 MYND_SRC_DIR = MYND_DIR / "src"
+
+PALADINUS_JAR = (REPO_ROOT / "third_party" / "paladinus0.1.jar").resolve()
+PALADINUS_DIR = (REPO_ROOT / "third_party" / "paladinus").resolve()  # type: ignore
+
 OUTPUT_DIR = REPO_ROOT
 
 PLTLF_WRAPPER_PATH = BIN_DIR / "pltlf-planner"
@@ -36,7 +42,8 @@ LTLFOND2FOND_DIR = (REPO_ROOT / "third_party" / "ltlfond2fond").resolve()  # typ
 ALGORITHMS = {
     "astar",
     "aostar",
-    "laostar"
+    "laostar",
+    "iterative_dfs"
 }
 HEURISTICS = {
     "ff",

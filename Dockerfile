@@ -22,8 +22,8 @@ RUN apt-get update &&                                                        \
 # This adds the 'default' user to sudoers with full privileges:
 RUN HOME=/home/default &&                                                    \
     mkdir -p ${HOME} &&                                                      \
-    GROUP_ID=1000 &&                                                         \
-    USER_ID=1000 &&                                                          \
+    GROUP_ID=1001 &&                                                         \
+    USER_ID=1001 &&                                                          \
     groupadd -r default -f -g "$GROUP_ID" &&                                 \
     useradd -u "$USER_ID" -r -g default -d "$HOME" -s /sbin/nologin          \
     -c "Default Application User" default &&                                 \

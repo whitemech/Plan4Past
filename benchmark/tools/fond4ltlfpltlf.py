@@ -11,8 +11,7 @@ from benchmark.tools.core import (
     ToolID,
     SearchAlg,
     Heuristic,
-    extract_from_mynd,
-    extract_from_fd,
+    extract_from_tool,
 )
 from benchmark.utils.base import try_to_get_float
 from planning_with_past import REPO_ROOT
@@ -23,6 +22,7 @@ DEFAULT_BIN_F4LP_PATH = (REPO_ROOT / "bin" / "fond4ltlfpltlf_wrapper").absolute(
 class SupportedPlanners:
     FD = "fd"
     MYND = "mynd"
+    PALADINUS = "paladinus"
 
 
 class Fond4LtlfPltlfTool(Tool, ABC):
@@ -62,7 +62,7 @@ class Fond4LtlfPltlfTool(Tool, ABC):
         return cli_args
 
 
-class Fond4LtlfPltlfFD(Fond4LtlfPltlfTool):
+class Fond4LtlfPltlfFDTool(Fond4LtlfPltlfTool):
 
     NAME = "F4LP-FD"
 
@@ -94,10 +94,10 @@ class Fond4LtlfPltlfFD(Fond4LtlfPltlfTool):
 
     def collect_statistics(self, output: str) -> Result:
         """Collect statistics."""
-        return extract_from_fd(output)
+        return extract_from_tool(output, "fd")
 
 
-class Fond4LtlfPltlfMyND(Fond4LtlfPltlfTool):
+class Fond4LtlfPltlfMyNDTool(Fond4LtlfPltlfTool):
 
     NAME = "F4LP-MyND"
 
@@ -129,4 +129,39 @@ class Fond4LtlfPltlfMyND(Fond4LtlfPltlfTool):
 
     def collect_statistics(self, output: str) -> Result:
         """Collect statistics."""
-        return extract_from_mynd(output)
+        return extract_from_tool(output, "mynd")
+
+
+class Fond4LtlfPltlfPaladinusTool(Fond4LtlfPltlfTool):
+
+    NAME = "F4LP-Paladinus"
+
+    def __init__(
+        self,
+        binary_path: str,
+        search: Union[SearchAlg, str] = SearchAlg.ITERATIVE_DFS,
+        heuristic: Union[Heuristic, str] = Heuristic.FF,
+    ):
+        """Initialize the tool."""
+        super().__init__(binary_path, SupportedPlanners.PALADINUS)
+
+        self.search = SearchAlg(search)
+        self.heuristic = Heuristic(heuristic)
+
+    def get_cli_args(
+        self,
+        domain: Path,
+        problem: Path,
+        formula: Optional[str] = None,
+        mapping: Optional[Path] = None,
+        working_dir: Optional[str] = None,
+    ) -> List[str]:
+        """Get CLI arguments."""
+        cli_args = super().get_cli_args(domain, problem, formula, mapping, working_dir)
+        cli_args += ["--algorithm", self.search.value]
+        cli_args += ["--heuristic", self.heuristic.value]
+        return cli_args
+
+    def collect_statistics(self, output: str) -> Result:
+        """Collect statistics."""
+        return extract_from_tool(output, "paladinus")
