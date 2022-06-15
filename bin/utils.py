@@ -36,6 +36,8 @@ OUTPUT_DIR = REPO_ROOT
 
 PLTLF_WRAPPER_PATH = BIN_DIR / "pltlf-planner"
 
+# PLTLF_WRAPPER_PATH = BIN_DIR / "pltl_compiler_ce"
+
 LTLFOND2FOND_DIR = (REPO_ROOT / "third_party" / "ltlfond2fond").resolve()  # type: ignore
 
 
