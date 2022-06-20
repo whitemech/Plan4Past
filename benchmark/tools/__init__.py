@@ -19,6 +19,12 @@ from benchmark.tools.plan4past import (
     Plan4PastFDTool, Plan4PastPaladinusTool,
 )
 
+from benchmark.tools.ggpltl import (
+    GGpltlFDTool,
+    DEFAULT_BIN_GG_PATH,
+    GGpltlPaladinusTool, GGpltlMyNDTool,
+)
+
 tool_registry = ToolRegistry()
 
 # FastDownward + search alg + heuristics
@@ -231,6 +237,64 @@ tool_registry.register(
     ToolID.LTLFOND2FOND_PALADINUS_STORNG_CYCLIC_HMAX,
     tool_cls=LTLFond2FondPaladinusTool,
     binary_path=DEFAULT_BIN_LF2F_PATH,
+    search=SearchAlg.ITERATIVE_DFS,
+    heuristic=Heuristic.HMAX,
+)
+
+# GGPLTL + search alg + heuristics
+tool_registry.register(
+    ToolID.GGPLTL_FD_FF,
+    tool_cls=GGpltlFDTool,
+    binary_path=DEFAULT_BIN_GG_PATH,
+    search=SearchAlg.ASTAR,
+    heuristic=Heuristic.FF,
+)
+tool_registry.register(
+    ToolID.GGPLTL_FD_HMAX,
+    tool_cls=GGpltlFDTool,
+    binary_path=DEFAULT_BIN_GG_PATH,
+    search=SearchAlg.ASTAR,
+    heuristic=Heuristic.HMAX,
+)
+tool_registry.register(
+    ToolID.GGPLTL_MYND_STRONG_FF,
+    tool_cls=GGpltlMyNDTool,
+    binary_path=DEFAULT_BIN_GG_PATH,
+    search=SearchAlg.AOSTAR,
+    heuristic=Heuristic.FF,
+)
+tool_registry.register(
+    ToolID.GGPLTL_MYND_STRONG_HMAX,
+    tool_cls=GGpltlMyNDTool,
+    binary_path=DEFAULT_BIN_GG_PATH,
+    search=SearchAlg.AOSTAR,
+    heuristic=Heuristic.HMAX,
+)
+tool_registry.register(
+    ToolID.GGPLTL_MYND_STORNG_CYCLIC_FF,
+    tool_cls=GGpltlMyNDTool,
+    binary_path=DEFAULT_BIN_GG_PATH,
+    search=SearchAlg.LAOSTAR,
+    heuristic=Heuristic.FF,
+)
+tool_registry.register(
+    ToolID.GGPLTL_MYND_STORNG_CYCLIC_HMAX,
+    tool_cls=GGpltlMyNDTool,
+    binary_path=DEFAULT_BIN_GG_PATH,
+    search=SearchAlg.LAOSTAR,
+    heuristic=Heuristic.HMAX,
+)
+tool_registry.register(
+    ToolID.GGPLTL_PALADINUS_STORNG_CYCLIC_FF,
+    tool_cls=GGpltlPaladinusTool,
+    binary_path=DEFAULT_BIN_GG_PATH,
+    search=SearchAlg.ITERATIVE_DFS,
+    heuristic=Heuristic.FF,
+)
+tool_registry.register(
+    ToolID.GGPLTL_PALADINUS_STORNG_CYCLIC_HMAX,
+    tool_cls=GGpltlPaladinusTool,
+    binary_path=DEFAULT_BIN_GG_PATH,
     search=SearchAlg.ITERATIVE_DFS,
     heuristic=Heuristic.HMAX,
 )

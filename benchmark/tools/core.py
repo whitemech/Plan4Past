@@ -42,6 +42,14 @@ class ToolID(Enum):
     LTLFOND2FOND_MYND_STORNG_CYCLIC_HMAX = "lf2f-mynd-sc-hmax"
     LTLFOND2FOND_PALADINUS_STORNG_CYCLIC_FF = "lf2f-paladinus-sc-ff"
     LTLFOND2FOND_PALADINUS_STORNG_CYCLIC_HMAX = "lf2f-paladinus-sc-hmax"
+    GGPLTL_FD_FF = "gg-fd-ff"
+    GGPLTL_FD_HMAX = "gg-fd-hmax"
+    GGPLTL_MYND_STRONG_FF = "gg-mynd-s-ff"
+    GGPLTL_MYND_STRONG_HMAX = "gg-mynd-s-hmax"
+    GGPLTL_MYND_STORNG_CYCLIC_FF = "gg-mynd-sc-ff"
+    GGPLTL_MYND_STORNG_CYCLIC_HMAX = "gg-mynd-sc-hmax"
+    GGPLTL_PALADINUS_STORNG_CYCLIC_FF = "gg-paladinus-sc-ff"
+    GGPLTL_PALADINUS_STORNG_CYCLIC_HMAX = "gg-paladinus-sc-hmax"
 
 
 class Status(Enum):

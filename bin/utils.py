@@ -29,14 +29,14 @@ MYND_JAR = (REPO_ROOT / "third_party" / "mynd.jar").resolve()
 MYND_DIR = (REPO_ROOT / "third_party" / "myND").resolve()  # type: ignore
 MYND_SRC_DIR = MYND_DIR / "src"
 
-PALADINUS_JAR = (REPO_ROOT / "third_party" / "paladinus0.1.jar").resolve()
+PALADINUS_JAR = (REPO_ROOT / "third_party" / "paladinus" / "paladinus0.1.jar").resolve()
 PALADINUS_DIR = (REPO_ROOT / "third_party" / "paladinus").resolve()  # type: ignore
 
 OUTPUT_DIR = REPO_ROOT
 
 PLTLF_WRAPPER_PATH = BIN_DIR / "pltlf-planner"
 
-# PLTLF_WRAPPER_PATH = BIN_DIR / "pltl_compiler_ce"
+PLTLF_WRAPPER_PATH_GG = BIN_DIR / "pltl_compiler_ce"
 
 LTLFOND2FOND_DIR = (REPO_ROOT / "third_party" / "ltlfond2fond").resolve()  # type: ignore
 
