@@ -11,7 +11,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from bin.utils import ALGORITHMS, HEURISTICS, PLTLF_WRAPPER_PATH_GG, MYND_WRAPPER_PATH, launch, FD_WRAPPER_PATH, \
-    SUPPORTED_PLANNERS, is_valid_file, PALADINUS_WRAPPER_PATH
+    SUPPORTED_PLANNERS, is_valid_file, PALADINUS_WRAPPER_PATH, FF_WRAPPER_PATH, PLANNER_WRAPPER
 
 DEFAULT_OUTPUT_DIR: str = "output"
 BIN_DIR = Path(inspect.getframeinfo(inspect.currentframe()).filename).parent
@@ -20,7 +20,7 @@ REPO_ROOT = BIN_DIR.parent
 
 def parse_args():
     """Parse command-line arguments."""
-    parser = argparse.ArgumentParser("plan4past", description="A FOND planner for temporal goals in PLTLf")
+    parser = argparse.ArgumentParser("GGpltl", description="...")
     parser.add_argument("--domain", type=is_valid_file, required=True)
     parser.add_argument("--problem", type=is_valid_file, required=True)
     parser.add_argument("--formula", type=str, required=True)
@@ -79,6 +79,16 @@ if __name__ == '__main__':
                     "-p", str(new_problem_file),
                     "-a", str(args.algorithm),
                     "--heuristic", str(args.heuristic),
+                    "--working-dir", str(working_dir)]
+    elif args.planner == "ff":
+        cli_args = [str(FF_WRAPPER_PATH),
+                    "-d", str(new_domain_file),
+                    "-p", str(new_problem_file),
+                    "--working-dir", str(working_dir)]
+    elif args.planner == "planner":
+        cli_args = [str(PLANNER_WRAPPER),
+                    "-d", str(new_domain_file),
+                    "-p", str(new_problem_file),
                     "--working-dir", str(working_dir)]
     else:
         raise ValueError

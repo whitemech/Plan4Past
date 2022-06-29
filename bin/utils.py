@@ -11,7 +11,9 @@ from tempfile import TemporaryDirectory
 SUPPORTED_PLANNERS = {
     "fd",
     "mynd",
-    "paladinus"
+    "paladinus",
+    "ff",
+    "planner"
 }
 
 BIN_DIR = Path(inspect.getframeinfo(inspect.currentframe()).filename).parent
@@ -24,6 +26,19 @@ PACKAGE_ROOT = Path(inspect.getframeinfo(inspect.currentframe()).filename).paren
 
 FD_DIR = REPO_ROOT / "third_party" / "downward"
 FD_DRIVER = (FD_DIR / "fast-downward.py").resolve()
+
+### NEW STUFF ###
+
+FF_WRAPPER_PATH = BIN_DIR / "ff_wrapper"
+FF_DIR = REPO_ROOT / "third_party" / "fastforward"
+FF_DRIVER = (FF_DIR / "ff").resolve()
+
+PLANNER_WRAPPER = BIN_DIR / "planner_wrapper"
+PLANNER_DIR = REPO_ROOT / "third_party" / "planner"
+#OPTIMAL_PLANNER_DRIVER = (OPTIMAL_PLANNER_DIR / "delfi1.img").resolve()
+#OPTIMAL_PLANNER_DRIVER = (OPTIMAL_PLANNER_DIR / "delfi1.img").resolve()
+
+#################
 
 MYND_JAR = (REPO_ROOT / "third_party" / "mynd.jar").resolve()
 MYND_DIR = (REPO_ROOT / "third_party" / "myND").resolve()  # type: ignore

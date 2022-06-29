@@ -23,10 +23,12 @@ class SupportedPlanners:
     FD = "fd"
     MYND = "mynd"
     PALADINUS = "paladinus"
+    FF = "ff"
+    PLANNER = "planner"
 
 
 class GGpltlTool(Tool, ABC):
-    """Implement abstract FOND4LTLfPLTLf tool wrapper."""
+    """Implement abstract GGPLTL tool wrapper."""
 
     def __init__(self, binary_path: str, planner_id: Union[str, SupportedPlanners]):
         """Initialize the tool."""
@@ -63,9 +65,65 @@ class GGpltlTool(Tool, ABC):
         return cli_args
 
 
+class GGpltlPlannerTool(GGpltlTool):
+
+    NAME = "GG-PLANNER"
+
+    def __init__(
+        self,
+        binary_path: str,
+    ):
+        """Initialize the tool."""
+        super().__init__(binary_path, SupportedPlanners.PLANNER)
+
+    def get_cli_args(
+        self,
+        domain: Path,
+        problem: Path,
+        formula: Optional[str] = None,
+        mapping: Optional[Path] = None,
+        working_dir: Optional[str] = None,
+    ) -> List[str]:
+        """Get CLI arguments."""
+        cli_args = super().get_cli_args(domain, problem, formula, mapping, working_dir)
+        return cli_args
+
+    def collect_statistics(self, output: str) -> Result:
+        """Collect statistics."""
+        return extract_from_tool(output, "planner")
+
+
+class GGpltlFFTool(GGpltlTool):
+
+    NAME = "GG-FF"
+
+    def __init__(
+        self,
+        binary_path: str,
+    ):
+        """Initialize the tool."""
+        super().__init__(binary_path, SupportedPlanners.FF)
+
+    def get_cli_args(
+        self,
+        domain: Path,
+        problem: Path,
+        formula: Optional[str] = None,
+        mapping: Optional[Path] = None,
+        working_dir: Optional[str] = None,
+    ) -> List[str]:
+        """Get CLI arguments."""
+        cli_args = super().get_cli_args(domain, problem, formula, mapping, working_dir)
+        return cli_args
+
+    def collect_statistics(self, output: str) -> Result:
+        """Collect statistics."""
+        return extract_from_tool(output, "ff")
+
+
 class GGpltlFDTool(GGpltlTool):
 
-    NAME = "P4P-FD"
+    NAME = "GG-FD"
 
     def __init__(
         self,
@@ -100,7 +158,7 @@ class GGpltlFDTool(GGpltlTool):
 
 class GGpltlMyNDTool(GGpltlTool):
 
-    NAME = "P4P-MyND"
+    NAME = "GG-MyND"
 
     def __init__(
         self,
@@ -135,7 +193,7 @@ class GGpltlMyNDTool(GGpltlTool):
 
 class GGpltlPaladinusTool(GGpltlTool):
 
-    NAME = "P4P-Paladinus"
+    NAME = "GG-Paladinus"
 
     def __init__(
         self,

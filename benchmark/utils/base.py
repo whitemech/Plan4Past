@@ -85,7 +85,10 @@ def default_output_dir(file_name):
 
 
 def get_dataset_dir(tool_id: str, dataset_dir_root: Path, dataset_name: str) -> Path:
-    prefix = DATASET_DIR_DET if "fd" in tool_id else DATASET_DIR_NONDET
+    if "fd" in tool_id or tool_id == "gg-ff" or "gg-planner" in tool_id:
+        prefix = DATASET_DIR_DET
+    else:
+        prefix = DATASET_DIR_NONDET
     return dataset_dir_root / prefix / dataset_name
 
 

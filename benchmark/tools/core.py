@@ -42,6 +42,11 @@ class ToolID(Enum):
     LTLFOND2FOND_MYND_STORNG_CYCLIC_HMAX = "lf2f-mynd-sc-hmax"
     LTLFOND2FOND_PALADINUS_STORNG_CYCLIC_FF = "lf2f-paladinus-sc-ff"
     LTLFOND2FOND_PALADINUS_STORNG_CYCLIC_HMAX = "lf2f-paladinus-sc-hmax"
+    GGPLTL_FF = "gg-ff"
+    GGPLTL_PLANNER_DELFI = "gg-planner-delfi"
+    GGPLTL_PLANNER_COMPLEMENTARY = "gg-planner-complementary"
+    GGPLTL_PLANNER_FD_CELMCUT = "gg-planner-celmcut"
+    GGPLTL_PLANNER_MPC = "gg-planner-MpC"
     GGPLTL_FD_FF = "gg-fd-ff"
     GGPLTL_FD_HMAX = "gg-fd-hmax"
     GGPLTL_MYND_STRONG_FF = "gg-mynd-s-ff"
@@ -326,9 +331,17 @@ def extract_from_tool(output: str, tool: str) -> Result:
     if tool == "fd":
         solution_found_match = re.search("search exit code: 0", output)
         no_solution_match = re.search("search exit code: 12", output)
-    elif tool == "mynd" or "paladinus":
+    elif tool == "mynd" or tool == "paladinus":
         solution_found_match = re.search("INITIAL IS PROVEN!", output)
         no_solution_match = re.search("INITIAL IS DISPROVEN!", output)
+    elif tool == "ff":
+        solution_found_match = re.search("ff: found legal plan as follows", output)
+        no_solution_match = re.search("problem proven unsolvable", output)
+    elif tool == "planner":
+        solution_found_match = re.search("Solution found.", output)
+        if solution_found_match is None:
+            solution_found_match = re.search("PLAN FOUND:", output)
+        no_solution_match = re.search("problem proven unsolvable", output)
     else:
         solution_found_match = None
         no_solution_match = True

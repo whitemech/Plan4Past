@@ -13,7 +13,7 @@ from pddl.parser.problem import ProblemParser
 from planning_with_past.compiler import Compiler
 from planning_with_past.utils.mapping_parser import mapping_parser
 
-from GGpltl.launch_compilation import compile_with_pddl_library
+from GGpltl.launch_compilation_alt import compile_with_pddl_library
 
 DEFAULT_NEW_DOMAIN_FILENAME: str = "new-domain.pddl"
 DEFAULT_NEW_PROBLEM_FILENAME: str = "new-problem.pddl"
@@ -89,7 +89,8 @@ def main(domain_path: Path, problem_path: Path, formula: Formula, map_path: Path
 
     try:
         with output_domain_path.open("w") as dom:
-            dom.write(domain_to_string(compiled_domain) + '\n' + before_mapping)
+            #dom.write(domain_to_string(compiled_domain) + '\n' + before_mapping)
+            dom.write(domain_to_string(compiled_domain))
         with output_problem_path.open("w") as prob:
             prob.write(problem_to_string(compiled_problem))
     except Exception:

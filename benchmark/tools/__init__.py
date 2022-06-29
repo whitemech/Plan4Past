@@ -22,7 +22,7 @@ from benchmark.tools.plan4past import (
 from benchmark.tools.ggpltl import (
     GGpltlFDTool,
     DEFAULT_BIN_GG_PATH,
-    GGpltlPaladinusTool, GGpltlMyNDTool,
+    GGpltlPaladinusTool, GGpltlMyNDTool, GGpltlFFTool, GGpltlPlannerTool
 )
 
 tool_registry = ToolRegistry()
@@ -242,6 +242,36 @@ tool_registry.register(
 )
 
 # GGPLTL + search alg + heuristics
+tool_registry.register(
+    ToolID.GGPLTL_FF,
+    tool_cls=GGpltlFFTool,
+    binary_path=DEFAULT_BIN_GG_PATH,
+)
+
+tool_registry.register(
+    ToolID.GGPLTL_PLANNER_DELFI,
+    tool_cls=GGpltlPlannerTool,
+    binary_path=DEFAULT_BIN_GG_PATH,
+)
+
+tool_registry.register(
+    ToolID.GGPLTL_PLANNER_MPC,
+    tool_cls=GGpltlPlannerTool,
+    binary_path=DEFAULT_BIN_GG_PATH,
+)
+
+tool_registry.register(
+    ToolID.GGPLTL_PLANNER_COMPLEMENTARY,
+    tool_cls=GGpltlPlannerTool,
+    binary_path=DEFAULT_BIN_GG_PATH,
+)
+
+tool_registry.register(
+    ToolID.GGPLTL_PLANNER_FD_CELMCUT,
+    tool_cls=GGpltlPlannerTool,
+    binary_path=DEFAULT_BIN_GG_PATH,
+)
+
 tool_registry.register(
     ToolID.GGPLTL_FD_FF,
     tool_cls=GGpltlFDTool,
