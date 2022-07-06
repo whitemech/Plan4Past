@@ -78,7 +78,7 @@ def derived_predicates_or(
     """Compute the derived predicate for a PLTL Or formula."""
     formula_name = to_string(formula)
     val = Predicate(add_val_prefix(replace_symbols(formula_name)))
-    val_ops = [Predicate(add_val_prefix(to_string(op))) for op in formula.operands]
+    val_ops = [Predicate(add_val_prefix(replace_symbols(to_string(op)))) for op in formula.operands]
     condition = Or(*val_ops)
     der_pred_ops = [derived_predicates(op, atoms_to_fluents) for op in formula.operands]
     return {DerivedPredicate(val, condition)}.union(*der_pred_ops)
