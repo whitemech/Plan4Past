@@ -103,16 +103,3 @@ def predicates_once(formula: Once) -> Set[Predicate]:
     quoted = Predicate(f"Y-{formula_name}")
     sub = predicates_unaryop(formula)
     return sub.union({quoted})
-
-
-@predicates.register
-def predicates_historically(formula: Historically) -> Set[Predicate]:
-    """Compute predicate for a Historically formula."""
-    formula_name = replace_symbols(to_string(formula))
-    quoted = Predicate(f"Y-{formula_name}")
-    sub = predicates_unaryop(formula)
-    return sub.union(
-        {
-            quoted,
-        }
-    )

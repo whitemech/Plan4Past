@@ -41,6 +41,7 @@ from planning_with_past.helpers.utils import (
 from planning_with_past.utils.derived_visitor import derived_predicates
 from planning_with_past.utils.predicates_visitor import predicates
 from planning_with_past.utils.val_predicates_visitor import val_predicates
+from planning_with_past.utils.rewrite_formula_visitor import rewrite
 
 
 class Compiler:
@@ -63,7 +64,7 @@ class Compiler:
         """
         self.domain = domain
         self.problem = problem
-        self.formula = formula
+        self.formula = rewrite(formula)
         if from_atoms_to_fluent:
             self.from_atoms_to_fluent = from_atoms_to_fluent
             self.validate_mapping(domain, formula, from_atoms_to_fluent)

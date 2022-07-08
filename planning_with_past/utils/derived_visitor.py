@@ -144,18 +144,3 @@ def derived_predicates_once(
     )
     der_pred_arg = derived_predicates(formula.argument, atoms_to_fluents)
     return {DerivedPredicate(val, condition)}.union(der_pred_arg)
-
-
-@derived_predicates.register
-def derived_predicates_historically(
-    formula: Historically, atoms_to_fluents: Dict[PLTLAtomic, Predicate]
-) -> Set[DerivedPredicate]:
-    """Compute the derived predicate for a Historically formula."""
-    formula_name = to_string(formula)
-    val = Predicate(add_val_prefix(replace_symbols(formula_name)))
-    condition = And(
-        Predicate(add_val_prefix(replace_symbols(to_string(formula.argument)))),
-        Or(Predicate(f"Y-{replace_symbols(to_string(formula))}")),
-    )
-    der_pred_arg = derived_predicates(formula.argument, atoms_to_fluents)
-    return {DerivedPredicate(val, condition)}.union(der_pred_arg)
