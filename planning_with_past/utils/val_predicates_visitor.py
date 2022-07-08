@@ -113,12 +113,3 @@ def val_predicates_once(formula: Once) -> Set[Predicate]:
     value = Predicate(add_val_prefix(formula_name))
     sub = val_predicates_unaryop(formula)
     return sub.union({value})
-
-
-@val_predicates.register
-def val_predicates_historically(formula: Historically) -> Set[Predicate]:
-    """Compute the value predicate for a Historically formula."""
-    formula_name = replace_symbols(to_string(formula))
-    value = Predicate(add_val_prefix(formula_name))
-    sub = val_predicates_unaryop(formula)
-    return sub.union({value})
