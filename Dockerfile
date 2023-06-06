@@ -2,10 +2,6 @@ FROM ubuntu:20.04
 
 USER root
 
-# needed by Pipenv
-ARG GITHUB_USER="marcofavorito"
-ARG TOKEN
-
 ENV DEBIAN_FRONTEND noninteractive
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
@@ -85,86 +81,19 @@ USER default
 WORKDIR /home/default
 
 
-# install SPOT
-RUN wget http://www.lrde.epita.fr/dload/spot/spot-2.10.2.tar.gz              &&\
-    tar -xf spot-2.10.2.tar.gz                                               &&\
-    cd spot-2.10.2                                                           &&\
-    libtoolize --force                                                       &&\
-    aclocal                                                                  &&\
-    autoheader                                                               &&\
-    automake --force-missing --add-missing                                   &&\
-    autoconf                                                                 &&\
-    echo "Install buddy"                                                     &&\
-    cd buddy                                                                 &&\
-    libtoolize --force                                                       &&\
-    aclocal                                                                  &&\
-    autoheader                                                               &&\
-    automake --force-missing --add-missing                                   &&\
-    autoconf                                                                 &&\
-    ./configure --disable-doc                                                &&\
-    cd ..                                                                    &&\
-    echo "Install spot"                                                      &&\
-    ./configure --disable-doc                                                &&\
-    sudo make -j6                                                            &&\
-    sudo make install                                                        &&\
-    cd ../                                                                   &&\
-    sudo rm -r spot-2.10.2 spot-2.10.2.tar.gz
-
-# install ltlfond2fond
-RUN echo "Building ltlfond2fond..." &&\
-  git clone https://bitbucket.org/acamacho/ltlfond2fond/src/master/ ltlfond2fond  &&\
-  cd ltlfond2fond                                                                 &&\
-  git submodule update --init --recursive                                         &&\
-  cd ext/ltlfkit/LTLf2FOL/ltlf2fol                                                &&\
-  echo "Building ltlf2fol"                                                        &&\
-  make                                                                            &&\
-  cd ../../ext/MONA                                                               &&\
-  echo "Building Mona"                                                            &&\
-  libtoolize --force                                                              &&\
-  aclocal                                                                         &&\
-  autoheader                                                                      &&\
-  automake --force-missing --add-missing                                          &&\
-  autoconf                                                                        &&\
-  ./configure                                                                     &&\
-  sudo make -j6                                                                   &&\
-  sudo make install                                                               &&\
-  mkdir -p bin                                                                    &&\
-  cd bin                                                                          &&\
-  rm -f mona                                                                      &&\
-  ln -s ../Front/.libs/mona mona                                                  &&\
-  sudo ldconfig                                                                   &&\
-  cd ../../../../../
-
 RUN mkdir /home/default/work
 RUN mkdir /home/default/work/third_party
 WORKDIR /home/default/work
 
-# install FOND4LTLfPLTLf
-RUN pip install git+https://github.com/whitemech/FOND4LTLfPLTLf.git
+# pylogics
+RUN git clone https://github.com/whitemech/pylogics.git ./third_party/pylogics
+# pddl
+RUN git clone https://github.com/whitemech/pddl.git ./third_party/pddl
 
-# clone downward
-RUN git clone https://github.com/aibasel/downward.git ./third_party/downward &&\
-    cd third_party/downward && git checkout 80f981582 && ./build.py && cd ../../
-# clone MyND
-RUN git clone https://github.com/robertmattmueller/myND.git ./third_party/myND &&\
-    cd third_party/myND && git checkout aa907ec &&\
-    grep -rl "time.clock()" . | xargs sed -i 's/time.clock()/time.perf_counter()/g' &&\
-    cd ../../ \
-# prepare ltlfond2fond
-RUN mv ../ltlfond2fond third_party/ltlfond2fond
-# clone pylogics
-RUN git clone https://github.com/whitemech/pylogics.git ./third_party/pylogics &&\
-    cd third_party/pylogics && git checkout 66e4797 && cd ../../
-# clone pddl
-RUN git clone https://github.com/whitemech/pddl.git ./third_party/pddl &&\
-    cd third_party/pddl && git checkout 41a8531 && cd ../../
-
-COPY benchmark ./benchmark
 COPY bin ./bin
 COPY data ./data
-COPY planning_with_past ./planning_with_past
+COPY plan4past ./plan4past
 COPY scripts ./scripts
-COPY third_party/mynd.jar third_party/mynd.jar
 COPY pyproject.toml setup.cfg setup.py LICENSE ./
 
 RUN sudo pip install -e .

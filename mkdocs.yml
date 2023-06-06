@@ -1,37 +1,20 @@
-site_name: My Docs
-repo_name: 'whitemech/planning-with-past'
-repo_url: https://github.com/whitemech/planning-with-past
+site_name: Plan4Past
+site_url: "https://whitemech.github.io/Plan4Past/"
+repo_name: 'whitemech/plan4past'
+repo_url: "https://github.com/whitemech/Plan4Past"
 
 nav:
 - Home: index.md
-
-plugins:
-- search
-- mknotebooks:
-    execute: false
-    write_markdown: false
-    #preamble: ""
-    #enable_default_jupyter_cell_styling: false
-    #enable_default_pandas_dataframe_styling: false
+- Credits: authors.md
+- How to contribute: contributing.md
+- Change Log: changelog.md
+- References: references.md
 
 theme:
   name: material
-  feature:
-    tabs: true
-
-
-strict: true
-
-
 markdown_extensions:
-- codehilite
-- pymdownx.arithmatex
-- pymdownx.superfences
-- pymdownx.highlight
-- admonition
-- markdown_include.include:
-    base_path: docs
-
-extra_javascript:
-- 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML'
-- 'https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js'
+  - markdown_include.include:
+      base_path: docs
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
