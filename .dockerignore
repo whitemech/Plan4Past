@@ -1,7 +1,0 @@
-ignore/
-final_results
-final_temp_results
-results
-results-old
-third_party
-!third_party/mynd.jar

@@ -778,8 +778,8 @@ sas_plan
 elapsed.time
 formula.pltlf
 formula.ltlf
-new-domain.pddl
-new-problem.pddl
+examples/compiled_pddl/new-domain.pddl
+examples/compiled_pddl/new-problem.pddl
 output.tsv
 results/
 !final_results/**/**/output.log
