@@ -1,23 +1,23 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2021 Francesco Fuggitti, Marco Favorito
+# Copyright 2021 -- 2023 WhiteMech
 #
 # ------------------------------
 #
-# This file is part of planning-with-past.
+# This file is part of Plan4Past.
 #
-# planning-with-past is free software: you can redistribute it and/or modify
+# Plan4Past is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# planning-with-past is distributed in the hope that it will be useful,
+# Plan4Past is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU Lesser General Public License for more details.
 #
 # You should have received a copy of the GNU Lesser General Public License
-# along with planning-with-past.  If not, see <https://www.gnu.org/licenses/>.
+# along with Plan4Past.  If not, see <https://www.gnu.org/licenses/>.
 #
 
 """Rewrite the formula with basic operators visitor."""
@@ -29,16 +29,24 @@ from pylogics.syntax.base import Not as PLTLNot
 from pylogics.syntax.base import Or as PLTLOr
 from pylogics.syntax.base import _UnaryOp
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
-from pylogics.syntax.pltl import Before, Historically, Once, Since
+from pylogics.syntax.pltl import Before, Historically, Once, PropositionalTrue, Since
 
 
-def rewrite_unaryop(f: _UnaryOp):
-    return rewrite(f.argument)
+def rewrite_unaryop(formula: _UnaryOp):
+    """Rewrite the formula for a unary operator."""
+    return rewrite(formula.argument)
 
 
 @singledispatch
 def rewrite(formula: Formula) -> Formula:
-    raise NotImplementedError("handler not implemented for formula %s" % type(formula))
+    """Rewrite a formula."""
+    raise NotImplementedError(f"handler not implemented for formula {type(formula)}")
+
+
+@rewrite.register
+def rewrite_first(formula: PropositionalTrue) -> Formula:
+    """Compute the basic formula for the true formula."""
+    return formula
 
 
 @rewrite.register

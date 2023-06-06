@@ -1,23 +1,23 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2021 Francesco Fuggitti, Marco Favorito
+# Copyright 2021 -- 2023 WhiteMech
 #
 # ------------------------------
 #
-# This file is part of planning-with-past.
+# This file is part of Plan4Past.
 #
-# planning-with-past is free software: you can redistribute it and/or modify
+# Plan4Past is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# planning-with-past is distributed in the hope that it will be useful,
+# Plan4Past is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU Lesser General Public License for more details.
 #
 # You should have received a copy of the GNU Lesser General Public License
-# along with planning-with-past.  If not, see <https://www.gnu.org/licenses/>.
+# along with Plan4Past.  If not, see <https://www.gnu.org/licenses/>.
 #
 
 """Miscellanea utilities."""
@@ -31,7 +31,7 @@ from pddl.logic import Predicate, constants
 from pylogics.syntax.base import Formula
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
 
-from planning_with_past.utils.atoms_visitor import find_atoms
+from plan4past.utils.atoms_visitor import find_atoms
 
 
 @contextlib.contextmanager
@@ -61,6 +61,7 @@ def remove_val_prefix(name: str):
 
 
 def replace_symbols(name: str):
+    """Stringify symbols."""
     return (
         name.replace('"', "")
         .replace("(", "")
@@ -73,10 +74,10 @@ def replace_symbols(name: str):
     )
 
 
-def default_mapping(f: Formula) -> Dict[PLTLAtomic, Predicate]:
+def default_mapping(formula: Formula) -> Dict[PLTLAtomic, Predicate]:
     """Compute mapping from atoms to fluents using underscores."""
-    symbols = find_atoms(f)
-    from_atoms_to_fluents = dict()
+    symbols = find_atoms(formula)
+    from_atoms_to_fluents = {}
     for symbol in symbols:
         name, *cons = symbol.name.split("_")
         if cons:

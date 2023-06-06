@@ -1,23 +1,23 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2021 Francesco Fuggitti, Marco Favorito
+# Copyright 2021 -- 2023 WhiteMech
 #
 # ------------------------------
 #
-# This file is part of planning-with-past.
+# This file is part of Plan4Past.
 #
-# planning-with-past is free software: you can redistribute it and/or modify
+# Plan4Past is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# planning-with-past is distributed in the hope that it will be useful,
+# Plan4Past is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU Lesser General Public License for more details.
 #
 # You should have received a copy of the GNU Lesser General Public License
-# along with planning-with-past.  If not, see <https://www.gnu.org/licenses/>.
+# along with Plan4Past.  If not, see <https://www.gnu.org/licenses/>.
 #
 
 """Find Atoms visitor."""
@@ -37,29 +37,32 @@ from pylogics.syntax.pltl import Historically, Once, Since
 from pylogics.syntax.pltl import TrueFormula as PLTLTrue
 
 
-def find_atoms_binaryop(f: _BinaryOp):
-    return set(functools.reduce(set.union, map(find_atoms, f.operands)))
+def find_atoms_binaryop(formula: _BinaryOp):
+    """Find atoms for a binary operator."""
+    return set(functools.reduce(set.union, map(find_atoms, formula.operands)))  # type: ignore[arg-type]
 
 
-def find_atoms_unaryop(f: _UnaryOp):
-    return find_atoms(f.argument)
+def find_atoms_unaryop(formula: _UnaryOp):
+    """Find atoms for a unary operator."""
+    return find_atoms(formula.argument)
 
 
 @singledispatch
 def find_atoms(_formula: Formula) -> Set[PLTLAtomic]:
+    """Find atoms for a formula."""
     return set()
 
 
 @find_atoms.register
 def find_atoms_tt(_formula: PLTLTrue) -> Set[PLTLAtomic]:
     """Find atoms for a true formula."""
-    return {PLTLAtomic("tt")}
+    return {PLTLAtomic("true")}
 
 
 @find_atoms.register
 def find_atoms_ff(_formula: PLTLFalse) -> Set[PLTLAtomic]:
     """Find atoms for a false formula."""
-    return {PLTLAtomic("ff")}
+    return {PLTLAtomic("false")}
 
 
 @find_atoms.register

@@ -1,23 +1,23 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2021 Francesco Fuggitti, Marco Favorito
+# Copyright 2021 -- 2023 WhiteMech
 #
 # ------------------------------
 #
-# This file is part of planning-with-past.
+# This file is part of Plan4Past.
 #
-# planning-with-past is free software: you can redistribute it and/or modify
+# Plan4Past is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# planning-with-past is distributed in the hope that it will be useful,
+# Plan4Past is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU Lesser General Public License for more details.
 #
 # You should have received a copy of the GNU Lesser General Public License
-# along with planning-with-past.  If not, see <https://www.gnu.org/licenses/>.
+# along with Plan4Past.  If not, see <https://www.gnu.org/licenses/>.
 #
 
 """Derived Predicates visitor."""
@@ -30,19 +30,29 @@ from pylogics.syntax.base import And as PLTLAnd
 from pylogics.syntax.base import Formula
 from pylogics.syntax.base import Not as PLTLNot
 from pylogics.syntax.base import Or as PLTLOr
-from pylogics.syntax.base import _BinaryOp, _UnaryOp
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
-from pylogics.syntax.pltl import Before, Historically, Once, Since
+from pylogics.syntax.pltl import Before, Once, PropositionalTrue, Since
 from pylogics.utils.to_string import to_string
 
-from planning_with_past.helpers.utils import add_val_prefix, replace_symbols
+from plan4past.helpers.utils import add_val_prefix, replace_symbols
 
 
 @singledispatch
 def derived_predicates(
     formula: Formula, atoms_to_fluents: Dict[PLTLAtomic, Predicate]
 ) -> Set[DerivedPredicate]:
-    raise NotImplementedError("handler not implemented for formula %s" % type(formula))
+    """Compute the derived predicate for a formula."""
+    raise NotImplementedError(f"handler not implemented for formula {type(formula)}")
+
+
+@derived_predicates.register
+def derived_predicates_true(
+    _formula: PropositionalTrue, atoms_to_fluents: Dict[PLTLAtomic, Predicate]
+) -> Set[DerivedPredicate]:
+    """Compute the derived predicate for a true formula."""
+    val = Predicate(add_val_prefix("true"))
+    condition = atoms_to_fluents[PLTLAtomic("true")]
+    return {DerivedPredicate(val, condition)}
 
 
 @derived_predicates.register
@@ -59,7 +69,7 @@ def derived_predicates_atomic(
 def derived_predicates_and(
     formula: PLTLAnd, atoms_to_fluents: Dict[PLTLAtomic, Predicate]
 ) -> Set[DerivedPredicate]:
-    """Compute the derived predicate for a PLTL And formula."""
+    """Compute the derived predicate for a PPLTL And formula."""
     formula_name = to_string(formula)
     val = Predicate(add_val_prefix(replace_symbols(formula_name)))
     val_ops = [
@@ -75,10 +85,13 @@ def derived_predicates_and(
 def derived_predicates_or(
     formula: PLTLOr, atoms_to_fluents: Dict[PLTLAtomic, Predicate]
 ) -> Set[DerivedPredicate]:
-    """Compute the derived predicate for a PLTL Or formula."""
+    """Compute the derived predicate for a PPLTL Or formula."""
     formula_name = to_string(formula)
     val = Predicate(add_val_prefix(replace_symbols(formula_name)))
-    val_ops = [Predicate(add_val_prefix(replace_symbols(to_string(op)))) for op in formula.operands]
+    val_ops = [
+        Predicate(add_val_prefix(replace_symbols(to_string(op))))
+        for op in formula.operands
+    ]
     condition = Or(*val_ops)
     der_pred_ops = [derived_predicates(op, atoms_to_fluents) for op in formula.operands]
     return {DerivedPredicate(val, condition)}.union(*der_pred_ops)
@@ -88,7 +101,7 @@ def derived_predicates_or(
 def derived_predicates_not(
     formula: PLTLNot, atoms_to_fluents: Dict[PLTLAtomic, Predicate]
 ) -> Set[DerivedPredicate]:
-    """Compute the derived predicate for a PLTL Not formula."""
+    """Compute the derived predicate for a PPLTL Not formula."""
     formula_name = to_string(formula)
     val = Predicate(add_val_prefix(replace_symbols(formula_name)))
     condition = Not(

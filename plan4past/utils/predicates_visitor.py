@@ -1,23 +1,23 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2021 Francesco Fuggitti, Marco Favorito
+# Copyright 2021 -- 2023 WhiteMech
 #
 # ------------------------------
 #
-# This file is part of planning-with-past.
+# This file is part of Plan4Past.
 #
-# planning-with-past is free software: you can redistribute it and/or modify
+# Plan4Past is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# planning-with-past is distributed in the hope that it will be useful,
+# Plan4Past is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU Lesser General Public License for more details.
 #
 # You should have received a copy of the GNU Lesser General Public License
-# along with planning-with-past.  If not, see <https://www.gnu.org/licenses/>.
+# along with Plan4Past.  If not, see <https://www.gnu.org/licenses/>.
 #
 
 """Predicates visitor."""
@@ -32,23 +32,32 @@ from pylogics.syntax.base import Not as PLTLNot
 from pylogics.syntax.base import Or as PLTLOr
 from pylogics.syntax.base import _BinaryOp, _UnaryOp
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
-from pylogics.syntax.pltl import Before, Historically, Once, Since
+from pylogics.syntax.pltl import Before, Once, PropositionalTrue, Since
 from pylogics.utils.to_string import to_string
 
-from planning_with_past.helpers.utils import replace_symbols
+from plan4past.helpers.utils import replace_symbols
 
 
-def predicates_binaryop(f: _BinaryOp):
-    return set(functools.reduce(set.union, map(predicates, f.operands)))
+def predicates_binaryop(formula: _BinaryOp):
+    """Compute predicate for a binary operator."""
+    return set(functools.reduce(set.union, map(predicates, formula.operands)))  # type: ignore[arg-type]
 
 
-def predicates_unaryop(f: _UnaryOp):
-    return predicates(f.argument)
+def predicates_unaryop(formula: _UnaryOp):
+    """Compute predicate for a unary operator."""
+    return predicates(formula.argument)
 
 
 @singledispatch
 def predicates(formula: Formula) -> Set[Predicate]:
-    raise NotImplementedError("handler not implemented for formula %s" % type(formula))
+    """Compute predicate for a formula."""
+    raise NotImplementedError(f"handler not implemented for formula {type(formula)}")
+
+
+@predicates.register
+def predicates_true(_formula: PropositionalTrue) -> Set[Predicate]:
+    """Compute predicate for a true formula."""
+    return {Predicate("true")}
 
 
 @predicates.register

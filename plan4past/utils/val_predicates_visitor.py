@@ -1,23 +1,23 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2021 Francesco Fuggitti, Marco Favorito
+# Copyright 2021 -- 2023 WhiteMech
 #
 # ------------------------------
 #
-# This file is part of planning-with-past.
+# This file is part of Plan4Past.
 #
-# planning-with-past is free software: you can redistribute it and/or modify
+# Plan4Past is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# planning-with-past is distributed in the hope that it will be useful,
+# Plan4Past is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU Lesser General Public License for more details.
 #
 # You should have received a copy of the GNU Lesser General Public License
-# along with planning-with-past.  If not, see <https://www.gnu.org/licenses/>.
+# along with Plan4Past.  If not, see <https://www.gnu.org/licenses/>.
 #
 
 """Value predicates for derived predicates visitor."""
@@ -32,23 +32,32 @@ from pylogics.syntax.base import Not as PLTLNot
 from pylogics.syntax.base import Or as PLTLOr
 from pylogics.syntax.base import _BinaryOp, _UnaryOp
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
-from pylogics.syntax.pltl import Before, Historically, Once, Since
+from pylogics.syntax.pltl import Before, Once, PropositionalTrue, Since
 from pylogics.utils.to_string import to_string
 
-from planning_with_past.helpers.utils import add_val_prefix, replace_symbols
+from plan4past.helpers.utils import add_val_prefix, replace_symbols
 
 
-def val_predicates_binaryop(f: _BinaryOp):
-    return set(functools.reduce(set.union, map(val_predicates, f.operands)))
+def val_predicates_binaryop(formula: _BinaryOp):
+    """Compute the value predicate for a binary operator formula."""
+    return set(functools.reduce(set.union, map(val_predicates, formula.operands)))  # type: ignore[arg-type]
 
 
-def val_predicates_unaryop(f: _UnaryOp):
-    return val_predicates(f.argument)
+def val_predicates_unaryop(formula: _UnaryOp):
+    """Compute the value predicate for a unary operator formula."""
+    return val_predicates(formula.argument)
 
 
 @singledispatch
 def val_predicates(formula: Formula) -> Set[Predicate]:
-    raise NotImplementedError("handler not implemented for formula %s" % type(formula))
+    """Compute the value predicate for a formula."""
+    raise NotImplementedError(f"handler not implemented for formula {type(formula)}")
+
+
+@val_predicates.register
+def val_predicates_true(_formula: PropositionalTrue) -> Set[Predicate]:
+    """Compute the value predicate for a true formula."""
+    return {Predicate(add_val_prefix("true"))}
 
 
 @val_predicates.register
