@@ -20,7 +20,7 @@
 # along with Plan4Past.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-# pylint: skip-file
+
 """Main entrypoint for Plan4Past."""
 from pathlib import Path
 from typing import Tuple
@@ -40,12 +40,7 @@ DEFAULT_NEW_DOMAIN_FILENAME: str = "new-domain.pddl"
 DEFAULT_NEW_PROBLEM_FILENAME: str = "new-problem.pddl"
 
 
-@click.group()
-def cli():
-    """Plan4Past: Planning for Pure-Past Temporally Extended Goals."""  # noqa
-
-
-@cli.command()
+@click.command()
 @click.option(
     "-d",
     "--domain",
@@ -83,7 +78,7 @@ def cli():
     type=click.Path(dir_okay=False),
 )
 def cli(domain, problem, goal, mapping, out_domain, out_problem):
-    """Planning for PPLTL Goals."""
+    """Plan4Past: Planning for Pure-Past Temporally Extended Goals."""
     in_domain, in_problem, formula = _parse_instance(domain, problem, goal)
 
     var_map = mapping_parser(mapping.read_text(), formula) if mapping else None
@@ -108,8 +103,8 @@ def _parse_instance(in_domain, in_problem, goal) -> Tuple[Domain, Problem, Formu
     domain_parser = DomainParser()
     problem_parser = ProblemParser()
 
-    domain = domain_parser(Path(in_domain).read_text())
-    problem = problem_parser(Path(in_problem).read_text())
+    domain = domain_parser(Path(in_domain).read_text(encoding="utf-8"))
+    problem = problem_parser(Path(in_problem).read_text(encoding="utf-8"))
     formula = parse_pltl(goal)
 
     return domain, problem, formula
