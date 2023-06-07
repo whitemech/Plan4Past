@@ -20,6 +20,7 @@
 # along with Plan4Past.  If not, see <https://www.gnu.org/licenses/>.
 #
 
+# pylint: skip-file
 """Main entrypoint for Plan4Past."""
 from pathlib import Path
 from typing import Tuple

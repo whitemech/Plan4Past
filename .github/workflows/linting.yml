@@ -29,7 +29,7 @@ jobs:
       run:  |
         pip install tox
     - name: Pylint
-      run: tox -e pylint --ignore plan4past/__main__.py
+      run: tox -e pylint
     - name: Code style check
       run: |
         tox -e black-check
