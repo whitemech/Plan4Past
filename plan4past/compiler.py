@@ -34,9 +34,10 @@ from pylogics.utils.to_string import to_string
 
 from plan4past.helpers.utils import (
     add_val_prefix,
+    check_,
     default_mapping,
     remove_before_prefix,
-    replace_symbols, assert_,
+    replace_symbols,
 )
 from plan4past.utils.atoms_visitor import find_atoms
 from plan4past.utils.derived_visitor import derived_predicates
@@ -72,7 +73,7 @@ class Compiler:
         else:
             self.from_atoms_to_fluent = default_mapping(self.formula)
 
-        assert_(self.formula.logic == Logic.PLTL, "only PPLTL is supported!")
+        check_(self.formula.logic == Logic.PLTL, "only PPLTL is supported!")
 
         self._executed: bool = False
         self._result_domain: Optional[Domain] = None
@@ -101,7 +102,7 @@ class Compiler:
         :return:
         """
         for _atom, fluent in from_atoms_to_fluent.items():
-            assert_(all(isinstance(t, Constant) for t in fluent.terms))
+            check_(all(isinstance(t, Constant) for t in fluent.terms))
 
     @property
     def result(self) -> Tuple[Domain, Problem]:

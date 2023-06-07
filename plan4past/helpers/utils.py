@@ -87,7 +87,7 @@ def default_mapping(formula: Formula) -> Dict[PLTLAtomic, Predicate]:
     return from_atoms_to_fluents
 
 
-def assert_(condition: bool, message: str = "") -> None:
+def check_(condition: bool, message: str = "") -> None:
     """
     User-defined assert.
 
