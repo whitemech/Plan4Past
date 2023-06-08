@@ -58,7 +58,13 @@ A Docker image as well as an Apptainer image are available for Plan4Past.
 `docker build -t plan4past .` and `docker run --rm -it plan4past`
 
 - To use Apptainer:
-`TBA`
+```
+apptainer build plan4past.sif plan4past.def
+
+# to launch the tool:
+./plan4past.sif -d examples/pddl/domain.pddl -p examples/pddl/p-0.pddl -g "ontable_c & O(on_b_a)"
+```
+
 
 ## Development
 
