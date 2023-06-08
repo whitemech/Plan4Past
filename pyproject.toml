@@ -26,6 +26,9 @@ classifiers = [
 ]
 include = []
 
+[tool.poetry.scripts]
+plan4past = 'plan4past.__main__:cli'
+
 [tool.poetry.urls]
 "Bug Tracker" = "https://github.com/whitemech/plan4past/issues"
 "Pull Requests" = "https://github.com/whitemech/plan4past/pulls"
