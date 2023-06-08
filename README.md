@@ -55,7 +55,7 @@ plan4past -d examples/pddl/domain.pddl -p examples/pddl/p-0.pddl -g "ontable_c &
 A Docker image as well as an Apptainer image are available for Plan4Past.
 
 - To use Docker:
-`docker build -t plan4past .` and `docker run --rm -it plan4past /bin/bash`
+`docker build -t plan4past .` and `docker run --rm -it plan4past`
 
 - To use Apptainer:
 `TBA`
