@@ -81,7 +81,7 @@ def cli(domain, problem, goal, mapping, out_domain, out_problem):
     """Plan4Past: Planning for Pure-Past Temporally Extended Goals."""
     in_domain, in_problem, formula = _parse_instance(domain, problem, goal)
 
-    var_map = mapping_parser(Path(mapping).read_text(), formula) if mapping else None
+    var_map = mapping_parser(Path(mapping).read_text(encoding="utf-8"), formula) if mapping else None
 
     compiled_domain, compiled_problem = _compile_instance(
         in_domain, in_problem, formula, var_map
