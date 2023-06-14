@@ -31,8 +31,40 @@ pip install .
 You can use the `plan4past` package in two ways: as a library, and as a CLI tool.
 
 ### As a library
+This is an example of how you can encode a PPLTL goal formula into a PDDL domain and problem programmatically.
 
-`TBA`
+```python
+from pathlib import Path
+from pddl.formatter import domain_to_string, problem_to_string
+from pddl.parser.domain import DomainParser
+from pddl.parser.problem import ProblemParser
+from pylogics.parsers import parse_pltl
+from plan4past.compiler import Compiler
+
+formula = "on_b_a & O(ontable_c)"
+domain_parser = DomainParser()
+problem_parser = ProblemParser()
+
+domain = domain_parser(Path("examples/pddl/domain.pddl").read_text(encoding="utf-8"))
+problem = problem_parser(Path("examples/pddl/p-0.pddl").read_text(encoding="utf-8"))
+goal = parse_pltl(formula)
+
+compiler = Compiler(domain, problem, goal)
+compiler.compile()
+compiled_domain, compiled_problem = compiler.result
+
+try:
+    with open("./new-domain.pddl", "w+", encoding="utf-8") as d:
+        d.write(domain_to_string(compiled_domain))
+    with open("./new-problem.pddl", "w+", encoding="utf-8") as p:
+        p.write(problem_to_string(compiled_problem))
+except Exception as e:
+    raise IOError(
+        "[ERROR]: Something wrong occurred while writing the compiled domain and problem."
+    ) from e
+```
+
+By executing the code above, you will obtain a `new-domain.pddl` as well as a `new-problem.pddl` in output.
 
 ### As a CLI tool
 
@@ -85,7 +117,7 @@ and then go to [http://localhost:8000](http://localhost:8000)
 
 Plan4Past is released under the GNU Lesser General Public License v3.0 or later (LGPLv3+).
 
-Copyright 2022-2023 WhiteMech
+Copyright 2021 -- 2023 WhiteMech
 
 ## Citing
 
