@@ -11,7 +11,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from bin.utils import ALGORITHMS, HEURISTICS, PLTLF_WRAPPER_PATH, MYND_WRAPPER_PATH, launch, FD_WRAPPER_PATH, \
-    SUPPORTED_PLANNERS, is_valid_file
+    SUPPORTED_PLANNERS, is_valid_file, PALADINUS_WRAPPER_PATH
 
 DEFAULT_OUTPUT_DIR: str = "output"
 BIN_DIR = Path(inspect.getframeinfo(inspect.currentframe()).filename).parent
@@ -61,6 +61,13 @@ if __name__ == '__main__':
     cli_args = []
     if args.planner == "mynd":
         cli_args = [str(MYND_WRAPPER_PATH),
+                    "-d", str(new_domain_file),
+                    "-p", str(new_problem_file),
+                    "-a", str(args.algorithm),
+                    "--heuristic", str(args.heuristic),
+                    "--working-dir", str(working_dir)]
+    elif args.planner == "paladinus":
+        cli_args = [str(PALADINUS_WRAPPER_PATH),
                     "-d", str(new_domain_file),
                     "-p", str(new_problem_file),
                     "-a", str(args.algorithm),

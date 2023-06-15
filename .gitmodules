@@ -19,3 +19,6 @@
 [submodule "third_party/pylogics"]
 	path = third_party/pylogics
 	url = https://github.com/whitemech/pylogics.git
+[submodule "third_party/paladinus"]
+	path = third_party/paladinus
+	url = https://github.com/ramonpereira/paladinus

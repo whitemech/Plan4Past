@@ -786,3 +786,7 @@ results/
 !final_results/**/**/**/**/output.sas
 !final_results/**/**/**/output.tsv
 !supplementary-material/results
+
+.vscode
+third_party/fastforward
+third_party/planner

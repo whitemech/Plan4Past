@@ -10,22 +10,25 @@ from benchmark.tools.core import (
     Status,
     ToolID,
     SearchAlg,
-    Heuristic, extract_from_tool,
+    Heuristic,
+    extract_from_tool
 )
 from benchmark.utils.base import try_to_get_float
 from planning_with_past import REPO_ROOT
 
-DEFAULT_BIN_LF2F_PATH = (REPO_ROOT / "bin" / "ltlfond2fond_wrapper").absolute()
+DEFAULT_BIN_GG_PATH = (REPO_ROOT / "bin" / "ggpltl").absolute()
 
 
 class SupportedPlanners:
     FD = "fd"
     MYND = "mynd"
     PALADINUS = "paladinus"
+    FF = "ff"
+    PLANNER = "planner"
 
 
-class LTLFond2FondTool(Tool, ABC):
-    """Implement abstract LTLFond2Fond tool wrapper."""
+class GGpltlTool(Tool, ABC):
+    """Implement abstract GGPLTL tool wrapper."""
 
     def __init__(self, binary_path: str, planner_id: Union[str, SupportedPlanners]):
         """Initialize the tool."""
@@ -43,27 +46,84 @@ class LTLFond2FondTool(Tool, ABC):
     ) -> List[str]:
         """Get CLI arguments."""
         assert formula is not None, "formula argument must be specified"
-        assert mapping is None, "mapping argument not supported"
 
         cli_args = [
             self.binary_path,
             "-t",
             self.planner_id,
-            "-d",
+            "--domain",
             domain,
-            "-p",
+            "--problem",
             problem,
-            "-g",
+            "--formula",
             formula,
         ]
+        if mapping:
+            cli_args += ["--map", mapping]
         if working_dir:
             cli_args += ["--working-dir", working_dir]
         return cli_args
 
 
-class LTLFond2FondFDTool(LTLFond2FondTool):
+class GGpltlPlannerTool(GGpltlTool):
 
-    NAME = "LF2F-FD"
+    NAME = "GG-PLANNER"
+
+    def __init__(
+        self,
+        binary_path: str,
+    ):
+        """Initialize the tool."""
+        super().__init__(binary_path, SupportedPlanners.PLANNER)
+
+    def get_cli_args(
+        self,
+        domain: Path,
+        problem: Path,
+        formula: Optional[str] = None,
+        mapping: Optional[Path] = None,
+        working_dir: Optional[str] = None,
+    ) -> List[str]:
+        """Get CLI arguments."""
+        cli_args = super().get_cli_args(domain, problem, formula, mapping, working_dir)
+        return cli_args
+
+    def collect_statistics(self, output: str) -> Result:
+        """Collect statistics."""
+        return extract_from_tool(output, "planner")
+
+
+class GGpltlFFTool(GGpltlTool):
+
+    NAME = "GG-FF"
+
+    def __init__(
+        self,
+        binary_path: str,
+    ):
+        """Initialize the tool."""
+        super().__init__(binary_path, SupportedPlanners.FF)
+
+    def get_cli_args(
+        self,
+        domain: Path,
+        problem: Path,
+        formula: Optional[str] = None,
+        mapping: Optional[Path] = None,
+        working_dir: Optional[str] = None,
+    ) -> List[str]:
+        """Get CLI arguments."""
+        cli_args = super().get_cli_args(domain, problem, formula, mapping, working_dir)
+        return cli_args
+
+    def collect_statistics(self, output: str) -> Result:
+        """Collect statistics."""
+        return extract_from_tool(output, "ff")
+
+
+class GGpltlFDTool(GGpltlTool):
+
+    NAME = "GG-FD"
 
     def __init__(
         self,
@@ -96,9 +156,9 @@ class LTLFond2FondFDTool(LTLFond2FondTool):
         return extract_from_tool(output, "fd")
 
 
-class LTLFond2FondMyNDTool(LTLFond2FondTool):
+class GGpltlMyNDTool(GGpltlTool):
 
-    NAME = "LF2F-MyND"
+    NAME = "GG-MyND"
 
     def __init__(
         self,
@@ -131,9 +191,9 @@ class LTLFond2FondMyNDTool(LTLFond2FondTool):
         return extract_from_tool(output, "mynd")
 
 
-class LTLFond2FondPaladinusTool(LTLFond2FondTool):
+class GGpltlPaladinusTool(GGpltlTool):
 
-    NAME = "LF2F-Paladinus"
+    NAME = "GG-Paladinus"
 
     def __init__(
         self,

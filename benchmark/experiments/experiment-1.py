@@ -99,9 +99,9 @@ def run_experiments(
     "-t",
     multiple=True,
     default=[
-        ToolID.FOND4LTLfPLTLf_MYND_STORNG_CYCLIC_FF.value,
-        ToolID.PLAN4PAST_MYND_STORNG_CYCLIC_FF.value,
-        ToolID.LTLFOND2FOND_MYND_STORNG_CYCLIC_FF.value,
+        ToolID.FOND4LTLfPLTLf_PALADINUS_STORNG_CYCLIC_FF.value,
+        ToolID.PLAN4PAST_PALADINUS_STORNG_CYCLIC_FF.value,
+        ToolID.LTLFOND2FOND_PALADINUS_STORNG_CYCLIC_FF.value,
     ],
 )
 @click.option("--experiment-type", type=click.Choice(["a", "b"], case_sensitive=False))

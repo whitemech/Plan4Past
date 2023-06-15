@@ -17,24 +17,44 @@ class ToolID(Enum):
     FAST_DOWNWARD_HMAX = "fd-hmax"
     MYND_STRONG_FF = "mynd-s-ff"
     MYND_STRONG_CYCLIC_FF = "mynd-sc-ff"
+    PALADINUS_STRONG_CYCLIC_FF = "paladinus-sc-ff"
     PLAN4PAST_FD_FF = "p4p-fd-ff"
     PLAN4PAST_FD_HMAX = "p4p-fd-hmax"
     PLAN4PAST_MYND_STRONG_FF = "p4p-mynd-s-ff"
     PLAN4PAST_MYND_STRONG_HMAX = "p4p-mynd-s-hmax"
     PLAN4PAST_MYND_STORNG_CYCLIC_FF = "p4p-mynd-sc-ff"
     PLAN4PAST_MYND_STORNG_CYCLIC_HMAX = "p4p-mynd-sc-hmax"
+    PLAN4PAST_PALADINUS_STORNG_CYCLIC_FF = "p4p-paladinus-sc-ff"
+    PLAN4PAST_PALADINUS_STORNG_CYCLIC_HMAX = "p4p-paladinus-sc-hmax"
     FOND4LTLfPLTLf_FD_FF = "f4lp-fd-ff"
     FOND4LTLfPLTLf_FD_HMAX = "f4lp-fd-hmax"
     FOND4LTLfPLTLf_MYND_STRONG_FF = "f4lp-mynd-s-ff"
     FOND4LTLfPLTLf_MYND_STRONG_HMAX = "f4lp-mynd-s-hmax"
     FOND4LTLfPLTLf_MYND_STORNG_CYCLIC_FF = "f4lp-mynd-sc-ff"
     FOND4LTLfPLTLf_MYND_STORNG_CYCLIC_HMAX = "f4lp-mynd-sc-hmax"
+    FOND4LTLfPLTLf_PALADINUS_STORNG_CYCLIC_FF = "f4lp-paladinus-sc-ff"
+    FOND4LTLfPLTLf_PALADINUS_STORNG_CYCLIC_HMAX = "f4lp-paladinus-sc-hmax"
     LTLFOND2FOND_FD_FF = "lf2f-fd-ff"
     LTLFOND2FOND_FD_HMAX = "lf2f-fd-hmax"
     LTLFOND2FOND_MYND_STRONG_FF = "lf2f-mynd-s-ff"
     LTLFOND2FOND_MYND_STRONG_HMAX = "lf2f-mynd-s-hmax"
     LTLFOND2FOND_MYND_STORNG_CYCLIC_FF = "lf2f-mynd-sc-ff"
     LTLFOND2FOND_MYND_STORNG_CYCLIC_HMAX = "lf2f-mynd-sc-hmax"
+    LTLFOND2FOND_PALADINUS_STORNG_CYCLIC_FF = "lf2f-paladinus-sc-ff"
+    LTLFOND2FOND_PALADINUS_STORNG_CYCLIC_HMAX = "lf2f-paladinus-sc-hmax"
+    GGPLTL_FF = "gg-ff"
+    GGPLTL_PLANNER_DELFI = "gg-planner-delfi"
+    GGPLTL_PLANNER_COMPLEMENTARY = "gg-planner-complementary"
+    GGPLTL_PLANNER_FD_CELMCUT = "gg-planner-celmcut"
+    GGPLTL_PLANNER_MPC = "gg-planner-MpC"
+    GGPLTL_FD_FF = "gg-fd-ff"
+    GGPLTL_FD_HMAX = "gg-fd-hmax"
+    GGPLTL_MYND_STRONG_FF = "gg-mynd-s-ff"
+    GGPLTL_MYND_STRONG_HMAX = "gg-mynd-s-hmax"
+    GGPLTL_MYND_STORNG_CYCLIC_FF = "gg-mynd-sc-ff"
+    GGPLTL_MYND_STORNG_CYCLIC_HMAX = "gg-mynd-sc-hmax"
+    GGPLTL_PALADINUS_STORNG_CYCLIC_FF = "gg-paladinus-sc-ff"
+    GGPLTL_PALADINUS_STORNG_CYCLIC_HMAX = "gg-paladinus-sc-hmax"
 
 
 class Status(Enum):
@@ -46,15 +66,14 @@ class Status(Enum):
 
 class SearchAlg(Enum):
     """Search algorithms"""
-
     ASTAR = "astar"
     LAOSTAR = "laostar"
     AOSTAR = "aostar"
+    ITERATIVE_DFS = "iterative_dfs"
 
 
 class Heuristic(Enum):
     """Heuristics"""
-
     FF = "ff"
     HMAX = "hmax"
 
@@ -301,7 +320,7 @@ class ToolRegistry:
         return tool_spec.make(**kwargs)
 
 
-def extract_from_mynd(output):
+def extract_from_tool(output: str, tool: str) -> Result:
     tool_time = try_to_get_float("Tool time: +([0-9.]+) seconds", output)
     compilation_time = try_to_get_float("Compilation time: +([0-9.]+) seconds", output)
     end2end_time = try_to_get_float(
@@ -309,38 +328,23 @@ def extract_from_mynd(output):
     )
 
     timed_out_match = re.search("Timed out.", output)
-    initial_proven_match = re.search("INITIAL IS PROVEN!", output)
-    initial_disproven_match = re.search("INITIAL IS DISPROVEN!", output)
-    if initial_proven_match is not None:
-        status = Status.SUCCESS
-    elif initial_disproven_match is not None:
-        status = Status.FAILURE
-    elif timed_out_match is not None:
-        status = Status.TIMEOUT
+    if tool == "fd":
+        solution_found_match = re.search("search exit code: 0", output)
+        no_solution_match = re.search("search exit code: 12", output)
+    elif tool == "mynd" or tool == "paladinus":
+        solution_found_match = re.search("INITIAL IS PROVEN!", output)
+        no_solution_match = re.search("INITIAL IS DISPROVEN!", output)
+    elif tool == "ff":
+        solution_found_match = re.search("ff: found legal plan as follows", output)
+        no_solution_match = re.search("problem proven unsolvable", output)
+    elif tool == "planner":
+        solution_found_match = re.search("Solution found.", output)
+        if solution_found_match is None:
+            solution_found_match = re.search("PLAN FOUND:", output)
+        no_solution_match = re.search("problem proven unsolvable", output)
     else:
-        status = Status.ERROR
-
-    nb_nodes_expansion_match = re.search("Number of node expansions: ([0-9]+)", output)
-    if nb_nodes_expansion_match:
-        nb_nodes_expansions = int(nb_nodes_expansion_match.group(1))
-    else:
-        nb_nodes_expansions = None
-
-    return Result(
-        "", [], compilation_time, tool_time, end2end_time, nb_nodes_expansions, status
-    )
-
-
-def extract_from_fd(output):
-    tool_time = try_to_get_float("Total time: (.*)s", output)
-    compilation_time = try_to_get_float("Compilation time: +([0-9.]+) seconds", output)
-    end2end_time = try_to_get_float(
-        "Total time: +([0-9.]+) seconds", output, default=None
-    )
-
-    timed_out_match = re.search("Timed out.", output)
-    solution_found_match = re.search("search exit code: 0", output)
-    no_solution_match = re.search("search exit code: 12", output)
+        solution_found_match = None
+        no_solution_match = True
     if solution_found_match is not None:
         status = Status.SUCCESS
     elif no_solution_match is not None:
@@ -350,7 +354,15 @@ def extract_from_fd(output):
     else:
         status = Status.ERROR
 
-    nb_nodes_expansion_match = re.search("Expanded ([0-9]+) state\(s\).", output)
+    if tool == "fd":
+        nb_nodes_expansion_match = re.search("Expanded ([0-9]+) state\(s\).", output)
+    elif tool == "mynd":
+        nb_nodes_expansion_match = re.search("Number of node expansions: ([0-9]+)", output)
+    elif tool == "paladinus":
+        nb_nodes_expansion_match = re.search("# Number of Node Expansions = ([0-9]+)", output)
+    else:
+        nb_nodes_expansion_match = None
+
     if nb_nodes_expansion_match:
         nb_nodes_expansions = int(nb_nodes_expansion_match.group(1))
     else:

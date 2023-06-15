@@ -1,0 +1,48 @@
+#!/usr/bin/env python3
+import argparse
+import contextlib
+import os
+import tempfile
+from pathlib import Path
+from typing import Generator
+
+from bin.utils import launch, FF_DIR, FF_DRIVER
+
+
+def plan(domain_path, problem_path, working_dir):
+    """Planning for temporally extended goals (LTLf or PLTLf)."""
+    domain_path = str(Path(domain_path).absolute())
+    problem_path = str(Path(problem_path).absolute())
+    if working_dir:
+        working_dir = Path(args.working_dir)
+        working_dir.mkdir(exist_ok=True)
+    else:
+        working_dir = Path(tempfile.mkdtemp())
+    planner_command = [f"{FF_DRIVER}",
+                       '-o', str(domain_path),
+                       '-f', str(problem_path)
+                       ]
+
+    print("Start planner")
+    launch(planner_command, cwd=None)
+
+
+if __name__ == '__main__':
+    """
+    Usage: python fd_wrapper.py -d <DOMAIN-PATH> -p <PROBLEM-PATH> 
+    """
+    parser = argparse.ArgumentParser(description="Wrapper for fast forward.")
+    parser.add_argument('-d', dest='domain_path', type=Path, required=True)
+    parser.add_argument('-p', dest='problem_path', type=Path, required=True)
+    #parser.add_argument('-a', "--algorithm", dest='algorithm', type=str, choices=ALGORITHMS, default="astar")
+    #parser.add_argument('--heuristic', dest='heuristic', type=str, choices=HEURISTICS, default="ff")
+    parser.add_argument('--working-dir', dest='working_dir', type=str, default=None)
+    args = parser.parse_args()
+
+    domain_path = args.domain_path
+    problem_path = args.problem_path
+    #algorithm = args.algorithm
+    #heuristic = args.heuristic
+    working_dir = args.working_dir
+
+    plan(domain_path, problem_path, working_dir)

@@ -12,18 +12,18 @@ from benchmark.tools.core import (
 )
 from planning_with_past import REPO_ROOT
 
-DEFAULT_BIN_MYND_PATH = (REPO_ROOT / "bin" / "mynd_wrapper").absolute()
+DEFAULT_BIN_PALADINUS_PATH = (REPO_ROOT / "bin" / "paladinus_wrapper").absolute()
 
 
-class MyNDTool(Tool):
-    """Implement MyND tool wrapper."""
+class PaladinusTool(Tool):
+    """Implement Paladinus tool wrapper."""
 
-    NAME = "MyND"
+    NAME = "Paladinus"
 
     def __init__(
         self,
         binary_path: str,
-        search: Union[SearchAlg, str] = SearchAlg.LAOSTAR,
+        search: Union[SearchAlg, str] = SearchAlg.ITERATIVE_DFS,
         heuristic: Union[Heuristic, str] = Heuristic.FF,
     ):
         """Initialize the tool."""
@@ -61,4 +61,4 @@ class MyNDTool(Tool):
 
     def collect_statistics(self, output: str) -> Result:
         """Collect statistics."""
-        return extract_from_tool(output, "mynd")
+        return extract_from_tool(output, "paladinus")
