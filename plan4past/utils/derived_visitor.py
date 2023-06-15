@@ -24,14 +24,20 @@
 from functools import singledispatch
 from typing import Dict, Set
 
-from pddl.logic.base import And, Not, Or
+from pddl.logic.base import And, FalseFormula, Not, Or, TrueFormula
 from pddl.logic.predicates import DerivedPredicate, Predicate
 from pylogics.syntax.base import And as PLTLAnd
 from pylogics.syntax.base import Formula
 from pylogics.syntax.base import Not as PLTLNot
 from pylogics.syntax.base import Or as PLTLOr
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
-from pylogics.syntax.pltl import Before, Once, PropositionalTrue, Since
+from pylogics.syntax.pltl import (
+    Before,
+    Once,
+    PropositionalFalse,
+    PropositionalTrue,
+    Since,
+)
 from pylogics.utils.to_string import to_string
 
 from plan4past.helpers.utils import add_val_prefix, replace_symbols
@@ -47,12 +53,20 @@ def derived_predicates(
 
 @derived_predicates.register
 def derived_predicates_true(
-    _formula: PropositionalTrue, atoms_to_fluents: Dict[PLTLAtomic, Predicate]
+    _formula: PropositionalTrue, _atoms_to_fluents: Dict[PLTLAtomic, Predicate]
 ) -> Set[DerivedPredicate]:
     """Compute the derived predicate for a true formula."""
     val = Predicate(add_val_prefix("true"))
-    condition = atoms_to_fluents[PLTLAtomic("true")]
-    return {DerivedPredicate(val, condition)}
+    return {DerivedPredicate(val, TrueFormula())}
+
+
+@derived_predicates.register
+def derived_predicates_false(
+    _formula: PropositionalFalse, _atoms_to_fluents: Dict[PLTLAtomic, Predicate]
+) -> Set[DerivedPredicate]:
+    """Compute the derived predicate for a true formula."""
+    val = Predicate(add_val_prefix("false"))
+    return {DerivedPredicate(val, FalseFormula())}
 
 
 @derived_predicates.register

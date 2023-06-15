@@ -32,7 +32,13 @@ from pylogics.syntax.base import Not as PLTLNot
 from pylogics.syntax.base import Or as PLTLOr
 from pylogics.syntax.base import _BinaryOp, _UnaryOp
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
-from pylogics.syntax.pltl import Before, Once, PropositionalTrue, Since
+from pylogics.syntax.pltl import (
+    Before,
+    Once,
+    PropositionalFalse,
+    PropositionalTrue,
+    Since,
+)
 from pylogics.utils.to_string import to_string
 
 from plan4past.helpers.utils import replace_symbols
@@ -57,7 +63,13 @@ def predicates(formula: Formula) -> Set[Predicate]:
 @predicates.register
 def predicates_true(_formula: PropositionalTrue) -> Set[Predicate]:
     """Compute predicate for a true formula."""
-    return {Predicate("true")}
+    return set()
+
+
+@predicates.register
+def predicates_false(_formula: PropositionalFalse) -> Set[Predicate]:
+    """Compute predicate for a false formula."""
+    return set()
 
 
 @predicates.register
