@@ -1,1 +1,0 @@
-"""Documentation of the library."""

@@ -1,0 +1,13 @@
+communicated_soil_data-waypoint0,communicated_soil_data waypoint0
+communicated_rock_data-waypoint3,communicated_rock_data waypoint3
+communicated_rock_data-waypoint6,communicated_rock_data waypoint6
+communicated_image_data-objective2-low_res,communicated_image_data objective2 low_res
+communicated_image_data-objective1-high_res,communicated_image_data objective1 high_res
+communicated_image_data-objective3-low_res,communicated_image_data objective3 low_res
+at-rover0-waypoint2,at rover0 waypoint2
+calibrated-camera2-rover0,calibrated camera2 rover0
+at-rover2-waypoint2,at rover2 waypoint2
+calibrated-camera1-rover2,calibrated camera1 rover2
+at-rover3-waypoint2,at rover3 waypoint2
+calibrated-camera0-rover3,calibrated camera0 rover3
+calibrated-camera3-rover3,calibrated camera3 rover3

@@ -60,42 +60,42 @@ clean-test: ## remove test and coverage artifacts
 lint-all: black isort lint static bandit safety vulture darglint pylint ## run all linters
 
 lint: ## check style with flake8
-	flake8 planning_with_past tests scripts
+	flake8 plan4past tests scripts
 
 static: ## static type checking with mypy
-	mypy planning_with_past tests scripts
+	mypy plan4past tests scripts
 
 isort: ## sort import statements with isort
-	isort planning_with_past tests scripts
+	isort plan4past tests scripts
 
 isort-check: ## check import statements order with isort
-	isort --check-only planning_with_past tests scripts
+	isort --check-only plan4past tests scripts
 
 black: ## apply black formatting
-	black planning_with_past tests scripts
+	black plan4past tests scripts
 
 black-check: ## check black formatting
-	black --check --verbose planning_with_past tests scripts
+	black --check --verbose plan4past tests scripts
 
 bandit: ## run bandit
-	bandit planning_with_past tests scripts
+	bandit plan4past tests scripts
 
 safety: ## run safety
 	safety check
 
 pylint: ## run pylint
-	pylint planning_with_past tests scripts
+	pylint plan4past tests scripts
 
 vulture: ## run vulture
-	vulture planning_with_past scripts/whitelist.py
+	vulture plan4past scripts/whitelist.py
 
 darglint: ## run vulture
-	darglint planning_with_past
+	darglint plan4past
 
 test: ## run tests quickly with the default Python
 	pytest tests --doctest-modules \
-        planning_with_past tests/ \
-        --cov=planning_with_past \
+        plan4past tests/ \
+        --cov=plan4past \
         --cov-report=xml \
         --cov-report=html \
         --cov-report=term
@@ -104,7 +104,7 @@ test-all: ## run tests on every Python version with tox
 	tox
 
 coverage: ## check code coverage quickly with the default Python
-	coverage run --source planning_with_past -m pytest
+	coverage run --source plan4past -m pytest
 	coverage report -m
 	coverage html
 	$(BROWSER) htmlcov/index.html
@@ -117,3 +117,13 @@ servedocs: docs ## compile the docs watching for changes
 	mkdocs build --clean
 	python -c 'print("###### Starting local server. Press Control+C to stop server ######")'
 	mkdocs serve
+
+release: dist ## package and upload a release
+	twine upload dist/*
+dist: clean ## builds source and wheel package
+	poetry build
+	ls -l dist
+install: clean ## install the package to the active Python's site-packages
+	poetry install
+develop: clean ## install the package in development mode
+	echo "Not supported by Poetry yet!"

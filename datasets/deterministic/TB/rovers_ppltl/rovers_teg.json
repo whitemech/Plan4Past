@@ -1,0 +1,9 @@
+{
+    "e03": "O(O(communicated_soil_data-waypoint1) & O(communicated_soil_data-waypoint2) & O(communicated_rock_data-waypoint0))",
+    "e04": "O(O(communicated_soil_data-waypoint1) & O(communicated_soil_data-waypoint2) & O(communicated_rock_data-waypoint0) & O(communicated_rock_data-waypoint1))",
+    "f01": "O(communicated_soil_data-waypoint1)",
+    "f02": "O(communicated_soil_data-waypoint1) & O(communicated_soil_data-waypoint2)",
+    "f03": "O(communicated_soil_data-waypoint1) & O(communicated_soil_data-waypoint2) & O(communicated_rock_data-waypoint0)",
+    "i04": "O(O(communicated_soil_data-waypoint1) | O(communicated_soil_data-waypoint2) | O(communicated_rock_data-waypoint0) | O(communicated_rock_data-waypoint1))",
+    "j04": "(communicated_soil_data-waypoint1 | communicated_soil_data-waypoint2 | communicated_rock_data-waypoint0 | communicated_rock_data-waypoint1) & (O(communicated_soil_data-waypoint1) | O(communicated_soil_data-waypoint2) | O(communicated_rock_data-waypoint0) | O(communicated_rock_data-waypoint1))"
+}

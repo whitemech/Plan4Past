@@ -1,0 +1,19 @@
+Bootstrap: docker
+From: python:3.10
+
+
+%files
+    plan4past /opt/plan4past/plan4past
+    scripts /opt/plan4past/scripts
+    pyproject.toml /opt/plan4past/pyproject.toml
+    setup.cfg /opt/plan4past/setup.cfg
+    README.md /opt/plan4past/README.md
+    LICENSE /opt/plan4past/LICENSE
+
+
+%post
+    pip install /opt/plan4past/
+
+
+%runscript
+    exec plan4past "$@"
