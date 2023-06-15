@@ -69,6 +69,7 @@ class Compiler:
         self.formula = rewrite(formula)
         if from_atoms_to_fluent:
             self.from_atoms_to_fluent = from_atoms_to_fluent
+            self.from_atoms_to_fluent[PLTLAtomic("true")] = Predicate("true")
             self.validate_mapping(domain, formula, from_atoms_to_fluent)
         else:
             self.from_atoms_to_fluent = default_mapping(self.formula)
