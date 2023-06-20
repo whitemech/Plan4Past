@@ -24,7 +24,7 @@
 from functools import singledispatch
 from typing import Dict, Set
 
-from pddl.logic.base import And, FalseFormula, Not, Or, TrueFormula
+from pddl.logic.base import And, FalseFormula, Not, Or
 from pddl.logic.predicates import DerivedPredicate, Predicate
 from pylogics.syntax.base import And as PLTLAnd
 from pylogics.syntax.base import Formula
@@ -57,16 +57,16 @@ def derived_predicates_true(
 ) -> Set[DerivedPredicate]:
     """Compute the derived predicate for a true formula."""
     val = Predicate(add_val_prefix("true"))
-    return {DerivedPredicate(val, TrueFormula())}
+    return {DerivedPredicate(val, Predicate("and"))}
 
 
 @derived_predicates.register
 def derived_predicates_false(
     _formula: PropositionalFalse, _atoms_to_fluents: Dict[PLTLAtomic, Predicate]
 ) -> Set[DerivedPredicate]:
-    """Compute the derived predicate for a true formula."""
+    """Compute the derived predicate for a false formula."""
     val = Predicate(add_val_prefix("false"))
-    return {DerivedPredicate(val, FalseFormula())}
+    return {DerivedPredicate(val, Not(Predicate("and")))}
 
 
 @derived_predicates.register

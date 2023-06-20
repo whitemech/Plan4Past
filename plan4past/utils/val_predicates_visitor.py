@@ -32,7 +32,7 @@ from pylogics.syntax.base import Not as PLTLNot
 from pylogics.syntax.base import Or as PLTLOr
 from pylogics.syntax.base import _BinaryOp, _UnaryOp
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
-from pylogics.syntax.pltl import Before, Once, PropositionalTrue, Since
+from pylogics.syntax.pltl import Before, Once,  Since, PropositionalTrue, PropositionalFalse
 from pylogics.utils.to_string import to_string
 
 from plan4past.helpers.utils import add_val_prefix, replace_symbols
@@ -58,6 +58,12 @@ def val_predicates(formula: Formula) -> Set[Predicate]:
 def val_predicates_true(_formula: PropositionalTrue) -> Set[Predicate]:
     """Compute the value predicate for a true formula."""
     return {Predicate(add_val_prefix("true"))}
+
+
+@val_predicates.register
+def val_predicates_false(_formula: PropositionalFalse) -> Set[Predicate]:
+    """Compute the value predicate for a false formula."""
+    return {Predicate(add_val_prefix("false"))}
 
 
 @val_predicates.register

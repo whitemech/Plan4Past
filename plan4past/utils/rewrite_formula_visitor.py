@@ -29,7 +29,7 @@ from pylogics.syntax.base import Not as PLTLNot
 from pylogics.syntax.base import Or as PLTLOr
 from pylogics.syntax.base import _UnaryOp
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
-from pylogics.syntax.pltl import Before, Historically, Once, PropositionalTrue, Since
+from pylogics.syntax.pltl import Before, Historically, Once, Since, PropositionalTrue, PropositionalFalse
 
 
 def rewrite_unaryop(formula: _UnaryOp):
@@ -44,8 +44,14 @@ def rewrite(formula: Formula) -> Formula:
 
 
 @rewrite.register
-def rewrite_first(formula: PropositionalTrue) -> Formula:
+def rewrite_true(formula: PropositionalTrue) -> Formula:
     """Compute the basic formula for the true formula."""
+    return formula
+
+
+@rewrite.register
+def rewrite_false(formula: PropositionalFalse) -> Formula:
+    """Compute the basic formula for the false formula."""
     return formula
 
 
