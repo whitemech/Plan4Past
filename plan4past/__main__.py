@@ -116,14 +116,13 @@ def _get_goal(goal_inline, goal_file) -> str:
         raise ValueError(
             "[ERROR]: You cannot specify both the goal formula and the goal file."
         )
-    elif goal_file:
+    if goal_file:
         return Path(goal_file).read_text(encoding="utf-8")
-    elif goal_inline:
+    if goal_inline:
         return goal_inline
-    else:
-        raise ValueError(
-            "[ERROR]: You must specify either the goal formula or the goal file."
-        )
+    raise ValueError(
+        "[ERROR]: You must specify either the goal formula or the goal file."
+    )
 
 
 def _parse_instance(in_domain, in_problem, goal) -> Tuple[Domain, Problem, Formula]:
