@@ -29,7 +29,14 @@ from pylogics.syntax.base import Not as PLTLNot
 from pylogics.syntax.base import Or as PLTLOr
 from pylogics.syntax.base import _UnaryOp
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
-from pylogics.syntax.pltl import Before, Historically, Once, Since, PropositionalTrue, PropositionalFalse
+from pylogics.syntax.pltl import (
+    Before,
+    Historically,
+    Once,
+    PropositionalFalse,
+    PropositionalTrue,
+    Since,
+)
 
 
 def rewrite_unaryop(formula: _UnaryOp):

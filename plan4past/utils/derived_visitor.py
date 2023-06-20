@@ -24,7 +24,7 @@
 from functools import singledispatch
 from typing import Dict, Set
 
-from pddl.logic.base import And, FalseFormula, Not, Or
+from pddl.logic.base import And, Not, Or
 from pddl.logic.predicates import DerivedPredicate, Predicate
 from pylogics.syntax.base import And as PLTLAnd
 from pylogics.syntax.base import Formula
