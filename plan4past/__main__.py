@@ -55,7 +55,13 @@ DEFAULT_NEW_PROBLEM_FILENAME: str = "new-problem.pddl"
     help="Path to PDDL problem file.",
     type=click.Path(exists=True, readable=True),
 )
-@click.option("-g", "--goal", help="The PPLTL goal formula.", type=str)
+@click.option("-g", "--goal-inline", help="The PPLTL goal formula.", type=str)
+@click.option(
+    "-gf",
+    "--goal-file",
+    help="The path to the PPLTL goal formula.",
+    type=click.Path(exists=True, readable=True),
+)
 @click.option(
     "-m",
     "--mapping",
@@ -77,8 +83,10 @@ DEFAULT_NEW_PROBLEM_FILENAME: str = "new-problem.pddl"
     help="Path to PDDL file to store the new problem.",
     type=click.Path(dir_okay=False),
 )
-def cli(domain, problem, goal, mapping, out_domain, out_problem):
+def cli(domain, problem, goal_inline, goal_file, mapping, out_domain, out_problem):
     """Plan4Past: Planning for Pure-Past Temporally Extended Goals."""
+    goal = _get_goal(goal_inline, goal_file)
+
     in_domain, in_problem, formula = _parse_instance(domain, problem, goal)
 
     var_map = (
@@ -100,6 +108,21 @@ def cli(domain, problem, goal, mapping, out_domain, out_problem):
         raise IOError(
             "[ERROR]: Something wrong occurred while writing the compiled domain and problem."
         ) from e
+
+
+def _get_goal(goal_inline, goal_file) -> str:
+    """Get the goal formula."""
+    if goal_inline and goal_file:
+        raise ValueError(
+            "[ERROR]: You cannot specify both the goal formula and the goal file."
+        )
+    if goal_file:
+        return Path(goal_file).read_text(encoding="utf-8")
+    if goal_inline:
+        return goal_inline
+    raise ValueError(
+        "[ERROR]: You must specify either the goal formula or the goal file."
+    )
 
 
 def _parse_instance(in_domain, in_problem, goal) -> Tuple[Domain, Problem, Formula]:
