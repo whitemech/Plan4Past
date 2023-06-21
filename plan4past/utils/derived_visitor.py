@@ -57,7 +57,7 @@ def derived_predicates_true(
 ) -> Set[DerivedPredicate]:
     """Compute the derived predicate for a true formula."""
     val = Predicate(add_val_prefix("true"))
-    return {DerivedPredicate(val, Predicate("and"))}
+    return {DerivedPredicate(val, And())}
 
 
 @derived_predicates.register
@@ -66,7 +66,7 @@ def derived_predicates_false(
 ) -> Set[DerivedPredicate]:
     """Compute the derived predicate for a false formula."""
     val = Predicate(add_val_prefix("false"))
-    return {DerivedPredicate(val, Not(Predicate("and")))}
+    return {DerivedPredicate(val, Or())}
 
 
 @derived_predicates.register
