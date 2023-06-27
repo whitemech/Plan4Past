@@ -25,6 +25,7 @@ from functools import singledispatch
 
 from pylogics.syntax.base import And as PLTLAnd
 from pylogics.syntax.base import Formula
+from pylogics.syntax.base import Implies as PLTLImplies
 from pylogics.syntax.base import Not as PLTLNot
 from pylogics.syntax.base import Or as PLTLOr
 from pylogics.syntax.base import _UnaryOp
@@ -87,6 +88,14 @@ def rewrite_not(formula: PLTLNot) -> Formula:
     """Compute the basic formula for a Not formula."""
     sub = rewrite_unaryop(formula)
     return PLTLNot(sub)
+
+
+@rewrite.register
+def rewrite_implies(formula: PLTLImplies) -> Formula:
+    """Compute the basic formula for an Implies formula."""
+    head = [PLTLNot(rewrite(f)) for f in formula.operands[:-1]]
+    tail = formula.operands[-1]
+    return PLTLOr(*head, tail)
 
 
 @rewrite.register
