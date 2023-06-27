@@ -54,13 +54,13 @@ def find_atoms(_formula: Formula) -> Set[PLTLAtomic]:
 
 
 @find_atoms.register
-def find_atoms_tt(_formula: PLTLTrue) -> Set[PLTLAtomic]:
+def find_atoms_true(_formula: PLTLTrue) -> Set[PLTLAtomic]:
     """Find atoms for a true formula."""
     return {PLTLAtomic("true")}
 
 
 @find_atoms.register
-def find_atoms_ff(_formula: PLTLFalse) -> Set[PLTLAtomic]:
+def find_atoms_false(_formula: PLTLFalse) -> Set[PLTLAtomic]:
     """Find atoms for a false formula."""
     return {PLTLAtomic("false")}
 

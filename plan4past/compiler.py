@@ -155,7 +155,6 @@ class Compiler:
 
         self._result_problem = Problem(
             name=self.problem.name,
-            domain=self._result_domain,
             domain_name=self.domain.name,
             requirements=self.problem.requirements,
             objects=[*self.problem.objects],
