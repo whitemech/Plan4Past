@@ -182,12 +182,23 @@ def _update_domain_actions_det(
     """Update domain actions."""
     new_actions = set()
     for action in actions:
-        new_actions.add(
-            Action(
-                name=action.name,
-                parameters=[*action.parameters],
-                precondition=And(action.precondition),
-                effect=AndEffect(action.effect, *progression),
+        if isinstance(action.effect, AndEffect):
+            previous_effects = action.effect.operands
+            new_actions.add(
+                Action(
+                    name=action.name,
+                    parameters=[*action.parameters],
+                    precondition=And(action.precondition),
+                    effect=AndEffect(*previous_effects, *progression),
+                )
             )
-        )
+        else:
+            new_actions.add(
+                Action(
+                    name=action.name,
+                    parameters=[*action.parameters],
+                    precondition=And(action.precondition),
+                    effect=AndEffect(action.effect, *progression),
+                )
+            )
     return new_actions
