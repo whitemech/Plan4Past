@@ -21,6 +21,7 @@
 #
 
 """This module contains tests for the plan4past.utils.atoms_visitor module."""
+import pytest
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
 from pylogics.syntax.pltl import Before
 from pylogics.syntax.pltl import FalseFormula as PLTLFalse
@@ -92,3 +93,12 @@ def test_find_atoms_historically():
     a = PLTLAtomic("a")
     historically_a = Historically(a)
     assert find_atoms(historically_a) == {a}
+
+
+def test_find_atoms_called_with_not_supported_object_raises_error():
+    """Test that passing an unsupported input for 'find_atoms' will raise an error."""
+    with pytest.raises(
+        ValueError,
+        match="object of type <class 'int'> is not supported by this function",
+    ):
+        find_atoms(1)

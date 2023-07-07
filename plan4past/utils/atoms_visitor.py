@@ -26,7 +26,6 @@ from functools import singledispatch
 from typing import Set
 
 from pylogics.syntax.base import And as PLTLAnd
-from pylogics.syntax.base import Formula
 from pylogics.syntax.base import Not as PLTLNot
 from pylogics.syntax.base import Or as PLTLOr
 from pylogics.syntax.base import _BinaryOp, _UnaryOp
@@ -48,9 +47,9 @@ def find_atoms_unaryop(formula: _UnaryOp):
 
 
 @singledispatch
-def find_atoms(_formula: Formula) -> Set[PLTLAtomic]:
+def find_atoms(obj: object) -> Set[PLTLAtomic]:
     """Find atoms for a formula."""
-    return set()
+    raise ValueError(f"object of type {type(obj)} is not supported by this function")
 
 
 @find_atoms.register
