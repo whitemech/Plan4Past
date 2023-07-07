@@ -27,7 +27,6 @@ from typing import Dict, Set
 from pddl.logic.base import And, Not, Or
 from pddl.logic.predicates import DerivedPredicate, Predicate
 from pylogics.syntax.base import And as PLTLAnd
-from pylogics.syntax.base import Formula
 from pylogics.syntax.base import Not as PLTLNot
 from pylogics.syntax.base import Or as PLTLOr
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
@@ -45,10 +44,10 @@ from plan4past.helpers.utils import add_val_prefix, replace_symbols
 
 @singledispatch
 def derived_predicates(
-    formula: Formula, atoms_to_fluents: Dict[PLTLAtomic, Predicate]
+    formula: object, atoms_to_fluents: Dict[PLTLAtomic, Predicate]
 ) -> Set[DerivedPredicate]:
     """Compute the derived predicate for a formula."""
-    raise NotImplementedError(f"handler not implemented for formula {type(formula)}")
+    raise NotImplementedError(f"handler not implemented for object {type(formula)}")
 
 
 @derived_predicates.register
@@ -132,7 +131,7 @@ def derived_predicates_before(
     """Compute the derived predicate for a Before formula."""
     formula_name = to_string(formula)
     val = Predicate(add_val_prefix(replace_symbols(formula_name)))
-    condition = And(Predicate(replace_symbols(to_string(formula))))
+    condition = Predicate(replace_symbols(to_string(formula)))
     der_pred_arg = derived_predicates(formula.argument, atoms_to_fluents)
     return {DerivedPredicate(val, condition)}.union(der_pred_arg)
 
@@ -167,7 +166,7 @@ def derived_predicates_once(
     val = Predicate(add_val_prefix(replace_symbols(formula_name)))
     condition = Or(
         Predicate(add_val_prefix(replace_symbols(to_string(formula.argument)))),
-        And(Predicate(f"Y-{replace_symbols(to_string(formula))}")),
+        Predicate(f"Y-{replace_symbols(to_string(formula))}"),
     )
     der_pred_arg = derived_predicates(formula.argument, atoms_to_fluents)
     return {DerivedPredicate(val, condition)}.union(der_pred_arg)
