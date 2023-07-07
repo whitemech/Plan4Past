@@ -27,7 +27,6 @@ from typing import Set
 
 from pddl.logic.predicates import Predicate
 from pylogics.syntax.base import And as PLTLAnd
-from pylogics.syntax.base import Formula
 from pylogics.syntax.base import Not as PLTLNot
 from pylogics.syntax.base import Or as PLTLOr
 from pylogics.syntax.base import _BinaryOp, _UnaryOp
@@ -55,9 +54,11 @@ def predicates_unaryop(formula: _UnaryOp):
 
 
 @singledispatch
-def predicates(formula: Formula) -> Set[Predicate]:
+def predicates(formula: object) -> Set[Predicate]:
     """Compute predicate for a formula."""
-    raise NotImplementedError(f"handler not implemented for formula {type(formula)}")
+    raise NotImplementedError(
+        f"handler not implemented for object of type {type(formula)}"
+    )
 
 
 @predicates.register
