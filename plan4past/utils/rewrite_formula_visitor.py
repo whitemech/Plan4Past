@@ -24,6 +24,7 @@
 from functools import singledispatch
 
 from pylogics.syntax.base import And as PLTLAnd
+from pylogics.syntax.base import Equivalence as PLTLEquivalence
 from pylogics.syntax.base import Formula
 from pylogics.syntax.base import Implies as PLTLImplies
 from pylogics.syntax.base import Not as PLTLNot
@@ -46,9 +47,11 @@ def rewrite_unaryop(formula: _UnaryOp):
 
 
 @singledispatch
-def rewrite(formula: Formula) -> Formula:
+def rewrite(formula: object) -> Formula:
     """Rewrite a formula."""
-    raise NotImplementedError(f"handler not implemented for formula {type(formula)}")
+    raise NotImplementedError(
+        f"handler not implemented for object of type {type(formula)}"
+    )
 
 
 @rewrite.register
@@ -96,6 +99,14 @@ def rewrite_implies(formula: PLTLImplies) -> Formula:
     head = [PLTLNot(rewrite(f)) for f in formula.operands[:-1]]
     tail = formula.operands[-1]
     return PLTLOr(*head, tail)
+
+
+@rewrite.register
+def rewrite_equivalence(formula: PLTLEquivalence) -> Formula:
+    """Compute the basic formula for an Equivalence formula."""
+    positive = PLTLAnd(*[rewrite(f) for f in formula.operands])
+    negative = PLTLAnd(*[PLTLNot(rewrite(f)) for f in formula.operands])
+    return PLTLOr(positive, negative)
 
 
 @rewrite.register
