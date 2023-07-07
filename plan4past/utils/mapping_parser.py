@@ -141,6 +141,19 @@ def _check_unmapped_symbols(
         )
 
 
+def should_skip_row(row_str: str) -> bool:
+    """Check if a row should be skipped."""
+    # skip empty lines
+    if row_str.strip() == "":
+        return True
+
+    # skip comments
+    if row_str.strip().startswith(";"):
+        return True
+
+    return False
+
+
 def mapping_parser(text: str, formula: Formula) -> Dict[PLTLAtomic, Predicate]:
     """Parse symbols to ground predicates mapping."""
     symbols = find_atoms(formula)
@@ -150,11 +163,19 @@ def mapping_parser(text: str, formula: Formula) -> Dict[PLTLAtomic, Predicate]:
     mapped_symbol_names = set()
 
     for row_id, vmap in enumerate(maps):
+        if should_skip_row(vmap):
+            continue
+
         symbol_name, predicate = _process_row(row_id, vmap)
 
         if symbol_name not in symbols_by_name:
             # don't need to process this row, since the symbol does not occur in the formula
             continue
+
+        if symbol_name in mapped_symbol_names:
+            raise MappingParserError(
+                f"symbol '{symbol_name}' is mapped multiple times", row_id=row_id
+            )
 
         symbol = symbols_by_name[symbol_name]
         mapped_symbol_names.add(symbol_name)

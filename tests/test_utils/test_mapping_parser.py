@@ -60,6 +60,16 @@ def test_mapping_parser_empty_file():
     assert not mapping_parser("", PLTLTrue())
 
 
+def test_mapping_parser_empty_lines():
+    """Test the mapping parser with empty lines."""
+    assert not mapping_parser("\n\n", PLTLTrue())
+
+
+def test_mapping_parser_with_comments():
+    """Test the mapping parser with comments."""
+    assert mapping_parser(";;;;\n;\non_b_a,on b a", _on_b_a) == {_on_b_a: _pddl_on_b_a}
+
+
 def test_mapping_parser_when_row_has_no_comma():
     """Test the mapping parser when a row is invalid (has no comma)."""
     with pytest.raises(
@@ -147,3 +157,12 @@ def test_mapping_parser_in_case_of_unmapped_symbols():
             ),
             PLTLAtomic("a") & PLTLAtomic("b") & PLTLTrue(),
         )
+
+
+def test_mapping_parser_symbol_occurs_more_than_once():
+    """Test the mapping parser when a symbol occurs more than once."""
+    with pytest.raises(
+        MappingParserError,
+        match="invalid mapping at row 1: symbol 'on_b_a' is mapped multiple times",
+    ):
+        mapping_parser("on_b_a,on b a\non_b_a,on b a", _on_b_a)
