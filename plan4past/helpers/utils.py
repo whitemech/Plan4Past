@@ -47,7 +47,7 @@ def cd(path: PathLike) -> Generator:  # pylint: disable=invalid-name
 
 def add_val_prefix(name: str):
     """Add the 'prime' prefix."""
-    return "val_" + name.replace('"', "")
+    return "val-" + name.replace('"', "")
 
 
 def remove_before_prefix(name: str):
@@ -57,7 +57,7 @@ def remove_before_prefix(name: str):
 
 def remove_val_prefix(name: str):
     """Remove the 'prime' prefix."""
-    return name.replace("val_", "")
+    return name.replace("val-", "")
 
 
 def replace_symbols(name: str):
