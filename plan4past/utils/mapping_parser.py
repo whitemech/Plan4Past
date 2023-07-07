@@ -34,7 +34,7 @@ from plan4past.utils.atoms_visitor import find_atoms
 def mapping_parser(text: str, formula: Formula) -> Dict[PLTLAtomic, Predicate]:
     """Parse symbols to ground predicates mapping."""
     symbols = find_atoms(formula)
-    maps = text.split("\n")
+    maps = text.splitlines(keepends=False)
     from_atoms_to_fluents = {}
     for symbol in symbols:
         for vmap in maps:
