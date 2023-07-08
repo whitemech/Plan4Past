@@ -70,7 +70,7 @@ pytest = "^7.3.1"
 pytest-cov = "^4.1.0"
 pytest-lazy-fixture = "^0.6.3"
 pytest-randomly = "^3.12.0"
-safety = "^2.3.5"
+safety = {git = "https://git@github.com/pyupio/safety.git", rev = "8afa6de"}
 toml = "^0.10.2"
 tox = "^4.4.12"
 twine = "^4.0.2"
