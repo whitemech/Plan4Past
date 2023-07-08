@@ -21,28 +21,13 @@
 #
 
 """Miscellanea utilities."""
-import contextlib
-import os
-from os import PathLike
-from pathlib import Path
-from typing import Dict, Generator
+from typing import Dict
 
 from pddl.logic import Predicate, constants
 from pylogics.syntax.base import Formula
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
 
 from plan4past.utils.atoms_visitor import find_atoms
-
-
-@contextlib.contextmanager
-def cd(path: PathLike) -> Generator:  # pylint: disable=invalid-name
-    """Change working directory temporarily."""
-    old_path = Path.cwd()
-    os.chdir(path)
-    try:
-        yield
-    finally:
-        os.chdir(str(old_path))
 
 
 def add_val_prefix(name: str):
