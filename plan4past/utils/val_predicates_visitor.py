@@ -20,7 +20,7 @@
 # along with Plan4Past.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-"""Value predicates for derived predicates visitor."""
+"""Value predicates for val predicates visitor."""
 import functools
 from functools import singledispatch
 from typing import Set
