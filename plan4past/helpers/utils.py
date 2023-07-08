@@ -37,12 +37,18 @@ def add_val_prefix(name: str):
 
 def remove_before_prefix(name: str):
     """Remove the 'Y' prefix."""
-    return name.replace("Y-", "") if name[1] == "-" else name.replace("Y", "", 1)
+    return (
+        name.replace("Y-", "")
+        if name.startswith("Y-")
+        else name.replace("Y", "", 1)
+        if name.startswith("Y")
+        else name
+    )
 
 
 def remove_val_prefix(name: str):
     """Remove the 'prime' prefix."""
-    return name.replace("val-", "")
+    return name.replace("val-", "") if name.startswith("val-") else name
 
 
 def replace_symbols(name: str):
