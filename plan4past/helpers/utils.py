@@ -29,11 +29,12 @@ _PDDL_NAME_REGEX = "[A-Za-z][-_A-Za-z0-9]*"
 _GROUND_FLUENT_REGEX = re.compile(
     rf"(\"({_PDDL_NAME_REGEX})( {_PDDL_NAME_REGEX})*\")|({_PDDL_NAME_REGEX})"
 )
+_VAL_PREFIX = "val__"
 
 
 def add_val_prefix(name: str):
     """Add the 'prime' prefix."""
-    return "val-" + name.replace('"', "")
+    return _VAL_PREFIX + name.replace('"', "")
 
 
 def remove_before_prefix(name: str):
@@ -49,7 +50,7 @@ def remove_before_prefix(name: str):
 
 def remove_val_prefix(name: str):
     """Remove the 'prime' prefix."""
-    return name.replace("val-", "") if name.startswith("val-") else name
+    return name.replace(_VAL_PREFIX, "") if name.startswith(_VAL_PREFIX) else name
 
 
 def replace_symbols(name: str):
@@ -104,5 +105,11 @@ def validate(symbol: str) -> None:
 
     :param symbol: the symbol
     """
+    # check if the symbol does not start with the 'val__' prefix
+    if symbol.startswith(_VAL_PREFIX):
+        raise ValueError(
+            f"invalid symbol: symbol '{symbol}' cannot start with {_VAL_PREFIX}"
+        )
+
     # check if the symbol is a valid PDDL ground fluent
     parse_ground_fluent(symbol)

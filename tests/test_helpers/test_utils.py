@@ -33,10 +33,10 @@ from plan4past.helpers.utils import (
 
 def test_val_prefix() -> None:
     """Test the add_val_prefix function."""
-    assert add_val_prefix("Y-foo") == "val-Y-foo"
-    assert add_val_prefix("Yfoo") == "val-Yfoo"
-    assert add_val_prefix("foo") == "val-foo"
-    assert add_val_prefix("Y-foo-bar") == "val-Y-foo-bar"
+    assert add_val_prefix("Y-foo") == "val__Y-foo"
+    assert add_val_prefix("Yfoo") == "val__Yfoo"
+    assert add_val_prefix("foo") == "val__foo"
+    assert add_val_prefix("Y-foo-bar") == "val__Y-foo-bar"
 
 
 def test_remove_before_prefix() -> None:
@@ -48,7 +48,7 @@ def test_remove_before_prefix() -> None:
 
 def test_remove_val_prefix() -> None:
     """Test the remove_val_prefix function."""
-    assert remove_val_prefix("val-foo") == "foo"
+    assert remove_val_prefix("val__foo") == "foo"
     assert remove_val_prefix("foo") == "foo"
 
 
