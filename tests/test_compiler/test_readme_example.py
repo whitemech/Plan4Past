@@ -20,7 +20,7 @@
 # along with Plan4Past.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-"""This module contain tests for the compiler module."""
+"""This module contain tests for the compiler module, readme example."""
 
 from pathlib import Path
 from tempfile import TemporaryDirectory
