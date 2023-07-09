@@ -20,4 +20,32 @@
 # along with Plan4Past.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-"""This module contains fixtures for the tests."""
+"""This module contains base class for using planutils docker image."""
+
+
+from pathlib import Path
+
+from docker import DockerClient
+
+from tests.helpers.constants import PLANUTILS_DOCKERFILE
+from tests.helpers.docker import DockerImage
+
+
+class PlanutilsDockerImage(DockerImage):
+    """Wrapper to the Planutils Docker image."""
+
+    TAG = "plan4past-dev/planutils:latest"
+
+    def __init__(
+        self,
+        client: DockerClient,
+        dockerfile: Path = PLANUTILS_DOCKERFILE,
+    ):
+        """
+        Initialize the Planutils Docker image.
+
+        :param client: the Docker client.
+        """
+        super().__init__(
+            client, self.TAG, dockerfile=dockerfile, context=dockerfile.parent
+        )

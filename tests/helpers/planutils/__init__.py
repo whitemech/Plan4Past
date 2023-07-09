@@ -20,4 +20,4 @@
 # along with Plan4Past.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-"""This module contains fixtures for the tests."""
+"""This package contains helper functions for using planutils tools."""

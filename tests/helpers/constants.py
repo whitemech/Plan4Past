@@ -20,4 +20,15 @@
 # along with Plan4Past.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-"""This module contains fixtures for the tests."""
+"""This module contains constants for the tests."""
+
+import inspect
+from pathlib import Path
+
+ROOT_DIR = Path(inspect.getfile(inspect.currentframe())).resolve().parent.parent.parent  # type: ignore
+TEST_DIR = ROOT_DIR / "tests"
+EXAMPLES_DIR = ROOT_DIR / "examples"
+EXAMPLE_MAP_FILE = EXAMPLES_DIR / "pddl/p-0.map"
+
+DOCKER_DIR = TEST_DIR / "docker"
+PLANUTILS_DOCKERFILE = DOCKER_DIR / "Dockerfile-planutils"

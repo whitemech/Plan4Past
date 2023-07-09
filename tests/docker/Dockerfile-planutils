@@ -1,0 +1,6 @@
+FROM aiplanning/planutils:latest
+
+# Install solvers and tools
+RUN planutils install -y val
+RUN planutils install -y planning.domains
+RUN planutils install -y lama
