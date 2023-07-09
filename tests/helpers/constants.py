@@ -33,6 +33,7 @@ EXAMPLE_MAP_FILE = EXAMPLES_DIR / "pddl/p-0.map"
 
 BENCHMARKS_DIR = TEST_DIR / "benchmarks"
 BLOCKSWORLD_DIR = BENCHMARKS_DIR / "deterministic" / "BF" / "blocksworld_ppltl"
+OPENSTACKS_DIR = BENCHMARKS_DIR / "deterministic" / "BF" / "openstacks_ppltl"
 
 
 DOCKER_DIR = TEST_DIR / "docker"
