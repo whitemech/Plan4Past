@@ -26,6 +26,7 @@ import pytest
 from docker import DockerClient
 
 from tests.helpers.planutils.base import BasePlannerWrapper, PlanutilsDockerImage
+from tests.helpers.planutils.downward import FastDownwardWrapper
 from tests.helpers.planutils.lama import LAMAWrapper
 from tests.helpers.planutils.val import VALWrapper
 
@@ -60,3 +61,17 @@ def lama(
 ) -> BasePlannerWrapper:
     """Return the LAMA wrapper."""
     return LAMAWrapper(planutils_docker_image)
+
+
+@pytest.fixture(scope="session")
+def fast_downward(
+    planutils_docker_image,
+) -> BasePlannerWrapper:
+    """Return the Fast-Downward wrapper."""
+    return FastDownwardWrapper(planutils_docker_image)
+
+
+@pytest.fixture(scope="session")
+def default_planner(fast_downward) -> BasePlannerWrapper:
+    """Return the default planner."""
+    return fast_downward

@@ -21,31 +21,57 @@
 #
 
 
-"""This module contains the LAMA wrapper for the planutils docker image."""
+"""This module contains the Fast-Downward wrapper for the planutils docker image."""
 import logging
+from enum import Enum
 from pathlib import Path
 from typing import Sequence
 
-from tests.helpers.planutils.base import BasePlannerWrapper, PlannerResult
+from tests.helpers.planutils.base import (
+    BasePlannerWrapper,
+    PlannerResult,
+    PlanutilsDockerImage,
+)
 
 logger = logging.getLogger(__name__)
 
 
-class LAMAWrapper(BasePlannerWrapper):
-    """A wrapper for the LAMA planner."""
+class Heuristics(Enum):
+    """The heuristics available for Fast-Downward."""
+
+    FF = "ff"
+    HMAX = "hmax"
+
+
+class FastDownwardWrapper(BasePlannerWrapper):
+    """A wrapper for the Fast-Downward planner."""
+
+    def __init__(
+        self, image: PlanutilsDockerImage, heuristic: Heuristics = Heuristics.FF
+    ):
+        """Initialize the wrapper."""
+        super().__init__(image)
+
+        self._heuristic = heuristic
 
     def get_planner_cmd(
         self, bind_path: Path, domain: Path, problem: Path
     ) -> Sequence[str]:
         """Return the command to run the planner."""
-        return ["lama", str(bind_path / domain.name), str(bind_path / problem.name)]
+        return [
+            "downward",
+            str(bind_path / domain.name),
+            str(bind_path / problem.name),
+            # we need escaping due to nuances in using planutils with docker
+            f'--search "astar\\({self._heuristic.value}\\)"',
+        ]
 
     def process_output(self, working_directory: Path, stdout: str) -> PlannerResult:
         """Process the output of the planner."""
         logger.debug("Processing output of LAMA")
 
         # the sas_plan file is in the /root directory
-        sas_file = working_directory / "sas_plan.1"
+        sas_file = working_directory / "sas_plan"
 
         sas_file_lines = self._process_sas_plan_file(sas_file)
 

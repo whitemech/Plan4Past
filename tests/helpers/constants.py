@@ -30,5 +30,10 @@ TEST_DIR = ROOT_DIR / "tests"
 EXAMPLES_DIR = ROOT_DIR / "examples"
 EXAMPLE_MAP_FILE = EXAMPLES_DIR / "pddl/p-0.map"
 
+
+BENCHMARKS_DIR = TEST_DIR / "benchmarks"
+BLOCKSWORLD_DIR = BENCHMARKS_DIR / "deterministic" / "BF" / "blocksworld_ppltl"
+
+
 DOCKER_DIR = TEST_DIR / "docker"
 PLANUTILS_DOCKERFILE = DOCKER_DIR / "Dockerfile-planutils"
