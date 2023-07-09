@@ -25,16 +25,29 @@
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
+import pytest
 from pddl.formatter import domain_to_string, problem_to_string
+from pddl.logic import Predicate, constants
 from pddl.parser.domain import DomainParser
 from pddl.parser.problem import ProblemParser
 from pylogics.parsers import parse_pltl
+from pylogics.syntax.pltl import Atomic as PLTLAtomic
 
 from plan4past.compiler import Compiler
 from tests.helpers.constants import EXAMPLES_DIR
 
 
-def test_readme_example(val) -> None:
+@pytest.mark.parametrize(
+    "from_atoms_to_fluent",
+    [
+        None,
+        {
+            PLTLAtomic("on_b_a"): Predicate("on", *constants("b a")),
+            PLTLAtomic("ontable_c"): Predicate("ontable", *constants("c")),
+        },
+    ],
+)
+def test_readme_example(val, from_atoms_to_fluent) -> None:
     """Test the example from the README."""
     formula = "on_b_a & O(ontable_c)"
     domain_parser = DomainParser()
@@ -47,7 +60,9 @@ def test_readme_example(val) -> None:
     problem = problem_parser(pddl_example_problem_path.read_text(encoding="utf-8"))
     goal = parse_pltl(formula)
 
-    compiler = Compiler(domain, problem, goal)
+    compiler = Compiler(
+        domain, problem, goal, from_atoms_to_fluent=from_atoms_to_fluent
+    )
     compiler.compile()
     compiled_domain, compiled_problem = compiler.result
 
