@@ -155,7 +155,8 @@ class DockerImage(ABC):
         """Create the container."""
         assert "command" not in kwargs
         assert "remove" not in kwargs
+        assert "privileged" not in kwargs
         stdout = self._client.containers.run(
-            self.tag, command=cmd, remove=True, **kwargs
+            self.tag, command=cmd, remove=True, privileged=True, **kwargs
         )
         return stdout.decode("utf-8")

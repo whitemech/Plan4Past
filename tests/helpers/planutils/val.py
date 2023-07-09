@@ -89,6 +89,7 @@ class VALWrapper:
             shutil.copy(domain, domain_tmp)
 
             if problem is not None:
+                # pylint: disable=duplicate-code
                 problem_tmp = tmp_dir_path / problem.name
                 shutil.copy(problem, problem_tmp)
 
