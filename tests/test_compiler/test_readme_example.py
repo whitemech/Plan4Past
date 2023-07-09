@@ -23,10 +23,8 @@
 """This module contain tests for the compiler module, readme example."""
 
 from pathlib import Path
-from tempfile import TemporaryDirectory
 
 import pytest
-from pddl.formatter import domain_to_string, problem_to_string
 from pddl.logic import Predicate, constants
 from pddl.parser.domain import DomainParser
 from pddl.parser.problem import ProblemParser
@@ -35,6 +33,7 @@ from pylogics.syntax.pltl import Atomic as PLTLAtomic
 
 from plan4past.compiler import Compiler
 from tests.helpers.constants import EXAMPLES_DIR
+from tests.helpers.misc import check_compilation
 
 
 @pytest.mark.parametrize(
@@ -47,7 +46,7 @@ from tests.helpers.constants import EXAMPLES_DIR
         },
     ],
 )
-def test_readme_example(val, lama, from_atoms_to_fluent) -> None:
+def test_readme_example(val, default_planner, from_atoms_to_fluent) -> None:
     """Test the example from the README."""
     formula = "on_b_a & O(ontable_c)"
     domain_parser = DomainParser()
@@ -66,24 +65,15 @@ def test_readme_example(val, lama, from_atoms_to_fluent) -> None:
     compiler.compile()
     compiled_domain, compiled_problem = compiler.result
 
-    with TemporaryDirectory() as tmpdir:
-        tmpdir_path = Path(tmpdir)
-        new_domain_path = tmpdir_path / "new-domain.pddl"
-        new_problem_path = tmpdir_path / "new-problem.pddl"
-        with open(new_domain_path, "w+", encoding="utf-8") as d:
-            d.write(domain_to_string(compiled_domain))
-        with open(new_problem_path, "w+", encoding="utf-8") as p:
-            p.write(problem_to_string(compiled_problem))
+    expected_plan = (
+        "(unstack c d)",
+        "(put-down c)",
+        "(unstack a b)",
+        "(put-down a)",
+        "(pick-up b)",
+        "(stack b a)",
+    )
 
-        result = val.validate_problem(new_domain_path, new_problem_path)
-        assert result.is_valid(strict=True)
-
-        plan_result = lama.plan(new_domain_path, new_problem_path)
-        assert plan_result.plan == [
-            "(unstack c d)",
-            "(put-down c)",
-            "(unstack a b)",
-            "(put-down a)",
-            "(pick-up b)",
-            "(stack b a)",
-        ]
+    check_compilation(
+        compiled_domain, compiled_problem, val, default_planner, expected_plan
+    )

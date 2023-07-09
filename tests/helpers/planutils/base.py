@@ -26,7 +26,7 @@ from abc import abstractmethod
 from dataclasses import dataclass
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Sequence
+from typing import Sequence, Tuple
 
 from docker import DockerClient
 
@@ -58,7 +58,7 @@ class PlanutilsDockerImage(DockerImage):
 class PlannerResult:
     """The result of the validation."""
 
-    plan: Sequence[str]
+    plan: Tuple[str, ...]
 
     @property
     def plan_length(self) -> int:
@@ -133,3 +133,20 @@ class BasePlannerWrapper:
     def process_output(self, working_directory: Path, stdout: str) -> PlannerResult:
         """Process the output of the planner."""
         raise NotImplementedError
+
+    def _process_sas_plan_file(self, sas_file: Path) -> Tuple[str, ...]:
+        """
+        Process the SAS plan file.
+
+        :param sas_file: the plan file.
+        :return: the plan.
+        """
+        sas_file_lines = sas_file.read_text().splitlines(keepends=False)
+        # remove last line
+        last_line = sas_file_lines[-1]
+        sas_file_lines = sas_file_lines[:-1]
+
+        # check removed lines were not relevant
+        assert last_line.startswith("; cost = ")
+
+        return tuple(sas_file_lines)
