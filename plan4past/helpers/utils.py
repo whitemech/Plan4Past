@@ -21,13 +21,14 @@
 #
 
 """Miscellanea utilities."""
-from typing import Dict
+import re
 
 from pddl.logic import Predicate, constants
-from pylogics.syntax.base import Formula
-from pylogics.syntax.pltl import Atomic as PLTLAtomic
 
-from plan4past.utils.atoms_visitor import find_atoms
+_PDDL_NAME_REGEX = "[A-Za-z][-_A-Za-z0-9]*"
+_GROUND_FLUENT_REGEX = re.compile(
+    rf"(\"({_PDDL_NAME_REGEX})( {_PDDL_NAME_REGEX})*\")|({_PDDL_NAME_REGEX})"
+)
 
 
 def add_val_prefix(name: str):
@@ -65,19 +66,6 @@ def replace_symbols(name: str):
     )
 
 
-def default_mapping(formula: Formula) -> Dict[PLTLAtomic, Predicate]:
-    """Compute mapping from atoms to fluents using underscores."""
-    symbols = find_atoms(formula)
-    from_atoms_to_fluents = {}
-    for symbol in symbols:
-        name, *cons = symbol.name.split("_")
-        if cons:
-            from_atoms_to_fluents[symbol] = Predicate(name, *constants(" ".join(cons)))
-        else:
-            from_atoms_to_fluents[symbol] = Predicate(name)
-    return from_atoms_to_fluents
-
-
 def check_(condition: bool, message: str = "") -> None:
     """
     User-defined assert.
@@ -88,3 +76,33 @@ def check_(condition: bool, message: str = "") -> None:
     """
     if not condition:
         raise AssertionError(message)
+
+
+def parse_ground_fluent(symbol: str) -> Predicate:
+    """
+    Parse a ground fluent.
+
+    :param symbol: the ground fluent
+    :return: the predicate
+    """
+    match = _GROUND_FLUENT_REGEX.fullmatch(symbol)
+    if match is None:
+        raise ValueError(f"invalid PDDL symbol in formula: {symbol}")
+
+    if '"' in symbol:
+        tokens = symbol[1:-1].split(" ", 1)
+        predicate_name, cons = (
+            (tokens[0], tokens[1]) if len(tokens) > 1 else (tokens[0], "")
+        )
+        return Predicate(predicate_name, *constants(cons))
+    return Predicate(symbol)
+
+
+def validate(symbol: str) -> None:
+    """
+    Validate a symbol.
+
+    :param symbol: the symbol
+    """
+    # check if the symbol is a valid PDDL ground fluent
+    parse_ground_fluent(symbol)

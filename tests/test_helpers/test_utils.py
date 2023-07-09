@@ -22,35 +22,13 @@
 
 """This module contains tests for the plan4past.helpers.utils module."""
 import pytest
-from pddl.logic import Predicate, constants
-from pylogics.syntax.pltl import Atomic as PLTLAtomic
-from pylogics.syntax.pltl import Before, Since
 
 from plan4past.helpers.utils import (
     add_val_prefix,
     check_,
-    default_mapping,
     remove_before_prefix,
     remove_val_prefix,
 )
-
-
-def test_default_mapping() -> None:
-    """Test the default mapping function."""
-    p_a_b = PLTLAtomic("p_a_b")
-    p_b_c = PLTLAtomic("p_b_c")
-    p_c_d = PLTLAtomic("p_c_d")
-    p2 = PLTLAtomic("p2")
-    before_p_a_b = Before(p_a_b)
-    p_b_c_since_p_c_d = Since(p_b_c, p_c_d)
-
-    result = default_mapping(before_p_a_b & p_b_c_since_p_c_d & p2)
-    assert result == {
-        p_a_b: Predicate("p", *constants("a b")),
-        p_b_c: Predicate("p", *constants("b c")),
-        p_c_d: Predicate("p", *constants("c d")),
-        p2: Predicate("p2"),
-    }
 
 
 def test_val_prefix() -> None:

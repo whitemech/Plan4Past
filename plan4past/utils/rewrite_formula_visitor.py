@@ -40,6 +40,8 @@ from pylogics.syntax.pltl import (
     Since,
 )
 
+from plan4past.helpers.utils import validate
+
 
 def rewrite_unaryop(formula: _UnaryOp):
     """Rewrite the formula for a unary operator."""
@@ -69,6 +71,8 @@ def rewrite_false(formula: PropositionalFalse) -> Formula:
 @rewrite.register
 def rewrite_atomic(formula: PLTLAtomic) -> Formula:
     """Compute the basic formula for an atomic formula."""
+    # validate atomic formula symbol - it must be a PDDL ground fluent
+    validate(formula.name)
     return formula
 
 

@@ -21,10 +21,9 @@
 #
 
 """Compiler from PDDL Domain and PPLTL into a new PDDL domain."""
-from typing import AbstractSet, Dict, Optional, Set, Tuple
+from typing import AbstractSet, Optional, Set, Tuple
 
 from pddl.core import Action, Domain, Problem, Requirements
-from pddl.logic import Constant
 from pddl.logic.base import And, Not
 from pddl.logic.effects import AndEffect, When
 from pddl.logic.predicates import DerivedPredicate, Predicate
@@ -35,7 +34,6 @@ from pylogics.utils.to_string import to_string
 from plan4past.helpers.utils import (
     add_val_prefix,
     check_,
-    default_mapping,
     remove_before_prefix,
     replace_symbols,
 )
@@ -54,7 +52,6 @@ class Compiler:
         domain: Domain,
         problem: Problem,
         formula: Formula,
-        from_atoms_to_fluent: Optional[Dict[PLTLAtomic, Predicate]] = None,
     ) -> None:
         """
         Initialize the compiler.
@@ -62,16 +59,10 @@ class Compiler:
         :param domain: the domain
         :param problem: the problem
         :param formula: the formula
-        :param from_atoms_to_fluent: optional mapping from atoms to fluent
         """
         self.domain = domain
         self.problem = problem
         self.formula = rewrite(formula)
-        if from_atoms_to_fluent:
-            self.from_atoms_to_fluent = from_atoms_to_fluent
-            self.validate_mapping(domain, formula, from_atoms_to_fluent)
-        else:
-            self.from_atoms_to_fluent = default_mapping(self.formula)
 
         check_(self.formula.logic == Logic.PLTL, "only PPLTL is supported!")
 
@@ -80,29 +71,6 @@ class Compiler:
         self._result_problem: Optional[Problem] = None
 
         self._derived_predicates: Set[DerivedPredicate] = set()
-
-    @classmethod
-    def validate_mapping(
-        cls,
-        _domain: Domain,
-        _formula: Formula,
-        from_atoms_to_fluent: Dict[PLTLAtomic, Predicate],
-    ):
-        """
-        Check that the mapping is valid wrt the problem instance.
-
-        In particular:
-        - check that all the formula atoms are covered (TODO)
-        - check that all the atoms are legal wrt the formula
-        - check that the fluents are legal wrt the domain
-
-        :param _domain:
-        :param _formula:
-        :param from_atoms_to_fluent:
-        :return:
-        """
-        for _atom, fluent in from_atoms_to_fluent.items():
-            check_(all(isinstance(t, Constant) for t in fluent.terms))
 
     @property
     def result(self) -> Tuple[Domain, Problem]:
@@ -121,9 +89,7 @@ class Compiler:
     def _compile_domain(self):
         """Compute the new domain."""
         new_predicates = predicates(self.formula).union(val_predicates(self.formula))
-        new_derived_predicates = derived_predicates(
-            self.formula, self.from_atoms_to_fluent
-        )
+        new_derived_predicates = derived_predicates(self.formula)
         new_whens = _compute_whens(self.formula)
         domain_actions = _update_domain_actions_det(self.domain.actions, new_whens)
 

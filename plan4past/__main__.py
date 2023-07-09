@@ -34,7 +34,6 @@ from pylogics.parsers import parse_pltl
 from pylogics.syntax.base import Formula
 
 from plan4past.compiler import Compiler
-from plan4past.utils.mapping_parser import mapping_parser
 
 DEFAULT_NEW_DOMAIN_FILENAME: str = "new-domain.pddl"
 DEFAULT_NEW_PROBLEM_FILENAME: str = "new-problem.pddl"
@@ -63,13 +62,6 @@ DEFAULT_NEW_PROBLEM_FILENAME: str = "new-problem.pddl"
     type=click.Path(exists=True, readable=True),
 )
 @click.option(
-    "-m",
-    "--mapping",
-    help="The mapping file.",
-    type=click.Path(exists=True, readable=True),
-    default=None,
-)
-@click.option(
     "-od",
     "--out-domain",
     default=f"./{DEFAULT_NEW_DOMAIN_FILENAME}",
@@ -83,20 +75,14 @@ DEFAULT_NEW_PROBLEM_FILENAME: str = "new-problem.pddl"
     help="Path to PDDL file to store the new problem.",
     type=click.Path(dir_okay=False),
 )
-def cli(domain, problem, goal_inline, goal_file, mapping, out_domain, out_problem):
+def cli(domain, problem, goal_inline, goal_file, out_domain, out_problem):
     """Plan4Past: Planning for Pure-Past Temporally Extended Goals."""
     goal = _get_goal(goal_inline, goal_file)
 
     in_domain, in_problem, formula = _parse_instance(domain, problem, goal)
 
-    var_map = (
-        mapping_parser(Path(mapping).read_text(encoding="utf-8"), formula)
-        if mapping
-        else None
-    )
-
     compiled_domain, compiled_problem = _compile_instance(
-        in_domain, in_problem, formula, var_map
+        in_domain, in_problem, formula
     )
 
     try:
@@ -137,9 +123,9 @@ def _parse_instance(in_domain, in_problem, goal) -> Tuple[Domain, Problem, Formu
     return domain, problem, formula
 
 
-def _compile_instance(domain, problem, formula, mapping) -> Tuple[Domain, Problem]:
+def _compile_instance(domain, problem, formula) -> Tuple[Domain, Problem]:
     """Compile the PDDL domain and problem files and the PPLTL goal formula."""
-    compiler = Compiler(domain, problem, formula, mapping)
+    compiler = Compiler(domain, problem, formula)
     compiler.compile()
     compiled_domain, compiled_problem = compiler.result
 

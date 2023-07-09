@@ -58,75 +58,75 @@ def test_rewrite_formula_visitor_false():
 
 def test_rewrite_formula_visitor_atomic():
     """Test the rewrite formula visitor for the atomic formula."""
-    a = PLTLAtomic("a")
+    a = PLTLAtomic('"a"')
     assert rewrite(a) == a
 
 
 def test_rewrite_formula_visitor_and():
     """Test the rewrite formula visitor for the and formula."""
-    a = PLTLAtomic("a")
-    b = PLTLAtomic("b")
-    c = PLTLAtomic("c")
-    d = PLTLAtomic("d")
+    a = PLTLAtomic('"a"')
+    b = PLTLAtomic('"b"')
+    c = PLTLAtomic('"c"')
+    d = PLTLAtomic('"d"')
     assert rewrite(PLTLImplies(a, b) & PLTLImplies(c, d)) == (~a | b) & (~c | d)
 
 
 def test_rewrite_formula_visitor_or():
     """Test the rewrite formula visitor for the or formula."""
-    a = PLTLAtomic("a")
-    b = PLTLAtomic("b")
-    c = PLTLAtomic("c")
-    d = PLTLAtomic("d")
+    a = PLTLAtomic('"a"')
+    b = PLTLAtomic('"b"')
+    c = PLTLAtomic('"c"')
+    d = PLTLAtomic('"d"')
     assert rewrite(PLTLImplies(a, b) | PLTLImplies(c, d)) == (~a | b) | (~c | d)
 
 
 def test_rewrite_formula_visitor_not():
     """Test the rewrite formula visitor for the not formula."""
-    a = PLTLAtomic("a")
-    b = PLTLAtomic("b")
+    a = PLTLAtomic('"a"')
+    b = PLTLAtomic('"b"')
     assert rewrite(~PLTLImplies(a, b)) == ~(~a | b)
 
 
 def test_rewrite_formula_visitor_implies():
     """Test the rewrite formula visitor for the implies formula."""
-    a = PLTLAtomic("a")
-    b = PLTLAtomic("b")
+    a = PLTLAtomic('"a"')
+    b = PLTLAtomic('"b"')
     assert rewrite(PLTLImplies(a, b)) == (~a | b)
 
 
 def test_rewrite_formula_visitor_equivalence():
     """Test the rewrite formula visitor for the equivalence formula."""
-    a = PLTLAtomic("a")
-    b = PLTLAtomic("b")
+    a = PLTLAtomic('"a"')
+    b = PLTLAtomic('"b"')
     assert rewrite(PLTLEquivalence(a, b)) == ((a & b) | (~a & ~b))
 
 
 def test_rewrite_formula_visitor_before():
     """Test the rewrite formula visitor for the before formula."""
-    a = PLTLAtomic("a")
+    a = PLTLAtomic('"a"')
     before_a = Before(a)
     assert rewrite(before_a) == before_a
 
 
 def test_rewrite_formula_visitor_since():
     """Test the rewrite formula visitor for the before formula."""
-    a = PLTLAtomic("a")
-    b = PLTLAtomic("b")
-    c = PLTLAtomic("c")
-    d = PLTLAtomic("d")
+    a = PLTLAtomic('"a"')
+    b = PLTLAtomic('"b"')
+    c = PLTLAtomic('"c"')
+    d = PLTLAtomic('"d"')
     a_since_b_since_c_implies_d = Since(a, b, PLTLImplies(c, d))
     assert rewrite(a_since_b_since_c_implies_d) == Since(a, Since(b, (~c | d)))
 
 
 def test_rewrite_formula_visitor_once():
     """Test the rewrite formula visitor for the once formula."""
-    a = PLTLAtomic("a")
+    a = PLTLAtomic('"a"')
     once_a = Once(a)
     assert rewrite(once_a) == once_a
 
 
 def test_rewrite_formula_visitor_historically():
     """Test the rewrite formula visitor for the historically formula."""
-    a = PLTLAtomic("a")
+    a = PLTLAtomic('"a"')
     historically_a = Historically(a)
     assert rewrite(historically_a) == ~Once(~a)

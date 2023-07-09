@@ -50,7 +50,7 @@ class TestBlocksworldDetSimpleSequence(BaseCompilerTest):
         trailing_brackets = ""
         for i in range(1, instance_id):
             last = i == instance_id - 1
-            formula += f"O(on_b{i}_b{i + 1}" + (" & Y(" if not last else "")
+            formula += f'O("on b{i} b{i + 1}"' + (" & Y(" if not last else "")
             trailing_brackets += "))" if not last else ")"
         return formula + trailing_brackets
 

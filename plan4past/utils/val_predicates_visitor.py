@@ -76,7 +76,7 @@ def val_predicates_false(_formula: PropositionalFalse) -> Set[Predicate]:
 @val_predicates.register
 def val_predicates_atomic(formula: PLTLAtomic) -> Set[Predicate]:
     """Compute the value predicate for an atomic formula."""
-    return {Predicate(add_val_prefix(formula.name))}
+    return {Predicate(add_val_prefix(replace_symbols(formula.name)))}
 
 
 @val_predicates.register
