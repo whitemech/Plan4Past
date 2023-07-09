@@ -21,69 +21,22 @@
 #
 
 """This module contain tests for the compiler module, using the blocksworld domain."""
-from abc import abstractmethod
 from pathlib import Path
 from typing import Tuple
 
 import pytest
-from pddl.parser.domain import DomainParser
-from pddl.parser.problem import ProblemParser
-from pylogics.parsers import parse_pltl
 
-from plan4past.compiler import Compiler
 from tests.helpers.constants import BLOCKSWORLD_DIR
-from tests.helpers.misc import check_compilation
-from tests.helpers.planutils.base import BasePlannerWrapper
-from tests.helpers.planutils.val import VALWrapper
+from tests.test_compiler.base import BaseCompilerTest
 
 
-class BaseTestBlocksworldDet:
-    """Base test class for deterministic Blocksworld experiments."""
-
-    PATH_TO_DOMAIN = BLOCKSWORLD_DIR / "domain.pddl"
-    PATH_TO_INSTANCES_DIR = BLOCKSWORLD_DIR
-
-    @abstractmethod
-    def make_formula(self, instance_id: int, domain: Path, problem: Path) -> str:
-        """Make the formula for the given instance."""
-        raise NotImplementedError
-
-    @abstractmethod
-    def get_expected_plan(self, instance_id: int) -> Tuple[str, ...]:
-        """Get the expected plan for the given instance."""
-        raise NotImplementedError
-
-    def _test_instance(
-        self, instance_id: int, val: VALWrapper, planner: BasePlannerWrapper
-    ) -> None:
-        """Test the instance with the given id."""
-        domain_parser = DomainParser()
-        problem_parser = ProblemParser()
-
-        domain_path = self.PATH_TO_DOMAIN
-        problem_path = self.PATH_TO_INSTANCES_DIR / f"p{instance_id}.pddl"
-        if not problem_path.exists():
-            pytest.fail(f"Instance {instance_id} does not exist.")
-
-        domain = domain_parser(domain_path.read_text(encoding="utf-8"))
-        problem = problem_parser(problem_path.read_text(encoding="utf-8"))
-        goal = parse_pltl(self.make_formula(instance_id, domain_path, problem_path))
-
-        compiler = Compiler(domain, problem, goal)
-        compiler.compile()
-        compiled_domain, compiled_problem = compiler.result
-
-        check_compilation(
-            compiled_domain,
-            compiled_problem,
-            val,
-            planner,
-            self.get_expected_plan(instance_id),
-        )
-
-
-class TestBlocksworldDetSimpleSequence(BaseTestBlocksworldDet):
+class TestBlocksworldDetSimpleSequence(BaseCompilerTest):
     """Test class for deterministic Blocksworld experiments, simple sequence."""
+
+    PATH_TO_DOMAINS_DIR = BLOCKSWORLD_DIR
+    PATH_TO_INSTANCES_DIR = BLOCKSWORLD_DIR
+    MIN_INSTANCE_ID = 2
+    MAX_INSTANCE_ID = 10
 
     def make_formula(self, instance_id: int, domain: Path, problem: Path) -> str:
         """
@@ -109,7 +62,9 @@ class TestBlocksworldDetSimpleSequence(BaseTestBlocksworldDet):
             result.append(f"(stack b{i} b{i + 1})")
         return tuple(result)
 
-    @pytest.mark.parametrize("instance_id", list(range(2, 11)))
+    @pytest.mark.parametrize(
+        "instance_id", list(range(MIN_INSTANCE_ID, MAX_INSTANCE_ID + 1))
+    )
     def test_run(self, instance_id, val, default_planner):
         """Test the instance with the given id."""
         self._test_instance(instance_id, val=val, planner=default_planner)
