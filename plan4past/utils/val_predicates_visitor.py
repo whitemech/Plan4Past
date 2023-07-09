@@ -20,14 +20,13 @@
 # along with Plan4Past.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-"""Value predicates for derived predicates visitor."""
+"""Value predicates for val predicates visitor."""
 import functools
 from functools import singledispatch
 from typing import Set
 
 from pddl.logic.predicates import Predicate
 from pylogics.syntax.base import And as PLTLAnd
-from pylogics.syntax.base import Formula
 from pylogics.syntax.base import Not as PLTLNot
 from pylogics.syntax.base import Or as PLTLOr
 from pylogics.syntax.base import _BinaryOp, _UnaryOp
@@ -55,9 +54,11 @@ def val_predicates_unaryop(formula: _UnaryOp):
 
 
 @singledispatch
-def val_predicates(formula: Formula) -> Set[Predicate]:
+def val_predicates(formula: object) -> Set[Predicate]:
     """Compute the value predicate for a formula."""
-    raise NotImplementedError(f"handler not implemented for formula {type(formula)}")
+    raise NotImplementedError(
+        f"handler not implemented for object of type {type(formula)}"
+    )
 
 
 @val_predicates.register

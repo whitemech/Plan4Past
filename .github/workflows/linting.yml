@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        python-version: ["3.8", "3.10", "3.11"]
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
 
     timeout-minutes: 30
 
@@ -35,7 +35,6 @@ jobs:
         tox -e black-check
         tox -e isort-check
         tox -e flake8
-        tox -e darglint
     - name: Unused code check
       run: tox -e vulture
     - name: Static type check

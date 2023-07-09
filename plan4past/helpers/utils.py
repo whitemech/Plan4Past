@@ -21,28 +21,13 @@
 #
 
 """Miscellanea utilities."""
-import contextlib
-import os
-from os import PathLike
-from pathlib import Path
-from typing import Dict, Generator
+from typing import Dict
 
 from pddl.logic import Predicate, constants
 from pylogics.syntax.base import Formula
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
 
 from plan4past.utils.atoms_visitor import find_atoms
-
-
-@contextlib.contextmanager
-def cd(path: PathLike) -> Generator:  # pylint: disable=invalid-name
-    """Change working directory temporarily."""
-    old_path = Path.cwd()
-    os.chdir(path)
-    try:
-        yield
-    finally:
-        os.chdir(str(old_path))
 
 
 def add_val_prefix(name: str):
@@ -52,12 +37,18 @@ def add_val_prefix(name: str):
 
 def remove_before_prefix(name: str):
     """Remove the 'Y' prefix."""
-    return name.replace("Y-", "") if name[1] == "-" else name.replace("Y", "", 1)
+    return (
+        name.replace("Y-", "")
+        if name.startswith("Y-")
+        else name.replace("Y", "", 1)
+        if name.startswith("Y")
+        else name
+    )
 
 
 def remove_val_prefix(name: str):
     """Remove the 'prime' prefix."""
-    return name.replace("val-", "")
+    return name.replace("val-", "") if name.startswith("val-") else name
 
 
 def replace_symbols(name: str):
