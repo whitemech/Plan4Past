@@ -47,7 +47,7 @@ from tests.helpers.constants import EXAMPLES_DIR
         },
     ],
 )
-def test_readme_example(val, from_atoms_to_fluent) -> None:
+def test_readme_example(val, lama, from_atoms_to_fluent) -> None:
     """Test the example from the README."""
     formula = "on_b_a & O(ontable_c)"
     domain_parser = DomainParser()
@@ -77,3 +77,13 @@ def test_readme_example(val, from_atoms_to_fluent) -> None:
 
         result = val.validate_problem(new_domain_path, new_problem_path)
         assert result.is_valid(strict=True)
+
+        plan_result = lama.plan(new_domain_path, new_problem_path)
+        assert plan_result.plan == [
+            "(unstack c d)",
+            "(put-down c)",
+            "(unstack a b)",
+            "(put-down a)",
+            "(pick-up b)",
+            "(stack b a)",
+        ]

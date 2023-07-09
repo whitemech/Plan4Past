@@ -21,11 +21,15 @@
 #
 
 """This module contains fixtures for the tests."""
+
 import pytest
 from docker import DockerClient
 
-from tests.helpers.planutils.base import PlanutilsDockerImage
+from tests.helpers.planutils.base import BasePlannerWrapper, PlanutilsDockerImage
+from tests.helpers.planutils.lama import LAMAWrapper
 from tests.helpers.planutils.val import VALWrapper
+
+# pylint: disable=redefined-outer-name
 
 
 @pytest.fixture(scope="session")
@@ -36,7 +40,7 @@ def docker_client() -> DockerClient:
 
 @pytest.fixture(scope="session")
 def planutils_docker_image(
-    docker_client,  # pylint: disable=redefined-outer-name
+    docker_client,
 ) -> PlanutilsDockerImage:
     """Return the planutils docker image."""
     image = PlanutilsDockerImage(docker_client)
@@ -45,6 +49,14 @@ def planutils_docker_image(
 
 
 @pytest.fixture(scope="session")
-def val(planutils_docker_image) -> VALWrapper:  # pylint: disable=redefined-outer-name
+def val(planutils_docker_image) -> VALWrapper:
     """Return the val wrapper."""
     return VALWrapper(planutils_docker_image)
+
+
+@pytest.fixture(scope="session")
+def lama(
+    planutils_docker_image,
+) -> BasePlannerWrapper:
+    """Return the LAMA wrapper."""
+    return LAMAWrapper(planutils_docker_image)
