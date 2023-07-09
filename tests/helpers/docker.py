@@ -121,9 +121,10 @@ class DockerImage(ABC):
                     **self._get_build_kwargs(),
                 )
                 for log_line in build_logs:
-                    assert len(log_line) == 1
-                    line = list(log_line.values())[0]
-                    logger.debug(line)
+                    if "stream" in log_line:
+                        line = log_line["stream"].strip()
+                        if line:
+                            logger.debug(line)
             except Exception as e:  # pylint: disable=broad-except
                 pytest.fail(f"failed to build image: {type(e)}: {e}")
 
@@ -150,7 +151,11 @@ class DockerImage(ABC):
                 container.wait()
                 logger.info("Image %s stopped", self.tag)
 
-    def run(self, cmd: Sequence[str]) -> str:
+    def run(self, cmd: Sequence[str], **kwargs) -> str:
         """Create the container."""
-        stdout = self._client.containers.run(self.tag, command=cmd, remove=True)
+        assert "command" not in kwargs
+        assert "remove" not in kwargs
+        stdout = self._client.containers.run(
+            self.tag, command=cmd, remove=True, **kwargs
+        )
         return stdout.decode("utf-8")

@@ -21,3 +21,30 @@
 #
 
 """This module contains fixtures for the tests."""
+import pytest
+from docker import DockerClient
+
+from tests.helpers.planutils.base import PlanutilsDockerImage
+from tests.helpers.planutils.val import VALWrapper
+
+
+@pytest.fixture(scope="session")
+def docker_client() -> DockerClient:
+    """Return the docker client."""
+    return DockerClient()
+
+
+@pytest.fixture(scope="session")
+def planutils_docker_image(
+    docker_client,  # pylint: disable=redefined-outer-name
+) -> PlanutilsDockerImage:
+    """Return the planutils docker image."""
+    image = PlanutilsDockerImage(docker_client)
+    image.build()
+    return image
+
+
+@pytest.fixture(scope="session")
+def val(planutils_docker_image) -> VALWrapper:  # pylint: disable=redefined-outer-name
+    """Return the val wrapper."""
+    return VALWrapper(planutils_docker_image)
