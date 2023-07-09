@@ -101,7 +101,7 @@ def test_derived_predicates_visitor_and():
     condition_a = Predicate("a")
     condition_b = Predicate("b")
 
-    val = Predicate(add_val_prefix("a-and-b"))
+    val = Predicate(add_val_prefix("LPAR__a__RPAR-__AND__-LPAR__b__RPAR"))
     val_a = Predicate(add_val_prefix("a"))
     val_b = Predicate(add_val_prefix("b"))
 
@@ -125,7 +125,7 @@ def test_derived_predicates_visitor_or():
     condition_a = Predicate("a")
     condition_b = Predicate("b")
 
-    val = Predicate(add_val_prefix("a-or-b"))
+    val = Predicate(add_val_prefix("LPAR__a__RPAR-__OR__-LPAR__b__RPAR"))
     val_a = Predicate(add_val_prefix("a"))
     val_b = Predicate(add_val_prefix("b"))
 
@@ -147,7 +147,7 @@ def test_derived_predicates_visitor_not():
 
     condition_a = Predicate("a")
 
-    val = Predicate(add_val_prefix("not-a"))
+    val = Predicate(add_val_prefix("NOT__LPAR__a__RPAR"))
     val_a = Predicate(add_val_prefix("a"))
 
     condition = Not(val_a)
@@ -165,10 +165,10 @@ def test_derived_predicates_visitor_before():
 
     condition_a = Predicate("a")
 
-    val = Predicate(add_val_prefix("Ya"))
+    val = Predicate(add_val_prefix("YLPAR__a__RPAR"))
     val_a = Predicate(add_val_prefix("a"))
 
-    condition = Predicate("Ya")
+    condition = Predicate("YLPAR__a__RPAR")
 
     expected = {DerivedPredicate(val, condition), DerivedPredicate(val_a, condition_a)}
 
@@ -186,10 +186,14 @@ def test_derived_predicates_visitor_since():
     val_a = Predicate(add_val_prefix("a"))
     val_b = Predicate(add_val_prefix("b"))
     val_c = Predicate(add_val_prefix("c"))
-    val_a_since_b_since_c = Predicate(add_val_prefix("a-S-b-S-c"))
-    val_b_since_c = Predicate(add_val_prefix("b-S-c"))
-    Y_a_since_b_since_c = Predicate("Y-a-S-b-S-c")
-    Y_b_since_c = Predicate("Y-b-S-c")
+    val_a_since_b_since_c = Predicate(
+        add_val_prefix("LPAR__a__RPAR-S-LPAR__LPAR__b__RPAR-S-LPAR__c__RPAR__RPAR")
+    )
+    val_b_since_c = Predicate(add_val_prefix("LPAR__b__RPAR-S-LPAR__c__RPAR"))
+    Y_a_since_b_since_c = Predicate(
+        "Y__LPAR__a__RPAR-S-LPAR__LPAR__b__RPAR-S-LPAR__c__RPAR__RPAR"
+    )
+    Y_b_since_c = Predicate("Y__LPAR__b__RPAR-S-LPAR__c__RPAR")
 
     condition_a = Predicate("a")
     condition_b = Predicate("b")
@@ -215,8 +219,8 @@ def test_derived_predicates_visitor_once():
     once_a = Once(a)
 
     val_a = Predicate(add_val_prefix("a"))
-    val_once_a = Predicate(add_val_prefix("Oa"))
-    Y_once_a = Predicate("Y-Oa")
+    val_once_a = Predicate(add_val_prefix("OLPAR__a__RPAR"))
+    Y_once_a = Predicate("Y__OLPAR__a__RPAR")
 
     condition_a = Predicate("a")
     condition_once_a = Or(val_a, Y_once_a)

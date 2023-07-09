@@ -39,7 +39,12 @@ from pylogics.syntax.pltl import (
 )
 from pylogics.utils.to_string import to_string
 
-from plan4past.helpers.utils import add_val_prefix, parse_ground_fluent, replace_symbols
+from plan4past.helpers.utils import (
+    Y_PREFIX,
+    add_val_prefix,
+    parse_ground_fluent,
+    replace_symbols,
+)
 
 
 @singledispatch
@@ -132,7 +137,7 @@ def derived_predicates_since(formula: Since) -> Set[DerivedPredicate]:
     op_or_1 = Predicate(add_val_prefix(replace_symbols(to_string(formula.operands[1]))))
     op_or_2 = And(
         Predicate(add_val_prefix(replace_symbols(to_string(formula.operands[0])))),
-        Predicate(f"Y-{replace_symbols(to_string(formula))}"),
+        Predicate(f"{Y_PREFIX}{replace_symbols(to_string(formula))}"),
     )
     condition = Or(op_or_1, op_or_2)
     der_pred_ops = [derived_predicates(op) for op in formula.operands]
@@ -146,7 +151,7 @@ def derived_predicates_once(formula: Once) -> Set[DerivedPredicate]:
     val = Predicate(add_val_prefix(replace_symbols(formula_name)))
     condition = Or(
         Predicate(add_val_prefix(replace_symbols(to_string(formula.argument)))),
-        Predicate(f"Y-{replace_symbols(to_string(formula))}"),
+        Predicate(f"{Y_PREFIX}{replace_symbols(to_string(formula))}"),
     )
     der_pred_arg = derived_predicates(formula.argument)
     return {DerivedPredicate(val, condition)}.union(der_pred_arg)

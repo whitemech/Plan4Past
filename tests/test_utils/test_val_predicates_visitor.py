@@ -66,7 +66,7 @@ def test_val_predicates_visitor_and():
     a = PLTLAtomic("a")
     b = PLTLAtomic("b")
 
-    val_a_and_b = Predicate(add_val_prefix("a-and-b"))
+    val_a_and_b = Predicate(add_val_prefix("LPAR__a__RPAR-__AND__-LPAR__b__RPAR"))
     val_a = Predicate(add_val_prefix(a.name))
     val_b = Predicate(add_val_prefix(b.name))
 
@@ -78,7 +78,7 @@ def test_val_predicates_visitor_or():
     a = PLTLAtomic("a")
     b = PLTLAtomic("b")
 
-    val_a_or_b = Predicate(add_val_prefix("a-or-b"))
+    val_a_or_b = Predicate(add_val_prefix("LPAR__a__RPAR-__OR__-LPAR__b__RPAR"))
     val_a = Predicate(add_val_prefix(a.name))
     val_b = Predicate(add_val_prefix(b.name))
 
@@ -89,7 +89,7 @@ def test_val_predicates_visitor_not():
     """Test the val predicates visitor for the not formula."""
     a = PLTLAtomic("a")
 
-    val_not_a = Predicate(add_val_prefix("not-a"))
+    val_not_a = Predicate(add_val_prefix("NOT__LPAR__a__RPAR"))
     val_a = Predicate(add_val_prefix(a.name))
 
     assert val_predicates(~a) == {val_not_a, val_a}
@@ -100,7 +100,7 @@ def test_val_predicates_visitor_before():
     a = PLTLAtomic("a")
     before_a = Before(a)
 
-    val_before_a = Predicate(add_val_prefix("Ya"))
+    val_before_a = Predicate(add_val_prefix("YLPAR__a__RPAR"))
     val_a = Predicate(add_val_prefix(a.name))
 
     assert val_predicates(before_a) == {val_before_a, val_a}
@@ -113,8 +113,10 @@ def test_val_predicates_visitor_since():
     c = PLTLAtomic("c")
     a_since_b_since_c = Since(a, b, c)
 
-    val_a_since_b_since_c = Predicate(add_val_prefix("a-S-b-S-c"))
-    val_b_since_c = Predicate(add_val_prefix("b-S-c"))
+    val_a_since_b_since_c = Predicate(
+        add_val_prefix("LPAR__a__RPAR-S-LPAR__LPAR__b__RPAR-S-LPAR__c__RPAR__RPAR")
+    )
+    val_b_since_c = Predicate(add_val_prefix("LPAR__b__RPAR-S-LPAR__c__RPAR"))
     val_a = Predicate(add_val_prefix(a.name))
     val_b = Predicate(add_val_prefix(b.name))
     val_c = Predicate(add_val_prefix(c.name))
@@ -133,7 +135,7 @@ def test_val_predicates_visitor_once():
     a = PLTLAtomic("a")
     once_a = Once(a)
 
-    val_once_a = Predicate(add_val_prefix("Oa"))
+    val_once_a = Predicate(add_val_prefix("OLPAR__a__RPAR"))
     val_a = Predicate(add_val_prefix(a.name))
 
     assert val_predicates(once_a) == {val_once_a, val_a}

@@ -84,7 +84,7 @@ def test_predicates_visitor_before():
     """Test the predicates visitor for the before formula."""
     a = PLTLAtomic("a")
     Ya = Before(a)
-    assert predicates(Ya) == {Predicate("Ya")}
+    assert predicates(Ya) == {Predicate("YLPAR__a__RPAR")}
 
 
 def test_predicates_visitor_since():
@@ -94,8 +94,8 @@ def test_predicates_visitor_since():
     c = PLTLAtomic("c")
     a_since_b_since_c = Since(a, b, c)
     assert predicates(a_since_b_since_c) == {
-        Predicate("Y-b-S-c"),
-        Predicate("Y-a-S-b-S-c"),
+        Predicate("Y__LPAR__a__RPAR-S-LPAR__LPAR__b__RPAR-S-LPAR__c__RPAR__RPAR"),
+        Predicate("Y__LPAR__b__RPAR-S-LPAR__c__RPAR"),
     }
 
 
@@ -103,4 +103,4 @@ def test_predicates_visitor_once():
     """Test the predicates visitor for the once formula."""
     a = PLTLAtomic("a")
     once_a = Once(a)
-    assert predicates(once_a) == {Predicate("Y-Oa")}
+    assert predicates(once_a) == {Predicate("Y__OLPAR__a__RPAR")}

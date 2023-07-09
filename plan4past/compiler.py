@@ -133,12 +133,13 @@ class Compiler:
 
 def _compute_whens(formula: Formula) -> Set[When]:
     """Compute conditional effects for formula progression."""
+    formula_predicates = predicates(formula)
     return {
         When(Predicate(add_val_prefix(remove_before_prefix(p.name))), p)
-        for p in predicates(formula)
+        for p in formula_predicates
     }.union(
         When(Not(Predicate(add_val_prefix(remove_before_prefix(p.name)))), Not(p))
-        for p in predicates(formula)
+        for p in formula_predicates
     )
 
 

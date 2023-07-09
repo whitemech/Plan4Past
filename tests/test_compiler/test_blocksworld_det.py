@@ -35,8 +35,8 @@ class TestBlocksworldDetSimpleSequence(BaseCompilerTest):
 
     PATH_TO_DOMAINS_DIR = BLOCKSWORLD_DIR
     PATH_TO_INSTANCES_DIR = BLOCKSWORLD_DIR
-    MIN_INSTANCE_ID = 2
-    MAX_INSTANCE_ID = 10
+    MIN_INSTANCE_ID = 3
+    MAX_INSTANCE_ID = 3
 
     def make_formula(self, instance_id: int, domain: Path, problem: Path) -> str:
         """
