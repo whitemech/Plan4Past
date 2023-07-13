@@ -1,6 +1,27 @@
 <h1 align="center">
-  <b>Plan4Past</b>
+  <img src="https://user-images.githubusercontent.com/29372925/252561261-c383afa8-9138-43a7-8f7d-fd0ecd9220bd.png" width="40%" height="auto">
 </h1>
+
+<p align="center">
+
+  <a href="https://pypi.org/project/plan4past">
+    <img alt="Python Version" src="https://img.shields.io/pypi/pyversions/plan4past" />
+  </a>
+  <a href="https://pypi.org/project/plan4past">
+    <img alt="PyPI" src="https://img.shields.io/pypi/v/plan4past">
+  </a>
+  <a href="https://github.com/whitemech/plan4past/workflows/test/badge.svg">
+    <img alt="build" src="https://github.com/whitemech/plan4past/workflows/test/badge.svg">
+  </a>
+  <a href="https://codecov.io/gh/whitemech/plan4past">
+    <img alt="codecov" src="https://codecov.io/gh/whitemech/plan4past/branch/main/graph/badge.svg">
+  </a>
+  <a href="https://github.com/whitemech/plan4past/blob/main/LICENSE">
+    <img alt="GitHub" src="https://img.shields.io/badge/license-LGPLv3%2B-blue">
+  </a>
+</p>
+
+---
 
 Classical and FOND Planning for Pure-Past Linear Temporal Logic Goals.
 
@@ -133,6 +154,12 @@ If you use Plan4Past in your research, please consider citing the following pape
                   Enrico Scala},
   title        = {Planning for Temporally Extended Goals in Pure-Past Linear Temporal Logic},
   booktitle    = {{ICAPS}},
+  volume       = {33},
+  url          = {https://ojs.aaai.org/index.php/ICAPS/article/view/27179},
+  doi          = {10.1609/icaps.v33i1.27179},
+  number       = {1},
+  month        = {Jul.},
+  pages        = {61-69},
   year         = {2023},
 }
 ```
