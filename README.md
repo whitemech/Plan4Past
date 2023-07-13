@@ -154,6 +154,12 @@ If you use Plan4Past in your research, please consider citing the following pape
                   Enrico Scala},
   title        = {Planning for Temporally Extended Goals in Pure-Past Linear Temporal Logic},
   booktitle    = {{ICAPS}},
+  volume       = {33},
+  url          = {https://ojs.aaai.org/index.php/ICAPS/article/view/27179},
+  doi          = {10.1609/icaps.v33i1.27179},
+  number       = {1},
+  month        = {Jul.},
+  pages        = {61-69},
   year         = {2023},
 }
 ```
