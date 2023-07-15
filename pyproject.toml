@@ -2,7 +2,7 @@
 name = "Plan4Past"
 version = "0.1.0"
 description = "Classical and FOND Planning for Pure-Past Linear Temporal Logic Goals"
-authors = ["Luigi Bonassi <luigi.bonassi@unibs.it>, Marco Favorito <marco.favorito@gmail.com>, Francesco Fuggitti <francesco.fuggitti@gmail.com>"]
+authors = ["Luigi Bonassi <luigi.bonassi@unibs.it>", "Marco Favorito <marco.favorito@gmail.com>", "Francesco Fuggitti <francesco.fuggitti@gmail.com>"]
 license = "LGPLv3+ license"
 readme = "README.md"
 homepage = "https://whitemech.github.io/plan4past"
