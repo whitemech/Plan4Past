@@ -68,7 +68,7 @@ class FastDownwardWrapper(BasePlannerWrapper):
 
     def process_output(self, working_directory: Path, stdout: str) -> PlannerResult:
         """Process the output of the planner."""
-        logger.debug("Processing output of LAMA")
+        logger.debug("Processing output of Fast-Downward.")
 
         # the sas_plan file is in the /root directory
         sas_file = working_directory / "sas_plan"

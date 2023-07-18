@@ -40,7 +40,7 @@ from pylogics.syntax.pltl import (
 )
 from pylogics.utils.to_string import to_string
 
-from plan4past.helpers.utils import replace_symbols
+from plan4past.helpers.utils import Y_PREFIX, replace_symbols
 
 
 def predicates_binaryop(formula: _BinaryOp):
@@ -113,7 +113,7 @@ def predicates_since(formula: Since) -> Set[Predicate]:
         tail = Since(*formula.operands[1:])
         return predicates(Since(head, tail))
     formula_name = replace_symbols(to_string(formula))
-    quoted = Predicate(f"Y-{formula_name}")
+    quoted = Predicate(f"{Y_PREFIX}{formula_name}")
     subsinces = predicates_binaryop(formula)
     return {quoted}.union(subsinces)
 
@@ -122,6 +122,6 @@ def predicates_since(formula: Since) -> Set[Predicate]:
 def predicates_once(formula: Once) -> Set[Predicate]:
     """Compute predicate for a Once formula."""
     formula_name = replace_symbols(to_string(formula))
-    quoted = Predicate(f"Y-{formula_name}")
+    quoted = Predicate(f"{Y_PREFIX}{formula_name}")
     sub = predicates_unaryop(formula)
     return sub.union({quoted})

@@ -62,7 +62,7 @@ from pddl.parser.problem import ProblemParser
 from pylogics.parsers import parse_pltl
 from plan4past.compiler import Compiler
 
-formula = "on_b_a & O(ontable_c)"
+formula = '"on b a" & O("ontable c")'
 domain_parser = DomainParser()
 problem_parser = ProblemParser()
 

@@ -24,7 +24,6 @@
 from typing import Set
 
 import pytest
-from pddl.logic import Constant
 from pddl.logic.base import And, Not, Or
 from pddl.logic.predicates import DerivedPredicate, Predicate
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
@@ -62,7 +61,7 @@ def test_derived_predicates_visitor_not_implemented_fail():
     with pytest.raises(
         NotImplementedError, match="handler not implemented for object <class 'int'>"
     ):
-        derived_predicates(1, {})
+        derived_predicates(1)
 
 
 def test_derived_predicates_visitor_true():
@@ -70,7 +69,7 @@ def test_derived_predicates_visitor_true():
     val = Predicate(add_val_prefix("true"))
     expected = {DerivedPredicate(val, And())}
 
-    actual = derived_predicates(PropositionalTrue(), {})
+    actual = derived_predicates(PropositionalTrue())
     assert _eq(actual, expected)
 
 
@@ -79,7 +78,7 @@ def test_derived_predicates_visitor_false():
     val = Predicate(add_val_prefix("false"))
     expected = {DerivedPredicate(val, Or())}
 
-    actual = derived_predicates(PropositionalFalse(), {})
+    actual = derived_predicates(PropositionalFalse())
     assert _eq(actual, expected)
 
 
@@ -87,10 +86,10 @@ def test_derived_predicates_visitor_atomic():
     """Test the derived predicates visitor for the atomic formula."""
     a = PLTLAtomic("a")
     val = Predicate(add_val_prefix("a"))
-    condition = Predicate("p", Constant("a"))
+    condition = Predicate("a")
     expected = {DerivedPredicate(val, condition)}
 
-    actual = derived_predicates(a, {a: condition})
+    actual = derived_predicates(a)
     assert _eq(actual, expected)
 
 
@@ -99,10 +98,10 @@ def test_derived_predicates_visitor_and():
     a = PLTLAtomic("a")
     b = PLTLAtomic("b")
 
-    condition_a = Predicate("p", Constant("a"))
-    condition_b = Predicate("p", Constant("b"))
+    condition_a = Predicate("a")
+    condition_b = Predicate("b")
 
-    val = Predicate(add_val_prefix("a-and-b"))
+    val = Predicate(add_val_prefix("LPAR__a__RPAR-__AND__-LPAR__b__RPAR"))
     val_a = Predicate(add_val_prefix("a"))
     val_b = Predicate(add_val_prefix("b"))
 
@@ -114,7 +113,7 @@ def test_derived_predicates_visitor_and():
         DerivedPredicate(val_b, condition_b),
     }
 
-    actual = derived_predicates(a & b, {a: condition_a, b: condition_b})
+    actual = derived_predicates(a & b)
     assert _eq(actual, expected)
 
 
@@ -123,10 +122,10 @@ def test_derived_predicates_visitor_or():
     a = PLTLAtomic("a")
     b = PLTLAtomic("b")
 
-    condition_a = Predicate("p", Constant("a"))
-    condition_b = Predicate("p", Constant("b"))
+    condition_a = Predicate("a")
+    condition_b = Predicate("b")
 
-    val = Predicate(add_val_prefix("a-or-b"))
+    val = Predicate(add_val_prefix("LPAR__a__RPAR-__OR__-LPAR__b__RPAR"))
     val_a = Predicate(add_val_prefix("a"))
     val_b = Predicate(add_val_prefix("b"))
 
@@ -138,7 +137,7 @@ def test_derived_predicates_visitor_or():
         DerivedPredicate(val_b, condition_b),
     }
 
-    actual = derived_predicates(a | b, {a: condition_a, b: condition_b})
+    actual = derived_predicates(a | b)
     assert _eq(actual, expected)
 
 
@@ -146,16 +145,16 @@ def test_derived_predicates_visitor_not():
     """Test the derived predicates visitor for the not formula."""
     a = PLTLAtomic("a")
 
-    condition_a = Predicate("p", Constant("a"))
+    condition_a = Predicate("a")
 
-    val = Predicate(add_val_prefix("not-a"))
+    val = Predicate(add_val_prefix("NOT__LPAR__a__RPAR"))
     val_a = Predicate(add_val_prefix("a"))
 
     condition = Not(val_a)
 
     expected = {DerivedPredicate(val, condition), DerivedPredicate(val_a, condition_a)}
 
-    actual = derived_predicates(~a, {a: condition_a})
+    actual = derived_predicates(~a)
     assert _eq(actual, expected)
 
 
@@ -164,16 +163,16 @@ def test_derived_predicates_visitor_before():
     a = PLTLAtomic("a")
     Ya = Before(a)
 
-    condition_a = Predicate("p", Constant("a"))
+    condition_a = Predicate("a")
 
-    val = Predicate(add_val_prefix("Ya"))
+    val = Predicate(add_val_prefix("YLPAR__a__RPAR"))
     val_a = Predicate(add_val_prefix("a"))
 
-    condition = Predicate("Ya")
+    condition = Predicate("YLPAR__a__RPAR")
 
     expected = {DerivedPredicate(val, condition), DerivedPredicate(val_a, condition_a)}
 
-    actual = derived_predicates(Ya, {a: condition_a})
+    actual = derived_predicates(Ya)
     assert _eq(actual, expected)
 
 
@@ -187,14 +186,18 @@ def test_derived_predicates_visitor_since():
     val_a = Predicate(add_val_prefix("a"))
     val_b = Predicate(add_val_prefix("b"))
     val_c = Predicate(add_val_prefix("c"))
-    val_a_since_b_since_c = Predicate(add_val_prefix("a-S-b-S-c"))
-    val_b_since_c = Predicate(add_val_prefix("b-S-c"))
-    Y_a_since_b_since_c = Predicate("Y-a-S-b-S-c")
-    Y_b_since_c = Predicate("Y-b-S-c")
+    val_a_since_b_since_c = Predicate(
+        add_val_prefix("LPAR__a__RPAR-S-LPAR__LPAR__b__RPAR-S-LPAR__c__RPAR__RPAR")
+    )
+    val_b_since_c = Predicate(add_val_prefix("LPAR__b__RPAR-S-LPAR__c__RPAR"))
+    Y_a_since_b_since_c = Predicate(
+        "Y__LPAR__a__RPAR-S-LPAR__LPAR__b__RPAR-S-LPAR__c__RPAR__RPAR"
+    )
+    Y_b_since_c = Predicate("Y__LPAR__b__RPAR-S-LPAR__c__RPAR")
 
-    condition_a = Predicate("p", Constant("a"))
-    condition_b = Predicate("p", Constant("b"))
-    condition_c = Predicate("p", Constant("c"))
+    condition_a = Predicate("a")
+    condition_b = Predicate("b")
+    condition_c = Predicate("c")
     condition_b_since_c = Or(val_c, And(val_b, Y_b_since_c))
     condition_a_since_b_since_c = Or(val_b_since_c, And(val_a, Y_a_since_b_since_c))
 
@@ -206,9 +209,7 @@ def test_derived_predicates_visitor_since():
         DerivedPredicate(val_c, condition_c),
     }
 
-    actual = derived_predicates(
-        a_since_b_since_c, {a: condition_a, b: condition_b, c: condition_c}
-    )
+    actual = derived_predicates(a_since_b_since_c)
     assert _eq(actual, expected)
 
 
@@ -218,10 +219,10 @@ def test_derived_predicates_visitor_once():
     once_a = Once(a)
 
     val_a = Predicate(add_val_prefix("a"))
-    val_once_a = Predicate(add_val_prefix("Oa"))
-    Y_once_a = Predicate("Y-Oa")
+    val_once_a = Predicate(add_val_prefix("OLPAR__a__RPAR"))
+    Y_once_a = Predicate("Y__OLPAR__a__RPAR")
 
-    condition_a = Predicate("p", Constant("a"))
+    condition_a = Predicate("a")
     condition_once_a = Or(val_a, Y_once_a)
 
     expected = {
@@ -229,5 +230,5 @@ def test_derived_predicates_visitor_once():
         DerivedPredicate(val_once_a, condition_once_a),
     }
 
-    actual = derived_predicates(once_a, {a: condition_a})
+    actual = derived_predicates(once_a)
     assert _eq(actual, expected)
