@@ -1,0 +1,13 @@
+{
+
+    "b06": "((F(on A Table)|F(on B Table)|F(on C Table)|F(on E Table)|F(on F Table)|F(on G Table))U(F(on D Table)))",
+    "b07": "((F(on A Table)|F(on B Table)|F(on C Table)|F(on E Table)|F(on F Table)|F(on G Table)|F(on H Table))U(F(on D Table)))",
+    "b08": "((F(on A Table)|F(on B Table)|F(on C Table)|F(on E Table)|F(on F Table)|F(on G Table)|F(on H Table)|F(on I Table))U(F(on D Table)))",
+    "b09": "((F(on A Table)|F(on B Table)|F(on C Table)|F(on E Table)|F(on F Table)|F(on G Table)|F(on H Table)|F(on I Table)|F(on L Table))U(F(on D Table)))",
+    "b10": "((F(on A Table)|F(on B Table)|F(on C Table)|F(on E Table)|F(on F Table)|F(on G Table)|F(on H Table)|F(on I Table)|F(on L Table)|F(on M Table))U(F(on D Table)))",
+    "b11": "((F(on A Table)|F(on B Table)|F(on C Table)|F(on E Table)|F(on F Table)|F(on G Table)|F(on H Table)|F(on I Table)|F(on L Table)|F(on M Table)|F(on N Table))U(F(on D Table)))",
+    "b12": "((F(on A Table)|F(on B Table)|F(on C Table)|F(on E Table)|F(on F Table)|F(on G Table)|F(on H Table)|F(on I Table)|F(on L Table)|F(on M Table)|F(on N Table)|F(on O Table))U(F(on D Table)))",
+    "b13": "((F(on A Table)|F(on B Table)|F(on C Table)|F(on E Table)|F(on F Table)|F(on G Table)|F(on H Table)|F(on I Table)|F(on L Table)|F(on M Table)|F(on N Table)|F(on O Table)|F(on P Table))U(F(on D Table)))",
+    "b14": "((F(on A Table)|F(on B Table)|F(on C Table)|F(on E Table)|F(on F Table)|F(on G Table)|F(on H Table)|F(on I Table)|F(on L Table)|F(on M Table)|F(on N Table)|F(on O Table)|F(on P Table)|F(on Q Table))U(F(on D Table)))",
+    "b15": "((F(on A Table)|F(on B Table)|F(on C Table)|F(on E Table)|F(on F Table)|F(on G Table)|F(on H Table)|F(on I Table)|F(on L Table)|F(on M Table)|F(on N Table)|F(on O Table)|F(on P Table)|F(on Q Table)|F(on R Table))U(F(on D Table)))"
+}
