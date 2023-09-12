@@ -1,0 +1,11 @@
+{
+    "p01":"O(communicatedsoildata_waypoint2)",
+    "p02":"O(communicatedsoildata_waypoint2) & O(communicatedrockdata_waypoint3)",
+    "p03":"O(communicatedsoildata_waypoint2) & O(communicatedrockdata_waypoint3) & O(communicatedimagedata_objective1_highres)",
+    "p04":"O(O(communicatedsoildata_waypoint2) & O(communicatedrockdata_waypoint3) & O(communicatedimagedata_objective1_highres))",
+    "p05":"O((O(communicatedsoildata_waypoint0)) & (O(communicatedsoildata_waypoint2)) & (O(communicatedrockdata_waypoint3)) & (O(communicatedimagedata_objective1_highres)))",
+    "p06":"O((O(communicatedsoildata_waypoint0)) | (O(communicatedsoildata_waypoint2)) | (O(communicatedrockdata_waypoint3)) | (O(communicatedimagedata_objective1_highres)))",
+    "p07":"O(O(communicatedsoildata_waypoint0) | O(communicatedsoildata_waypoint2) | O(communicatedrockdata_waypoint3) | O(communicatedimagedata_objective1_highres)) & ((communicatedsoildata_waypoint0) | (communicatedsoildata_waypoint2)  | (communicatedrockdata_waypoint3)  | (communicatedimagedata_objective1_highres))",
+    "p08":"H(H(H(communicatedsoildata_waypoint0) | H(communicatedsoildata_waypoint2) | H(communicatedrockdata_waypoint3) | H(communicatedimagedata_objective1_highres))) | ((communicatedsoildata_waypoint0) | (communicatedsoildata_waypoint2)  | (communicatedrockdata_waypoint3)  | (communicatedimagedata_objective1_highres))",
+    "p09":"O(O(O(communicatedsoildata_waypoint0) | O(communicatedsoildata_waypoint2) | O(communicatedrockdata_waypoint3) | O(communicatedimagedata_objective1_highres))) & ((communicatedsoildata_waypoint0) | (communicatedsoildata_waypoint2)  | (communicatedrockdata_waypoint3)  | (communicatedimagedata_objective1_highres))"
+}

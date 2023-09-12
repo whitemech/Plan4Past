@@ -1,0 +1,12 @@
+{
+    "coffee_ev": "O(O(coffeeat_o4) & O(coffeeat_lab) & O(coffeeat_o1) & O(coffeeat_o2) & O(coffeeat_o3))",
+    "coffee1": "O(coffeeat_o1) & O(coffeeat_o3)",
+    "coffee2": "O(coffeeat_o1) & O(coffeeat_o2) & O(coffeeat_o3)",
+    "coffee2next": "O(robotat_c & Y(Y(!Y(true))))",
+    "coffee3": "O(!(robotat_lab))",
+    "coffee3next": "O(robotat_c & Y(Y(Y(!Y(true)))))",
+    "coffee4": "O(coffeeat_o1) & O(coffeeat_o2) & O(coffeeat_o3) & (H((!Y(robotat_o2) | !(robotat_o3))) & !(robotat_o2)) & (H((!Y(robotat_o3) | !(robotat_o2))) & !(robotat_o3))",
+    "coffee4next": "O(robotat_c & Y(Y(Y(Y(!Y(true))))))",
+    "coffee5next": "O(robotat_c & Y(Y(Y(Y(Y(!Y(true)))))))",
+    "coffee6next": "O(robotat_c & Y(Y(Y(Y(Y(Y(!Y(true))))))))"
+}
