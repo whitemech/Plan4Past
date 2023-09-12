@@ -2,16 +2,19 @@ from typing import AbstractSet, Dict, Optional, Set, Tuple
 
 from pddl.core import Action, Domain, Problem, Requirements
 from pddl.logic import Constant, constants
-from pddl.logic.base import And, Or, Not, UnaryOp
+from pylogics.syntax.base import And, Or, Not
+
+from pddl.logic.base import And as pddlAnd 
+from pddl.logic.base import Or as pddlOr 
+from pddl.logic.base import Not as pddlNot 
+
 from pddl.logic.effects import AndEffect, When
 from pddl.logic.predicates import Predicate
 from pylogics.syntax.base import Formula, Logic
-from pylogics.syntax.pltl import Atomic as PLTLAtomic
-from plan4past.utility.compilation_manager import CompilationManager, YESTERDAY_ATOM
-from plan4past.utility.shortcuts import atom
-from plan4past.utility.pylogics_helper import conversion
-from plan4past.utility.atoms_visitor import find_atoms
-from plan4past.utility.pltl_manager import AND, OR, NOT, Atom, YesterdayAtom, Expression
+from pylogics.syntax.pltl import Atomic as PLTLAtomic, PropositionalFalse, PropositionalTrue
+from plan4past.utility.compilation_manager import CompilationManager, QUOTED_ATOM
+from plan4past.utils.atoms_visitor import find_atoms
+from plan4past.utility.ppltl_manager import YesterdayAtom
 from plan4past.utils.rewrite_formula_visitor import rewrite
  
 def default_mapping(f: Formula) -> Dict[PLTLAtomic, Predicate]:
@@ -117,9 +120,9 @@ class Compiler:
             return self.result
         self._executed = True
 
-        cm = CompilationManager(conversion(self.formula))
+        cm = CompilationManager(self.formula)
         new_fluents, new_effs, new_goal = cm.get_problem_extension()
-        new_fluents.append(atom('true'))
+        new_fluents.append(PLTLAtomic('true'))
         self._fresh_atoms = set(new_fluents)
         self._before_mapping = cm._gen_before_mapping()
         self._before_dictionary = cm.before_dictionary
@@ -136,7 +139,7 @@ class Compiler:
         #new_whens = _compute_whens(self.formula)
         if self.evaluate_pnf:
             domain_actions = _update_domain_actions_det_evaluate_pnf(self, new_whens, new_predicates)
-            precond = And(self.formula_conversion(new_goal), self.do_sync)
+            precond = pddlAnd(self.formula_conversion(new_goal), self.do_sync)
             new_predicates = [*self.domain.predicates, *new_predicates, self.goal_fluent, self.do_sync]
         else:
             domain_actions = _update_domain_actions_det(self.domain.actions, new_whens)
@@ -181,7 +184,7 @@ class Compiler:
             requirements=self.problem.requirements,
             objects=[*self.problem.objects],
             init=new_init,
-            goal=And(self.goal_fluent)
+            goal=pddlAnd(self.goal_fluent)
             )
 
 
@@ -191,33 +194,35 @@ class Compiler:
         if positive:
             return When(condition, effect)
         else:
-            return When(Not(condition), Not(effect))
+            return When(pddlNot(condition), pddlNot(effect))
     
 
     def formula_conversion(self, formula):
-
-        if isinstance(formula, Atom):
+        if isinstance(formula, PropositionalTrue):
+            return self.formula_conversion(PLTLAtomic('true'))
+        if isinstance(formula, PLTLAtomic):
             if formula in self._fresh_atoms:
                 if isinstance(formula, YesterdayAtom):
-                    return Predicate(self._before_dictionary[formula].atom, *[])
+                    assert isinstance(self._before_dictionary[formula], PLTLAtomic)
+                    return Predicate(self._before_dictionary[formula].name, *[])
                 else:
-                    return Predicate(formula.atom, *[])
+                    return Predicate(formula.name, *[])
             else:
-                predicate = self.from_atoms_to_fluent.get(PLTLAtomic(formula.atom), None)
+                predicate = self.from_atoms_to_fluent.get(PLTLAtomic(formula.name), None)
                 assert predicate is not None
                 return predicate
         
         else:
-            assert isinstance(formula, Expression) 
+            assert isinstance(formula, Formula) 
 
-            if formula.operator == AND:
-                return And(*[self.formula_conversion(formula.arg1), self.formula_conversion(formula.arg2)])
+            if isinstance(formula, And):
+                return pddlAnd(*[self.formula_conversion(operand) for operand in formula.operands])
 
-            elif formula.operator == OR:
-                return Or(*[self.formula_conversion(formula.arg1), self.formula_conversion(formula.arg2)])
+            elif isinstance(formula, Or):
+                return pddlOr(*[self.formula_conversion(operand) for operand in formula.operands])
             
-            elif formula.operator == NOT:
-                return Not(self.formula_conversion(formula.arg1))
+            elif isinstance(formula, Not):
+                return pddlNot(self.formula_conversion(formula.argument))
 
             else:
                 # Should raise an exception here
@@ -227,7 +232,7 @@ class Compiler:
 def _update_domain_actions_det_evaluate_pnf(compiler: Compiler, new_effects: Set[When], new_predicates) -> Set[Action]:
     """Update domain action when domain is deterministic."""
 
-    positive_effects = [eff for eff in new_effects if not isinstance(eff.effect, Not)]
+    positive_effects = [eff for eff in new_effects if not isinstance(eff.effect, pddlNot)]
 
     before_effects = []
     pex_evaluation_effects = []
@@ -237,11 +242,11 @@ def _update_domain_actions_det_evaluate_pnf(compiler: Compiler, new_effects: Set
     for eff in positive_effects:
         before_effect = eff.effect
         assert isinstance(before_effect, Predicate)
-        pex = Predicate(before_effect.name.replace(YESTERDAY_ATOM, 'pex'), *[])
+        pex = Predicate(before_effect.name.replace(QUOTED_ATOM, 'pex'), *[])
         pex_evaluation_effects.append(When(eff.condition, pex))
-        pex_delete_effects.append(Not(pex))
+        pex_delete_effects.append(pddlNot(pex))
         before_effects.append(When(pex, before_effect))
-        before_effects.append(When(Not(pex), Not(before_effect)))
+        before_effects.append(When(pddlNot(pex), pddlNot(before_effect)))
         new_predicates.append(pex)
         
     goal_fluent = Predicate("goal", *[])
@@ -251,7 +256,7 @@ def _update_domain_actions_det_evaluate_pnf(compiler: Compiler, new_effects: Set
             Action(
                 name=action.name,
                 parameters=[*action.parameters],
-                precondition=And(action.precondition, Not(goal_fluent), Not(compiler.do_sync)),
+                precondition=pddlAnd(action.precondition, pddlNot(goal_fluent), pddlNot(compiler.do_sync)),
                 effect=AndEffect(action.effect, *pex_delete_effects, *before_effects, compiler.do_sync),
             )
         )
@@ -259,8 +264,8 @@ def _update_domain_actions_det_evaluate_pnf(compiler: Compiler, new_effects: Set
             Action(
                 name='evaluate-pex',
                 parameters=[],
-                precondition=And(Not(goal_fluent), compiler.do_sync),
-                effect=AndEffect(*pex_evaluation_effects, Not(compiler.do_sync)),
+                precondition=pddlAnd(pddlNot(goal_fluent), compiler.do_sync),
+                effect=AndEffect(*pex_evaluation_effects, pddlNot(compiler.do_sync)),
             )
         )
     
@@ -282,7 +287,7 @@ def _update_domain_actions_det(
             Action(
                 name=action.name,
                 parameters=[*action.parameters],
-                precondition=And(action.precondition, Not(goal_fluent)),
+                precondition=pddlAnd(action.precondition, pddlNot(goal_fluent)),
                 effect=new_effect,
             )
         )

@@ -1,8 +1,8 @@
-from plan4past.utility.pltl_manager import *
-from plan4past.utility.shortcuts import lor, land, lnot
+from plan4past.utility.ppltl_manager import *
+from plan4past.utility.shortcuts import Or, And, Not
 
 NNF_ERROR_MSG = "The input formula is not in Negation Normal Form"
-YESTERDAY_ATOM = "Y"
+QUOTED_ATOM = "quoted"
 
 class NNFexception(Exception):
     pass
@@ -52,65 +52,68 @@ class CompilationManager:
 
     def _gen_before_dictionary(self, psi):
 
-        if not isinstance(psi, Atom):
-            assert isinstance(psi, Expression)
+        if not isinstance(psi, Atomic) and not isinstance(psi, PropositionalTrue) and not isinstance(psi, PropositionalFalse):
+            assert isinstance(psi, Formula)
 
-            if psi.operator in [BEFORE, WEAKBEFORE, SINCE, TRIGGERS, ONCE, HISTORICALLY]:
+            if isinstance(psi, Before) or \
+                isinstance(psi, Once) or \
+                isinstance(psi, Historically) or \
+                isinstance(psi, Since):
                 self._insert_before(get_before_atom(psi))
 
-            self._gen_before_dictionary(psi.arg1)
-            if isBinaryOp(psi.operator):
-                self._gen_before_dictionary(psi.arg2)
+            if isinstance(psi, And) or isinstance(psi, Or):
+                for operand in psi.operands:
+                    self._gen_before_dictionary(operand)
+                
+            elif isinstance(psi, Not) or \
+                isinstance(psi, Once) or \
+                isinstance(psi, Before) or \
+                isinstance(psi, Historically):
+                self._gen_before_dictionary(psi.argument)
+            else:
+                assert isinstance(psi, Since)
+                self._gen_before_dictionary(psi.operands[0])
+                self._gen_before_dictionary(psi.operands[1])
 
     def _insert_before(self, before_atom: YesterdayAtom):
         if self.before_dictionary.get(before_atom) is None:
-            self.before_dictionary[before_atom] = Atom(
-                f'{YESTERDAY_ATOM}_{self.before_id}')
+            self.before_dictionary[before_atom] = Atomic(
+                f'{QUOTED_ATOM}_{self.before_id}')
             self.before_id += 1
 
     def pex(self, phi):
-        if isinstance(phi, Atom):
+        if isinstance(phi, Atomic) or isinstance(phi, PropositionalTrue) or isinstance(phi, PropositionalFalse):
             return phi
         else:
-            assert isinstance(phi, Expression)
+            assert isinstance(phi, Formula)
 
-            if phi.operator == NOT:
-                if isinstance(phi.arg1, Atom):
+            if isinstance(phi, Not):
+                if isinstance(phi.argument, Atomic):
                     return phi
                 else:
-                    return lnot(self.pex(phi.arg1))
+                    return Not(self.pex(phi.argument))
                     #raise NNFexception(NNF_ERROR_MSG)
 
-            elif phi.operator == BEFORE:
+            elif isinstance(phi, Before):
                 return get_before_atom(phi)
 
-            elif phi.operator == WEAKBEFORE:
-                #return lor(start(), get_before_atom(phi))
-                raise NotImplementedError('The weakbefore should be rewritten as !Y(true) before the compilation')
+            elif isinstance(phi, And):
+                return And(*[self.pex(operand) for operand in phi.operands])
 
-            elif phi.operator == AND:
-                return land(self.pex(phi.arg1), self.pex(phi.arg2))
+            elif isinstance(phi, Or):
+                return Or(*[self.pex(operand) for operand in phi.operands])
 
-            elif phi.operator == OR:
-                return lor(self.pex(phi.arg1), self.pex(phi.arg2))
-
-            elif phi.operator == ONCE:
-                return lor(self.pex(phi.arg1),
+            elif isinstance(phi, Once):
+                return Or(self.pex(phi.argument),
                            get_before_atom(phi))
 
-            elif phi.operator == HISTORICALLY:
-                # return land(self.pex(phi.arg1),
-                #             lor(start(),
-                #                 get_before_atom(phi)))
+            elif isinstance(phi, Historically):
                 raise NotImplementedError('The historicaly should be rewritten as !O(!phi) before the compilation')
 
-            elif phi.operator == SINCE:
-                return lor(self.pex(phi.arg2),
-                           land(self.pex(phi.arg1),
+            elif isinstance(phi, Since):
+                return Or(self.pex(phi.operands[1]),
+                           And(self.pex(phi.operands[0]),
                                 get_before_atom(phi)))
 
-            elif phi.operator == TRIGGERS:
-                # return land(self.pex(phi.arg2),
-                #             lor(self.pex(phi.arg1),
-                #                 lor(start(), get_before_atom(phi))))
-                raise NotImplementedError('The triggers should be rewritten as !(!phi1 S !phi2) before the compilation')
+            else:
+                assert False

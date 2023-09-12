@@ -43,7 +43,7 @@ def tokens2pltl(tokens):
         elif len(tokens) == 2:
             return tokens2pltl(tokens[1])
         else:
-            return parse_pddl_conjunction_disjunction(tokens, land)
+            return parse_pddl_conjunction_disjunction(tokens, And)
     
     elif tokens[0] == PDDL_OR:
         if len(tokens) <= 1:
@@ -51,50 +51,39 @@ def tokens2pltl(tokens):
         elif len(tokens) == 2:
             return tokens2pltl(tokens[1])
         else:
-            return parse_pddl_conjunction_disjunction(tokens, lor)
+            return parse_pddl_conjunction_disjunction(tokens, Or)
     
     elif tokens[0] == PDDL_NOT:
         if len(tokens) != 2:
             raise MalformedPLTLExpression(MALFORMED_EXPRESSION_MSG.format(expr=str(tokens)))
 
-        return lnot(tokens2pltl(tokens[1]))
+        return Not(tokens2pltl(tokens[1]))
     
     elif tokens[0] == PDDL_SINCE:
         if len(tokens) != 3:
             raise MalformedPLTLExpression(MALFORMED_EXPRESSION_MSG.format(expr=str(tokens)))
 
-        return S(tokens2pltl(tokens[1]), tokens2pltl(tokens[2]))
-
-    elif tokens[0] == PDDL_TRIGGERS:
-        if len(tokens) != 3:
-            raise MalformedPLTLExpression(MALFORMED_EXPRESSION_MSG.format(expr=str(tokens)))
-
-        return T(tokens2pltl(tokens[1]), tokens2pltl(tokens[2]))
+        return Since(tokens2pltl(tokens[1]), tokens2pltl(tokens[2]))
 
     elif tokens[0] == PDDL_HISTORICALLY:
         if len(tokens) != 2:
             raise MalformedPLTLExpression(MALFORMED_EXPRESSION_MSG.format(expr=str(tokens)))
-        return H(tokens2pltl(tokens[1]))
+        return Historically(tokens2pltl(tokens[1]))
 
     elif tokens[0] == PDDL_ONCE:
         if len(tokens) != 2:
             raise MalformedPLTLExpression(MALFORMED_EXPRESSION_MSG.format(expr=str(tokens)))
-        return O(tokens2pltl(tokens[1]))
+        return Once(tokens2pltl(tokens[1]))
 
     elif tokens[0] == PDDL_BEFORE:
         if len(tokens) != 2:
             raise MalformedPLTLExpression(MALFORMED_EXPRESSION_MSG.format(expr=str(tokens)))
-        return Y(tokens2pltl(tokens[1]))
-
-    elif tokens[0] == PDDL_WEAKBEFORE:
-        if len(tokens) != 2:
-            raise MalformedPLTLExpression(MALFORMED_EXPRESSION_MSG.format(expr=str(tokens)))
-        return Z(tokens2pltl(tokens[1]))
+        return Before(tokens2pltl(tokens[1]))
     
     else:
         # This is an atom
         assert len(nested_lists) == 0
-        return atom(' '.join(tokens))
+        return Atomic(' '.join(tokens))
 
 
 # Just for debugging

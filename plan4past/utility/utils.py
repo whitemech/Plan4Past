@@ -26,7 +26,7 @@ from pddl.logic import Predicate, constants
 from pylogics.syntax.base import Formula
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
 
-from plan4past.utility.atoms_visitor import find_atoms
+from plan4past.utils.atoms_visitor import find_atoms
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
 
 
