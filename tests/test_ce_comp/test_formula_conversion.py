@@ -1,7 +1,7 @@
 from pddl.parser.domain import DomainParser
 from pddl.parser.problem import ProblemParser
 from pylogics.parsers import parse_pltl
-from plan4past.utility.shortcuts import *
+from plan4past.helpers.compilation_helper import *
 from plan4past.compiler_ce import *
 import pkg_resources
 

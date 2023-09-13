@@ -11,10 +11,9 @@ from pddl.logic.base import Not as pddlNot
 from pddl.logic.effects import AndEffect, When
 from pddl.logic.predicates import Predicate
 from pylogics.syntax.base import Formula, Logic
-from pylogics.syntax.pltl import Atomic as PLTLAtomic, PropositionalFalse, PropositionalTrue
-from plan4past.utility.compilation_manager import CompilationManager, QUOTED_ATOM
+from pylogics.syntax.pltl import Atomic as PLTLAtomic, PropositionalFalse, PropositionalTrue, FalseFormula
+from plan4past.helpers.compilation_helper import CompilationManager, QUOTED_ATOM, YesterdayAtom
 from plan4past.utils.atoms_visitor import find_atoms
-from plan4past.utility.ppltl_manager import YesterdayAtom
 from plan4past.utils.rewrite_formula_visitor import rewrite
  
 def default_mapping(f: Formula) -> Dict[PLTLAtomic, Predicate]:
@@ -38,6 +37,10 @@ def compile_with_pddl_library(domain: Domain, problem: Problem, formula: Formula
     compiled_domain, compiled_problem, before_mapping = compiler.result
     return compiled_domain, compiled_problem, before_mapping
 
+class ProblemUnsolvableException(Exception):
+
+    def __init__(self, *args: object) -> None:
+        super().__init__(*args)
 
 class Compiler:
     """Compiler of PLTLf goals into PDDL."""
@@ -67,6 +70,9 @@ class Compiler:
             self.from_atoms_to_fluent = default_mapping(self.formula)
 
         assert self.formula.logic == Logic.PLTL, "only PLTL is supported!"
+
+        if isinstance(self.formula, FalseFormula):
+            raise ProblemUnsolvableException("The goal formula can be simplified to FALSE. The problem admits no solution.")
 
         self._nondeterministic: bool = self._is_deterministic(self.domain)
         self._executed: bool = False
