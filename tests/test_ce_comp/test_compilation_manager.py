@@ -1,8 +1,8 @@
-from plan4past.utility.shortcuts import *
 from pylogics.parsers import parse_pltl
-from plan4past.utility.compilation_manager import *
+from plan4past.helpers.compilation_helper import *
 import pytest
 from plan4past.utils.rewrite_formula_visitor import rewrite
+from plan4past.utils.ppnf_visitor import ppnf
 
 a = Atomic('a')
 b = Atomic('b')
@@ -103,74 +103,69 @@ def test_before_generation7():
 
 def test_pex1():
     phi = a
-    cm = CompilationManager(phi)
-    result = cm.pex(phi)
+    result = ppnf(phi)
     assert result == a
 
 def test_pex2():
     phi = Before(a)
-    cm = CompilationManager(phi)
-    result = cm.pex(phi)
+    result = ppnf(phi)
     assert result == Yatom_(a)
 
 def test_pex3():
     phi = Or(Before(a), Not(Before(Atomic('true'))))
-    cm = CompilationManager(phi)
-    result = cm.pex(phi)
+    result = ppnf(phi)
     assert result == Or(Yatom_(a), Not(Yatom_(Atomic('true'))))
 
 def test_pex4():
     phi = Once(a)
-    cm = CompilationManager(phi)
-    result = cm.pex(phi)
+    result = ppnf(phi)
     assert result == Or(a, Yatom_(Once(a)))
 
 def test_pex5():
     phi = Not(Once(Not(a)))
-    cm = CompilationManager(phi)
-    result = cm.pex(phi)
+    result = ppnf(phi)
     assert result == Not(Or(Not(a), Yatom_(Once(Not(a)))))
 
 def test_pex6():
     phi = And(a, b)
-    cm = CompilationManager(phi)
-    result = cm.pex(phi)
+    result = ppnf(phi)
     assert result == And(a, b)
 
 
 def test_pex7():
     phi = Since(a, b)
-    cm = CompilationManager(phi)
-    result = cm.pex(phi)
+    result = ppnf(phi)
     assert result == Or(b, And(a, Yatom_(Since(a, b))))
 
 
 def test_pex8():
     phi = Not(Since(Not(a), Not(b)))
-    cm = CompilationManager(phi)
-    result = cm.pex(phi)
+    result = ppnf(phi)
     assert result == Not(Or(Not(b), And(Not(a), Yatom_(Since(Not(a), Not(b))))))
 
 
 def test_pex_complex_formula1():
-    phi = And(Once(a), Since(b, Before(Historically(c))))
+    phi = rewrite(And(Once(a), Since(b, Before(Historically(c)))))
     cm = CompilationManager(phi)
-    result = cm.pex(phi)
+    result = ppnf(phi)
 
     before_once_a = Yatom_(Once(a))
-    before_since = Yatom_(Since(b, Before(Historically(c))))
-    before_hist_c = Yatom_(Historically(c))
+    before_since = Yatom_(Since(b, Before(Not(Once(Not(c))))))
+    before_once_not_c = Yatom_(Once(Not(c)))
+    before_not_once_not_c = Yatom_(Not(Once(Not(c))))
 
-    assert len(cm.before_dictionary.keys()) == 3
 
-    pex_phi = And(Or(a, before_once_a), Or(before_hist_c, And(b, before_since)))
+    assert len(cm.before_dictionary.keys()) == 4
+    assert cm.before_dictionary.get(before_once_not_c) is not None
+
+    pex_phi = And(Or(a, before_once_a), Or(before_not_once_not_c, And(b, before_since)))
     assert result == pex_phi
 
 
 def test_pex_complex_formula2():
     phi = Once(And(a, Before(Once(b))))
     cm = CompilationManager(phi)
-    result = cm.pex(phi)
+    result = ppnf(phi)
 
     assert len(cm.before_dictionary.keys()) == 2
 
@@ -198,7 +193,7 @@ combinations = [("O(a) & O(b) & O(c)", And(Or(a, Yatom_(Once(a))), Or(b, Yatom_(
 def test_pex_formula(formula, expected):
     formula_ = rewrite(parse_pltl(formula))
     compilation_manager = CompilationManager(formula_)
-    pex = compilation_manager.pex(formula_)
+    pex = ppnf(formula_)
     assert pex == expected
 
 def test_problem_extension_HH_Ha_Hb():

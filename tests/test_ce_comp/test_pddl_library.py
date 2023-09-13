@@ -1,8 +1,8 @@
 from pddl.parser.domain import DomainParser
 from pddl.parser.problem import ProblemParser
 from pylogics.parsers import parse_pltl
-from plan4past.utility.shortcuts import *
-from plan4past.compiler_ce import compile_with_pddl_library
+from plan4past.helpers.compilation_helper import *
+from plan4past.compiler_ce import compile_with_pddl_library, ProblemUnsolvableException
 from pddl.formatter import domain_to_string, problem_to_string
 import pytest
 import pkg_resources
@@ -48,7 +48,7 @@ def test_unsat_expression():
     problem = problem_parser(problem_str)
 
     formula = parse_pltl("O(on_b_a) & H(!(on_b_a))")
-    with pytest.raises(AssertionError) as e_info:
+    with pytest.raises(ProblemUnsolvableException) as e_info:
         compile_with_pddl_library(domain, problem, formula)
         
 
@@ -64,8 +64,11 @@ def test_unsat_expression2():
 
     formula = parse_pltl("on_b_a & !(on_b_a)")
 
-    with pytest.raises(AssertionError) as e_info:
+    with pytest.raises(ProblemUnsolvableException) as e_info:
         compile_with_pddl_library(domain, problem, formula)
+
+if __name__ == "__main__":
+    test_unsat_expression2()
 
 
 def test_always_true_expression():

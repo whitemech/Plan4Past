@@ -50,14 +50,14 @@ def pddl2tl(pddl_formula):
     return tokens2ltl(tokens)
 
 
-def parse_pddl_conjunction_disjunction(tokens, fun):
-    '(and (a) (b) (c) (d)) -> AND(a, AND(b, AND(c, d)))'
-    '(or (a) (b) (c) (d))  -> OR(a, OR(b, OR(c, d)))'
-    parts = [tokens2ltl(tokens[i]) for i in range(1, len(tokens))]
-    current_logic_expr = fun(parts[len(parts)-2], parts[len(parts)-1])
-    for i in reversed(range(len(parts) - 2)):
-        current_logic_expr = fun(parts[i], current_logic_expr)
-    return current_logic_expr
+# def parse_pddl_conjunction_disjunction(tokens, fun):
+#     '(and (a) (b) (c) (d)) -> AND(a, AND(b, AND(c, d)))'
+#     '(or (a) (b) (c) (d))  -> OR(a, OR(b, OR(c, d)))'
+#     parts = [tokens2ltl(tokens[i]) for i in range(1, len(tokens))]
+#     current_logic_expr = fun(parts[len(parts)-2], parts[len(parts)-1])
+#     for i in reversed(range(len(parts) - 2)):
+#         current_logic_expr = fun(parts[i], current_logic_expr)
+#     return current_logic_expr
 
 
 def tokens2ltl(tokens):

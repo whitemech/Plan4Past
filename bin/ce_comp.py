@@ -2,8 +2,8 @@ from pddl.parser.domain import DomainParser
 from pddl.parser.problem import ProblemParser
 from pylogics.parsers import parse_pltl
 from pddl.formatter import domain_to_string, problem_to_string
-from plan4past.utility.utils import mapping_parser
-from plan4past.utility.to_pddl import to_pddl
+from plan4past.utils.mapping_parser import mapping_parser
+from plan4past.utils.to_pddl import to_pddl
 import click
 import os
 from plan4past.compiler_ce import compile_with_pddl_library as compile

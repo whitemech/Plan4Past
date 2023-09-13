@@ -38,6 +38,7 @@ from pylogics.syntax.pltl import (
     PropositionalFalse,
     PropositionalTrue,
     Since,
+    FalseFormula
 )
 
 
@@ -63,6 +64,11 @@ def rewrite_true(formula: PropositionalTrue) -> Formula:
 @rewrite.register
 def rewrite_false(formula: PropositionalFalse) -> Formula:
     """Compute the basic formula for the false formula."""
+    return formula
+
+@rewrite.register
+def rewrite_true(formula: FalseFormula) -> Formula:
+    """Compute the basic formula for a formula that is always false."""
     return formula
 
 
