@@ -2,7 +2,7 @@ from pddl.parser.domain import DomainParser
 from pddl.parser.problem import ProblemParser
 from pylogics.parsers import parse_pltl
 from plan4past.helpers.compilation_helper import *
-from plan4past.compiler_ce import *
+from plan4past.adl_compiler import *
 import pkg_resources
 
 
@@ -38,16 +38,16 @@ def test_formula_conversion():
     pnf.append(Or(pnf[2], y[3]))
 
 
-    compiler = Compiler(domain, problem, formula, from_atoms_to_fluent=None)
+    compiler = ADLCompiler(domain, problem, formula, from_atoms_to_fluent=None)
     compiler.compile()
     before_dictionary = compiler._before_dictionary
     pnf0_expected = pddlOr(pddlNot(a_pred), Predicate(before_dictionary[y[0]].name, *[]))
     pnf1_expected = pddlOr(pddlNot(b_pred), Predicate(before_dictionary[y[1]].name, *[]))
-    assert compiler.formula_conversion(pnf[0]) == pnf0_expected
-    assert compiler.formula_conversion(pnf[1]) == pnf1_expected
+    assert compiler.pylogics2pddl(pnf[0]) == pnf0_expected
+    assert compiler.pylogics2pddl(pnf[1]) == pnf1_expected
     pnf2_expected = pddlOr(pddlNot(pddlOr(pddlNot(pnf0_expected), pddlNot(pnf1_expected))), Predicate(before_dictionary[y[2]].name, *[]))
-    assert compiler.formula_conversion(pnf[2]) == pnf2_expected
-    assert compiler.formula_conversion(pnf[3]) == pddlOr(pnf2_expected, Predicate(before_dictionary[y[3]].name, *[]))    
+    assert compiler.pylogics2pddl(pnf[2]) == pnf2_expected
+    assert compiler.pylogics2pddl(pnf[3]) == pddlOr(pnf2_expected, Predicate(before_dictionary[y[3]].name, *[]))    
 
 
 if __name__ == '__main__':

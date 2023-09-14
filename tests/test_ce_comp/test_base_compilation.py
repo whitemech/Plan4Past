@@ -2,7 +2,7 @@ from pddl.parser.domain import DomainParser
 from pddl.parser.problem import ProblemParser
 from pylogics.parsers import parse_pltl
 from plan4past.helpers.compilation_helper import *
-from plan4past.compiler_ce import *
+from plan4past.adl_compiler import *
 from pddl.formatter import domain_to_string, problem_to_string
 import pytest
 import pkg_resources
@@ -38,7 +38,7 @@ def test_pddl_compilation():
 
 
     nopex = True
-    compiler = Compiler(domain, problem, formula, from_atoms_to_fluent=None)
+    compiler = ADLCompiler(domain, problem, formula, from_atoms_to_fluent=None)
     if nopex:
         compiler.evaluate_pnf = False
     compiler.compile()
@@ -47,12 +47,12 @@ def test_pddl_compilation():
         if 'goal' not in act.name:
             effects = act.effect.operands
             for i in range(len(pnf)):
-                effect = When(compiler.formula_conversion(pnf[i]), compiler.formula_conversion(y[i]))
+                effect = When(compiler.pylogics2pddl(pnf[i]), compiler.pylogics2pddl(y[i]))
                 assert effect in effects
-            assert pddlNot(compiler.goal_fluent) in act.precondition.operands
+            assert pddlNot(compiler.goal_predicate) in act.precondition.operands
         else:
             ## THE GOAL IS IN THIS ACTION ##
-            assert act.precondition == compiler.formula_conversion(Or(Not(pnf[3]), a , b))
+            assert act.precondition == compiler.pylogics2pddl(Or(Not(pnf[3]), a , b))
 
 if __name__ == '__main__':
     pytest.main()

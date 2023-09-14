@@ -13,36 +13,28 @@ from pddl.logic.predicates import Predicate
 from pylogics.syntax.base import Formula, Logic
 from pylogics.syntax.pltl import Atomic as PLTLAtomic, PropositionalFalse, PropositionalTrue, FalseFormula
 from plan4past.helpers.compilation_helper import CompilationManager, QUOTED_ATOM, YesterdayAtom
+from plan4past.helpers.utils import default_mapping
 from plan4past.utils.atoms_visitor import find_atoms
 from plan4past.utils.rewrite_formula_visitor import rewrite
- 
-def default_mapping(f: Formula) -> Dict[PLTLAtomic, Predicate]:
-    """Compute mapping from atoms to fluents using underscores."""
-    symbols = find_atoms(f)
-    from_atoms_to_fluents = dict()
-    for symbol in symbols:
-        name, *cons = symbol.name.split("_")
-        if cons:
-            from_atoms_to_fluents[symbol] = Predicate(name, *constants(" ".join(cons)))
-        else:
-            from_atoms_to_fluents[symbol] = Predicate(name)
-    return from_atoms_to_fluents
-
-    
-def compile_with_pddl_library(domain: Domain, problem: Problem, formula: Formula, nopex = False, from_atoms_to_fluent: Optional[Dict[PLTLAtomic, Predicate]] = None):
-    compiler = Compiler(domain, problem, formula, from_atoms_to_fluent=from_atoms_to_fluent)
-    if nopex:
-        compiler.evaluate_pnf = False
-    compiler.compile()
-    compiled_domain, compiled_problem, before_mapping = compiler.result
-    return compiled_domain, compiled_problem, before_mapping
 
 class ProblemUnsolvableException(Exception):
 
     def __init__(self, *args: object) -> None:
         super().__init__(*args)
 
-class Compiler:
+
+PNF = 'pnf'
+
+TRUE_ATOM = PLTLAtomic('true')
+
+GOAL_PREDICATE = Predicate('goal', *[])
+CHECK_PREDICATE = Predicate('evaluate-pnf', *[])
+TRUE_PREDICATE = Predicate('true', *[])
+
+EVALUATE_PNF_ACTION = 'evaluate-pnf-action'
+ACHIEVE_GOAL_ACTION = 'achieve-goal'
+
+class ADLCompiler:
     """Compiler of PLTLf goals into PDDL."""
 
     def __init__(
@@ -51,6 +43,7 @@ class Compiler:
         problem: Problem,
         formula: Formula,
         from_atoms_to_fluent: Optional[Dict[PLTLAtomic, Predicate]] = None,
+        evaluate_pnf = True
     ) -> None:
         """
         Initialize the compiler.
@@ -80,10 +73,10 @@ class Compiler:
         self._result_problem = None
         self._fresh_atoms = None
         self._before_mapping = None
-        self.evaluate_pnf = True
+        self.evaluate_pnf = evaluate_pnf
         self._before_dictionary = None
-        self.goal_fluent = Predicate("goal", *[])
-        self.do_sync = Predicate('evaluate-pex')
+        self.goal_predicate = GOAL_PREDICATE
+        self.check_predicate = CHECK_PREDICATE
 
     @staticmethod
     def _is_deterministic(domain: Domain):
@@ -128,7 +121,7 @@ class Compiler:
 
         cm = CompilationManager(self.formula)
         new_fluents, new_effs, new_goal = cm.get_problem_extension()
-        new_fluents.append(PLTLAtomic('true'))
+        new_fluents.append(TRUE_ATOM)
         self._fresh_atoms = set(new_fluents)
         self._before_mapping = cm._gen_before_mapping()
         self._before_dictionary = cm.before_dictionary
@@ -138,28 +131,20 @@ class Compiler:
 
     def _compile_domain(self, new_fluents, new_effs, new_goal):
         """Compute the new domain."""
-        new_predicates = [self.formula_conversion(fluent) for fluent in new_fluents]
+        new_predicates = [self.pylogics2pddl(fluent) for fluent in new_fluents]
         new_whens_pos = [self.effect_conversion(eff, positive=True) for eff in new_effs]
         new_whens_neg = [self.effect_conversion(eff, positive=False) for eff in new_effs]
         new_whens = new_whens_pos + new_whens_neg
-        #new_whens = _compute_whens(self.formula)
         if self.evaluate_pnf:
-            domain_actions = _update_domain_actions_det_evaluate_pnf(self, new_whens, new_predicates)
-            precond = pddlAnd(self.formula_conversion(new_goal), self.do_sync)
-            new_predicates = [*self.domain.predicates, *new_predicates, self.goal_fluent, self.do_sync]
+            domain_actions = _update_domain_actions_with_check(self, new_whens, new_predicates)
+            precond = pddlAnd(self.pylogics2pddl(new_goal), self.check_predicate)
+            new_predicates = [*self.domain.predicates, *new_predicates, self.goal_predicate, self.check_predicate]
         else:
-            domain_actions = _update_domain_actions_det(self.domain.actions, new_whens)
-            precond = self.formula_conversion(new_goal)
-            new_predicates = [*self.domain.predicates, *new_predicates, self.goal_fluent]
+            domain_actions = _update_domain_actions(self, self.domain.actions, new_whens)
+            precond = self.pylogics2pddl(new_goal)
+            new_predicates = [*self.domain.predicates, *new_predicates, self.goal_predicate]
 
-        domain_actions.add(
-        Action(
-            name="achieve-goal",
-            parameters=[],
-            precondition=precond,
-            effect=AndEffect(self.goal_fluent),
-        )
-        )
+        domain_actions.add(self._get_achieve_goal_action(precond))
 
         self._result_domain = Domain(
             name=self.domain.name,
@@ -177,11 +162,20 @@ class Compiler:
             actions=domain_actions,
         )
 
+    def _get_achieve_goal_action(self, precond):
+        return Action(
+            name=ACHIEVE_GOAL_ACTION,
+            parameters=[],
+            precondition=precond,
+            effect=AndEffect(self.goal_predicate),
+        )
+        
+
     def _compile_problem(self):
         """Compute the new problem."""
-        new_init = set(self.problem.init) | set([Predicate('true', *[])])
+        new_init = set(self.problem.init) | set([TRUE_PREDICATE])
         if self.evaluate_pnf:
-            new_init = new_init | set([self.do_sync])
+            new_init = new_init | set([self.check_predicate])
 
         self._result_problem = Problem(
             name=self.problem.name,
@@ -190,98 +184,133 @@ class Compiler:
             requirements=self.problem.requirements,
             objects=[*self.problem.objects],
             init=new_init,
-            goal=pddlAnd(self.goal_fluent)
+            goal=pddlAnd(self.goal_predicate)
             )
 
 
     def effect_conversion(self, effect: Tuple, positive):
-        condition = self.formula_conversion(effect[0])
-        effect = self.formula_conversion(effect[1])
+        condition = self.pylogics2pddl(effect[0])
+        effect = self.pylogics2pddl(effect[1])
         if positive:
             return When(condition, effect)
         else:
             return When(pddlNot(condition), pddlNot(effect))
     
 
-    def formula_conversion(self, formula):
+    def pylogics2pddl(self, formula):
         if isinstance(formula, PropositionalTrue):
-            return self.formula_conversion(PLTLAtomic('true'))
+            return self.pylogics2pddl(TRUE_ATOM)
         if isinstance(formula, PLTLAtomic):
+
             if formula in self._fresh_atoms:
-                if isinstance(formula, YesterdayAtom):
-                    assert isinstance(self._before_dictionary[formula], PLTLAtomic)
-                    return Predicate(self._before_dictionary[formula].name, *[])
-                else:
-                    return Predicate(formula.name, *[])
+                return (
+                        Predicate(self._before_dictionary[formula].name, *[]) if 
+                        isinstance(formula, YesterdayAtom) else Predicate(formula.name, *[])
+                )
             else:
                 predicate = self.from_atoms_to_fluent.get(PLTLAtomic(formula.name), None)
                 assert predicate is not None
                 return predicate
         
         else:
-            assert isinstance(formula, Formula) 
+            assert isinstance(formula, Not) or isinstance(formula, And) or isinstance(formula, Or) 
 
-            if isinstance(formula, And):
-                return pddlAnd(*[self.formula_conversion(operand) for operand in formula.operands])
-
-            elif isinstance(formula, Or):
-                return pddlOr(*[self.formula_conversion(operand) for operand in formula.operands])
-            
-            elif isinstance(formula, Not):
-                return pddlNot(self.formula_conversion(formula.argument))
-
+            if isinstance(formula, Not):
+                return pddlNot(self.pylogics2pddl(formula.argument))
             else:
-                # Should raise an exception here
-                assert False
+                operands = [self.pylogics2pddl(operand) for operand in formula.operands]
+                return pddlAnd(*operands) if isinstance(formula, And) else pddlOr(*operands)
 
 
-def _update_domain_actions_det_evaluate_pnf(compiler: Compiler, new_effects: Set[When], new_predicates) -> Set[Action]:
-    """Update domain action when domain is deterministic."""
+def _update_domain_actions_with_check(compiler: ADLCompiler, new_effects: Set[When], new_predicates: list) -> Set[Action]:
+    """
+    Update domain action using the "check" optimization
+    This optmization works as follows.
+
+        Consider the formula O(a). The standard compilation would yield a compiled action of the form
+        
+        (:action ACTION
+            Pre: ...
+            Eff: ...
+                a or "YO(a)" -> "YO(a)"
+                not (a or "YO(a)") -> not "YO(a)"
+                ...
+        
+        The optmized compilation introduced a set of "pnf_i" variables to encapsulate the complex formulas
+        deriving from the pnf of a PPLTL formula. Hence, the optimized encodind of the above action becomes:
+
+        (:action ACTION
+            Pre: ...
+                not evaluate-pnf
+            Eff: ...
+                1. pnf_0 -> "YO(a)", not pnf_0 -> not "YO(a)"
+                2. not pnf_0
+                3. evaluate-pnf
+                ...
+        
+        Effects 1. capture the update the the quoted variable
+        Effect 2. deletes all the pnf variables (in this example just pnf_0). This is necessary as each pnf must be
+        re-evaluated after the occurence of any action
+        Effect 3. forces the planner to execute a special action that evaluates all pnfs. The new precondition guarantees
+        that the pnfs get updated after every action.
+
+        The special action that computes the pnf is defined as follows:
+
+        (:action evaluate-pnf-action
+            Pre: evaluate-pnf
+            Eff:
+                a or "YO(a)" -> pnf_0
+                not evaluate-pnf
+            
+        Notice that "evaluate-pnf" is true in the initial state. Hence, due to the structure of the actions,
+        Every trace induced by the domain has the following pattern:
+        
+        evaluate-pnf-action, domain-action, evaluate-pnf-action, domain-action, ..., domain-action, achieve-goal
+
+    """
 
     positive_effects = [eff for eff in new_effects if not isinstance(eff.effect, pddlNot)]
 
-    before_effects = []
-    pex_evaluation_effects = []
-    pex_delete_effects = []
-    pex_predicates = set([])
+    qouted_update_effects = []
+    pnf_evaluation_effects = []
+    pnf_delete_effects = []
     
     for eff in positive_effects:
         before_effect = eff.effect
         assert isinstance(before_effect, Predicate)
-        pex = Predicate(before_effect.name.replace(QUOTED_ATOM, 'pex'), *[])
-        pex_evaluation_effects.append(When(eff.condition, pex))
-        pex_delete_effects.append(pddlNot(pex))
-        before_effects.append(When(pex, before_effect))
-        before_effects.append(When(pddlNot(pex), pddlNot(before_effect)))
-        new_predicates.append(pex)
+        pnf_predicate = Predicate(before_effect.name.replace(QUOTED_ATOM, PNF), *[])
+        pnf_evaluation_effects.append(When(eff.condition, pnf_predicate))
+        pnf_delete_effects.append(pddlNot(pnf_predicate))
+        qouted_update_effects.append(When(pnf_predicate, before_effect))
+        qouted_update_effects.append(When(pddlNot(pnf_predicate), pddlNot(before_effect)))
+        new_predicates.append(pnf_predicate)
         
-    goal_fluent = Predicate("goal", *[])
+    goal_fluent = compiler.goal_predicate
     new_actions = set()
     for action in compiler.domain.actions:
         new_actions.add(
             Action(
                 name=action.name,
                 parameters=[*action.parameters],
-                precondition=pddlAnd(action.precondition, pddlNot(goal_fluent), pddlNot(compiler.do_sync)),
-                effect=AndEffect(action.effect, *pex_delete_effects, *before_effects, compiler.do_sync),
+                precondition=pddlAnd(action.precondition, pddlNot(goal_fluent), pddlNot(compiler.check_predicate)),
+                effect=AndEffect(action.effect, *pnf_delete_effects, *qouted_update_effects, compiler.check_predicate),
             )
         )
     new_actions.add(
             Action(
-                name='evaluate-pex',
+                name=EVALUATE_PNF_ACTION,
                 parameters=[],
-                precondition=pddlAnd(pddlNot(goal_fluent), compiler.do_sync),
-                effect=AndEffect(*pex_evaluation_effects, pddlNot(compiler.do_sync)),
+                precondition=pddlAnd(pddlNot(goal_fluent), compiler.check_predicate),
+                effect=AndEffect(*pnf_evaluation_effects, pddlNot(compiler.check_predicate)),
             )
         )
     
     return new_actions
 
-def _update_domain_actions_det(
-    actions: AbstractSet[Action], progression: Set[When]
+def _update_domain_actions(
+    compiler: ADLCompiler, actions: AbstractSet[Action], progression: Set[When]
 ) -> Set[Action]:
-    """Update domain action when domain is deterministic."""
-    goal_fluent = Predicate("goal", *[])
+    """Update domain actions."""
     new_actions = set()
     for action in actions:
         if isinstance(action.effect, AndEffect):
@@ -293,7 +322,7 @@ def _update_domain_actions_det(
             Action(
                 name=action.name,
                 parameters=[*action.parameters],
-                precondition=pddlAnd(action.precondition, pddlNot(goal_fluent)),
+                precondition=pddlAnd(action.precondition, pddlNot(compiler.goal_predicate)),
                 effect=new_effect,
             )
         )

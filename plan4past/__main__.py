@@ -35,6 +35,8 @@ from pylogics.syntax.base import Formula
 
 from plan4past.compiler import Compiler
 from plan4past.utils.mapping_parser import mapping_parser
+from plan4past.adl_compiler import ADLCompiler
+
 
 DEFAULT_NEW_DOMAIN_FILENAME: str = "new-domain.pddl"
 DEFAULT_NEW_PROBLEM_FILENAME: str = "new-problem.pddl"
@@ -83,7 +85,17 @@ DEFAULT_NEW_PROBLEM_FILENAME: str = "new-problem.pddl"
     help="Path to PDDL file to store the new problem.",
     type=click.Path(dir_okay=False),
 )
-def cli(domain, problem, goal_inline, goal_file, mapping, out_domain, out_problem):
+
+@click.option(
+    "-adl",
+    "--adl-encoding",
+    default=False,
+    is_flag=True,
+    help="Switch to the ADL encoding of the PPLTL goal (i.e., without derived predicates).",
+    type=bool,
+)
+
+def cli(domain, problem, goal_inline, goal_file, mapping, out_domain, out_problem, adl_encoding):
     """Plan4Past: Planning for Pure-Past Temporally Extended Goals."""
     goal = _get_goal(goal_inline, goal_file)
 
@@ -95,9 +107,14 @@ def cli(domain, problem, goal_inline, goal_file, mapping, out_domain, out_proble
         else None
     )
 
-    compiled_domain, compiled_problem = _compile_instance(
-        in_domain, in_problem, formula, var_map
-    )
+    if adl_encoding:
+        compiled_domain, compiled_problem, before_mapping = _adl_compilation_entrypoint(
+            in_domain, in_problem, formula, var_map
+        )
+    else:
+        compiled_domain, compiled_problem = _compile_instance(
+            in_domain, in_problem, formula, var_map
+        )
 
     try:
         with open(out_domain, "w+", encoding="utf-8") as d:
@@ -108,6 +125,11 @@ def cli(domain, problem, goal_inline, goal_file, mapping, out_domain, out_proble
         raise IOError(
             "[ERROR]: Something wrong occurred while writing the compiled domain and problem."
         ) from e
+    
+    if adl_encoding:
+        with open(out_domain, "a", encoding="utf-8") as d:
+            d.write(before_mapping)
+        _delete_disjunction_in_goal(out_domain, out_problem)
 
 
 def _get_goal(goal_inline, goal_file) -> str:
@@ -144,6 +166,49 @@ def _compile_instance(domain, problem, formula, mapping) -> Tuple[Domain, Proble
     compiled_domain, compiled_problem = compiler.result
 
     return compiled_domain, compiled_problem
+
+
+def _adl_compilation_entrypoint(domain, problem, formula, mapping):
+
+    compiler = ADLCompiler(domain, problem, formula, mapping)
+    compiler.compile()
+    compiled_domain, compiled_problem, before_mapping = compiler.result
+    return compiled_domain, compiled_problem, before_mapping
+
+
+def _delete_disjunction_in_goal(out_domain, out_problem):
+    from FDgrounder import pddl_parser
+    from FDgrounder import normalize
+    from plan4past.utils.to_pddl import to_pddl
+    import os
+
+    splitted_domain = open(out_domain).read().split('(:action')
+    achieve_goal_action =  [lin for lin in splitted_domain if lin.strip().startswith('achieve-goal')]
+    other_actions = [f'(:action {lin}' for lin in splitted_domain[1:] if not lin.strip().startswith('achieve-goal')]
+    assert len(achieve_goal_action) == 1
+    achieve_goal_action = achieve_goal_action[0]
+    original_domain = splitted_domain[0]
+    domain_tmp = original_domain + f'(:action {achieve_goal_action} )'
+
+    open('./tmp_domain.pddl', 'w').write(domain_tmp.replace(':non-deterministic', ''))
+
+    task = pddl_parser.open('./tmp_domain.pddl', out_problem)
+
+    os.system('rm ./tmp_domain.pddl')
+
+    normalize.normalize(task)
+    i = 0
+    for i in range(len(task.actions)):
+        assert task.actions[i].name == 'achieve-goal'
+        task.actions[i].name = f'achieve-goal-{i}'
+
+    str_actions = []
+    for action in task.actions:
+        str_actions.append(to_pddl(action))
+
+    fixed_domain = original_domain + '\n' + '\n\n'.join(str_actions) + '\n\n' + '\n'.join(other_actions)
+    with open(out_domain, 'w') as out_dom:
+        out_dom.write(fixed_domain)
 
 
 if __name__ == "__main__":
