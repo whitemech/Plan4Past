@@ -95,7 +95,16 @@ DEFAULT_NEW_PROBLEM_FILENAME: str = "new-problem.pddl"
     type=bool,
 )
 
-def cli(domain, problem, goal_inline, goal_file, mapping, out_domain, out_problem, adl_encoding):
+@click.option(
+    "-adl-plus",
+    "--adl-encoding-plus",
+    default=False,
+    is_flag=True,
+    help="Switch to the optimized ADL encoding of the PPLTL goal (i.e., without derived predicates).",
+    type=bool,
+)
+
+def cli(domain, problem, goal_inline, goal_file, mapping, out_domain, out_problem, adl_encoding, adl_encoding_plus):
     """Plan4Past: Planning for Pure-Past Temporally Extended Goals."""
     goal = _get_goal(goal_inline, goal_file)
 
@@ -107,9 +116,16 @@ def cli(domain, problem, goal_inline, goal_file, mapping, out_domain, out_proble
         else None
     )
 
+    if adl_encoding and adl_encoding_plus:
+        raise ValueError("[ERROR] Please select only one of the adl encodings")
+
     if adl_encoding:
         compiled_domain, compiled_problem, before_mapping = _adl_compilation_entrypoint(
-            in_domain, in_problem, formula, var_map
+            in_domain, in_problem, formula, var_map, evaluate_pnf = False
+        )
+    elif adl_encoding_plus:
+        compiled_domain, compiled_problem, before_mapping = _adl_compilation_entrypoint(
+            in_domain, in_problem, formula, var_map, evaluate_pnf = True
         )
     else:
         compiled_domain, compiled_problem = _compile_instance(
@@ -168,9 +184,9 @@ def _compile_instance(domain, problem, formula, mapping) -> Tuple[Domain, Proble
     return compiled_domain, compiled_problem
 
 
-def _adl_compilation_entrypoint(domain, problem, formula, mapping):
+def _adl_compilation_entrypoint(domain, problem, formula, mapping, evaluate_pnf = True):
 
-    compiler = ADLCompiler(domain, problem, formula, mapping)
+    compiler = ADLCompiler(domain, problem, formula, mapping, evaluate_pnf)
     compiler.compile()
     compiled_domain, compiled_problem, before_mapping = compiler.result
     return compiled_domain, compiled_problem, before_mapping
