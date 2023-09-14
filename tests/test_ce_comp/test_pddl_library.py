@@ -2,7 +2,7 @@ from pddl.parser.domain import DomainParser
 from pddl.parser.problem import ProblemParser
 from pylogics.parsers import parse_pltl
 from plan4past.helpers.compilation_helper import *
-from plan4past.compiler_ce import compile_with_pddl_library, ProblemUnsolvableException
+from plan4past.adl_compiler import ProblemUnsolvableException, ADLCompiler
 from pddl.formatter import domain_to_string, problem_to_string
 import pytest
 import pkg_resources
@@ -18,7 +18,10 @@ def test_pddl_conversion():
 
     formula = parse_pltl("ontable_c & Y(on_b_a)")
 
-    compiled_domain, compiled_problem, befores = compile_with_pddl_library(domain, problem, formula)
+    compiler = ADLCompiler(domain, problem, formula)
+    compiler.compile()
+
+    compiled_domain, compiled_problem, befores = compiler.result
     tmp = domain_to_string(compiled_domain)
     print('ciao')
 
@@ -34,7 +37,10 @@ def test_pddl_conversion2():
 
     formula = parse_pltl("Y(O(on_b_a))")
 
-    res = compile_with_pddl_library(domain, problem, formula)
+    compiler = ADLCompiler(domain, problem, formula)
+    compiler.compile()
+
+    compiled_domain, compiled_problem, befores = compiler.result
 
 
 def test_unsat_expression():
@@ -49,7 +55,8 @@ def test_unsat_expression():
 
     formula = parse_pltl("O(on_b_a) & H(!(on_b_a))")
     with pytest.raises(ProblemUnsolvableException) as e_info:
-        compile_with_pddl_library(domain, problem, formula)
+        compiler = ADLCompiler(domain, problem, formula)
+        compiler.compile()
         
 
 def test_unsat_expression2():
@@ -65,7 +72,8 @@ def test_unsat_expression2():
     formula = parse_pltl("on_b_a & !(on_b_a)")
 
     with pytest.raises(ProblemUnsolvableException) as e_info:
-        compile_with_pddl_library(domain, problem, formula)
+        compiler = ADLCompiler(domain, problem, formula)
+        compiler.compile()
 
 if __name__ == "__main__":
     test_unsat_expression2()
@@ -84,4 +92,5 @@ def test_always_true_expression():
     formula = parse_pltl("on_b_a | !(on_b_a)")
 
     with pytest.raises(NotImplementedError) as e_info:
-        compile_with_pddl_library(domain, problem, formula)
+        compiler = ADLCompiler(domain, problem, formula)
+        compiler.compile()

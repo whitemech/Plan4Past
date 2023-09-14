@@ -3,7 +3,7 @@ from pddl.parser.problem import ProblemParser
 from pylogics.parsers import parse_pltl
 from plan4past.helpers.compilation_helper import *
 from pylogics.syntax.base import Not
-from plan4past.compiler_ce import *
+from plan4past.adl_compiler import *
 import pytest
 import pkg_resources
 
@@ -21,45 +21,45 @@ def get_task(domain_path, problem_path):
 def check_compilation(domain, problem, formula, pnf, temporalsubformulas, goal):
     y = temporalsubformulas
     nopex = False
-    compiler = Compiler(domain, problem, formula, from_atoms_to_fluent=None)
+    compiler = ADLCompiler(domain, problem, formula, from_atoms_to_fluent=None)
     if nopex:
         compiler.evaluate_pnf = False
     compiler.compile()
     actions = compiler.result[0].actions
-    evaluate_pnf = [act for act in actions if act.name == 'evaluate-pex'][0]
+    evaluate_pnf = [act for act in actions if act.name == EVALUATE_PNF_ACTION][0]
     effects = evaluate_pnf.effect.operands
 
     for i in range(len(pnf)):
-        yatom_short = compiler.formula_conversion(y[i])
-        pex = Predicate(yatom_short.name.replace(QUOTED_ATOM, 'pex'), *[])
-        effect = When(compiler.formula_conversion(pnf[i]), pex)
+        yatom_short = compiler.pylogics2pddl(y[i])
+        pex = Predicate(yatom_short.name.replace(QUOTED_ATOM, PNF), *[])
+        effect = When(compiler.pylogics2pddl(pnf[i]), pex)
         assert effect in effects
-        assert pddlNot(compiler.goal_fluent) in evaluate_pnf.precondition.operands
-        assert pddlNot(compiler.do_sync) in evaluate_pnf.effect.operands
+        assert pddlNot(compiler.goal_predicate) in evaluate_pnf.precondition.operands
+        assert pddlNot(compiler.check_predicate) in evaluate_pnf.effect.operands
 
     for act in actions:
-        if 'goal' not in act.name and 'evaluate-pex' not in act.name:
+        if 'goal' not in act.name and EVALUATE_PNF_ACTION not in act.name:
             for i in range(len(pnf)):
-                yatom_short = compiler.formula_conversion(y[i])
-                pex = Predicate(yatom_short.name.replace(QUOTED_ATOM, 'pex'), *[])
+                yatom_short = compiler.pylogics2pddl(y[i])
+                pex = Predicate(yatom_short.name.replace(QUOTED_ATOM, PNF), *[])
                 assert pddlNot(pex) in act.effect.operands
                 assert When(pex, yatom_short) in act.effect.operands
-            assert compiler.do_sync in act.effect.operands
-            assert pddlNot(compiler.goal_fluent) in act.precondition.operands
-            assert pddlNot(compiler.do_sync) in act.precondition.operands
+            assert compiler.check_predicate in act.effect.operands
+            assert pddlNot(compiler.goal_predicate) in act.precondition.operands
+            assert pddlNot(compiler.check_predicate) in act.precondition.operands
         elif 'goal' in act.name:
             ## THE GOAL IS IN THIS ACTION ##
-            assert compiler.formula_conversion(goal) in act.precondition.operands
-            assert compiler.do_sync in act.precondition.operands
-            assert compiler.goal_fluent in act.effect.operands
+            assert compiler.pylogics2pddl(goal) in act.precondition.operands
+            assert compiler.check_predicate in act.precondition.operands
+            assert compiler.goal_predicate in act.effect.operands
         else:
             pass
     
-    assert compiler.goal_fluent == compiler.result[1].goal
+    assert compiler.goal_predicate == compiler.result[1].goal
 
-    assert compiler.do_sync in compiler.result[1].init
+    assert compiler.check_predicate in compiler.result[1].init
     for i in range(len(pnf)):
-        yatom_short = compiler.formula_conversion(y[i])
+        yatom_short = compiler.pylogics2pddl(y[i])
         assert yatom_short not in compiler.result[1].init
 
 
