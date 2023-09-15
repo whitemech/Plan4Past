@@ -45,7 +45,7 @@ def _(formula: Or) -> Formula:
 
 @negate.register
 def _(formula: Atomic) -> Formula:
-    """Computes the negation of an atom"""
+    """Computes the negation of a predicate"""
     return Not(formula)
 
 

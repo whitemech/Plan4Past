@@ -51,4 +51,8 @@ def _(formula: Atomic) -> Formula:
 @nnf.register
 def _(formula: Not) -> Formula:
     """Computes the nnf of a negation"""
-    return nnf(negate(formula.argument))
+    if is_literal(formula):
+        return formula
+    else:
+        negated_formula = negate(formula.argument) # Push the negation
+        return nnf(negated_formula) # Recurse
