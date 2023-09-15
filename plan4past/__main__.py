@@ -142,7 +142,7 @@ def cli(domain, problem, goal_inline, goal_file, mapping, out_domain, out_proble
             "[ERROR]: Something wrong occurred while writing the compiled domain and problem."
         ) from e
     
-    if adl_encoding:
+    if adl_encoding or adl_encoding_plus:
         with open(out_domain, "a", encoding="utf-8") as d:
             d.write(before_mapping)
         _delete_disjunction_in_goal(out_domain, out_problem)
