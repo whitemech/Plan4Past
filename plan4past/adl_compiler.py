@@ -7,6 +7,7 @@ from pylogics.syntax.base import And, Or, Not
 from pddl.logic.base import And as pddlAnd 
 from pddl.logic.base import Or as pddlOr 
 from pddl.logic.base import Not as pddlNot 
+from pddl.logic.base import Formula as pddlFormula
 
 from pddl.logic.effects import AndEffect, When
 from pddl.logic.predicates import Predicate
@@ -16,6 +17,8 @@ from plan4past.helpers.compilation_helper import CompilationManager, QUOTED_ATOM
 from plan4past.helpers.utils import default_mapping
 from plan4past.utils.atoms_visitor import find_atoms
 from plan4past.utils.rewrite_formula_visitor import rewrite
+from plan4past.utils.nnf_visitor import nnf
+from plan4past.utils.dnf_visitor import dnf
 
 class ProblemUnsolvableException(Exception):
 
@@ -43,7 +46,8 @@ class ADLCompiler:
         problem: Problem,
         formula: Formula,
         from_atoms_to_fluent: Optional[Dict[PLTLAtomic, Predicate]] = None,
-        evaluate_pnf = True
+        evaluate_pnf = True,
+        simplify_disj_goal = False
     ) -> None:
         """
         Initialize the compiler.
@@ -77,6 +81,7 @@ class ADLCompiler:
         self._before_dictionary = None
         self.goal_predicate = GOAL_PREDICATE
         self.check_predicate = CHECK_PREDICATE
+        self.simplify_disj_goal = simplify_disj_goal
 
     @staticmethod
     def _is_deterministic(domain: Domain):
@@ -144,7 +149,13 @@ class ADLCompiler:
             precond = self.pylogics2pddl(new_goal)
             new_predicates = [*self.domain.predicates, *new_predicates, self.goal_predicate]
 
-        domain_actions.add(self._get_achieve_goal_action(precond))
+        if self.simplify_disj_goal:
+            achieve_goaL_actions = delete_disjunction_in_goal(self.goal_predicate, _get_achieve_goal_action(self.goal_predicate, precond))
+            for a in achieve_goaL_actions:
+                domain_actions.add(a)
+        else:
+            domain_actions.add(_get_achieve_goal_action(self.goal_predicate, precond))
+
 
         self._result_domain = Domain(
             name=self.domain.name,
@@ -162,14 +173,6 @@ class ADLCompiler:
             actions=domain_actions,
         )
 
-    def _get_achieve_goal_action(self, precond):
-        return Action(
-            name=ACHIEVE_GOAL_ACTION,
-            parameters=[],
-            precondition=precond,
-            effect=AndEffect(self.goal_predicate),
-        )
-        
 
     def _compile_problem(self):
         """Compute the new problem."""
@@ -327,3 +330,27 @@ def _update_domain_actions(
             )
         )
     return new_actions
+
+
+def delete_disjunction_in_goal(goal_predicate: Predicate, achieve_goal_action: Action):
+
+    pre = achieve_goal_action.precondition
+    nnf_pre = nnf(pre)
+    dnf_pre = dnf(nnf_pre)
+    new_achieve_goal_actions = []
+    i = 0
+    for conj in dnf_pre.operands:
+        new_achieve_goal_action = _get_achieve_goal_action(goal_predicate, conj, name = ACHIEVE_GOAL_ACTION + f'_{i}')
+        new_achieve_goal_actions.append(new_achieve_goal_action)
+        i += 1
+
+    return new_achieve_goal_actions
+
+def _get_achieve_goal_action(goal_predicate: Predicate, precond: pddlFormula, name=ACHIEVE_GOAL_ACTION):
+    return Action(
+        name=name,
+        parameters=[],
+        precondition=precond,
+        effect=AndEffect(goal_predicate),
+    )
+        
