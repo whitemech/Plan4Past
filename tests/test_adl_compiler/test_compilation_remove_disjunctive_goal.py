@@ -3,7 +3,7 @@ from pddl.parser.problem import ProblemParser
 from pylogics.parsers import parse_pltl
 from plan4past.helpers.compilation_helper import *
 from pylogics.syntax.base import Not
-from plan4past.adl_compiler import *
+from plan4past.compiler import ADLCompiler
 import pytest
 import pkg_resources
 
