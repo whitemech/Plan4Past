@@ -2,7 +2,7 @@ from pddl.parser.domain import DomainParser
 from pddl.parser.problem import ProblemParser
 from pylogics.parsers import parse_pltl
 from plan4past.helpers.compilation_helper import *
-from plan4past.adl_compiler import *
+from plan4past.compiler import ADLCompiler, Predicate, Constant, Or as pddlOr, Not as pddlNot
 import pkg_resources
 
 

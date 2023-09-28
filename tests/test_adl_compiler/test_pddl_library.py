@@ -2,7 +2,7 @@ from pddl.parser.domain import DomainParser
 from pddl.parser.problem import ProblemParser
 from pylogics.parsers import parse_pltl
 from plan4past.helpers.compilation_helper import *
-from plan4past.adl_compiler import ProblemUnsolvableException, ADLCompiler
+from plan4past.compiler import ProblemUnsolvableException, ADLCompiler
 from pddl.formatter import domain_to_string, problem_to_string
 import pytest
 import pkg_resources

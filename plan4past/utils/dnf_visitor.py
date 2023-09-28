@@ -29,7 +29,7 @@ from typing import List
 def distribute_conj_over_disj(phi: Formula, psi: Or) -> Formula:
     """ Distrubute and over or.
         Input: a formula phi that is in conjunction with a disjunction psi = Or(psi1, psi2, etc.)
-        Apply the rule And(phi, Or(psi1, phi2)) \equiv Or(And(phi, psi1), And(phi, psi2)) to all disjuncts.
+        Apply the rule And(phi, Or(psi1, psi2)) \equiv Or(And(phi, psi1), And(phi, psi2)) to all disjuncts.
     """
     assert len(psi.operands) >= 2
     new_disjunction = []
