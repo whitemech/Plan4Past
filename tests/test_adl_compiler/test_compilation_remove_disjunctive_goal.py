@@ -44,7 +44,7 @@ def check_compilation(domain, problem, formula):
     if nopex:
         compiler.evaluate_pnf = False
     compiler.compile()
-    compiled_dom, compiled_prob, _ = compiler.result
+    compiled_dom, compiled_prob = compiler.result
 
     ach_actions = [a for a in compiled_dom.actions if "goal" in a.name]
     assert len(ach_actions) > 1

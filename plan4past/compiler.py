@@ -21,7 +21,7 @@
 #
 
 """Compiler from PDDL Domain and PPLTL into a new PDDL domain."""
-from typing import AbstractSet, Dict, Optional, Set, Tuple
+from typing import AbstractSet, Dict, List, Optional, Set, Tuple
 
 from pddl.core import Action, Domain, Problem, Requirements
 from pddl.logic import Constant
@@ -34,6 +34,7 @@ from pylogics.syntax.base import And as ppltlAnd
 from pylogics.syntax.base import Formula, Logic
 from pylogics.syntax.base import Not as ppltlNot
 from pylogics.syntax.base import Or as ppltlOr
+from pylogics.syntax.pltl import Atomic
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
 from pylogics.syntax.pltl import FalseFormula, PropositionalTrue
 from pylogics.utils.to_string import to_string
@@ -115,8 +116,12 @@ class Compiler:
 
     @property
     def result(self) -> Tuple[Domain, Problem]:
-        """Get the result."""
-        if self._result_domain and self._result_problem is None:
+        """
+        Get the result.
+
+        :return: a triple (domain, problem, mapping); the mapping might be None
+        """
+        if self._result_domain is None or self._result_problem is None:
             raise ValueError("compilation not executed yet")
         return self._result_domain, self._result_problem
 
@@ -266,17 +271,17 @@ class ADLCompiler(Compiler):
         self._fresh_atoms = None
         self._before_mapping = None
         self.evaluate_pnf = evaluate_pnf
-        self._before_dictionary = None
+        self._before_dictionary: Optional[Dict[BeforeAtom, Atomic]] = None
         self.goal_predicate = GOAL_PREDICATE
         self.check_predicate = CHECK_PREDICATE
         self.simplify_disj_goal = simplify_disj_goal
 
     @property
-    def result(self) -> Tuple[Domain, Problem, str]:
+    def result(self) -> Tuple[Domain, Problem]:
         """Get the result."""
-        if self._result_domain and self._result_problem is None:
+        if self._result_domain is None or self._result_problem is None:
             raise ValueError("compilation not executed yet")
-        return self._result_domain, self._result_problem, self._before_mapping
+        return self._result_domain, self._result_problem
 
     def compile(self):
         """Compute the new domain and the new problem."""
@@ -379,7 +384,7 @@ class ADLCompiler(Compiler):
         if isinstance(formula, PropositionalTrue):
             return self.pylogics2pddl(TRUE_ATOM)
         if isinstance(formula, PLTLAtomic):
-            if formula in self._fresh_atoms:
+            if self._fresh_atoms is not None and formula in self._fresh_atoms:
                 return (
                     Predicate(self._before_dictionary[formula].name, *[])
                     if isinstance(formula, BeforeAtom)
@@ -508,7 +513,7 @@ def _update_domain_actions_with_check(
 
 
 def _update_domain_actions(
-    compiler: ADLCompiler, actions: AbstractSet[Action], progression: Set[When]
+    compiler: ADLCompiler, actions: AbstractSet[Action], progression: List[When]
 ) -> Set[Action]:
     """Update domain actions."""
     new_actions = set()
@@ -531,7 +536,7 @@ def _update_domain_actions(
 
 def delete_disjunction_in_goal(
     goal_predicate: Predicate, achieve_goal_action: Action
-) -> Set[Action]:
+) -> List[Action]:
     """
     Delete disjunction in goal.
 

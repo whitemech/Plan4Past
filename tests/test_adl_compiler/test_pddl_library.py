@@ -1,7 +1,6 @@
 """Generic tests for the PDDL library."""
 import pkg_resources
 import pytest
-from pddl.formatter import domain_to_string
 from pddl.parser.domain import DomainParser
 from pddl.parser.problem import ProblemParser
 from pylogics.parsers import parse_pltl
@@ -28,8 +27,8 @@ def test_pddl_conversion() -> None:
     compiler = ADLCompiler(domain, problem, formula)
     compiler.compile()
 
-    compiled_domain, compiled_problem, befores = compiler.result
-    domain_to_string(compiled_domain)
+    compiled_domain, compiled_problem = compiler.result
+    assert compiler._before_mapping is not None
 
 
 def test_pddl_conversion2() -> None:
@@ -51,7 +50,8 @@ def test_pddl_conversion2() -> None:
     compiler = ADLCompiler(domain, problem, formula)
     compiler.compile()
 
-    _compiled_domain, _compiled_problem, _befores = compiler.result
+    _compiled_domain, _compiled_problem = compiler.result
+    assert compiler._before_mapping is not None
 
 
 def test_unsat_expression() -> None:

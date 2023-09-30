@@ -82,7 +82,7 @@ class CompilationManager:
 
         return "\n".join(before_mapping)
 
-    def get_problem_extension(self) -> Tuple[List[BeforeAtom], List, Formula]:
+    def get_problem_extension(self) -> Tuple[List[Formula], List, Formula]:
         """
         Get the problem extension.
 
