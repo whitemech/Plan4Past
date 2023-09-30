@@ -61,7 +61,7 @@ from pddl.logic.effects import AndEffect, When
 from pddl.logic.predicates import Predicate
 from pylogics.syntax.base import Formula, Logic
 from pylogics.syntax.pltl import Atomic as PLTLAtomic, PropositionalTrue, FalseFormula
-from plan4past.helpers.compilation_helper import CompilationManager, QUOTED_ATOM, YesterdayAtom
+from plan4past.helpers.compilation_helper import CompilationManager, QUOTED_ATOM, BeforeAtom
 from plan4past.utils.nnf_visitor import nnf
 from plan4past.utils.dnf_visitor import dnf
 
@@ -371,7 +371,7 @@ class ADLCompiler(Compiler):
             if formula in self._fresh_atoms:
                 return (
                         Predicate(self._before_dictionary[formula].name, *[]) if 
-                        isinstance(formula, YesterdayAtom) else Predicate(formula.name, *[])
+                        isinstance(formula, BeforeAtom) else Predicate(formula.name, *[])
                 )
             else:
                 predicate = self.from_atoms_to_fluent.get(PLTLAtomic(formula.name), None)
