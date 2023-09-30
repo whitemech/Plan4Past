@@ -24,67 +24,74 @@
 
 from functools import singledispatch
 
-from pylogics.syntax.base import *
-from pylogics.syntax.pltl import *
+from pylogics.syntax.base import And, Formula, Not, Or
+from pylogics.syntax.pltl import (
+    Atomic,
+    Before,
+    Once,
+    PropositionalFalse,
+    PropositionalTrue,
+    Since,
+)
 
 from plan4past.helpers.before_atom_helper import get_before_atom
 
 
 @singledispatch
 def ppnf(obj: object) -> Formula:
-    """Computes the ppnf of a formula"""
+    """Compute the ppnf of a formula."""
     raise ValueError(f"object of type {type(obj)} is not supported by this function")
 
 
 @ppnf.register
 def _(phi: Atomic) -> Formula:
-    """Computes the ppnf of an atom"""
+    """Compute the ppnf of an atom."""
     return phi
 
 
 @ppnf.register
 def _(phi: PropositionalTrue) -> Formula:
-    """Computes the ppnf of the formula true"""
+    """Compute the ppnf of the formula true."""
     return phi
 
 
 @ppnf.register
 def _(phi: PropositionalFalse) -> Formula:
-    """Computes the ppnf of the formula false"""
+    """Compute the ppnf of the formula false."""
     return phi
 
 
 @ppnf.register
 def _(phi: Not) -> Formula:
-    """Computes the ppnf of a negation"""
+    """Compute the ppnf of a negation."""
     return Not(ppnf(phi.argument))
 
 
 @ppnf.register
 def _(phi: Before) -> Formula:
-    """Computes the ppnf of a Before"""
+    """Compute the ppnf of a Before."""
     return get_before_atom(phi)
 
 
 @ppnf.register
 def _(phi: And) -> Formula:
-    """Computes the ppnf of a conjunction"""
+    """Compute the ppnf of a conjunction."""
     return And(*[ppnf(operand) for operand in phi.operands])
 
 
 @ppnf.register
 def _(phi: Or) -> Formula:
-    """Computes the ppnf of a disjunction"""
+    """Compute the ppnf of a disjunction."""
     return Or(*[ppnf(operand) for operand in phi.operands])
 
 
 @ppnf.register
 def _(phi: Once) -> Formula:
-    """Computes the ppnf of a Once"""
+    """Compute the ppnf of a Once."""
     return Or(ppnf(phi.argument), get_before_atom(phi))
 
 
 @ppnf.register
 def _(phi: Since) -> Formula:
-    """Computes the ppnf of a Since"""
+    """Compute the ppnf of a Since."""
     return Or(ppnf(phi.operands[1]), And(ppnf(phi.operands[0]), get_before_atom(phi)))

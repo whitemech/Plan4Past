@@ -133,7 +133,7 @@ def cli(
     if adl_encoding and adl_encoding_plus:
         raise ValueError("[ERROR] Please select only one of the adl encodings")
 
-    if not adl_encoding and not adl_encoding_plus and build_dnf == True:
+    if not adl_encoding and not adl_encoding_plus and build_dnf is True:
         print(
             "[WARNING] The dnf option works only with the adl encoding and will be ignored."
         )
@@ -171,10 +171,6 @@ def cli(
         raise IOError(
             "[ERROR]: Something wrong occurred while writing the compiled domain and problem."
         ) from e
-
-    # if adl_encoding or adl_encoding_plus:
-    #     with open(out_domain, "a", encoding="utf-8") as d:
-    #         d.write(before_mapping)
 
 
 def _get_goal(goal_inline, goal_file) -> str:
@@ -220,41 +216,6 @@ def _adl_compilation_entrypoint(
     compiler.compile()
     compiled_domain, compiled_problem, before_mapping = compiler.result
     return compiled_domain, compiled_problem, before_mapping
-
-
-# def _delete_disjunction_in_goal(out_domain, out_problem):
-#     from FDgrounder import pddl_parser
-#     from FDgrounder import normalize
-#     from plan4past.utils.to_pddl import to_pddl
-#     import os
-
-#     splitted_domain = open(out_domain).read().split('(:action')
-#     achieve_goal_action =  [lin for lin in splitted_domain if lin.strip().startswith('achieve-goal')]
-#     other_actions = [f'(:action {lin}' for lin in splitted_domain[1:] if not lin.strip().startswith('achieve-goal')]
-#     assert len(achieve_goal_action) == 1
-#     achieve_goal_action = achieve_goal_action[0]
-#     original_domain = splitted_domain[0]
-#     domain_tmp = original_domain + f'(:action {achieve_goal_action} )'
-
-#     open('./tmp_domain.pddl', 'w').write(domain_tmp.replace(':non-deterministic', ''))
-
-#     task = pddl_parser.open('./tmp_domain.pddl', out_problem)
-
-#     os.system('rm ./tmp_domain.pddl')
-
-#     normalize.normalize(task)
-#     i = 0
-#     for i in range(len(task.actions)):
-#         assert task.actions[i].name == 'achieve-goal'
-#         task.actions[i].name = f'achieve-goal-{i}'
-
-#     str_actions = []
-#     for action in task.actions:
-#         str_actions.append(to_pddl(action))
-
-#     fixed_domain = original_domain + '\n' + '\n\n'.join(str_actions) + '\n\n' + '\n'.join(other_actions)
-#     with open(out_domain, 'w') as out_dom:
-#         out_dom.write(fixed_domain)
 
 
 if __name__ == "__main__":

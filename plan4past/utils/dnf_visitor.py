@@ -24,13 +24,20 @@
 from functools import singledispatch
 from typing import List
 
-from pddl.logic.base import *
+from pddl.logic.base import And, Atomic, Formula, Not, Or, is_literal
 
 
 def distribute_conj_over_disj(phi: Formula, psi: Or) -> Formula:
-    """Distrubute and over or.
-    Input: a formula phi that is in conjunction with a disjunction psi = Or(psi1, psi2, etc.)
-    Apply the rule And(phi, Or(psi1, psi2)) \equiv Or(And(phi, psi1), And(phi, psi2)) to all disjuncts.
+    r"""
+    Distribute ands over ors.
+
+    Input: a formula phi that is in conjunction with a disjunction psi = Or(psi1, psi2, ..., psin)
+
+    Apply the rule And(phi, Or(psi1, psi2)) \\equiv Or(And(phi, psi1), And(phi, psi2)) to all disjuncts.
+
+    :param phi: the and formula
+    :param psi: the or formula
+    :return: the formula in dnf
     """
     assert len(psi.operands) >= 2
     new_disjunction = []
@@ -42,6 +49,9 @@ def distribute_conj_over_disj(phi: Formula, psi: Or) -> Formula:
 def merge_dnfs(dnf_list: List[Formula]) -> Formula:
     """
     Rewrite And(dnf_1, dnf_2, ..., dnf_n) as an equivalent formula phi in dnf.
+
+    :param dnf_list: a list of formulas in dnf
+    :return: a formula in dnf
     """
     # Step 1: aggregte all dnfs that are conjunction of literals or literals.
     simple_dnfs = []
@@ -73,21 +83,21 @@ def merge_dnfs(dnf_list: List[Formula]) -> Formula:
         return current_dnf
 
 
-"""
-DNF ALGORITHM:
-    Recursively apply the rule And(a, Or(b, c)) \equiv Or(And(a, b), And(a, c))
-"""
-
-
 @singledispatch
 def dnf(obj: Formula) -> Formula:
-    """Computes the dnf of a formula"""
+    r"""
+    Compute the dnf of a formula.
+
+    We recursively apply the rule And(a, Or(b, c)) \\equiv Or(And(a, b), And(a, c)).
+
+    :param obj: the formula to be transformed
+    """
     raise ValueError(f"object of type {type(obj)} is not supported by this function")
 
 
 @dnf.register
 def _(formula: And) -> Formula:
-    """Computes the dnf of a conjunction"""
+    """Compute the dnf of a conjunction."""
     # Step 1: call the DNF on the children
     dnf_operands = [dnf(operand) for operand in formula.operands]
     # Step 2: We have DFN1, DNF2, ..., DNFn. We aggregate all DNFs
@@ -96,7 +106,7 @@ def _(formula: And) -> Formula:
 
 @dnf.register
 def _(formula: Or) -> Formula:
-    """Computes the dnf of a disjunction"""
+    """Compute the dnf of a disjunction."""
     # Recursively call the dnf algorithm for the childs.
     # Then the formula Or(DNF1, DNF2, ...) is already in DNF
     return Or(*[dnf(operand) for operand in formula.operands])
@@ -104,14 +114,14 @@ def _(formula: Or) -> Formula:
 
 @dnf.register
 def _(formula: Atomic) -> Formula:
-    """Computes the dnf of an atom"""
+    """Compute the dnf of an atom."""
     # An atom is already in DNF
     return formula
 
 
 @dnf.register
 def _(formula: Not) -> Formula:
-    """Computes the dnf of a negation"""
+    """Compute the dnf of a negation."""
     if is_literal(formula):
         return formula
     else:

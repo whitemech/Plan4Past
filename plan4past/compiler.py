@@ -26,7 +26,7 @@ from typing import AbstractSet, Dict, Optional, Set, Tuple
 from pddl.core import Action, Domain, Problem, Requirements
 from pddl.logic import Constant
 from pddl.logic.base import And
-from pddl.logic.base import Formula as pddlFormula
+from pddl.logic.base import Formula as PddlFormula
 from pddl.logic.base import Not, Or
 from pddl.logic.effects import AndEffect, When
 from pddl.logic.predicates import DerivedPredicate, Predicate
@@ -38,11 +38,8 @@ from pylogics.syntax.pltl import Atomic as PLTLAtomic
 from pylogics.syntax.pltl import FalseFormula, PropositionalTrue
 from pylogics.utils.to_string import to_string
 
-from plan4past.helpers.compilation_helper import (
-    QUOTED_ATOM,
-    BeforeAtom,
-    CompilationManager,
-)
+from plan4past.helpers.before_atom_helper import QUOTED_ATOM
+from plan4past.helpers.compilation_helper import BeforeAtom, CompilationManager
 from plan4past.helpers.utils import (
     add_val_prefix,
     check_,
@@ -100,7 +97,7 @@ class Compiler:
         _domain: Domain,
         _formula: Formula,
         from_atoms_to_fluent: Dict[PLTLAtomic, Predicate],
-    ):
+    ) -> None:
         """
         Check that the mapping is valid wrt the problem instance.
 
@@ -109,10 +106,9 @@ class Compiler:
         - check that all the atoms are legal wrt the formula
         - check that the fluents are legal wrt the domain
 
-        :param _domain:
-        :param _formula:
-        :param from_atoms_to_fluent:
-        :return:
+        :param _domain: the domain
+        :param _formula: the formula
+        :param from_atoms_to_fluent: the mapping
         """
         for _atom, fluent in from_atoms_to_fluent.items():
             check_(all(isinstance(t, Constant) for t in fluent.terms))
@@ -218,7 +214,10 @@ def _update_domain_actions_det(
 
 
 class ProblemUnsolvableException(Exception):
+    """Exception raised when the problem is unsolvable."""
+
     def __init__(self, *args: object) -> None:
+        """Initialize the exception."""
         super().__init__(*args)
 
 
@@ -243,16 +242,19 @@ class ADLCompiler(Compiler):
         problem: Problem,
         formula: Formula,
         from_atoms_to_fluent: Optional[Dict[PLTLAtomic, Predicate]] = None,
-        evaluate_pnf=True,
-        simplify_disj_goal=False,
+        evaluate_pnf: bool = True,
+        simplify_disj_goal: bool = False,
     ) -> None:
         """
+
         Initialize the compiler.
 
         :param domain: the domain
         :param problem: the problem
         :param formula: the formula
         :param from_atoms_to_fluent: optional mapping from atoms to fluent
+        :param evaluate_pnf: if True, update domain action using the "check" optimization
+        :param simplify_disj_goal: if True, delete disjunction in goal
         """
         super().__init__(domain, problem, formula, from_atoms_to_fluent)
 
@@ -270,7 +272,7 @@ class ADLCompiler(Compiler):
         self.simplify_disj_goal = simplify_disj_goal
 
     @property
-    def result(self) -> Tuple[Domain, Problem]:
+    def result(self) -> Tuple[Domain, Problem, str]:
         """Get the result."""
         if self._result_domain and self._result_problem is None:
             raise ValueError("compilation not executed yet")
@@ -279,7 +281,7 @@ class ADLCompiler(Compiler):
     def compile(self):
         """Compute the new domain and the new problem."""
         if self._executed:
-            return self.result
+            return
         self._executed = True
 
         cm = CompilationManager(self.formula)
@@ -291,6 +293,7 @@ class ADLCompiler(Compiler):
 
         self._compile_domain(new_fluents, new_effs, new_goal)
         self._compile_problem()
+        return self.result
 
     def _compile_domain(self, new_fluents, new_effs, new_goal):
         """Compute the new domain."""
@@ -362,7 +365,8 @@ class ADLCompiler(Compiler):
             goal=And(self.goal_predicate),
         )
 
-    def effect_conversion(self, effect: Tuple, positive):
+    def effect_conversion(self, effect: Tuple, positive) -> When:
+        """Convert effect."""
         condition = self.pylogics2pddl(effect[0])
         effect = self.pylogics2pddl(effect[1])
         if positive:
@@ -370,7 +374,8 @@ class ADLCompiler(Compiler):
         else:
             return When(Not(condition), Not(effect))
 
-    def pylogics2pddl(self, formula: Formula):
+    def pylogics2pddl(self, formula: Formula) -> PddlFormula:
+        """Convert pylogics formula into PDDL formula."""
         if isinstance(formula, PropositionalTrue):
             return self.pylogics2pddl(TRUE_ATOM)
         if isinstance(formula, PLTLAtomic):
@@ -407,7 +412,8 @@ def _update_domain_actions_with_check(
     compiler: ADLCompiler, new_effects: Set[When], new_predicates: list
 ) -> Set[Action]:
     """
-    Update domain action using the "check" optimization
+    Update domain action using the "check" optimization.
+
     This optmization works as follows.
 
         Consider the formula O(a). The standard compilation would yield a compiled action of the form
@@ -434,8 +440,8 @@ def _update_domain_actions_with_check(
         Effects 1. capture the update the the quoted variable
         Effect 2. deletes all the pnf variables (in this example just pnf_0). This is necessary as each pnf must be
         re-evaluated after the occurence of any action
-        Effect 3. forces the planner to execute a special action that evaluates all pnfs. The new precondition guarantees
-        that the pnfs get updated after every action.
+        Effect 3. forces the planner to execute a special action that evaluates all pnfs. The new precondition
+        guarantees that the pnfs get updated after every action.
 
         The special action that computes the pnf is defined as follows:
 
@@ -450,8 +456,11 @@ def _update_domain_actions_with_check(
 
         evaluate-pnf-action, domain-action, evaluate-pnf-action, domain-action, ..., domain-action, achieve-goal
 
+    :param compiler: the ADL compiler
+    :param new_effects: the new set of effects
+    :param new_predicates: the new set predicates
+    :return: the set of actions
     """
-
     positive_effects = [eff for eff in new_effects if not isinstance(eff.effect, Not)]
 
     qouted_update_effects = []
@@ -520,7 +529,16 @@ def _update_domain_actions(
     return new_actions
 
 
-def delete_disjunction_in_goal(goal_predicate: Predicate, achieve_goal_action: Action):
+def delete_disjunction_in_goal(
+    goal_predicate: Predicate, achieve_goal_action: Action
+) -> Set[Action]:
+    """
+    Delete disjunction in goal.
+
+    :param goal_predicate: the goal predicate
+    :param achieve_goal_action: the achieve goal action
+    :return: the set of actions
+    """
     pre = achieve_goal_action.precondition
     nnf_pre = nnf(pre)
     dnf_pre = dnf(nnf_pre)
@@ -537,8 +555,9 @@ def delete_disjunction_in_goal(goal_predicate: Predicate, achieve_goal_action: A
 
 
 def _get_achieve_goal_action(
-    goal_predicate: Predicate, precond: pddlFormula, name=ACHIEVE_GOAL_ACTION
-):
+    goal_predicate: Predicate, precond: PddlFormula, name=ACHIEVE_GOAL_ACTION
+) -> Action:
+    """Get achieve goal action."""
     return Action(
         name=name,
         parameters=[],

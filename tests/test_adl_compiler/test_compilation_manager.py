@@ -1,7 +1,18 @@
+"""Tests for the compilation manager."""
 import pytest
 from pylogics.parsers import parse_pltl
+from pylogics.syntax.base import And, Not, Or
+from pylogics.syntax.pltl import (
+    Atomic,
+    Before,
+    Historically,
+    Once,
+    PropositionalTrue,
+    Since,
+)
 
-from plan4past.helpers.compilation_helper import *
+from plan4past.helpers.before_atom_helper import Yatom_
+from plan4past.helpers.compilation_helper import CompilationManager
 from plan4past.utils.ppnf_visitor import ppnf
 from plan4past.utils.rewrite_formula_visitor import rewrite
 
@@ -13,7 +24,8 @@ e = Atomic("e")
 f = Atomic("f")
 
 
-def test_before_generation1():
+def test_before_generation1() -> None:
+    """Test the generation of the before dictionary."""
     phi = Or(Not(Once(Not(a))), Since(b, Not(Once(Not(c)))))
 
     compilation_manager = CompilationManager(phi)
@@ -25,7 +37,8 @@ def test_before_generation1():
     assert Yatom_(Once(Not(c))) in before_dictionary.keys()
 
 
-def test_before_generation2():
+def test_before_generation2() -> None:
+    """Test the generation of the before dictionary."""
     phi = Or(Not(Once(Not(a))), Since(b, Not(Once(Not(a)))))
 
     compilation_manager = CompilationManager(phi)
@@ -36,7 +49,8 @@ def test_before_generation2():
     assert Yatom_(Since(b, Not(Once(Not(a))))) in before_dictionary.keys()
 
 
-def test_before_generation3():
+def test_before_generation3() -> None:
+    """Test the generation of the before dictionary."""
     phi = Or(Not(Once(Not(And(a, b)))), Since(b, Not(Once(Not(And(b, a))))))
 
     compilation_manager = CompilationManager(phi)
@@ -47,7 +61,8 @@ def test_before_generation3():
     assert Yatom_(Since(b, Not(Once(Not(And(b, a)))))) in before_dictionary.keys()
 
 
-def test_before_generation4():
+def test_before_generation4() -> None:
+    """Test the generation of the before dictionary."""
     phi = Or(Not(Once(Not(And(a, b)))), Before(Or(b, Since(c, d))))
 
     compilation_manager = CompilationManager(phi)
@@ -60,7 +75,8 @@ def test_before_generation4():
     assert Yatom_(Since(c, d)) in before_dictionary.keys()
 
 
-def test_before_generation5():
+def test_before_generation5() -> None:
+    """Test the generation of the before dictionary."""
     phi = Or(Once(And(a, b)), Before(Or(b, Not(Since(Not(c), Not(d))))))
 
     compilation_manager = CompilationManager(phi)
@@ -76,7 +92,8 @@ def test_before_generation5():
     assert Yatom_(Since(Not(c), Not(d))) in before_dictionary.keys()
 
 
-def test_before_generation6():
+def test_before_generation6() -> None:
+    """Test the generation of the before dictionary."""
     phi = Once(And(a, Before(Once(And(b, Before(Once(c)))))))
 
     compilation_manager = CompilationManager(phi)
@@ -94,7 +111,8 @@ def test_before_generation6():
     assert Yatom_(Before(Once(c))) not in before_dictionary.keys()
 
 
-def test_before_generation7():
+def test_before_generation7() -> None:
+    """Test the generation of the before dictionary."""
     phi = Or(
         And(
             Before(a),
@@ -120,55 +138,64 @@ def test_before_generation7():
     assert Yatom_(Before(a)) not in before_dictionary.keys()
 
 
-def test_pex1():
+def test_pex1() -> None:
+    """Test the PPNF translation for an atomic formula."""
     phi = a
     result = ppnf(phi)
     assert result == a
 
 
-def test_pex2():
+def test_pex2() -> None:
+    """Test the PPNF translation for a before formula."""
     phi = Before(a)
     result = ppnf(phi)
     assert result == Yatom_(a)
 
 
-def test_pex3():
+def test_pex3() -> None:
+    """Test the PPNF translation for a disjunction formula."""
     phi = Or(Before(a), Not(Before(Atomic("true"))))
     result = ppnf(phi)
     assert result == Or(Yatom_(a), Not(Yatom_(Atomic("true"))))
 
 
-def test_pex4():
+def test_pex4() -> None:
+    """Test the PPNF translation for a once formula."""
     phi = Once(a)
     result = ppnf(phi)
     assert result == Or(a, Yatom_(Once(a)))
 
 
-def test_pex5():
+def test_pex5() -> None:
+    """Test the PPNF translation for a once formula inside a negation."""
     phi = Not(Once(Not(a)))
     result = ppnf(phi)
     assert result == Not(Or(Not(a), Yatom_(Once(Not(a)))))
 
 
-def test_pex6():
+def test_pex6() -> None:
+    """Test the PPNF translation for a disjunction formula."""
     phi = And(a, b)
     result = ppnf(phi)
     assert result == And(a, b)
 
 
-def test_pex7():
+def test_pex7() -> None:
+    """Test the PPNF translation for a since formula."""
     phi = Since(a, b)
     result = ppnf(phi)
     assert result == Or(b, And(a, Yatom_(Since(a, b))))
 
 
-def test_pex8():
+def test_pex8() -> None:
+    """Test the PPNF translation for a since formula inside a negation."""
     phi = Not(Since(Not(a), Not(b)))
     result = ppnf(phi)
     assert result == Not(Or(Not(b), And(Not(a), Yatom_(Since(Not(a), Not(b))))))
 
 
-def test_pex_complex_formula1():
+def test_pex_complex_formula1() -> None:
+    """Test the PPNF translation for a complex formula."""
     phi = rewrite(And(Once(a), Since(b, Before(Historically(c)))))
     cm = CompilationManager(phi)
     result = ppnf(phi)
@@ -185,7 +212,8 @@ def test_pex_complex_formula1():
     assert result == pex_phi
 
 
-def test_pex_complex_formula2():
+def test_pex_complex_formula2() -> None:
+    """Test the PPNF translation for a complex formula."""
     phi = Once(And(a, Before(Once(b))))
     cm = CompilationManager(phi)
     result = ppnf(phi)
@@ -199,7 +227,9 @@ def test_pex_complex_formula2():
     assert result == pex_phi
 
 
-# ("H(H(H(a) | H(b))) | (a | b)", expected3)
+"""
+("H(H(H(a) | H(b))) | (a | b)", expected3)
+"""
 pnf_ha_hb = Or(
     Not(Or(Not(a), Yatom_(Once(Not(a))))), Not(Or(Not(b), Yatom_(Once(Not(b)))))
 )
@@ -258,14 +288,15 @@ combinations = [
 
 
 @pytest.mark.parametrize("formula,expected", combinations)
-def test_pex_formula(formula, expected):
+def test_pex_formula(formula, expected) -> None:
+    """Test the PPNF translation for a complex formula."""
     formula_ = rewrite(parse_pltl(formula))
-    compilation_manager = CompilationManager(formula_)
     pex = ppnf(formula_)
     assert pex == expected
 
 
-def test_problem_extension_HH_Ha_Hb():
+def test_problem_extension_HH_Ha_Hb() -> None:
+    """Test the problem extensions for a complex PPLTL formula with nested historically operators."""
     formula_ = rewrite(parse_pltl("H(H(H(a) | H(b))) | (a | b)"))
     assert formula_ == Or(
         Not(Once(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b)))))))), a, b
@@ -296,9 +327,7 @@ def test_problem_extension_HH_Ha_Hb():
 
 
 def test_problem_extension_since():
-    """
-    (O(d)) S (O(a) & O(b) & O(c))
-    """
+    """Test the problem extensions for the formula (O(d)) S (O(a) & O(b) & O(c))."""
     formula_ = rewrite(parse_pltl("(O(d)) S (O(a) & O(b) & O(c))"))
     assert formula_ == parse_pltl("(O(d)) S (O(a) & O(b) & O(c))")
     compilation_manager = CompilationManager(formula_)
@@ -326,10 +355,8 @@ def test_problem_extension_since():
     assert goal == pnf[4]
 
 
-def test_problem_extension_since2():
-    """
-    ((O(a)|O(b)|O(c))S(O(d)))
-    """
+def test_problem_extension_since2() -> None:
+    """Test the problem extensions for the formula ((O(a)|O(b)|O(c))S(O(d)))."""
     formula_ = rewrite(parse_pltl("((O(a)|O(b)|O(c))S(O(d)))"))
     assert formula_ == parse_pltl("((O(a)|O(b)|O(c))S(O(d)))")
     compilation_manager = CompilationManager(formula_)
@@ -357,10 +384,8 @@ def test_problem_extension_since2():
     assert goal == pnf[4]
 
 
-def test_problem_extension_once_blocks():
-    """
-    O(a & O(d)) & O(b & O(d))
-    """
+def test_problem_extension_once_blocks() -> None:
+    """Test the problem extensions for the formula O(a & O(d)) & O(b & O(d))."""
     formula_ = rewrite(parse_pltl("O(a & O(d)) & O(b & O(d))"))
     assert formula_ == parse_pltl("O(a & O(d)) & O(b & O(d))")
     compilation_manager = CompilationManager(formula_)
@@ -385,10 +410,8 @@ def test_problem_extension_once_blocks():
     assert goal == And(pnf[1], pnf[2])
 
 
-def test_problem_extension_since3():
-    """
-    ((c) S (O(a))) & ((c) S (O(b)))
-    """
+def test_problem_extension_since3() -> None:
+    """Test the problem extensions for the formula ((c) S (O(a))) & ((c) S (O(b)))."""
     formula_ = rewrite(parse_pltl("((c) S (O(a))) & ((c) S (O(b)))"))
     assert formula_ == parse_pltl("((c) S (O(a))) & ((c) S (O(b)))")
     compilation_manager = CompilationManager(formula_)
@@ -419,10 +442,8 @@ def test_problem_extension_since3():
     assert goal == And(pnf[2], pnf[3])
 
 
-def test_problem_extension_seq():
-    """
-    O(a & Y(O(b & Y(O(c)))))
-    """
+def test_problem_extension_seq() -> None:
+    """Test the problem extensions for the formula O(a & Y(O(b & Y(O(c)))))."""
     formula_ = rewrite(parse_pltl("O(a & Y(O(b & Y(O(c)))))"))
     assert formula_ == parse_pltl("O(a & Y(O(b & Y(O(c)))))")
     compilation_manager = CompilationManager(formula_)
@@ -447,7 +468,8 @@ def test_problem_extension_seq():
     assert goal == pnf[2]
 
 
-def test_problem_extension_robot1():
+def test_problem_extension_robot1() -> None:
+    """Test the problem extensions for the formula O(c & Y(Y(Y(!Y(true)))))."""
     formula_ = rewrite(parse_pltl("O(c & Y(Y(Y(!Y(true)))))"))
     assert formula_ == parse_pltl("O(c & Y(Y(Y(!Y(true)))))")
     compilation_manager = CompilationManager(formula_)
@@ -474,7 +496,8 @@ def test_problem_extension_robot1():
     assert goal == pnf[4]
 
 
-def test_problem_extension_robot2():
+def test_problem_extension_robot2() -> None:
+    """Test the problem extensions for the formula (H((!Y(a) | !(b))) & !(a))."""
     formula_ = rewrite(parse_pltl("(H((!Y(a) | !(b))) & !(a))"))
     assert formula_ == And(Not(Once(Not(Or(Not(Before(a)), Not(b))))), Not(a))
     compilation_manager = CompilationManager(formula_)
@@ -496,7 +519,3 @@ def test_problem_extension_robot2():
     for i in range(len(pnf)):
         assert (pnf[i], y[i]) in conditional_effects
     assert goal == And(Not(pnf[1]), Not(a))
-
-
-if __name__ == "__main__":
-    pytest.main()

@@ -85,6 +85,9 @@ def check_(condition: bool, message: str = "") -> None:
     This function is useful to avoid the use of the built-in assert statement, which is removed
         when the code is compiled in optimized mode. For more information, see
         https://bandit.readthedocs.io/en/1.7.5/plugins/b101_assert_used.html
+
+    :param condition: the condition to check
+    :param message: the error message in case the check fails
     """
     if not condition:
         raise AssertionError(message)

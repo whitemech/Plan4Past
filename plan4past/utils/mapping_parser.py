@@ -39,6 +39,8 @@ class MappingParserError(Exception):
         """
         Initialize a mapping parser error.
 
+        :param message: the error message
+        :param args: the error message arguments
         :param row_id: the row id
         """
         self.row_id = row_id
@@ -85,6 +87,7 @@ def _parse_predicate(row_id: int, predicate_str: str) -> Predicate:
     """
     Parse a predicate.
 
+    :param row_id: the row id
     :param predicate_str: the predicate string
     :return: the predicate
     """

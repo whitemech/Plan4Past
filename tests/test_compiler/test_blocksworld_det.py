@@ -45,6 +45,11 @@ class TestBlocksworldDetSimpleSequence(BaseCompilerTest):
         Builds a chain of the form:
 
             O(on_b1_b2 & Y(O(on_b2_b3 & Y(O(... on_bn_bn+1 ...)))
+
+        :param instance_id: the id of the problem instance
+        :param domain: path to the domain file
+        :param problem: path to the problem file
+        :return: the formula
         """
         formula = ""
         trailing_brackets = ""

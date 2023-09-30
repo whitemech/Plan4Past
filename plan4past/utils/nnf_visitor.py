@@ -23,38 +23,38 @@
 """NNF visitor."""
 from functools import singledispatch
 
-from pddl.logic.base import *
+from pddl.logic.base import And, Atomic, Formula, Not, Or, is_literal
 
 from plan4past.utils.negate_visitor import negate
 
 
 @singledispatch
 def nnf(obj: Formula) -> Formula:
-    """Computes the nnf of a formula"""
+    """Compute the nnf of a formula."""
     raise ValueError(f"object of type {type(obj)} is not supported by this function")
 
 
 @nnf.register
 def _(formula: And) -> Formula:
-    """Computes the nnf of a conjunction"""
+    """Compute the nnf of a conjunction."""
     return And(*[nnf(operand) for operand in formula.operands])
 
 
 @nnf.register
 def _(formula: Or) -> Formula:
-    """Computes the nnf of a disjunction"""
+    """Compute the nnf of a disjunction."""
     return Or(*[nnf(operand) for operand in formula.operands])
 
 
 @nnf.register
 def _(formula: Atomic) -> Formula:
-    """Computes the nnf of an atom"""
+    """Compute the nnf of an atom."""
     return formula
 
 
 @nnf.register
 def _(formula: Not) -> Formula:
-    """Computes the nnf of a negation"""
+    """Compute the nnf of a negation."""
     if is_literal(formula):
         return formula
     else:
