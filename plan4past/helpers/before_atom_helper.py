@@ -24,6 +24,8 @@
 from pylogics.syntax.base import Formula
 from pylogics.syntax.pltl import Atomic, Before, Once, Since
 
+from plan4past.helpers.utils import check_
+
 QUOTED_ATOM = "quoted"
 
 
@@ -87,5 +89,5 @@ def get_before_atom(formula: Formula) -> BeforeAtom:
     """
     if isinstance(formula, Before):
         return Yatom_(formula.argument)
-    assert isinstance(formula, (Once, Since))
+    check_(isinstance(formula, (Once, Since)))
     return Yatom_(formula)

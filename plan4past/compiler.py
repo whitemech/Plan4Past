@@ -30,10 +30,10 @@ from pddl.logic.base import Formula as PddlFormula
 from pddl.logic.base import Not, Or
 from pddl.logic.effects import AndEffect, When
 from pddl.logic.predicates import DerivedPredicate, Predicate
-from pylogics.syntax.base import And as ppltlAnd
+from pylogics.syntax.base import And as PLTLAnd
 from pylogics.syntax.base import Formula, Logic
-from pylogics.syntax.base import Not as ppltlNot
-from pylogics.syntax.base import Or as ppltlOr
+from pylogics.syntax.base import Not as PLTLNot
+from pylogics.syntax.base import Or as PLTLOr
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
 from pylogics.syntax.pltl import FalseFormula, PropositionalTrue
 from pylogics.utils.to_string import to_string
@@ -400,15 +400,21 @@ class ADLCompiler(Compiler):
                     else Predicate(formula.name, *[])
                 )
             predicate = self.from_atoms_to_fluent.get(PLTLAtomic(formula.name), None)
-            assert predicate is not None
+            check_(
+                predicate is not None,
+                f"expected predicate with name {formula.name}; missing",
+            )
             return predicate
 
-        assert isinstance(formula, (ppltlNot, ppltlAnd, ppltlOr))
+        check_(
+            isinstance(formula, (PLTLNot, PLTLAnd, PLTLOr)),
+            f"expected one of {PLTLNot, PLTLAnd, PLTLOr}, got formula of type {type(formula).__name__}",
+        )
 
-        if isinstance(formula, ppltlNot):
+        if isinstance(formula, PLTLNot):
             return Not(self.pylogics2pddl(formula.argument))
         operands = [self.pylogics2pddl(operand) for operand in formula.operands]
-        return And(*operands) if isinstance(formula, ppltlAnd) else Or(*operands)
+        return And(*operands) if isinstance(formula, PLTLAnd) else Or(*operands)
 
 
 def _update_domain_actions_with_check(
@@ -472,7 +478,7 @@ def _update_domain_actions_with_check(
 
     for eff in positive_effects:
         before_effect = eff.effect
-        assert isinstance(before_effect, Predicate)
+        check_(isinstance(before_effect, Predicate))
         pnf_predicate = Predicate(before_effect.name.replace(QUOTED_ATOM, PNF), *[])
         pnf_evaluation_effects.append(When(eff.condition, pnf_predicate))
         pnf_delete_effects.append(Not(pnf_predicate))

@@ -33,6 +33,7 @@ from pylogics.syntax.pltl import (
 )
 
 from plan4past.helpers.before_atom_helper import BeforeAtom
+from plan4past.helpers.utils import check_
 from plan4past.utils.before_generator_visitor import get_quoted_dictionary
 from plan4past.utils.ppnf_visitor import ppnf
 
@@ -102,7 +103,7 @@ class CompilationManager:
         conditional_effects = []
 
         for before_atom in self.before_dictionary:
-            assert isinstance(before_atom, BeforeAtom)
+            check_(isinstance(before_atom, BeforeAtom))
             fresh_atoms.append(before_atom)
             conditional_effects.append((ppnf(before_atom.formula), before_atom))
 

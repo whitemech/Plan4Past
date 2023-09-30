@@ -24,6 +24,8 @@
 
 from FDgrounder.pddl_parser.lisp_parser import parse_nested_list
 
+from plan4past.helpers.utils import check_
+
 
 class MalformedExpression(Exception):
     """Malformed expression exception."""
@@ -176,7 +178,7 @@ def tokens2ltl(  # noqa: C901  # pylint: disable=too-many-return-statements,too-
         return unaryop(tokens2ltl(tokens[1]), "WY")
 
     # This is an atom
-    assert len(nested_lists) == 0
+    check_(len(nested_lists) == 0)
     return " ".join(tokens)
 
 
