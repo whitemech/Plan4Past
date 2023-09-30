@@ -25,10 +25,10 @@ test_formulas_distribution = [
 ]
 
 
-@pytest.mark.parametrize("conj, dnf, expected", test_formulas_distribution)
-def test_distribution(conj, dnf, expected) -> None:
+@pytest.mark.parametrize("conj, dnf_formula, expected", test_formulas_distribution)
+def test_distribution(conj, dnf_formula, expected) -> None:
     """Test the distribution of conjunctions over disjunctions."""
-    assert distribute_conj_over_disj(conj, dnf) == expected
+    assert distribute_conj_over_disj(conj, dnf_formula) == expected
 
 
 test_formulas_dnf = [

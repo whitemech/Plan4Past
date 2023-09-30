@@ -57,6 +57,5 @@ def _(formula: Not) -> Formula:
     """Compute the nnf of a negation."""
     if is_literal(formula):
         return formula
-    else:
-        negated_formula = negate(formula.argument)  # Push the negation
-        return nnf(negated_formula)  # Recurse
+    negated_formula = negate(formula.argument)  # Push the negation
+    return nnf(negated_formula)  # Recurse

@@ -66,6 +66,5 @@ def get_before_atom(formula: Formula) -> BeforeAtom:
     """
     if isinstance(formula, Before):
         return Yatom_(formula.argument)
-    else:
-        assert isinstance(formula, Once) or isinstance(formula, Since)
-        return Yatom_(formula)
+    assert isinstance(formula, (Once, Since))
+    return Yatom_(formula)

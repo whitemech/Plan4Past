@@ -1,4 +1,5 @@
 """Tests for the compilation of the evaluate_pnf action."""
+from pathlib import Path
 from typing import Tuple
 
 import pkg_resources
@@ -22,8 +23,13 @@ def get_task(domain_path, problem_path) -> Tuple:
     :param problem_path: the path to the PDDL problem file
     :return: the domain and problem
     """
-    domain_str = open(pkg_resources.resource_filename(__name__, domain_path)).read()
-    problem_str = open(pkg_resources.resource_filename(__name__, problem_path)).read()
+    # pylint: disable=R0801
+    domain_str = Path(pkg_resources.resource_filename(__name__, domain_path)).read_text(
+        encoding="utf-8"
+    )
+    problem_str = Path(
+        pkg_resources.resource_filename(__name__, problem_path)
+    ).read_text(encoding="utf-8")
 
     domain_parser = DomainParser()
     problem_parser = ProblemParser()
@@ -53,10 +59,10 @@ def check_compilation(domain, problem, formula, pnf, temporalsubformulas, goal):
     evaluate_pnf = [act for act in actions if act.name == EVALUATE_PNF_ACTION][0]
     effects = evaluate_pnf.effect.operands
 
-    for i in range(len(pnf)):
+    for i, sub_pnf in enumerate(pnf):
         yatom_short = compiler.pylogics2pddl(y[i])
         pex = Predicate(yatom_short.name.replace(QUOTED_ATOM, PNF), *[])
-        effect = When(compiler.pylogics2pddl(pnf[i]), pex)
+        effect = When(compiler.pylogics2pddl(sub_pnf), pex)
         assert effect in effects
         assert pddlNot(compiler.goal_predicate) in evaluate_pnf.precondition.operands
         assert pddlNot(compiler.check_predicate) in evaluate_pnf.effect.operands
@@ -94,6 +100,7 @@ def test_pddl_compilation() -> None:
     a = Atomic("communicatedsoildata_waypoint2")
     b = Atomic("communicatedrockdata_waypoint3")
 
+    # pylint: disable=R0801
     formula = parse_pltl(f"H(H(H({a}) | H({b}))) | ({a} | {b})")
 
     temporalsubformulas = [
@@ -121,6 +128,7 @@ def test_pddl_compilation2() -> None:
     c = Atomic("robotat_c")
     true = PropositionalTrue()
 
+    # pylint: disable=R0801
     formula = parse_pltl("O(robotat_c & Y(Y(Y(!Y(true)))))")
 
     temporalsubformulas = [

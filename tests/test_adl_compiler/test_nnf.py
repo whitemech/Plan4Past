@@ -20,10 +20,10 @@ test_formulas_negation = [
 ]
 
 
-@pytest.mark.parametrize("input, expected", test_formulas_negation)
-def test_negation(input, expected):
+@pytest.mark.parametrize("input_formula, expected", test_formulas_negation)
+def test_negation(input_formula, expected):
     """Test the negation of a formula."""
-    assert negate(input) == expected
+    assert negate(input_formula) == expected
 
 
 test_formulas_nnf = [
@@ -46,7 +46,7 @@ test_formulas_nnf = [
 ]
 
 
-@pytest.mark.parametrize("input, expected", test_formulas_nnf)
-def test_nnf(input, expected) -> None:
+@pytest.mark.parametrize("input_formula, expected", test_formulas_nnf)
+def test_nnf(input_formula, expected) -> None:
     """Test the negation normal form (NNF) conversion."""
-    assert nnf(input) == expected
+    assert nnf(input_formula) == expected

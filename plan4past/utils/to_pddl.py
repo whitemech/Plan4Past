@@ -71,8 +71,7 @@ def _(effect: Effect) -> str:
         eff = f"(when {to_pddl(effect.condition)} {to_pddl(effect.literal)})"
     if effect.parameters:
         return f'(forall ({" ".join(to_pddl(param) for param in effect.parameters)}) {eff})'
-    else:
-        return eff
+    return eff
 
 
 @to_pddl.register(TypedObject)
@@ -80,7 +79,7 @@ def _(typed_obj: TypedObject) -> str:
     """Convert a typed object to a PDDL string."""
     if isinstance(typed_obj.type_name, list):
         # EITHER CASE
-        type_name = "({})".format(" ".join(typed_obj.type_name))
+        type_name = f"({' '.join(typed_obj.type_name)})"
     else:
         type_name = typed_obj.type_name
     return f"{typed_obj.name} - {type_name}"
@@ -119,14 +118,14 @@ def _(exists: ExistentialCondition) -> str:
 @to_pddl.register(Atom)
 def _(atom: Atom) -> str:
     """Convert an atom to a PDDL string."""
-    atom_string = "(%s %s)" % (atom.predicate, " ".join(map(str, atom.args)))
+    atom_string = f"({atom.predicate} {' '.join(map(str, atom.args))})"
     return atom_string.replace(" )", ")")
 
 
 @to_pddl.register(NegatedAtom)
 def _(atom: Atom) -> str:
     """Convert a negated atom to a PDDL string."""
-    return "(not (%s %s))" % (atom.predicate, " ".join(map(str, atom.args)))
+    return f"(not ({atom.predicate} {' '.join(map(str, atom.args))}))"
 
 
 @to_pddl.register(Predicate)
