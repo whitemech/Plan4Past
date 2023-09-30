@@ -26,6 +26,8 @@ from typing import List
 
 from pddl.logic.base import And, Atomic, Formula, Not, Or, is_literal
 
+from plan4past.helpers.utils import check_
+
 
 def distribute_conj_over_disj(phi: Formula, psi: Or) -> Formula:
     r"""
@@ -39,7 +41,7 @@ def distribute_conj_over_disj(phi: Formula, psi: Or) -> Formula:
     :param psi: the or formula
     :return: the formula in dnf
     """
-    assert len(psi.operands) >= 2
+    check_(len(psi.operands) >= 2, "expected psi with at least two operands")
     new_disjunction = []
     for psi_i in psi.operands:
         new_disjunction.append(And(phi, psi_i))
@@ -69,11 +71,11 @@ def merge_dnfs(dnf_list: List[Formula]) -> Formula:
     current_dnf = disjunctive_dnfs.pop()
     while len(disjunctive_dnfs) > 0:
         next_dnf = disjunctive_dnfs.pop()
-        assert isinstance(current_dnf, Or)
+        check_(isinstance(current_dnf, Or))
         current_dnf_operands = current_dnf.operands
         current_dnf = []
         for phi_i in current_dnf_operands:
-            assert isinstance(phi_i, And) or is_literal(phi_i)
+            check_(isinstance(phi_i, And) or is_literal(phi_i))
             current_dnf.append(distribute_conj_over_disj(phi_i, next_dnf))
         current_dnf = Or(*current_dnf)
 

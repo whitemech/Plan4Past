@@ -78,7 +78,7 @@ black-check: ## check black formatting
 	black --check --verbose plan4past tests scripts
 
 bandit: ## run bandit
-	bandit plan4past tests scripts
+	bandit --configfile .bandit.yml --recursive plan4past tests scripts
 
 safety: ## run safety
 	safety check
