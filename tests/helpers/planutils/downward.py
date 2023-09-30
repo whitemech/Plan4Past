@@ -63,7 +63,7 @@ class FastDownwardWrapper(BasePlannerWrapper):
             str(bind_path / domain.name),
             str(bind_path / problem.name),
             # we need escaping due to nuances in using planutils with docker
-            f'--search "astar\\({self._heuristic.value}\\)"',
+            f'--search "astar\\({self._heuristic.value}\\(\\)\\)"',
         ]
 
     def process_output(self, working_directory: Path, stdout: str) -> PlannerResult:
