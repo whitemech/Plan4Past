@@ -7,9 +7,14 @@ from pddl.formatter import domain_to_string, problem_to_string
 import pytest
 import pkg_resources
 
+
 def test_pddl_conversion():
-    domain_str = open(pkg_resources.resource_filename(__name__, 'pddl/blocksworld/domain.pddl')).read()
-    problem_str = open(pkg_resources.resource_filename(__name__, 'pddl/blocksworld/p01.pddl')).read()
+    domain_str = open(
+        pkg_resources.resource_filename(__name__, "pddl/blocksworld/domain.pddl")
+    ).read()
+    problem_str = open(
+        pkg_resources.resource_filename(__name__, "pddl/blocksworld/p01.pddl")
+    ).read()
 
     domain_parser = DomainParser()
     problem_parser = ProblemParser()
@@ -23,12 +28,16 @@ def test_pddl_conversion():
 
     compiled_domain, compiled_problem, befores = compiler.result
     tmp = domain_to_string(compiled_domain)
-    print('ciao')
+    print("ciao")
 
 
 def test_pddl_conversion2():
-    domain_str = open(pkg_resources.resource_filename(__name__, 'pddl/blocksworld/domain.pddl')).read()
-    problem_str = open(pkg_resources.resource_filename(__name__, 'pddl/blocksworld/p01.pddl')).read()
+    domain_str = open(
+        pkg_resources.resource_filename(__name__, "pddl/blocksworld/domain.pddl")
+    ).read()
+    problem_str = open(
+        pkg_resources.resource_filename(__name__, "pddl/blocksworld/p01.pddl")
+    ).read()
 
     domain_parser = DomainParser()
     problem_parser = ProblemParser()
@@ -44,9 +53,12 @@ def test_pddl_conversion2():
 
 
 def test_unsat_expression():
-
-    domain_str = open(pkg_resources.resource_filename(__name__, 'pddl/blocksworld/domain.pddl')).read()
-    problem_str = open(pkg_resources.resource_filename(__name__, 'pddl/blocksworld/p01.pddl')).read()
+    domain_str = open(
+        pkg_resources.resource_filename(__name__, "pddl/blocksworld/domain.pddl")
+    ).read()
+    problem_str = open(
+        pkg_resources.resource_filename(__name__, "pddl/blocksworld/p01.pddl")
+    ).read()
 
     domain_parser = DomainParser()
     problem_parser = ProblemParser()
@@ -57,12 +69,15 @@ def test_unsat_expression():
     with pytest.raises(ProblemUnsolvableException) as e_info:
         compiler = ADLCompiler(domain, problem, formula)
         compiler.compile()
-        
+
 
 def test_unsat_expression2():
-
-    domain_str = open(pkg_resources.resource_filename(__name__, 'pddl/blocksworld/domain.pddl')).read()
-    problem_str = open(pkg_resources.resource_filename(__name__, 'pddl/blocksworld/p01.pddl')).read()
+    domain_str = open(
+        pkg_resources.resource_filename(__name__, "pddl/blocksworld/domain.pddl")
+    ).read()
+    problem_str = open(
+        pkg_resources.resource_filename(__name__, "pddl/blocksworld/p01.pddl")
+    ).read()
 
     domain_parser = DomainParser()
     problem_parser = ProblemParser()
@@ -75,14 +90,18 @@ def test_unsat_expression2():
         compiler = ADLCompiler(domain, problem, formula)
         compiler.compile()
 
+
 if __name__ == "__main__":
     test_unsat_expression2()
 
 
 def test_always_true_expression():
-
-    domain_str = open(pkg_resources.resource_filename(__name__, 'pddl/blocksworld/domain.pddl')).read()
-    problem_str = open(pkg_resources.resource_filename(__name__, 'pddl/blocksworld/p01.pddl')).read()
+    domain_str = open(
+        pkg_resources.resource_filename(__name__, "pddl/blocksworld/domain.pddl")
+    ).read()
+    problem_str = open(
+        pkg_resources.resource_filename(__name__, "pddl/blocksworld/p01.pddl")
+    ).read()
 
     domain_parser = DomainParser()
     problem_parser = ProblemParser()
