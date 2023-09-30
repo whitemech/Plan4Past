@@ -28,6 +28,7 @@ from pylogics.syntax.base import Formula
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
 from plan4past.utils.atoms_visitor import find_atoms
 
+
 def add_val_prefix(name: str):
     """Add the 'prime' prefix."""
     return "val-" + name.replace('"', "")

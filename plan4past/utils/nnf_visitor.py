@@ -43,10 +43,12 @@ def _(formula: Or) -> Formula:
     """Computes the nnf of a disjunction"""
     return Or(*[nnf(operand) for operand in formula.operands])
 
+
 @nnf.register
 def _(formula: Atomic) -> Formula:
     """Computes the nnf of an atom"""
     return formula
+
 
 @nnf.register
 def _(formula: Not) -> Formula:
@@ -54,5 +56,5 @@ def _(formula: Not) -> Formula:
     if is_literal(formula):
         return formula
     else:
-        negated_formula = negate(formula.argument) # Push the negation
-        return nnf(negated_formula) # Recurse
+        negated_formula = negate(formula.argument)  # Push the negation
+        return nnf(negated_formula)  # Recurse

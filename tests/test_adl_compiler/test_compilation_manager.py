@@ -4,12 +4,13 @@ import pytest
 from plan4past.utils.rewrite_formula_visitor import rewrite
 from plan4past.utils.ppnf_visitor import ppnf
 
-a = Atomic('a')
-b = Atomic('b')
-c = Atomic('c')
-d = Atomic('d')
-e = Atomic('e')
-f = Atomic('f')
+a = Atomic("a")
+b = Atomic("b")
+c = Atomic("c")
+d = Atomic("d")
+e = Atomic("e")
+f = Atomic("f")
+
 
 def test_before_generation1():
     phi = Or(Not(Once(Not(a))), Since(b, Not(Once(Not(c)))))
@@ -31,7 +32,7 @@ def test_before_generation2():
     before_dictionary = compilation_manager.before_dictionary
     assert len(before_dictionary.keys()) == 2
     assert Yatom_(Once(Not(a))) in before_dictionary.keys()
-    assert Yatom_(Since(b,Not(Once(Not(a))))) in before_dictionary.keys()
+    assert Yatom_(Since(b, Not(Once(Not(a))))) in before_dictionary.keys()
 
 
 def test_before_generation3():
@@ -66,7 +67,10 @@ def test_before_generation5():
     before_dictionary = compilation_manager.before_dictionary
     assert len(before_dictionary.keys()) == 3
     assert Yatom_(Once(And(a, b))) in before_dictionary.keys()
-    assert Yatom_(Before(Or(b, Not(Since(Not(c), Not(d)))))) not in before_dictionary.keys()
+    assert (
+        Yatom_(Before(Or(b, Not(Since(Not(c), Not(d))))))
+        not in before_dictionary.keys()
+    )
     assert Yatom_(Or(b, Not(Since(Not(c), Not(d))))) in before_dictionary.keys()
     assert Yatom_(Since(Not(c), Not(d))) in before_dictionary.keys()
 
@@ -78,15 +82,25 @@ def test_before_generation6():
 
     before_dictionary = compilation_manager.before_dictionary
     assert len(before_dictionary.keys()) == 3
-    assert Yatom_(Once(And(a, Before(Once(And(b, Before(Once(c)))))))) in before_dictionary.keys()
+    assert (
+        Yatom_(Once(And(a, Before(Once(And(b, Before(Once(c))))))))
+        in before_dictionary.keys()
+    )
     assert Yatom_(Once(And(b, Before(Once(c))))) in before_dictionary.keys()
     assert Yatom_(Once(c)) in before_dictionary.keys()
 
     assert Yatom_(Before(Once(And(b, Before(Once(c)))))) not in before_dictionary.keys()
     assert Yatom_(Before(Once(c))) not in before_dictionary.keys()
 
+
 def test_before_generation7():
-    phi = Or(And(Before(a), And(Before(b), Before(Or(Not(Once(Not(c))), Not(Before(Atomic('true'))))))), Not(Once(Not(c))))
+    phi = Or(
+        And(
+            Before(a),
+            And(Before(b), Before(Or(Not(Once(Not(c))), Not(Before(Atomic("true")))))),
+        ),
+        Not(Once(Not(c))),
+    )
 
     compilation_manager = CompilationManager(phi)
 
@@ -94,37 +108,46 @@ def test_before_generation7():
     assert len(before_dictionary.keys()) == 5
     assert Yatom_(a) in before_dictionary.keys()
     assert Yatom_(b) in before_dictionary.keys()
-    assert Yatom_(Or(Not(Once(Not(c))), Not(Before(Atomic('true'))))) in before_dictionary.keys()
+    assert (
+        Yatom_(Or(Not(Once(Not(c))), Not(Before(Atomic("true")))))
+        in before_dictionary.keys()
+    )
     assert Yatom_(Once(Not(c))) in before_dictionary.keys()
-    assert Yatom_(Atomic('true')) in before_dictionary.keys()
+    assert Yatom_(Atomic("true")) in before_dictionary.keys()
 
     assert Yatom_(Before(b)) not in before_dictionary.keys()
     assert Yatom_(Before(a)) not in before_dictionary.keys()
+
 
 def test_pex1():
     phi = a
     result = ppnf(phi)
     assert result == a
 
+
 def test_pex2():
     phi = Before(a)
     result = ppnf(phi)
     assert result == Yatom_(a)
 
+
 def test_pex3():
-    phi = Or(Before(a), Not(Before(Atomic('true'))))
+    phi = Or(Before(a), Not(Before(Atomic("true"))))
     result = ppnf(phi)
-    assert result == Or(Yatom_(a), Not(Yatom_(Atomic('true'))))
+    assert result == Or(Yatom_(a), Not(Yatom_(Atomic("true"))))
+
 
 def test_pex4():
     phi = Once(a)
     result = ppnf(phi)
     assert result == Or(a, Yatom_(Once(a)))
 
+
 def test_pex5():
     phi = Not(Once(Not(a)))
     result = ppnf(phi)
     assert result == Not(Or(Not(a), Yatom_(Once(Not(a)))))
+
 
 def test_pex6():
     phi = And(a, b)
@@ -154,7 +177,6 @@ def test_pex_complex_formula1():
     before_once_not_c = Yatom_(Once(Not(c)))
     before_not_once_not_c = Yatom_(Not(Once(Not(c))))
 
-
     assert len(cm.before_dictionary.keys()) == 4
     assert cm.before_dictionary.get(before_once_not_c) is not None
 
@@ -176,18 +198,63 @@ def test_pex_complex_formula2():
     assert result == pex_phi
 
 
+# ("H(H(H(a) | H(b))) | (a | b)", expected3)
+pnf_ha_hb = Or(
+    Not(Or(Not(a), Yatom_(Once(Not(a))))), Not(Or(Not(b), Yatom_(Once(Not(b)))))
+)
+pnf_h_ha_hb = Not(
+    Or(Not(pnf_ha_hb), Yatom_(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b))))))))
+)
+pnf_h_h_ha_hb = Not(
+    Or(
+        Or(Not(pnf_ha_hb), Yatom_(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b)))))))),
+        Yatom_(Once(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b)))))))),
+    )
+)
+combinations = [
+    (
+        "O(a) & O(b) & O(c)",
+        And(Or(a, Yatom_(Once(a))), Or(b, Yatom_(Once(b))), Or(c, Yatom_(Once(c)))),
+    ),
+    (
+        "O(O(a) & O(b) & O(c))",
+        Or(
+            And(Or(a, Yatom_(Once(a))), Or(b, Yatom_(Once(b))), Or(c, Yatom_(Once(c)))),
+            Yatom_(Once(And(Once(a), Once(b), Once(c)))),
+        ),
+    ),
+    (
+        "O(O(a) | O(b) | O(c))",
+        Or(
+            Or(Or(a, Yatom_(Once(a))), Or(b, Yatom_(Once(b))), Or(c, Yatom_(Once(c)))),
+            Yatom_(Once(Or(Once(a), Once(b), Once(c)))),
+        ),
+    ),
+    ("H(a) | H(b)", pnf_ha_hb),
+    (
+        "H(H(a) | H(b))",
+        Not(
+            Or(
+                Not(pnf_ha_hb),
+                Yatom_(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b))))))),
+            )
+        ),
+    ),
+    (
+        "H(H(H(a) | H(b)))",
+        Not(
+            Or(
+                Or(
+                    Not(pnf_ha_hb),
+                    Yatom_(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b))))))),
+                ),
+                Yatom_(Once(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b)))))))),
+            )
+        ),
+    ),
+    ("H(H(H(a) | H(b))) | (a | b)", Or(pnf_h_h_ha_hb, a, b)),
+]
 
-#("H(H(H(a) | H(b))) | (a | b)", expected3)
-pnf_ha_hb = Or(Not(Or(Not(a), Yatom_(Once(Not(a))))), Not(Or(Not(b), Yatom_(Once(Not(b))))))
-pnf_h_ha_hb = Not(Or(Not(pnf_ha_hb), Yatom_(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b)))))))))
-pnf_h_h_ha_hb = Not(Or(Or(Not(pnf_ha_hb), Yatom_(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b)))))))), Yatom_(Once(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b))))))))))
-combinations = [("O(a) & O(b) & O(c)", And(Or(a, Yatom_(Once(a))), Or(b, Yatom_(Once(b))), Or(c, Yatom_(Once(c))))),
-                ("O(O(a) & O(b) & O(c))", Or(And(Or(a, Yatom_(Once(a))), Or(b, Yatom_(Once(b))), Or(c, Yatom_(Once(c)))), Yatom_(Once(And(Once(a), Once(b), Once(c)))))),
-                ("O(O(a) | O(b) | O(c))", Or(Or(Or(a, Yatom_(Once(a))), Or(b, Yatom_(Once(b))), Or(c, Yatom_(Once(c)))), Yatom_(Once(Or(Once(a), Once(b), Once(c)))))),
-                ("H(a) | H(b)", pnf_ha_hb),
-                ("H(H(a) | H(b))", Not(Or(Not(pnf_ha_hb), Yatom_(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b)))))))))),
-                ("H(H(H(a) | H(b)))", Not(Or(Or(Not(pnf_ha_hb), Yatom_(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b)))))))), Yatom_(Once(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b))))))))))),
-                ("H(H(H(a) | H(b))) | (a | b)", Or(pnf_h_h_ha_hb, a, b))]
 
 @pytest.mark.parametrize("formula,expected", combinations)
 def test_pex_formula(formula, expected):
@@ -196,16 +263,19 @@ def test_pex_formula(formula, expected):
     pex = ppnf(formula_)
     assert pex == expected
 
+
 def test_problem_extension_HH_Ha_Hb():
-    formula_ = rewrite(parse_pltl('H(H(H(a) | H(b))) | (a | b)'))
-    assert formula_ == Or(Not(Once(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b)))))))), a ,b)
+    formula_ = rewrite(parse_pltl("H(H(H(a) | H(b))) | (a | b)"))
+    assert formula_ == Or(
+        Not(Once(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b)))))))), a, b
+    )
     compilation_manager = CompilationManager(formula_)
-    
+
     temporalsubformulas = [
         Yatom_(Once(Not(a))),
         Yatom_(Once(Not(b))),
         Yatom_(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b))))))),
-        Yatom_(Once(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b))))))))
+        Yatom_(Once(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b)))))))),
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
@@ -221,15 +291,15 @@ def test_problem_extension_HH_Ha_Hb():
     pnf.append(Or(pnf[2], y[3]))
     for i in range(len(pnf)):
         assert (pnf[i], y[i]) in conditional_effects
-    assert goal == Or(Not(pnf[3]), a , b)
+    assert goal == Or(Not(pnf[3]), a, b)
 
 
 def test_problem_extension_since():
-    '''
+    """
     (O(d)) S (O(a) & O(b) & O(c))
-    ''' 
-    formula_ = rewrite(parse_pltl('(O(d)) S (O(a) & O(b) & O(c))'))
-    assert formula_ == parse_pltl('(O(d)) S (O(a) & O(b) & O(c))')
+    """
+    formula_ = rewrite(parse_pltl("(O(d)) S (O(a) & O(b) & O(c))"))
+    assert formula_ == parse_pltl("(O(d)) S (O(a) & O(b) & O(c))")
     compilation_manager = CompilationManager(formula_)
 
     temporalsubformulas = [
@@ -237,7 +307,7 @@ def test_problem_extension_since():
         Yatom_(Once(a)),
         Yatom_(Once(b)),
         Yatom_(Once(c)),
-        Yatom_(Since(Once(d), And(Once(a), Once(b), Once(c))))
+        Yatom_(Since(Once(d), And(Once(a), Once(b), Once(c)))),
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
@@ -248,12 +318,7 @@ def test_problem_extension_since():
         assert y in fresh_atoms
 
     y = temporalsubformulas
-    pnf = [
-            Or(d, y[0]),
-            Or(a, y[1]),
-            Or(b, y[2]),
-            Or(c, y[3])
-        ]
+    pnf = [Or(d, y[0]), Or(a, y[1]), Or(b, y[2]), Or(c, y[3])]
     pnf.append(Or(And(pnf[1], pnf[2], pnf[3]), And(pnf[0], y[4])))
     for i in range(len(pnf)):
         assert (pnf[i], y[i]) in conditional_effects
@@ -261,11 +326,11 @@ def test_problem_extension_since():
 
 
 def test_problem_extension_since2():
-    '''
+    """
     ((O(a)|O(b)|O(c))S(O(d)))
-    ''' 
-    formula_ = rewrite(parse_pltl('((O(a)|O(b)|O(c))S(O(d)))'))
-    assert formula_ == parse_pltl('((O(a)|O(b)|O(c))S(O(d)))')
+    """
+    formula_ = rewrite(parse_pltl("((O(a)|O(b)|O(c))S(O(d)))"))
+    assert formula_ == parse_pltl("((O(a)|O(b)|O(c))S(O(d)))")
     compilation_manager = CompilationManager(formula_)
 
     temporalsubformulas = [
@@ -273,7 +338,7 @@ def test_problem_extension_since2():
         Yatom_(Once(a)),
         Yatom_(Once(b)),
         Yatom_(Once(c)),
-        Yatom_(Since(Or(Once(a), Once(b), Once(c)), Once(d)))
+        Yatom_(Since(Or(Once(a), Once(b), Once(c)), Once(d))),
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
@@ -284,23 +349,19 @@ def test_problem_extension_since2():
         assert y in fresh_atoms
 
     y = temporalsubformulas
-    pnf = [
-            Or(d, y[0]),
-            Or(a, y[1]),
-            Or(b, y[2]),
-            Or(c, y[3])
-        ]
+    pnf = [Or(d, y[0]), Or(a, y[1]), Or(b, y[2]), Or(c, y[3])]
     pnf.append(Or(pnf[0], And(Or(pnf[1], pnf[2], pnf[3]), y[4])))
     for i in range(len(pnf)):
         assert (pnf[i], y[i]) in conditional_effects
     assert goal == pnf[4]
 
+
 def test_problem_extension_once_blocks():
-    '''
+    """
     O(a & O(d)) & O(b & O(d))
-    ''' 
-    formula_ = rewrite(parse_pltl('O(a & O(d)) & O(b & O(d))'))
-    assert formula_ == parse_pltl('O(a & O(d)) & O(b & O(d))')
+    """
+    formula_ = rewrite(parse_pltl("O(a & O(d)) & O(b & O(d))"))
+    assert formula_ == parse_pltl("O(a & O(d)) & O(b & O(d))")
     compilation_manager = CompilationManager(formula_)
 
     temporalsubformulas = [
@@ -317,22 +378,18 @@ def test_problem_extension_once_blocks():
         assert y in fresh_atoms
 
     y = temporalsubformulas
-    pnf = [
-            Or(d, y[0]),
-            Or(And(a, Or(d, y[0])), y[1]),
-            Or(And(b, Or(d, y[0])), y[2])
-        ]
+    pnf = [Or(d, y[0]), Or(And(a, Or(d, y[0])), y[1]), Or(And(b, Or(d, y[0])), y[2])]
     for i in range(len(pnf)):
         assert (pnf[i], y[i]) in conditional_effects
     assert goal == And(pnf[1], pnf[2])
 
 
 def test_problem_extension_since3():
-    '''
+    """
     ((c) S (O(a))) & ((c) S (O(b)))
-    ''' 
-    formula_ = rewrite(parse_pltl('((c) S (O(a))) & ((c) S (O(b)))'))
-    assert formula_ == parse_pltl('((c) S (O(a))) & ((c) S (O(b)))')
+    """
+    formula_ = rewrite(parse_pltl("((c) S (O(a))) & ((c) S (O(b)))"))
+    assert formula_ == parse_pltl("((c) S (O(a))) & ((c) S (O(b)))")
     compilation_manager = CompilationManager(formula_)
 
     temporalsubformulas = [
@@ -351,21 +408,22 @@ def test_problem_extension_since3():
 
     y = temporalsubformulas
     pnf = [
-            Or(a, y[0]),
-            Or(b, y[1]),
-            Or(Or(a, y[0]), And(c, y[2])),
-            Or(Or(b, y[1]), And(c, y[3]))
-        ]
+        Or(a, y[0]),
+        Or(b, y[1]),
+        Or(Or(a, y[0]), And(c, y[2])),
+        Or(Or(b, y[1]), And(c, y[3])),
+    ]
     for i in range(len(pnf)):
         assert (pnf[i], y[i]) in conditional_effects
     assert goal == And(pnf[2], pnf[3])
 
+
 def test_problem_extension_seq():
-    '''
+    """
     O(a & Y(O(b & Y(O(c)))))
-    ''' 
-    formula_ = rewrite(parse_pltl('O(a & Y(O(b & Y(O(c)))))'))
-    assert formula_ == parse_pltl('O(a & Y(O(b & Y(O(c)))))')
+    """
+    formula_ = rewrite(parse_pltl("O(a & Y(O(b & Y(O(c)))))"))
+    assert formula_ == parse_pltl("O(a & Y(O(b & Y(O(c)))))")
     compilation_manager = CompilationManager(formula_)
 
     temporalsubformulas = [
@@ -382,18 +440,15 @@ def test_problem_extension_seq():
         assert y in fresh_atoms
 
     y = temporalsubformulas
-    pnf = [
-            Or(c, y[0]),
-            Or(And(b, y[0]), y[1]),
-            Or(And(a, y[1]), y[2])
-         ]
+    pnf = [Or(c, y[0]), Or(And(b, y[0]), y[1]), Or(And(a, y[1]), y[2])]
     for i in range(len(pnf)):
         assert (pnf[i], y[i]) in conditional_effects
     assert goal == pnf[2]
 
+
 def test_problem_extension_robot1():
-    formula_ = rewrite(parse_pltl('O(c & Y(Y(Y(!Y(true)))))'))
-    assert formula_ == parse_pltl('O(c & Y(Y(Y(!Y(true)))))')
+    formula_ = rewrite(parse_pltl("O(c & Y(Y(Y(!Y(true)))))"))
+    assert formula_ == parse_pltl("O(c & Y(Y(Y(!Y(true)))))")
     compilation_manager = CompilationManager(formula_)
 
     temporalsubformulas = [
@@ -412,20 +467,14 @@ def test_problem_extension_robot1():
         assert y in fresh_atoms
 
     y = temporalsubformulas
-    pnf = [
-            PropositionalTrue(),
-            Not(y[0]),
-            y[1],
-            y[2],
-            Or(And(c, y[3]), y[4])
-          ]
+    pnf = [PropositionalTrue(), Not(y[0]), y[1], y[2], Or(And(c, y[3]), y[4])]
     for i in range(len(pnf)):
         assert (pnf[i], y[i]) in conditional_effects
     assert goal == pnf[4]
 
 
 def test_problem_extension_robot2():
-    formula_ = rewrite(parse_pltl('(H((!Y(a) | !(b))) & !(a))'))
+    formula_ = rewrite(parse_pltl("(H((!Y(a) | !(b))) & !(a))"))
     assert formula_ == And(Not(Once(Not(Or(Not(Before(a)), Not(b))))), Not(a))
     compilation_manager = CompilationManager(formula_)
 
@@ -442,13 +491,11 @@ def test_problem_extension_robot2():
         assert y in fresh_atoms
 
     y = temporalsubformulas
-    pnf = [
-            a,
-            Or(Not(Or(Not(y[0]), Not(b))), y[1])
-          ]
+    pnf = [a, Or(Not(Or(Not(y[0]), Not(b))), y[1])]
     for i in range(len(pnf)):
         assert (pnf[i], y[i]) in conditional_effects
     assert goal == And(Not(pnf[1]), Not(a))
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     pytest.main()

@@ -24,6 +24,7 @@
 from functools import singledispatch
 from pddl.logic.base import *
 
+
 @singledispatch
 def negate(obj: Formula) -> Formula:
     """Computes the negation of a formula"""
@@ -42,6 +43,7 @@ def _(formula: Or) -> Formula:
     """Computes the negation of a disjunction"""
     negated_operands = [negate(operand) for operand in formula.operands]
     return And(*negated_operands)
+
 
 @negate.register
 def _(formula: Atomic) -> Formula:

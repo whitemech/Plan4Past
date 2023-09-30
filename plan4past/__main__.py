@@ -84,7 +84,6 @@ DEFAULT_NEW_PROBLEM_FILENAME: str = "new-problem.pddl"
     help="Path to PDDL file to store the new problem.",
     type=click.Path(dir_okay=False),
 )
-
 @click.option(
     "-adl",
     "--adl-encoding",
@@ -93,7 +92,6 @@ DEFAULT_NEW_PROBLEM_FILENAME: str = "new-problem.pddl"
     help="Switch to the ADL encoding of the PPLTL goal (i.e., without derived predicates).",
     type=bool,
 )
-
 @click.option(
     "-adl-plus",
     "--adl-encoding-plus",
@@ -102,7 +100,6 @@ DEFAULT_NEW_PROBLEM_FILENAME: str = "new-problem.pddl"
     help="Switch to the optimized ADL encoding of the PPLTL goal (i.e., without derived predicates).",
     type=bool,
 )
-
 @click.option(
     "-dnf",
     "--build-dnf",
@@ -111,17 +108,18 @@ DEFAULT_NEW_PROBLEM_FILENAME: str = "new-problem.pddl"
     help="Use the dnf representation to simplify disjunctive goals resulting from the adl encodings.",
     type=bool,
 )
-
-def cli(domain, 
-        problem, 
-        goal_inline, 
-        goal_file, 
-        mapping, 
-        out_domain, 
-        out_problem, 
-        adl_encoding, 
-        adl_encoding_plus,
-        build_dnf):
+def cli(
+    domain,
+    problem,
+    goal_inline,
+    goal_file,
+    mapping,
+    out_domain,
+    out_problem,
+    adl_encoding,
+    adl_encoding_plus,
+    build_dnf,
+):
     """Plan4Past: Planning for Pure-Past Temporally Extended Goals."""
     goal = _get_goal(goal_inline, goal_file)
 
@@ -135,18 +133,30 @@ def cli(domain,
 
     if adl_encoding and adl_encoding_plus:
         raise ValueError("[ERROR] Please select only one of the adl encodings")
-    
+
     if not adl_encoding and not adl_encoding_plus and build_dnf == True:
-        print("[WARNING] The dnf option works only with the adl encoding and will be ignored.")
+        print(
+            "[WARNING] The dnf option works only with the adl encoding and will be ignored."
+        )
 
     if adl_encoding:
         compiled_domain, compiled_problem, before_mapping = _adl_compilation_entrypoint(
-            in_domain, in_problem, formula, var_map, build_dnf=build_dnf, evaluate_pnf = False 
+            in_domain,
+            in_problem,
+            formula,
+            var_map,
+            build_dnf=build_dnf,
+            evaluate_pnf=False,
         )
 
     elif adl_encoding_plus:
         compiled_domain, compiled_problem, before_mapping = _adl_compilation_entrypoint(
-            in_domain, in_problem, formula, var_map, build_dnf=build_dnf, evaluate_pnf = True
+            in_domain,
+            in_problem,
+            formula,
+            var_map,
+            build_dnf=build_dnf,
+            evaluate_pnf=True,
         )
     else:
         compiled_domain, compiled_problem = _compile_instance(
@@ -162,10 +172,11 @@ def cli(domain,
         raise IOError(
             "[ERROR]: Something wrong occurred while writing the compiled domain and problem."
         ) from e
-    
+
     # if adl_encoding or adl_encoding_plus:
     #     with open(out_domain, "a", encoding="utf-8") as d:
     #         d.write(before_mapping)
+
 
 def _get_goal(goal_inline, goal_file) -> str:
     """Get the goal formula."""
@@ -203,8 +214,9 @@ def _compile_instance(domain, problem, formula, mapping) -> Tuple[Domain, Proble
     return compiled_domain, compiled_problem
 
 
-def _adl_compilation_entrypoint(domain, problem, formula, mapping, build_dnf = True, evaluate_pnf = True):
-
+def _adl_compilation_entrypoint(
+    domain, problem, formula, mapping, build_dnf=True, evaluate_pnf=True
+):
     compiler = ADLCompiler(domain, problem, formula, mapping, evaluate_pnf, build_dnf)
     compiler.compile()
     compiled_domain, compiled_problem, before_mapping = compiler.result
