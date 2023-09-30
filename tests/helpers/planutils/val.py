@@ -148,6 +148,9 @@ def filter_val_result(val_result: VALResult) -> VALResult:
 
     Similarly, the presence of constants related to the goal in the domain file causes the warning message 'Undeclared
      symbol'.
+
+    :param val_result: the result of the validation.
+    :return: the filtered result.
     """
     ERRORS_TO_IGNORE = ["Re-declaration of symbol in same scope"]
     WARNINGS_TO_IGNORE = ["Undeclared symbol"]

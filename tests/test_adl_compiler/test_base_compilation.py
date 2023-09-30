@@ -1,17 +1,19 @@
+"""Test the compilation of a FOND PDDL domain and problem."""
 import pkg_resources
-import pytest
-from pddl.formatter import domain_to_string, problem_to_string
 from pddl.parser.domain import DomainParser
 from pddl.parser.problem import ProblemParser
 from pylogics.parsers import parse_pltl
+from pylogics.syntax.base import Not, Or
+from pylogics.syntax.pltl import Atomic, Once
 
 from plan4past.compiler import ADLCompiler
 from plan4past.compiler import Not as pddlNot
-from plan4past.compiler import ProblemUnsolvableException, When
-from plan4past.helpers.compilation_helper import *
+from plan4past.compiler import When
+from plan4past.helpers.before_atom_helper import Yatom_
 
 
-def test_pddl_compilation():
+def test_pddl_compilation() -> None:
+    """Test the compilation of a FOND PDDL domain and problem, basic test."""
     domain_str = open(
         pkg_resources.resource_filename(__name__, "pddl/rovers/domain-fond.pddl")
     ).read()
@@ -57,9 +59,5 @@ def test_pddl_compilation():
                 assert effect in effects
             assert pddlNot(compiler.goal_predicate) in act.precondition.operands
         else:
-            ## THE GOAL IS IN THIS ACTION ##
+            # THE GOAL IS IN THIS ACTION
             assert act.precondition == compiler.pylogics2pddl(Or(Not(pnf[3]), a, b))
-
-
-if __name__ == "__main__":
-    pytest.main()

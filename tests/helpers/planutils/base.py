@@ -48,6 +48,7 @@ class PlanutilsDockerImage(DockerImage):
         Initialize the Planutils Docker image.
 
         :param client: the Docker client.
+        :param dockerfile: path to the Dockerfile.
         """
         super().__init__(
             client, self.TAG, dockerfile=dockerfile, context=dockerfile.parent
@@ -125,7 +126,6 @@ class BasePlannerWrapper:
         :param bind_path: the bind path in the Docker container. The domain and the problem files are copied there.
         :param domain: the domain file (in the host machine!).
         :param problem: the problem file (in the host machine!).
-        :return:
         """
         raise NotImplementedError
 

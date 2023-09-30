@@ -1,16 +1,20 @@
+"""Test for formula conversions."""
 import pkg_resources
 from pddl.parser.domain import DomainParser
 from pddl.parser.problem import ProblemParser
 from pylogics.parsers import parse_pltl
+from pylogics.syntax.base import Not, Or
+from pylogics.syntax.pltl import Atomic, Once
 
 from plan4past.compiler import ADLCompiler, Constant
 from plan4past.compiler import Not as pddlNot
 from plan4past.compiler import Or as pddlOr
 from plan4past.compiler import Predicate
-from plan4past.helpers.compilation_helper import *
+from plan4past.helpers.before_atom_helper import Yatom_
 
 
-def test_formula_conversion():
+def test_formula_conversion() -> None:
+    """Test the conversion of a formula."""
     domain_str = open(
         pkg_resources.resource_filename(__name__, "pddl/rovers/domain-fond.pddl")
     ).read()
@@ -62,7 +66,3 @@ def test_formula_conversion():
     assert compiler.pylogics2pddl(pnf[3]) == pddlOr(
         pnf2_expected, Predicate(before_dictionary[y[3]].name, *[])
     )
-
-
-if __name__ == "__main__":
-    test_formula_conversion()

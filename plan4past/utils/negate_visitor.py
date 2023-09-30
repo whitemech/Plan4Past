@@ -23,36 +23,36 @@
 """Negate visitor."""
 from functools import singledispatch
 
-from pddl.logic.base import *
+from pddl.logic.base import And, Atomic, Formula, Not, Or
 
 
 @singledispatch
 def negate(obj: Formula) -> Formula:
-    """Computes the negation of a formula"""
+    """Compute the negation of a formula."""
     raise ValueError(f"object of type {type(obj)} is not supported by this function")
 
 
 @negate.register
 def _(formula: And) -> Formula:
-    """Computes the negation of a conjunction"""
+    """Compute the negation of a conjunction."""
     negated_operands = [negate(operand) for operand in formula.operands]
     return Or(*negated_operands)
 
 
 @negate.register
 def _(formula: Or) -> Formula:
-    """Computes the negation of a disjunction"""
+    """Compute the negation of a disjunction."""
     negated_operands = [negate(operand) for operand in formula.operands]
     return And(*negated_operands)
 
 
 @negate.register
 def _(formula: Atomic) -> Formula:
-    """Computes the negation of a predicate"""
+    """Compute the negation of a predicate."""
     return Not(formula)
 
 
 @negate.register
 def _(formula: Not) -> Formula:
-    """Computes the negation of a formula"""
+    """Compute the negation of a formula."""
     return formula.argument

@@ -1,9 +1,10 @@
+"""Transform a PDDL formula into a LTL formula."""
+
 from FDgrounder.pddl_parser.lisp_parser import parse_nested_list
 
 
 class MalformedExpression(Exception):
-    def __init__(self, *args: object) -> None:
-        super().__init__(*args)
+    """Malformed expression exception."""
 
 
 PDDL_NOT = "not"
@@ -34,38 +35,34 @@ LTL_WEAKNEXT = "WX"
 MALFORMED_EXPRESSION_MSG = "The expression {expr} is malformed"
 
 
-def land(args):
+def land(args) -> str:
+    """Return a string representing the conjunction of the arguments in LTL."""
     return f"({'&'.join(args)})"
 
 
-def lor(args):
+def lor(args) -> str:
+    """Return a string representing the disjunction of the arguments in LTL."""
     return f"({'|'.join(args)})"
 
 
-def unaryop(op, arg):
+def unaryop(op, arg) -> str:
+    """Return a string representing the unary operator op(arg) in LTL."""
     return f"({op}({arg}))"
 
 
-def binaryop(op, arg1, arg2):
+def binaryop(op, arg1, arg2) -> str:
+    """Return a string representing the binary operator op(arg1, arg2) in LTL."""
     return f"(({arg1}){op}({arg2}))"
 
 
-def pddl2tl(pddl_formula):
+def pddl2tl(pddl_formula) -> str:
+    """Return a string representing the LTL formula corresponding to the PDDL formula."""
     tokens = parse_nested_list(pddl_formula.splitlines())
     return tokens2ltl(tokens)
 
 
-# def parse_pddl_conjunction_disjunction(tokens, fun):
-#     '(and (a) (b) (c) (d)) -> AND(a, AND(b, AND(c, d)))'
-#     '(or (a) (b) (c) (d))  -> OR(a, OR(b, OR(c, d)))'
-#     parts = [tokens2ltl(tokens[i]) for i in range(1, len(tokens))]
-#     current_logic_expr = fun(parts[len(parts)-2], parts[len(parts)-1])
-#     for i in reversed(range(len(parts) - 2)):
-#         current_logic_expr = fun(parts[i], current_logic_expr)
-#     return current_logic_expr
-
-
-def tokens2ltl(tokens):
+def tokens2ltl(tokens) -> str:  # noqa: C901
+    """Return a string representing the LTL formula corresponding to the PDDL formula."""
     nested_lists = [tk for tk in tokens if isinstance(tk, list)]
 
     if tokens[0] == PDDL_AND:

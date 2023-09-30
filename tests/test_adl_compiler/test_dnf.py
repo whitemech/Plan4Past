@@ -1,9 +1,9 @@
+"""Tests for the DNF visitor."""
 import pytest
-from pddl.logic.base import *
+from pddl.logic.base import And, Or
 from pddl.logic.predicates import Predicate
 
 from plan4past.utils.dnf_visitor import distribute_conj_over_disj, dnf
-from plan4past.utils.negate_visitor import negate
 
 a = Predicate("a")
 b = Predicate("b")
@@ -26,7 +26,8 @@ test_formulas_distribution = [
 
 
 @pytest.mark.parametrize("conj, dnf, expected", test_formulas_distribution)
-def test_distrubution(conj, dnf, expected):
+def test_distribution(conj, dnf, expected) -> None:
+    """Test the distribution of conjunctions over disjunctions."""
     assert distribute_conj_over_disj(conj, dnf) == expected
 
 
@@ -38,23 +39,10 @@ test_formulas_dnf = [
         And(Or(a, b), Or(c, d), And(f, e)),
         Or(And(f, e, a, c), And(f, e, a, d), And(f, e, b, c), And(f, e, b, d)),
     ),
-    # (
-    #     And(
-    #         Or(f, e),
-    #         And(a, Or(b, c))
-    #     ),
-    #     # TODO
-    # )
 ]
 
 
 @pytest.mark.parametrize("formula, expected", test_formulas_dnf)
-def test_dnf(formula, expected):
+def test_dnf(formula, expected) -> None:
+    """Test the DNF conversion."""
     assert dnf(formula) == expected
-
-
-if __name__ == "__main__":
-    test_dnf(
-        And(Or(a, b), Or(c, d), And(d, e)),
-        Or(And(d, e, a, c), And(d, e, a), And(d, e, b, c), And(d, e, b)),
-    )

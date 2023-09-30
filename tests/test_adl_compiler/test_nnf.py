@@ -1,5 +1,6 @@
+"""Test the negation normal form (NNF) visitor."""
 import pytest
-from pddl.logic.base import *
+from pddl.logic.base import And, Not, Or
 from pddl.logic.predicates import Predicate
 
 from plan4past.utils.negate_visitor import negate
@@ -21,6 +22,7 @@ test_formulas_negation = [
 
 @pytest.mark.parametrize("input, expected", test_formulas_negation)
 def test_negation(input, expected):
+    """Test the negation of a formula."""
     assert negate(input) == expected
 
 
@@ -45,9 +47,6 @@ test_formulas_nnf = [
 
 
 @pytest.mark.parametrize("input, expected", test_formulas_nnf)
-def test_nnf(input, expected):
+def test_nnf(input, expected) -> None:
+    """Test the negation normal form (NNF) conversion."""
     assert nnf(input) == expected
-
-
-if __name__ == "__main__":
-    test_nnf(Not(Or(a, b)), And(Not(a), Not(b)))

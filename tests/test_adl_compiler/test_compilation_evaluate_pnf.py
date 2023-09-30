@@ -1,17 +1,27 @@
+"""Tests for the compilation of the evaluate_pnf action."""
+from typing import Tuple
+
 import pkg_resources
-import pytest
 from pddl.parser.domain import DomainParser
 from pddl.parser.problem import ProblemParser
 from pylogics.parsers import parse_pltl
-from pylogics.syntax.base import Not
+from pylogics.syntax.base import And, Not, Or
+from pylogics.syntax.pltl import Atomic, Before, Once, PropositionalTrue
 
 from plan4past.compiler import EVALUATE_PNF_ACTION, PNF, ADLCompiler
 from plan4past.compiler import Not as pddlNot
-from plan4past.compiler import Predicate, ProblemUnsolvableException, When
-from plan4past.helpers.compilation_helper import *
+from plan4past.compiler import Predicate, When
+from plan4past.helpers.before_atom_helper import QUOTED_ATOM, Yatom_
 
 
-def get_task(domain_path, problem_path):
+def get_task(domain_path, problem_path) -> Tuple:
+    """
+    Get the domain and problem from the given paths.
+
+    :param domain_path: the path to the PDDL domain file
+    :param problem_path: the path to the PDDL problem file
+    :return: the domain and problem
+    """
     domain_str = open(pkg_resources.resource_filename(__name__, domain_path)).read()
     problem_str = open(pkg_resources.resource_filename(__name__, problem_path)).read()
 
@@ -23,6 +33,16 @@ def get_task(domain_path, problem_path):
 
 
 def check_compilation(domain, problem, formula, pnf, temporalsubformulas, goal):
+    """
+    Check the compilation with the evaluate_pnf action.
+
+    :param domain: the PDDL domain object
+    :param problem: the PDDL problem object
+    :param formula: the PPLTL formula
+    :param pnf: the PNF of the formula
+    :param temporalsubformulas: the list of temporal subformulas
+    :param goal: the temporal goal formula
+    """
     y = temporalsubformulas
     nopex = False
     compiler = ADLCompiler(domain, problem, formula, from_atoms_to_fluent=None)
@@ -52,7 +72,7 @@ def check_compilation(domain, problem, formula, pnf, temporalsubformulas, goal):
             assert pddlNot(compiler.goal_predicate) in act.precondition.operands
             assert pddlNot(compiler.check_predicate) in act.precondition.operands
         elif "goal" in act.name:
-            ## THE GOAL IS IN THIS ACTION ##
+            # THE GOAL IS IN THIS ACTION
             assert compiler.pylogics2pddl(goal) in act.precondition.operands
             assert compiler.check_predicate in act.precondition.operands
             assert compiler.goal_predicate in act.effect.operands
@@ -67,7 +87,8 @@ def check_compilation(domain, problem, formula, pnf, temporalsubformulas, goal):
         assert yatom_short not in compiler.result[1].init
 
 
-def test_pddl_compilation():
+def test_pddl_compilation() -> None:
+    """Test the compilation of the evaluate_pnf action."""
     domain, problem = get_task("pddl/rovers/domain-fond.pddl", "pddl/rovers/p01.pddl")
 
     a = Atomic("communicatedsoildata_waypoint2")
@@ -91,7 +112,8 @@ def test_pddl_compilation():
     check_compilation(domain, problem, formula, pnf, temporalsubformulas, goal)
 
 
-def test_pddl_compilation2():
+def test_pddl_compilation2() -> None:
+    """Test the compilation of the evaluate_pnf action."""
     domain, problem = get_task(
         "pddl/robot-coffee/domain-fond.pddl", "pddl/robot-coffee/coffee3next.pddl"
     )
@@ -116,7 +138,8 @@ def test_pddl_compilation2():
     check_compilation(domain, problem, formula, pnf, temporalsubformulas, goal)
 
 
-def test_pddl_compilation3():
+def test_pddl_compilation3() -> None:
+    """Test the compilation of the evaluate_pnf action."""
     domain, problem = get_task(
         "pddl/blocksworld_fond/domain-fond.pddl", "pddl/blocksworld_fond/problem.pddl"
     )
@@ -132,7 +155,8 @@ def test_pddl_compilation3():
     on_c_b = Atomic("on_c_b")
 
     formula = parse_pltl(
-        "O((on_a_table)&(on_b_table)&(on_c_table)&Y(O((on_c_a)&(on_a_b)&Y(O((on_c_b)&(on_b_a)&Y(O((on_a_c)&(on_c_b))))))))"
+        "O((on_a_table)&(on_b_table)&(on_c_table)&Y(O((on_c_a)&(on_a_b)&Y(O((on_c_b)&(on_b_a)&"
+        "Y(O((on_a_c)&(on_c_b))))))))"
     )
 
     subformulas = [Once(And(on_a_c, on_c_b))]

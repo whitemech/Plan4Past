@@ -56,19 +56,19 @@ def rewrite(formula: object) -> Formula:
 
 
 @rewrite.register
-def rewrite_true(formula: PropositionalTrue) -> Formula:
+def rewrite_prop_true(formula: PropositionalTrue) -> Formula:
     """Compute the basic formula for the true formula."""
     return formula
 
 
 @rewrite.register
-def rewrite_false(formula: PropositionalFalse) -> Formula:
+def rewrite_prop_false(formula: PropositionalFalse) -> Formula:
     """Compute the basic formula for the false formula."""
     return formula
 
 
 @rewrite.register
-def rewrite_true(formula: FalseFormula) -> Formula:
+def rewrite_false(formula: FalseFormula) -> Formula:
     """Compute the basic formula for a formula that is always false."""
     return formula
 
