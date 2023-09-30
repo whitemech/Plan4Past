@@ -25,13 +25,24 @@ from typing import AbstractSet, Dict, Optional, Set, Tuple
 
 from pddl.core import Action, Domain, Problem, Requirements
 from pddl.logic import Constant
-from pddl.logic.base import And, Not
+from pddl.logic.base import And
+from pddl.logic.base import Formula as pddlFormula
+from pddl.logic.base import Not, Or
 from pddl.logic.effects import AndEffect, When
 from pddl.logic.predicates import DerivedPredicate, Predicate
+from pylogics.syntax.base import And as ppltlAnd
 from pylogics.syntax.base import Formula, Logic
+from pylogics.syntax.base import Not as ppltlNot
+from pylogics.syntax.base import Or as ppltlOr
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
+from pylogics.syntax.pltl import FalseFormula, PropositionalTrue
 from pylogics.utils.to_string import to_string
 
+from plan4past.helpers.compilation_helper import (
+    QUOTED_ATOM,
+    BeforeAtom,
+    CompilationManager,
+)
 from plan4past.helpers.utils import (
     add_val_prefix,
     check_,
@@ -41,33 +52,11 @@ from plan4past.helpers.utils import (
 )
 from plan4past.utils.atoms_visitor import find_atoms
 from plan4past.utils.derived_visitor import derived_predicates
+from plan4past.utils.dnf_visitor import dnf
+from plan4past.utils.nnf_visitor import nnf
 from plan4past.utils.predicates_visitor import predicates
 from plan4past.utils.rewrite_formula_visitor import rewrite
 from plan4past.utils.val_predicates_visitor import val_predicates
-
-
-from typing import AbstractSet, Dict, Optional, Set, Tuple
-
-from pddl.logic import Constant
-from pddl.logic.base import Or
-
-from pylogics.syntax.base import And as ppltlAnd
-from pylogics.syntax.base import Or as ppltlOr
-from pylogics.syntax.base import Not as ppltlNot
-
-from pddl.logic.base import Formula as pddlFormula
-
-from pddl.logic.effects import AndEffect, When
-from pddl.logic.predicates import Predicate
-from pylogics.syntax.base import Formula, Logic
-from pylogics.syntax.pltl import Atomic as PLTLAtomic, PropositionalTrue, FalseFormula
-from plan4past.helpers.compilation_helper import (
-    CompilationManager,
-    QUOTED_ATOM,
-    BeforeAtom,
-)
-from plan4past.utils.nnf_visitor import nnf
-from plan4past.utils.dnf_visitor import dnf
 
 
 class Compiler:

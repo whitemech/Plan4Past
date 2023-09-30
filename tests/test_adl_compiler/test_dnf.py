@@ -1,9 +1,9 @@
 import pytest
 from pddl.logic.base import *
 from pddl.logic.predicates import Predicate
-from plan4past.utils.negate_visitor import negate
-from plan4past.utils.dnf_visitor import dnf, distribute_conj_over_disj
 
+from plan4past.utils.dnf_visitor import distribute_conj_over_disj, dnf
+from plan4past.utils.negate_visitor import negate
 
 a = Predicate("a")
 b = Predicate("b")

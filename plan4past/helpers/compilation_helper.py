@@ -1,8 +1,9 @@
-from pylogics.syntax.pltl import *
 from pylogics.syntax.base import *
-from plan4past.utils.ppnf_visitor import ppnf
-from plan4past.utils.before_generator_visitor import get_quoted_dictionary
+from pylogics.syntax.pltl import *
+
 from plan4past.helpers.before_atom_helper import *
+from plan4past.utils.before_generator_visitor import get_quoted_dictionary
+from plan4past.utils.ppnf_visitor import ppnf
 
 
 def is_temporal_operator(formula: Formula) -> bool:

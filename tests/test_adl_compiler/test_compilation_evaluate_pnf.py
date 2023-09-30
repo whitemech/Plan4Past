@@ -1,19 +1,14 @@
+import pkg_resources
+import pytest
 from pddl.parser.domain import DomainParser
 from pddl.parser.problem import ProblemParser
 from pylogics.parsers import parse_pltl
-from plan4past.helpers.compilation_helper import *
 from pylogics.syntax.base import Not
-from plan4past.compiler import (
-    ADLCompiler,
-    ProblemUnsolvableException,
-    Not as pddlNot,
-    When,
-    Predicate,
-    EVALUATE_PNF_ACTION,
-    PNF,
-)
-import pytest
-import pkg_resources
+
+from plan4past.compiler import EVALUATE_PNF_ACTION, PNF, ADLCompiler
+from plan4past.compiler import Not as pddlNot
+from plan4past.compiler import Predicate, ProblemUnsolvableException, When
+from plan4past.helpers.compilation_helper import *
 
 
 def get_task(domain_path, problem_path):

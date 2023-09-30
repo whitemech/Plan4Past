@@ -22,6 +22,7 @@
 
 """Negate visitor."""
 from functools import singledispatch
+
 from pddl.logic.base import *
 
 

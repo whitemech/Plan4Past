@@ -1,16 +1,14 @@
+import pkg_resources
+import pytest
+from pddl.formatter import domain_to_string, problem_to_string
 from pddl.parser.domain import DomainParser
 from pddl.parser.problem import ProblemParser
 from pylogics.parsers import parse_pltl
+
+from plan4past.compiler import ADLCompiler
+from plan4past.compiler import Not as pddlNot
+from plan4past.compiler import ProblemUnsolvableException, When
 from plan4past.helpers.compilation_helper import *
-from plan4past.compiler import (
-    ADLCompiler,
-    ProblemUnsolvableException,
-    When,
-    Not as pddlNot,
-)
-from pddl.formatter import domain_to_string, problem_to_string
-import pytest
-import pkg_resources
 
 
 def test_pddl_compilation():
