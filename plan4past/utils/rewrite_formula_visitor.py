@@ -33,12 +33,12 @@ from pylogics.syntax.base import _UnaryOp
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
 from pylogics.syntax.pltl import (
     Before,
+    FalseFormula,
     Historically,
     Once,
     PropositionalFalse,
     PropositionalTrue,
     Since,
-    FalseFormula,
 )
 
 

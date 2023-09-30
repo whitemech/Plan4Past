@@ -32,10 +32,9 @@ from pddl.parser.domain import DomainParser
 from pddl.parser.problem import ProblemParser
 from pylogics.parsers import parse_pltl
 from pylogics.syntax.base import Formula
-from plan4past.compiler import Compiler
-from plan4past.utils.mapping_parser import mapping_parser
-from plan4past.compiler import ADLCompiler
 
+from plan4past.compiler import ADLCompiler, Compiler
+from plan4past.utils.mapping_parser import mapping_parser
 
 DEFAULT_NEW_DOMAIN_FILENAME: str = "new-domain.pddl"
 DEFAULT_NEW_PROBLEM_FILENAME: str = "new-problem.pddl"

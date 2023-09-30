@@ -1,5 +1,5 @@
-from pylogics.syntax.pltl import *
 from pylogics.syntax.base import *
+from pylogics.syntax.pltl import *
 
 QUOTED_ATOM = "quoted"
 

@@ -1,14 +1,16 @@
+from functools import singledispatch
+
+from pylogics.syntax.base import *
 from pylogics.syntax.pltl import (
     Before,
     Once,
-    Since,
     PropositionalFalse,
     PropositionalTrue,
+    Since,
 )
-from pylogics.syntax.base import *
-from plan4past.utils.ppnf_visitor import ppnf
+
 from plan4past.helpers.before_atom_helper import *
-from functools import singledispatch
+from plan4past.utils.ppnf_visitor import ppnf
 
 """
     Generation of the before atoms needed for the compilation. 

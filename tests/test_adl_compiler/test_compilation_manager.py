@@ -1,8 +1,9 @@
-from pylogics.parsers import parse_pltl
-from plan4past.helpers.compilation_helper import *
 import pytest
-from plan4past.utils.rewrite_formula_visitor import rewrite
+from pylogics.parsers import parse_pltl
+
+from plan4past.helpers.compilation_helper import *
 from plan4past.utils.ppnf_visitor import ppnf
+from plan4past.utils.rewrite_formula_visitor import rewrite
 
 a = Atomic("a")
 b = Atomic("b")

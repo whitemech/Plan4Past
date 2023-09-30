@@ -1,20 +1,21 @@
 import functools
 from functools import singledispatch
-from FDgrounder.pddl.axioms import Axiom, PropositionalAxiom
+
 from FDgrounder.pddl import (
-    TypedObject,
+    Action,
+    Atom,
     Conjunction,
     Disjunction,
-    UniversalCondition,
+    Effect,
     ExistentialCondition,
-    Atom,
     NegatedAtom,
-    Action,
+    Predicate,
     PropositionalAction,
     Truth,
-    Effect,
-    Predicate,
+    TypedObject,
+    UniversalCondition,
 )
+from FDgrounder.pddl.axioms import Axiom, PropositionalAxiom
 
 
 def get_effects(action: PropositionalAction):

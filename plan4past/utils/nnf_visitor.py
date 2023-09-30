@@ -22,8 +22,10 @@
 
 """NNF visitor."""
 from functools import singledispatch
-from plan4past.utils.negate_visitor import negate
+
 from pddl.logic.base import *
+
+from plan4past.utils.negate_visitor import negate
 
 
 @singledispatch

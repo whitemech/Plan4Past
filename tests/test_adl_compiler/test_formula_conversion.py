@@ -1,15 +1,13 @@
+import pkg_resources
 from pddl.parser.domain import DomainParser
 from pddl.parser.problem import ProblemParser
 from pylogics.parsers import parse_pltl
+
+from plan4past.compiler import ADLCompiler, Constant
+from plan4past.compiler import Not as pddlNot
+from plan4past.compiler import Or as pddlOr
+from plan4past.compiler import Predicate
 from plan4past.helpers.compilation_helper import *
-from plan4past.compiler import (
-    ADLCompiler,
-    Predicate,
-    Constant,
-    Or as pddlOr,
-    Not as pddlNot,
-)
-import pkg_resources
 
 
 def test_formula_conversion():

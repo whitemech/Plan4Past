@@ -22,10 +22,12 @@
 
 """Pnf visitor."""
 
-from plan4past.helpers.before_atom_helper import get_before_atom
 from functools import singledispatch
-from pylogics.syntax.pltl import *
+
 from pylogics.syntax.base import *
+from pylogics.syntax.pltl import *
+
+from plan4past.helpers.before_atom_helper import get_before_atom
 
 
 @singledispatch

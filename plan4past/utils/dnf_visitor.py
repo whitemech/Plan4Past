@@ -22,8 +22,9 @@
 
 """DNF visitor."""
 from functools import singledispatch
-from pddl.logic.base import *
 from typing import List
+
+from pddl.logic.base import *
 
 
 def distribute_conj_over_disj(phi: Formula, psi: Or) -> Formula:
