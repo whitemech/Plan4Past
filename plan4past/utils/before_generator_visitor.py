@@ -38,7 +38,7 @@ class BeforeGenerator:
 
     def __init__(self) -> None:
         """Initialize the before generator."""
-        self.before_dictionary = {}
+        self.before_dictionary: Dict[BeforeAtom, Atomic] = {}
         self.before_id = 0
 
     def add_quoted_atom(self, before_atom: BeforeAtom) -> None:

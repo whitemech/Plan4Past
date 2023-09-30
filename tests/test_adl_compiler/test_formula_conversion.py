@@ -50,6 +50,7 @@ def test_formula_conversion() -> None:
     compiler = ADLCompiler(domain, problem, formula, from_atoms_to_fluent=None)
     compiler.compile()
     before_dictionary = compiler._before_dictionary
+    assert before_dictionary is not None
     pnf0_expected = pddlOr(
         pddlNot(a_pred), Predicate(before_dictionary[y[0]].name, *[])
     )

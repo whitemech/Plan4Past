@@ -214,8 +214,8 @@ def _adl_compilation_entrypoint(
 ):
     compiler = ADLCompiler(domain, problem, formula, mapping, evaluate_pnf, build_dnf)
     compiler.compile()
-    compiled_domain, compiled_problem, before_mapping = compiler.result
-    return compiled_domain, compiled_problem, before_mapping
+    compiled_domain, compiled_problem = compiler.result
+    return compiled_domain, compiled_problem, compiler._before_mapping
 
 
 if __name__ == "__main__":

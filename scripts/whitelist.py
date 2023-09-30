@@ -1,3 +1,4 @@
+# type: ignore
 REPO_ROOT  # unused variable (plan4past/__init__.py:29)
 _._derived_predicates  # unused attribute (plan4past/compiler.py:82)
 cls  # unused variable (plan4past/compiler.py:86)
