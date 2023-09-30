@@ -34,7 +34,6 @@ from pylogics.syntax.base import And as ppltlAnd
 from pylogics.syntax.base import Formula, Logic
 from pylogics.syntax.base import Not as ppltlNot
 from pylogics.syntax.base import Or as ppltlOr
-from pylogics.syntax.pltl import Atomic
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
 from pylogics.syntax.pltl import FalseFormula, PropositionalTrue
 from pylogics.utils.to_string import to_string
@@ -271,7 +270,7 @@ class ADLCompiler(Compiler):
         self._fresh_atoms = None
         self._before_mapping = None
         self.evaluate_pnf = evaluate_pnf
-        self._before_dictionary: Optional[Dict[BeforeAtom, Atomic]] = None
+        self._before_dictionary: Optional[Dict[BeforeAtom, PLTLAtomic]] = None
         self.goal_predicate = GOAL_PREDICATE
         self.check_predicate = CHECK_PREDICATE
         self.simplify_disj_goal = simplify_disj_goal
@@ -283,24 +282,35 @@ class ADLCompiler(Compiler):
             raise ValueError("compilation not executed yet")
         return self._result_domain, self._result_problem
 
+    @property
+    def before_mapping(self) -> str:
+        """Get the mapping of the before atoms."""
+        if self._before_mapping is None:
+            raise ValueError("compilation not executed yet")
+        return self._before_mapping
+
     def compile(self):
         """Compute the new domain and the new problem."""
         if self._executed:
             return
-        self._executed = True
 
         cm = CompilationManager(self.formula)
         new_fluents, new_effs, new_goal = cm.get_problem_extension()
         new_fluents.append(TRUE_ATOM)
         self._fresh_atoms = set(new_fluents)
-        self._before_mapping = cm._gen_before_mapping()
+        self._before_mapping = cm.get_before_mapping()
         self._before_dictionary = cm.before_dictionary
 
         self._compile_domain(new_fluents, new_effs, new_goal)
         self._compile_problem()
-        return self.result
 
-    def _compile_domain(self, new_fluents, new_effs, new_goal):
+        self._executed = True
+        return
+
+    # TODO: fix signature, different from parent class  # pylint: disable=fixme
+    def _compile_domain(
+        self, new_fluents, new_effs, new_goal
+    ):  # pylint: disable=arguments-differ
         """Compute the new domain."""
         new_predicates = [self.pylogics2pddl(fluent) for fluent in new_fluents]
         new_whens_pos = [self.effect_conversion(eff, positive=True) for eff in new_effs]
@@ -376,8 +386,7 @@ class ADLCompiler(Compiler):
         effect = self.pylogics2pddl(effect[1])
         if positive:
             return When(condition, effect)
-        else:
-            return When(Not(condition), Not(effect))
+        return When(Not(condition), Not(effect))
 
     def pylogics2pddl(self, formula: Formula) -> PddlFormula:
         """Convert pylogics formula into PDDL formula."""
@@ -390,27 +399,16 @@ class ADLCompiler(Compiler):
                     if isinstance(formula, BeforeAtom)
                     else Predicate(formula.name, *[])
                 )
-            else:
-                predicate = self.from_atoms_to_fluent.get(
-                    PLTLAtomic(formula.name), None
-                )
-                assert predicate is not None
-                return predicate
+            predicate = self.from_atoms_to_fluent.get(PLTLAtomic(formula.name), None)
+            assert predicate is not None
+            return predicate
 
-        else:
-            assert (
-                isinstance(formula, ppltlNot)
-                or isinstance(formula, ppltlAnd)
-                or isinstance(formula, ppltlOr)
-            )
+        assert isinstance(formula, (ppltlNot, ppltlAnd, ppltlOr))
 
-            if isinstance(formula, ppltlNot):
-                return Not(self.pylogics2pddl(formula.argument))
-            else:
-                operands = [self.pylogics2pddl(operand) for operand in formula.operands]
-                return (
-                    And(*operands) if isinstance(formula, ppltlAnd) else Or(*operands)
-                )
+        if isinstance(formula, ppltlNot):
+            return Not(self.pylogics2pddl(formula.argument))
+        operands = [self.pylogics2pddl(operand) for operand in formula.operands]
+        return And(*operands) if isinstance(formula, ppltlAnd) else Or(*operands)
 
 
 def _update_domain_actions_with_check(

@@ -1,4 +1,5 @@
 """This test checks that the compilation with the removal of the disjunctive goal is correct."""
+from pathlib import Path
 from typing import Tuple
 
 import pkg_resources
@@ -19,8 +20,13 @@ def get_task(domain_path, problem_path) -> Tuple[Domain, Problem]:
     :param problem_path: path to the PDDL problem file
     :return: the domain and problem objects
     """
-    domain_str = open(pkg_resources.resource_filename(__name__, domain_path)).read()
-    problem_str = open(pkg_resources.resource_filename(__name__, problem_path)).read()
+    domain_str = Path(pkg_resources.resource_filename(__name__, domain_path)).read_text(
+        encoding="utf-8"
+    )
+    # pylint: disable=R0801
+    problem_str = Path(
+        pkg_resources.resource_filename(__name__, problem_path)
+    ).read_text(encoding="utf-8")
 
     domain_parser = DomainParser()
     problem_parser = ProblemParser()
@@ -44,7 +50,7 @@ def check_compilation(domain, problem, formula):
     if nopex:
         compiler.evaluate_pnf = False
     compiler.compile()
-    compiled_dom, compiled_prob = compiler.result
+    compiled_dom, _compiled_prob = compiler.result
 
     ach_actions = [a for a in compiled_dom.actions if "goal" in a.name]
     assert len(ach_actions) > 1

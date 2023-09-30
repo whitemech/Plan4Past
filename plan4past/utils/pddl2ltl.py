@@ -61,102 +61,101 @@ def pddl2tl(pddl_formula) -> str:
     return tokens2ltl(tokens)
 
 
-def tokens2ltl(tokens) -> str:  # noqa: C901
+def tokens2ltl(  # noqa: C901  # pylint: disable=too-many-return-statements,too-many-branches,too-many-statements
+    tokens,
+) -> str:
     """Return a string representing the LTL formula corresponding to the PDDL formula."""
     nested_lists = [tk for tk in tokens if isinstance(tk, list)]
 
     if tokens[0] == PDDL_AND:
         if len(tokens) <= 1:
             raise MalformedExpression()
-        elif len(tokens) == 2:
+        if len(tokens) == 2:
             return tokens2ltl(tokens[1])
-        else:
-            parts = [tokens2ltl(tokens[i]) for i in range(1, len(tokens))]
-            return land(parts)
+        parts = [tokens2ltl(tokens[i]) for i in range(1, len(tokens))]
+        return land(parts)
 
-    elif tokens[0] == PDDL_OR:
+    if tokens[0] == PDDL_OR:
         if len(tokens) <= 1:
             raise MalformedExpression(MALFORMED_EXPRESSION_MSG.format(expr=str(tokens)))
-        elif len(tokens) == 2:
+        if len(tokens) == 2:
             return tokens2ltl(tokens[1])
-        else:
-            parts = [tokens2ltl(tokens[i]) for i in range(1, len(tokens))]
-            return lor(parts)
+        parts = [tokens2ltl(tokens[i]) for i in range(1, len(tokens))]
+        return lor(parts)
 
-    elif tokens[0] == PDDL_NOT:
+    if tokens[0] == PDDL_NOT:
         if len(tokens) != 2:
             raise MalformedExpression(MALFORMED_EXPRESSION_MSG.format(expr=str(tokens)))
 
         return unaryop("!", tokens2ltl(tokens[1]))
 
-    elif tokens[0] == PDDL_UNTIL:
+    if tokens[0] == PDDL_UNTIL:
         if len(tokens) != 3:
             raise MalformedExpression(MALFORMED_EXPRESSION_MSG.format(expr=str(tokens)))
 
         return binaryop("U", tokens2ltl(tokens[1]), tokens2ltl(tokens[2]))
 
-    elif tokens[0] == PDDL_RELEASE:
+    if tokens[0] == PDDL_RELEASE:
         if len(tokens) != 3:
             raise MalformedExpression(MALFORMED_EXPRESSION_MSG.format(expr=str(tokens)))
 
         return binaryop("R", tokens2ltl(tokens[1]), tokens2ltl(tokens[2]))
 
-    elif tokens[0] == PDDL_ALWAYS:
+    if tokens[0] == PDDL_ALWAYS:
         if len(tokens) != 2:
             raise MalformedExpression(MALFORMED_EXPRESSION_MSG.format(expr=str(tokens)))
         return unaryop("G", tokens2ltl(tokens[1]))
 
-    elif tokens[0] == PDDL_EVENTUALLY:
+    if tokens[0] == PDDL_EVENTUALLY:
         if len(tokens) != 2:
             raise MalformedExpression(MALFORMED_EXPRESSION_MSG.format(expr=str(tokens)))
         return unaryop("F", tokens2ltl(tokens[1]))
 
-    elif tokens[0] == PDDL_NEXT:
+    if tokens[0] == PDDL_NEXT:
         if len(tokens) != 2:
             raise MalformedExpression(MALFORMED_EXPRESSION_MSG.format(expr=str(tokens)))
         return unaryop("X", tokens2ltl(tokens[1]))
 
-    elif tokens[0] == PDDL_WEAKNEXT:
+    if tokens[0] == PDDL_WEAKNEXT:
         if len(tokens) != 2:
             raise MalformedExpression(MALFORMED_EXPRESSION_MSG.format(expr=str(tokens)))
         return unaryop("WX", tokens2ltl(tokens[1]))
 
-    elif tokens[0] == PDDL_SINCE:
+    if tokens[0] == PDDL_SINCE:
         if len(tokens) != 3:
             raise MalformedExpression(MALFORMED_EXPRESSION_MSG.format(expr=str(tokens)))
 
         return binaryop("S", tokens2ltl(tokens[1]), tokens2ltl(tokens[2]))
 
-    elif tokens[0] == PDDL_TRIGGERS:
+    if tokens[0] == PDDL_TRIGGERS:
         if len(tokens) != 3:
             raise MalformedExpression(MALFORMED_EXPRESSION_MSG.format(expr=str(tokens)))
 
         return binaryop("T", tokens2ltl(tokens[1]), tokens2ltl(tokens[2]))
 
-    elif tokens[0] == PDDL_HISTORICALLY:
+    if tokens[0] == PDDL_HISTORICALLY:
         if len(tokens) != 2:
             raise MalformedExpression(MALFORMED_EXPRESSION_MSG.format(expr=str(tokens)))
         return unaryop("H", tokens2ltl(tokens[1]))
 
-    elif tokens[0] == PDDL_ONCE:
+    if tokens[0] == PDDL_ONCE:
         if len(tokens) != 2:
             raise MalformedExpression(MALFORMED_EXPRESSION_MSG.format(expr=str(tokens)))
         return unaryop("O", tokens2ltl(tokens[1]))
 
-    elif tokens[0] == PDDL_BEFORE:
+    if tokens[0] == PDDL_BEFORE:
         if len(tokens) != 2:
             raise MalformedExpression(MALFORMED_EXPRESSION_MSG.format(expr=str(tokens)))
         return unaryop("Y", tokens2ltl(tokens[1]))
 
-    elif tokens[0] == PDDL_WEAKBEFORE:
+    if tokens[0] == PDDL_WEAKBEFORE:
         if len(tokens) != 2:
             raise MalformedExpression(MALFORMED_EXPRESSION_MSG.format(expr=str(tokens)))
         return unaryop(tokens2ltl(tokens[1]), "WY")
 
-    else:
-        # This is an atom
-        assert len(nested_lists) == 0
-        return " ".join(tokens)
+    # This is an atom
+    assert len(nested_lists) == 0
+    return " ".join(tokens)
 
 
 if __name__ == "__main__":

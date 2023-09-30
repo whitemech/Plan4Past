@@ -31,10 +31,10 @@ def test_before_generation1() -> None:
     compilation_manager = CompilationManager(phi)
 
     before_dictionary = compilation_manager.before_dictionary
-    assert len(before_dictionary.keys()) == 3
-    assert Yatom_(Once(Not(a))) in before_dictionary.keys()
-    assert Yatom_(Since(b, Not(Once(Not(c))))) in before_dictionary.keys()
-    assert Yatom_(Once(Not(c))) in before_dictionary.keys()
+    assert len(before_dictionary) == 3
+    assert Yatom_(Once(Not(a))) in before_dictionary
+    assert Yatom_(Since(b, Not(Once(Not(c))))) in before_dictionary
+    assert Yatom_(Once(Not(c))) in before_dictionary
 
 
 def test_before_generation2() -> None:
@@ -44,9 +44,9 @@ def test_before_generation2() -> None:
     compilation_manager = CompilationManager(phi)
 
     before_dictionary = compilation_manager.before_dictionary
-    assert len(before_dictionary.keys()) == 2
-    assert Yatom_(Once(Not(a))) in before_dictionary.keys()
-    assert Yatom_(Since(b, Not(Once(Not(a))))) in before_dictionary.keys()
+    assert len(before_dictionary) == 2
+    assert Yatom_(Once(Not(a))) in before_dictionary
+    assert Yatom_(Since(b, Not(Once(Not(a))))) in before_dictionary
 
 
 def test_before_generation3() -> None:
@@ -56,9 +56,9 @@ def test_before_generation3() -> None:
     compilation_manager = CompilationManager(phi)
 
     before_dictionary = compilation_manager.before_dictionary
-    assert len(before_dictionary.keys()) == 2
-    assert Yatom_(Once(Not(And(a, b)))) in before_dictionary.keys()
-    assert Yatom_(Since(b, Not(Once(Not(And(b, a)))))) in before_dictionary.keys()
+    assert len(before_dictionary) == 2
+    assert Yatom_(Once(Not(And(a, b)))) in before_dictionary
+    assert Yatom_(Since(b, Not(Once(Not(And(b, a)))))) in before_dictionary
 
 
 def test_before_generation4() -> None:
@@ -68,11 +68,11 @@ def test_before_generation4() -> None:
     compilation_manager = CompilationManager(phi)
 
     before_dictionary = compilation_manager.before_dictionary
-    assert len(before_dictionary.keys()) == 3
-    assert Yatom_(Once(Not(And(a, b)))) in before_dictionary.keys()
-    assert Yatom_(Before(Or(b, Since(c, d)))) not in before_dictionary.keys()
-    assert Yatom_(Or(b, Since(c, d))) in before_dictionary.keys()
-    assert Yatom_(Since(c, d)) in before_dictionary.keys()
+    assert len(before_dictionary) == 3
+    assert Yatom_(Once(Not(And(a, b)))) in before_dictionary
+    assert Yatom_(Before(Or(b, Since(c, d)))) not in before_dictionary
+    assert Yatom_(Or(b, Since(c, d))) in before_dictionary
+    assert Yatom_(Since(c, d)) in before_dictionary
 
 
 def test_before_generation5() -> None:
@@ -82,14 +82,11 @@ def test_before_generation5() -> None:
     compilation_manager = CompilationManager(phi)
 
     before_dictionary = compilation_manager.before_dictionary
-    assert len(before_dictionary.keys()) == 3
-    assert Yatom_(Once(And(a, b))) in before_dictionary.keys()
-    assert (
-        Yatom_(Before(Or(b, Not(Since(Not(c), Not(d))))))
-        not in before_dictionary.keys()
-    )
-    assert Yatom_(Or(b, Not(Since(Not(c), Not(d))))) in before_dictionary.keys()
-    assert Yatom_(Since(Not(c), Not(d))) in before_dictionary.keys()
+    assert len(before_dictionary) == 3
+    assert Yatom_(Once(And(a, b))) in before_dictionary
+    assert Yatom_(Before(Or(b, Not(Since(Not(c), Not(d)))))) not in before_dictionary
+    assert Yatom_(Or(b, Not(Since(Not(c), Not(d))))) in before_dictionary
+    assert Yatom_(Since(Not(c), Not(d))) in before_dictionary
 
 
 def test_before_generation6() -> None:
@@ -99,16 +96,15 @@ def test_before_generation6() -> None:
     compilation_manager = CompilationManager(phi)
 
     before_dictionary = compilation_manager.before_dictionary
-    assert len(before_dictionary.keys()) == 3
+    assert len(before_dictionary) == 3
     assert (
-        Yatom_(Once(And(a, Before(Once(And(b, Before(Once(c))))))))
-        in before_dictionary.keys()
+        Yatom_(Once(And(a, Before(Once(And(b, Before(Once(c)))))))) in before_dictionary
     )
-    assert Yatom_(Once(And(b, Before(Once(c))))) in before_dictionary.keys()
-    assert Yatom_(Once(c)) in before_dictionary.keys()
+    assert Yatom_(Once(And(b, Before(Once(c))))) in before_dictionary
+    assert Yatom_(Once(c)) in before_dictionary
 
-    assert Yatom_(Before(Once(And(b, Before(Once(c)))))) not in before_dictionary.keys()
-    assert Yatom_(Before(Once(c))) not in before_dictionary.keys()
+    assert Yatom_(Before(Once(And(b, Before(Once(c)))))) not in before_dictionary
+    assert Yatom_(Before(Once(c))) not in before_dictionary
 
 
 def test_before_generation7() -> None:
@@ -124,18 +120,17 @@ def test_before_generation7() -> None:
     compilation_manager = CompilationManager(phi)
 
     before_dictionary = compilation_manager.before_dictionary
-    assert len(before_dictionary.keys()) == 5
-    assert Yatom_(a) in before_dictionary.keys()
-    assert Yatom_(b) in before_dictionary.keys()
+    assert len(before_dictionary) == 5
+    assert Yatom_(a) in before_dictionary
+    assert Yatom_(b) in before_dictionary
     assert (
-        Yatom_(Or(Not(Once(Not(c))), Not(Before(Atomic("true")))))
-        in before_dictionary.keys()
+        Yatom_(Or(Not(Once(Not(c))), Not(Before(Atomic("true"))))) in before_dictionary
     )
-    assert Yatom_(Once(Not(c))) in before_dictionary.keys()
-    assert Yatom_(Atomic("true")) in before_dictionary.keys()
+    assert Yatom_(Once(Not(c))) in before_dictionary
+    assert Yatom_(Atomic("true")) in before_dictionary
 
-    assert Yatom_(Before(b)) not in before_dictionary.keys()
-    assert Yatom_(Before(a)) not in before_dictionary.keys()
+    assert Yatom_(Before(b)) not in before_dictionary
+    assert Yatom_(Before(a)) not in before_dictionary
 
 
 def test_pex1() -> None:
@@ -205,7 +200,7 @@ def test_pex_complex_formula1() -> None:
     before_once_not_c = Yatom_(Once(Not(c)))
     before_not_once_not_c = Yatom_(Not(Once(Not(c))))
 
-    assert len(cm.before_dictionary.keys()) == 4
+    assert len(cm.before_dictionary) == 4
     assert cm.before_dictionary.get(before_once_not_c) is not None
 
     pex_phi = And(Or(a, before_once_a), Or(before_not_once_not_c, And(b, before_since)))
@@ -218,7 +213,7 @@ def test_pex_complex_formula2() -> None:
     cm = CompilationManager(phi)
     result = ppnf(phi)
 
-    assert len(cm.before_dictionary.keys()) == 2
+    assert len(cm.before_dictionary) == 2
 
     before_once = Yatom_(Once(And(a, Before(Once(b)))))
     before_once_b = Yatom_(Once(b))
@@ -227,9 +222,7 @@ def test_pex_complex_formula2() -> None:
     assert result == pex_phi
 
 
-"""
-("H(H(H(a) | H(b))) | (a | b)", expected3)
-"""
+# ("H(H(H(a) | H(b))) | (a | b)", expected3)  # noqa
 pnf_ha_hb = Or(
     Not(Or(Not(a), Yatom_(Once(Not(a))))), Not(Or(Not(b), Yatom_(Once(Not(b)))))
 )
@@ -303,6 +296,7 @@ def test_problem_extension_HH_Ha_Hb() -> None:
     )
     compilation_manager = CompilationManager(formula_)
 
+    # pylint: disable=R0801
     temporalsubformulas = [
         Yatom_(Once(Not(a))),
         Yatom_(Once(Not(b))),
@@ -311,18 +305,18 @@ def test_problem_extension_HH_Ha_Hb() -> None:
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
-    assert len(compilation_manager.before_dictionary.keys()) == 4
+    assert len(compilation_manager.before_dictionary) == 4
 
     for y in temporalsubformulas:
-        assert y in compilation_manager.before_dictionary.keys()
+        assert y in compilation_manager.before_dictionary
         assert y in fresh_atoms
 
     y = temporalsubformulas
     pnf = [Or(Not(a), y[0]), Or(Not(b), y[1])]
     pnf.append(Or(Not(Or(Not(pnf[0]), Not(pnf[1]))), y[2]))
     pnf.append(Or(pnf[2], y[3]))
-    for i in range(len(pnf)):
-        assert (pnf[i], y[i]) in conditional_effects
+    for i, sub_pnf in enumerate(pnf):
+        assert (sub_pnf, y[i]) in conditional_effects
     assert goal == Or(Not(pnf[3]), a, b)
 
 
@@ -341,17 +335,17 @@ def test_problem_extension_since():
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
-    assert len(compilation_manager.before_dictionary.keys()) == 5
+    assert len(compilation_manager.before_dictionary) == 5
 
     for y in temporalsubformulas:
-        assert y in compilation_manager.before_dictionary.keys()
+        assert y in compilation_manager.before_dictionary
         assert y in fresh_atoms
 
     y = temporalsubformulas
     pnf = [Or(d, y[0]), Or(a, y[1]), Or(b, y[2]), Or(c, y[3])]
     pnf.append(Or(And(pnf[1], pnf[2], pnf[3]), And(pnf[0], y[4])))
-    for i in range(len(pnf)):
-        assert (pnf[i], y[i]) in conditional_effects
+    for i, sub_pnf in enumerate(pnf):
+        assert (sub_pnf, y[i]) in conditional_effects
     assert goal == pnf[4]
 
 
@@ -370,17 +364,17 @@ def test_problem_extension_since2() -> None:
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
-    assert len(compilation_manager.before_dictionary.keys()) == 5
+    assert len(compilation_manager.before_dictionary) == 5
 
     for y in temporalsubformulas:
-        assert y in compilation_manager.before_dictionary.keys()
+        assert y in compilation_manager.before_dictionary
         assert y in fresh_atoms
 
     y = temporalsubformulas
     pnf = [Or(d, y[0]), Or(a, y[1]), Or(b, y[2]), Or(c, y[3])]
     pnf.append(Or(pnf[0], And(Or(pnf[1], pnf[2], pnf[3]), y[4])))
-    for i in range(len(pnf)):
-        assert (pnf[i], y[i]) in conditional_effects
+    for i, sub_pnf in enumerate(pnf):
+        assert (sub_pnf, y[i]) in conditional_effects
     assert goal == pnf[4]
 
 
@@ -397,16 +391,16 @@ def test_problem_extension_once_blocks() -> None:
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
-    assert len(compilation_manager.before_dictionary.keys()) == 3
+    assert len(compilation_manager.before_dictionary) == 3
 
     for y in temporalsubformulas:
-        assert y in compilation_manager.before_dictionary.keys()
+        assert y in compilation_manager.before_dictionary
         assert y in fresh_atoms
 
     y = temporalsubformulas
     pnf = [Or(d, y[0]), Or(And(a, Or(d, y[0])), y[1]), Or(And(b, Or(d, y[0])), y[2])]
-    for i in range(len(pnf)):
-        assert (pnf[i], y[i]) in conditional_effects
+    for i, sub_pnf in enumerate(pnf):
+        assert (sub_pnf, y[i]) in conditional_effects
     assert goal == And(pnf[1], pnf[2])
 
 
@@ -424,10 +418,10 @@ def test_problem_extension_since3() -> None:
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
-    assert len(compilation_manager.before_dictionary.keys()) == 4
+    assert len(compilation_manager.before_dictionary) == 4
 
     for y in temporalsubformulas:
-        assert y in compilation_manager.before_dictionary.keys()
+        assert y in compilation_manager.before_dictionary
         assert y in fresh_atoms
 
     y = temporalsubformulas
@@ -437,8 +431,8 @@ def test_problem_extension_since3() -> None:
         Or(Or(a, y[0]), And(c, y[2])),
         Or(Or(b, y[1]), And(c, y[3])),
     ]
-    for i in range(len(pnf)):
-        assert (pnf[i], y[i]) in conditional_effects
+    for i, sub_pnf in enumerate(pnf):
+        assert (sub_pnf, y[i]) in conditional_effects
     assert goal == And(pnf[2], pnf[3])
 
 
@@ -455,16 +449,16 @@ def test_problem_extension_seq() -> None:
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
-    assert len(compilation_manager.before_dictionary.keys()) == 3
+    assert len(compilation_manager.before_dictionary) == 3
 
     for y in temporalsubformulas:
-        assert y in compilation_manager.before_dictionary.keys()
+        assert y in compilation_manager.before_dictionary
         assert y in fresh_atoms
 
     y = temporalsubformulas
     pnf = [Or(c, y[0]), Or(And(b, y[0]), y[1]), Or(And(a, y[1]), y[2])]
-    for i in range(len(pnf)):
-        assert (pnf[i], y[i]) in conditional_effects
+    for i, sub_pnf in enumerate(pnf):
+        assert (sub_pnf, y[i]) in conditional_effects
     assert goal == pnf[2]
 
 
@@ -483,16 +477,16 @@ def test_problem_extension_robot1() -> None:
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
-    assert len(compilation_manager.before_dictionary.keys()) == 5
+    assert len(compilation_manager.before_dictionary) == 5
 
     for y in temporalsubformulas:
-        assert y in compilation_manager.before_dictionary.keys()
+        assert y in compilation_manager.before_dictionary
         assert y in fresh_atoms
 
     y = temporalsubformulas
     pnf = [PropositionalTrue(), Not(y[0]), y[1], y[2], Or(And(c, y[3]), y[4])]
-    for i in range(len(pnf)):
-        assert (pnf[i], y[i]) in conditional_effects
+    for i, sub_pnf in enumerate(pnf):
+        assert (sub_pnf, y[i]) in conditional_effects
     assert goal == pnf[4]
 
 
@@ -508,14 +502,14 @@ def test_problem_extension_robot2() -> None:
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
-    assert len(compilation_manager.before_dictionary.keys()) == 2
+    assert len(compilation_manager.before_dictionary) == 2
 
     for y in temporalsubformulas:
-        assert y in compilation_manager.before_dictionary.keys()
+        assert y in compilation_manager.before_dictionary
         assert y in fresh_atoms
 
     y = temporalsubformulas
     pnf = [a, Or(Not(Or(Not(y[0]), Not(b))), y[1])]
-    for i in range(len(pnf)):
-        assert (pnf[i], y[i]) in conditional_effects
+    for i, sub_pnf in enumerate(pnf):
+        assert (sub_pnf, y[i]) in conditional_effects
     assert goal == And(Not(pnf[1]), Not(a))

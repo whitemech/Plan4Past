@@ -1,4 +1,6 @@
 """Test for formula conversions."""
+from pathlib import Path
+
 import pkg_resources
 from pddl.parser.domain import DomainParser
 from pddl.parser.problem import ProblemParser
@@ -15,12 +17,13 @@ from plan4past.helpers.before_atom_helper import Yatom_
 
 def test_formula_conversion() -> None:
     """Test the conversion of a formula."""
-    domain_str = open(
+    domain_str = Path(
         pkg_resources.resource_filename(__name__, "pddl/rovers/domain-fond.pddl")
-    ).read()
-    problem_str = open(
+    ).read_text(encoding="utf-8")
+    # pylint: disable=R0801
+    problem_str = Path(
         pkg_resources.resource_filename(__name__, "pddl/rovers/p01.pddl")
-    ).read()
+    ).read_text(encoding="utf-8")
 
     domain_parser = DomainParser()
     problem_parser = ProblemParser()
@@ -49,7 +52,7 @@ def test_formula_conversion() -> None:
 
     compiler = ADLCompiler(domain, problem, formula, from_atoms_to_fluent=None)
     compiler.compile()
-    before_dictionary = compiler._before_dictionary
+    before_dictionary = compiler._before_dictionary  # pylint: disable=protected-access
     assert before_dictionary is not None
     pnf0_expected = pddlOr(
         pddlNot(a_pred), Predicate(before_dictionary[y[0]].name, *[])

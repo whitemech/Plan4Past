@@ -23,11 +23,7 @@ def is_temporal_operator(formula: Formula) -> bool:
     :param formula: the formula to be checked
     :return: True if the formula is a temporal operator, False otherwise
     """
-    return (
-        isinstance(formula, Once)
-        or isinstance(formula, Before)
-        or isinstance(formula, Since)
-    )
+    return isinstance(formula, (Before, Once, Since))
 
 
 def is_unary_op(formula: Formula) -> bool:
@@ -37,11 +33,7 @@ def is_unary_op(formula: Formula) -> bool:
     :param formula: the formula to be checked
     :return: True if the formula is a unary operator, False otherwise
     """
-    return (
-        isinstance(formula, Once)
-        or isinstance(formula, Before)
-        or isinstance(formula, Not)
-    )
+    return isinstance(formula, (Before, Not, Once))
 
 
 def is_atomic_formula(formula: Formula) -> bool:
@@ -51,11 +43,7 @@ def is_atomic_formula(formula: Formula) -> bool:
     :param formula: the formula to be checked
     :return: True if the formula is an atomic formula, False otherwise
     """
-    return (
-        isinstance(formula, Atomic)
-        or isinstance(formula, PropositionalTrue)
-        or isinstance(formula, PropositionalFalse)
-    )
+    return isinstance(formula, (Atomic, PropositionalTrue, PropositionalFalse))
 
 
 class CompilationManager:
@@ -70,7 +58,7 @@ class CompilationManager:
         self.phi = phi
         self.before_dictionary = get_quoted_dictionary(phi)
 
-    def _gen_before_mapping(self) -> str:
+    def get_before_mapping(self) -> str:
         """
         Generate the mapping of the before atoms.
 
@@ -92,7 +80,7 @@ class CompilationManager:
         fresh_atoms = []
         conditional_effects = []
 
-        for before_atom in self.before_dictionary.keys():
+        for before_atom in self.before_dictionary:
             assert isinstance(before_atom, BeforeAtom)
             fresh_atoms.append(before_atom)
             conditional_effects.append((ppnf(before_atom.formula), before_atom))

@@ -56,11 +56,11 @@ def merge_dnfs(dnf_list: List[Formula]) -> Formula:
     # Step 1: aggregte all dnfs that are conjunction of literals or literals.
     simple_dnfs = []
     disjunctive_dnfs = []
-    for dnf in dnf_list:
-        if isinstance(dnf, And) or is_literal(dnf):
-            simple_dnfs.append(dnf)
+    for subformula in dnf_list:
+        if isinstance(subformula, And) or is_literal(subformula):
+            simple_dnfs.append(subformula)
         else:
-            disjunctive_dnfs.append(dnf)
+            disjunctive_dnfs.append(subformula)
 
     if not disjunctive_dnfs:
         return And(*simple_dnfs)
@@ -79,8 +79,7 @@ def merge_dnfs(dnf_list: List[Formula]) -> Formula:
 
     if simple_dnfs:
         return distribute_conj_over_disj(And(*simple_dnfs), current_dnf)
-    else:
-        return current_dnf
+    return current_dnf
 
 
 @singledispatch
@@ -124,8 +123,7 @@ def _(formula: Not) -> Formula:
     """Compute the dnf of a negation."""
     if is_literal(formula):
         return formula
-    else:
-        raise ValueError(
-            f"Formula of type {type(formula)} is not supported by this function. \
-                        Please invoke the nnf transformation before computing the DNF."
-        )
+    raise ValueError(
+        f"Formula of type {type(formula)} is not supported by this function. \
+                    Please invoke the nnf transformation before computing the DNF."
+    )

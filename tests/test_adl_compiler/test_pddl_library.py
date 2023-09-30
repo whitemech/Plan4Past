@@ -1,4 +1,6 @@
 """Generic tests for the PDDL library."""
+from pathlib import Path
+
 import pkg_resources
 import pytest
 from pddl.parser.domain import DomainParser
@@ -10,12 +12,12 @@ from plan4past.compiler import ADLCompiler, ProblemUnsolvableException
 
 def test_pddl_conversion() -> None:
     """Test that the ADL compiler executes correctly."""
-    domain_str = open(
+    domain_str = Path(
         pkg_resources.resource_filename(__name__, "pddl/blocksworld/domain.pddl")
-    ).read()
-    problem_str = open(
+    ).read_text(encoding="utf-8")
+    problem_str = Path(
         pkg_resources.resource_filename(__name__, "pddl/blocksworld/p01.pddl")
-    ).read()
+    ).read_text(encoding="utf-8")
 
     domain_parser = DomainParser()
     problem_parser = ProblemParser()
@@ -27,18 +29,18 @@ def test_pddl_conversion() -> None:
     compiler = ADLCompiler(domain, problem, formula)
     compiler.compile()
 
-    compiled_domain, compiled_problem = compiler.result
-    assert compiler._before_mapping is not None
+    _compiled_domain, _compiled_problem = compiler.result
+    assert compiler._before_mapping is not None  # pylint: disable=protected-access
 
 
 def test_pddl_conversion2() -> None:
     """Test that the ADL compiler executes correctly."""
-    domain_str = open(
+    domain_str = Path(
         pkg_resources.resource_filename(__name__, "pddl/blocksworld/domain.pddl")
-    ).read()
-    problem_str = open(
+    ).read_text(encoding="utf-8")
+    problem_str = Path(
         pkg_resources.resource_filename(__name__, "pddl/blocksworld/p01.pddl")
-    ).read()
+    ).read_text(encoding="utf-8")
 
     domain_parser = DomainParser()
     problem_parser = ProblemParser()
@@ -51,17 +53,17 @@ def test_pddl_conversion2() -> None:
     compiler.compile()
 
     _compiled_domain, _compiled_problem = compiler.result
-    assert compiler._before_mapping is not None
+    assert compiler._before_mapping is not None  # pylint: disable=protected-access
 
 
 def test_unsat_expression() -> None:
     """Test that the ADL compiler detects unsolvable problems."""
-    domain_str = open(
+    domain_str = Path(
         pkg_resources.resource_filename(__name__, "pddl/blocksworld/domain.pddl")
-    ).read()
-    problem_str = open(
+    ).read_text(encoding="utf-8")
+    problem_str = Path(
         pkg_resources.resource_filename(__name__, "pddl/blocksworld/p01.pddl")
-    ).read()
+    ).read_text(encoding="utf-8")
 
     domain_parser = DomainParser()
     problem_parser = ProblemParser()
@@ -76,12 +78,12 @@ def test_unsat_expression() -> None:
 
 def test_unsat_expression2() -> None:
     """Test that the ADL compiler detects unsolvable problems."""
-    domain_str = open(
+    domain_str = Path(
         pkg_resources.resource_filename(__name__, "pddl/blocksworld/domain.pddl")
-    ).read()
-    problem_str = open(
+    ).read_text(encoding="utf-8")
+    problem_str = Path(
         pkg_resources.resource_filename(__name__, "pddl/blocksworld/p01.pddl")
-    ).read()
+    ).read_text(encoding="utf-8")
 
     domain_parser = DomainParser()
     problem_parser = ProblemParser()
@@ -97,12 +99,12 @@ def test_unsat_expression2() -> None:
 
 def test_always_true_expression() -> None:
     """Test that the ADL compiler detects unsolvable problems."""
-    domain_str = open(
+    domain_str = Path(
         pkg_resources.resource_filename(__name__, "pddl/blocksworld/domain.pddl")
-    ).read()
-    problem_str = open(
+    ).read_text(encoding="utf-8")
+    problem_str = Path(
         pkg_resources.resource_filename(__name__, "pddl/blocksworld/p01.pddl")
-    ).read()
+    ).read_text(encoding="utf-8")
 
     domain_parser = DomainParser()
     problem_parser = ProblemParser()

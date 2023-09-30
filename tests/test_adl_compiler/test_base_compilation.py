@@ -1,4 +1,6 @@
 """Test the compilation of a FOND PDDL domain and problem."""
+from pathlib import Path
+
 import pkg_resources
 from pddl.parser.domain import DomainParser
 from pddl.parser.problem import ProblemParser
@@ -14,18 +16,20 @@ from plan4past.helpers.before_atom_helper import Yatom_
 
 def test_pddl_compilation() -> None:
     """Test the compilation of a FOND PDDL domain and problem, basic test."""
-    domain_str = open(
+    # pylint: disable=R0801
+    domain_str = Path(
         pkg_resources.resource_filename(__name__, "pddl/rovers/domain-fond.pddl")
-    ).read()
-    problem_str = open(
+    ).read_text(encoding="utf-8")
+    problem_str = Path(
         pkg_resources.resource_filename(__name__, "pddl/rovers/p01.pddl")
-    ).read()
+    ).read_text(encoding="utf-8")
 
     domain_parser = DomainParser()
     problem_parser = ProblemParser()
     domain = domain_parser(domain_str)
     problem = problem_parser(problem_str)
 
+    # pylint: disable=R0801
     a = Atomic("communicatedsoildata_waypoint2")
     b = Atomic("communicatedrockdata_waypoint3")
 
@@ -52,9 +56,9 @@ def test_pddl_compilation() -> None:
     for act in actions:
         if "goal" not in act.name:
             effects = act.effect.operands
-            for i in range(len(pnf)):
+            for i, sub_pnf in enumerate(pnf):
                 effect = When(
-                    compiler.pylogics2pddl(pnf[i]), compiler.pylogics2pddl(y[i])
+                    compiler.pylogics2pddl(sub_pnf), compiler.pylogics2pddl(y[i])
                 )
                 assert effect in effects
             assert pddlNot(compiler.goal_predicate) in act.precondition.operands

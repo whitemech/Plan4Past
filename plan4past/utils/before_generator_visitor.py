@@ -33,7 +33,7 @@ from plan4past.helpers.before_atom_helper import (
 )
 
 
-class BeforeGenerator:
+class BeforeGenerator:  # pylint: disable=too-few-public-methods
     """Class that generates the before atoms needed for the compilation."""
 
     def __init__(self) -> None:
@@ -66,19 +66,16 @@ def populate_dictionary(formula: object, _before_gen: BeforeGenerator) -> None:
 @populate_dictionary.register
 def _(_formula: Atomic, _before_gen: BeforeGenerator) -> None:
     """Populate dictionary for an atomic formula."""
-    pass
 
 
 @populate_dictionary.register
 def _(_formula: PropositionalTrue, _before_gen: BeforeGenerator) -> None:
     """Populate dictionary for an atomic formula."""
-    pass
 
 
 @populate_dictionary.register
 def _(_formula: PropositionalFalse, _before_gen: BeforeGenerator) -> None:
     """Populate dictionary for an atomic formula."""
-    pass
 
 
 @populate_dictionary.register

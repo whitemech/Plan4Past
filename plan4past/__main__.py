@@ -139,7 +139,11 @@ def cli(
         )
 
     if adl_encoding:
-        compiled_domain, compiled_problem, before_mapping = _adl_compilation_entrypoint(
+        (
+            compiled_domain,
+            compiled_problem,
+            _before_mapping,
+        ) = _adl_compilation_entrypoint(
             in_domain,
             in_problem,
             formula,
@@ -149,7 +153,11 @@ def cli(
         )
 
     elif adl_encoding_plus:
-        compiled_domain, compiled_problem, before_mapping = _adl_compilation_entrypoint(
+        (
+            compiled_domain,
+            compiled_problem,
+            _before_mapping,
+        ) = _adl_compilation_entrypoint(
             in_domain,
             in_problem,
             formula,
@@ -215,7 +223,7 @@ def _adl_compilation_entrypoint(
     compiler = ADLCompiler(domain, problem, formula, mapping, evaluate_pnf, build_dnf)
     compiler.compile()
     compiled_domain, compiled_problem = compiler.result
-    return compiled_domain, compiled_problem, compiler._before_mapping
+    return compiled_domain, compiled_problem, compiler.before_mapping
 
 
 if __name__ == "__main__":
