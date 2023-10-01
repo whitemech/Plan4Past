@@ -79,8 +79,17 @@ def get_quoted_dictionary(phi: Formula) -> Dict[YesterdayAtom, Atomic]:
 
 
 @singledispatch
-def populate_dictionary(formula: object, _yesterday_gen: YesterdayGenerator) -> None:
-    """Compute the derived predicate for a formula."""
+def populate_dictionary(formula: object, yesterday_gen: YesterdayGenerator) -> None:
+    """
+    Populate the mapping from PLTL formula to PDDL atoms.
+
+    This function does side-effect on the yesterday_gen object, by adding the yesterday atoms to the dictionary.
+
+    The dictionary can then be accessed via yesterday_gen.yesterday_dictionary.
+
+    :param formula: the PPLTL formula
+    :param yesterday_gen: the YesterdayGenerator object
+    """
     raise NotImplementedError(f"handler not implemented for object {type(formula)}")
 
 
