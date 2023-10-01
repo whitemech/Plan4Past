@@ -306,11 +306,13 @@ class ADLCompiler(Compiler):
     ):  # pylint: disable=arguments-differ
         """Compute the new domain."""
         new_predicates = [self.pylogics2pddl(fluent) for fluent in new_fluents]
-        new_whens_pos = [self.effect_conversion(eff, positive=True) for eff in new_effs]
-        new_whens_neg = [
+        new_whens_positive = [
+            self.effect_conversion(eff, positive=True) for eff in new_effs
+        ]
+        new_whens_negative = [
             self.effect_conversion(eff, positive=False) for eff in new_effs
         ]
-        new_whens = new_whens_pos + new_whens_neg
+        new_whens = new_whens_positive + new_whens_negative
         if self.evaluate_pnf:
             domain_actions = _update_domain_actions_with_check(
                 self, new_whens, new_predicates
