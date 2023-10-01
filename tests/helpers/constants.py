@@ -27,8 +27,8 @@ from pathlib import Path
 
 ROOT_DIR = Path(inspect.getfile(inspect.currentframe())).resolve().parent.parent.parent  # type: ignore
 TEST_DIR = ROOT_DIR / "tests"
-EXAMPLES_DIR = ROOT_DIR / "examples"
-EXAMPLE_MAP_FILE = EXAMPLES_DIR / "pddl/p-0.map"
+EXAMPLES_DIR = TEST_DIR / "examples"
+EXAMPLE_MAP_FILE = EXAMPLES_DIR / "blocksworld" / "p-0.map"
 
 
 BENCHMARKS_DIR = TEST_DIR / "benchmarks"
