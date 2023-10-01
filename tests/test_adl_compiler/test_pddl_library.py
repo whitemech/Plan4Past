@@ -28,7 +28,8 @@ from pddl.parser.domain import DomainParser
 from pddl.parser.problem import ProblemParser
 from pylogics.parsers import parse_pltl
 
-from plan4past.compiler import ADLCompiler, ProblemUnsolvableException
+from plan4past.compiler import ADLCompiler
+from plan4past.exceptions import ProblemUnsolvableException
 
 
 def test_pddl_conversion() -> None:

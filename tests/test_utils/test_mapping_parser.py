@@ -29,7 +29,8 @@ from pylogics.syntax.pltl import Atomic as PLTLAtomic
 from pylogics.syntax.pltl import FalseFormula as PLTLFalse
 from pylogics.syntax.pltl import TrueFormula as PLTLTrue
 
-from plan4past.utils.mapping_parser import MappingParserError, mapping_parser
+from plan4past.exceptions import MappingParserError
+from plan4past.utils.mapping_parser import mapping_parser
 from tests.helpers.constants import EXAMPLE_MAP_FILE
 
 _on_b_a = PLTLAtomic("on_b_a")
