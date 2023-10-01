@@ -512,16 +512,18 @@ def _update_domain_actions_with_check(
 
 
 def _update_domain_actions(
-    compiler: ADLCompiler, actions: AbstractSet[Action], progression: List[When]
+    compiler: ADLCompiler,
+    actions: AbstractSet[Action],
+    new_conditional_effects: List[When],
 ) -> Set[Action]:
     """Update domain actions."""
     new_actions = set()
     for action in actions:
         if isinstance(action.effect, AndEffect):
-            eff_list = list(action.effect.operands) + progression
+            eff_list = list(action.effect.operands) + new_conditional_effects
             new_effect = AndEffect(*eff_list)
         else:
-            new_effect = AndEffect(action.effect, *progression)
+            new_effect = AndEffect(action.effect, *new_conditional_effects)
         new_actions.add(
             Action(
                 name=action.name,
