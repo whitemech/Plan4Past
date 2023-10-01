@@ -22,8 +22,6 @@
 
 """This module contain tests for the compiler module, readme example."""
 
-from pathlib import Path
-
 import pytest
 from pddl.logic import Predicate, constants
 from pddl.parser.domain import DomainParser
@@ -32,7 +30,7 @@ from pylogics.parsers import parse_pltl
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
 
 from plan4past.compiler import Compiler
-from tests.helpers.constants import EXAMPLES_DIR
+from tests.helpers.constants import BLOCKSWORLD_DIR
 from tests.helpers.misc import check_compilation
 
 
@@ -48,15 +46,15 @@ from tests.helpers.misc import check_compilation
 )
 def test_readme_example(val, default_planner, from_atoms_to_fluent) -> None:
     """Test the example from the README."""
+    domain_path = BLOCKSWORLD_DIR / "domain.pddl"
+    problem_path = BLOCKSWORLD_DIR / "p2.pddl"
+
     formula = "on_b_a & O(ontable_c)"
     domain_parser = DomainParser()
     problem_parser = ProblemParser()
 
-    pddl_example_domain_path = EXAMPLES_DIR / Path("pddl/domain.pddl")
-    pddl_example_problem_path = EXAMPLES_DIR / Path("pddl/p-0.pddl")
-
-    domain = domain_parser(pddl_example_domain_path.read_text(encoding="utf-8"))
-    problem = problem_parser(pddl_example_problem_path.read_text(encoding="utf-8"))
+    domain = domain_parser(domain_path.read_text(encoding="utf-8"))
+    problem = problem_parser(problem_path.read_text(encoding="utf-8"))
     goal = parse_pltl(formula)
 
     compiler = Compiler(

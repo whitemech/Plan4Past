@@ -62,12 +62,16 @@ from pddl.parser.problem import ProblemParser
 from pylogics.parsers import parse_pltl
 from plan4past.compiler import Compiler
 
+
+domain_path = Path("tests/benchmarks/deterministic/BF/blocksworld_ppltl/domain.pddl")
+problem_path = Path("tests/benchmarks/deterministic/BF/blocksworld_ppltl/p2.pddl")
+
 formula = "on_b_a & O(ontable_c)"
 domain_parser = DomainParser()
 problem_parser = ProblemParser()
 
-domain = domain_parser(Path("ignore/examples/pddl/domain.pddl").read_text(encoding="utf-8"))
-problem = problem_parser(Path("ignore/examples/pddl/p-0.pddl").read_text(encoding="utf-8"))
+domain = domain_parser(domain_path.read_text(encoding="utf-8"))
+problem = problem_parser(problem_path.read_text(encoding="utf-8"))
 goal = parse_pltl(formula)
 
 compiler = Compiler(domain, problem, goal)
