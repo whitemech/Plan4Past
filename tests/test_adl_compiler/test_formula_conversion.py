@@ -23,16 +23,16 @@
 from pathlib import Path
 
 import pkg_resources
+from pddl.logic import Constant, Predicate
+from pddl.logic.base import Not as PddlNot
+from pddl.logic.base import Or as PddlOr
 from pddl.parser.domain import DomainParser
 from pddl.parser.problem import ProblemParser
 from pylogics.parsers import parse_pltl
 from pylogics.syntax.base import Not, Or
 from pylogics.syntax.pltl import Atomic, Once
 
-from plan4past.compiler import ADLCompiler, Constant
-from plan4past.compiler import Not as pddlNot
-from plan4past.compiler import Or as pddlOr
-from plan4past.compiler import Predicate
+from plan4past.compiler import ADLCompiler
 from plan4past.helpers.yesterday_atom_helper import Yatom_
 
 
@@ -77,19 +77,19 @@ def test_formula_conversion() -> None:
         compiler._yesterday_dictionary  # pylint: disable=protected-access
     )
     assert yesterday_dictionary is not None
-    pnf0_expected = pddlOr(
-        pddlNot(a_pred), Predicate(yesterday_dictionary[y[0]].name, *[])
+    pnf0_expected = PddlOr(
+        PddlNot(a_pred), Predicate(yesterday_dictionary[y[0]].name, *[])
     )
-    pnf1_expected = pddlOr(
-        pddlNot(b_pred), Predicate(yesterday_dictionary[y[1]].name, *[])
+    pnf1_expected = PddlOr(
+        PddlNot(b_pred), Predicate(yesterday_dictionary[y[1]].name, *[])
     )
     assert compiler.pylogics2pddl(pnf[0]) == pnf0_expected
     assert compiler.pylogics2pddl(pnf[1]) == pnf1_expected
-    pnf2_expected = pddlOr(
-        pddlNot(pddlOr(pddlNot(pnf0_expected), pddlNot(pnf1_expected))),
+    pnf2_expected = PddlOr(
+        PddlNot(PddlOr(PddlNot(pnf0_expected), PddlNot(pnf1_expected))),
         Predicate(yesterday_dictionary[y[2]].name, *[]),
     )
     assert compiler.pylogics2pddl(pnf[2]) == pnf2_expected
-    assert compiler.pylogics2pddl(pnf[3]) == pddlOr(
+    assert compiler.pylogics2pddl(pnf[3]) == PddlOr(
         pnf2_expected, Predicate(yesterday_dictionary[y[3]].name, *[])
     )

@@ -21,23 +21,29 @@
 #
 
 """Compiler from PDDL Domain and PPLTL into a new PDDL domain."""
-from typing import AbstractSet, Dict, List, Optional, Set, Tuple
+from typing import AbstractSet, Dict, List, Optional, Set, Tuple, cast
 
 from pddl.core import Action, Domain, Problem, Requirements
 from pddl.logic import Constant
 from pddl.logic.base import And
 from pddl.logic.base import Formula as PddlFormula
-from pddl.logic.base import Not, Or
+from pddl.logic.base import Not
 from pddl.logic.effects import AndEffect, When
 from pddl.logic.predicates import DerivedPredicate, Predicate
-from pylogics.syntax.base import And as PLTLAnd
 from pylogics.syntax.base import Formula, Logic
-from pylogics.syntax.base import Not as PLTLNot
-from pylogics.syntax.base import Or as PLTLOr
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
-from pylogics.syntax.pltl import FalseFormula, PropositionalTrue
+from pylogics.syntax.pltl import FalseFormula
 from pylogics.utils.to_string import to_string
 
+from plan4past.constants import (
+    ACHIEVE_GOAL_ACTION,
+    CHECK_PREDICATE,
+    EVALUATE_PNF_ACTION,
+    GOAL_PREDICATE,
+    PNF,
+    TRUE_ATOM,
+    TRUE_PREDICATE,
+)
 from plan4past.exceptions import ProblemUnsolvableException
 from plan4past.helpers.compilation_helper import CompilationManager, YesterdayAtom
 from plan4past.helpers.utils import (
@@ -53,6 +59,7 @@ from plan4past.utils.derived_visitor import derived_predicates
 from plan4past.utils.dnf_visitor import dnf
 from plan4past.utils.nnf_visitor import nnf
 from plan4past.utils.predicates_visitor import predicates
+from plan4past.utils.pylogics2pddl import Pylogics2PddlTranslator
 from plan4past.utils.rewrite_formula_visitor import rewrite
 from plan4past.utils.val_predicates_visitor import val_predicates
 
@@ -218,18 +225,6 @@ def _update_domain_actions_det(
     return new_actions
 
 
-PNF = "pnf"
-
-TRUE_ATOM = PLTLAtomic("true")
-
-GOAL_PREDICATE = Predicate("goal", *[])
-CHECK_PREDICATE = Predicate("evaluate-pnf", *[])
-TRUE_PREDICATE = Predicate("true", *[])
-
-EVALUATE_PNF_ACTION = "evaluate-pnf-action"
-ACHIEVE_GOAL_ACTION = "achieve-goal"
-
-
 class ADLCompiler(Compiler):
     """Compiler of PPLTL goals into PDDL with only ADL constructs."""
 
@@ -262,6 +257,7 @@ class ADLCompiler(Compiler):
 
         self._fresh_atoms = None
         self._yesterday_mapping = None
+        self._translator = None
         self.evaluate_pnf = evaluate_pnf
         self._yesterday_dictionary: Optional[Dict[YesterdayAtom, PLTLAtomic]] = None
         self.goal_predicate = GOAL_PREDICATE
@@ -293,6 +289,11 @@ class ADLCompiler(Compiler):
         self._fresh_atoms = set(new_fluents)
         self._yesterday_mapping = cm.get_yesterday_mapping()
         self._yesterday_dictionary = cm.yesterday_dictionary
+        self._translator = Pylogics2PddlTranslator(
+            cast(Dict[YesterdayAtom, PLTLAtomic], self._yesterday_dictionary),
+            self.from_atoms_to_fluent,
+            cast(Set[PLTLAtomic], self._fresh_atoms),
+        )
 
         self._compile_domain(new_fluents, new_effs, new_goal)
         self._compile_problem()
@@ -361,9 +362,9 @@ class ADLCompiler(Compiler):
 
     def _compile_problem(self):
         """Compute the new problem."""
-        new_init = set(self.problem.init) | set([TRUE_PREDICATE])
+        new_init = set(self.problem.init) | {TRUE_PREDICATE}
         if self.evaluate_pnf:
-            new_init = new_init | set([self.check_predicate])
+            new_init = new_init | {self.check_predicate}
 
         self._result_problem = Problem(
             name=self.problem.name,
@@ -385,31 +386,8 @@ class ADLCompiler(Compiler):
 
     def pylogics2pddl(self, formula: Formula) -> PddlFormula:
         """Convert pylogics formula into PDDL formula."""
-        if isinstance(formula, PropositionalTrue):
-            return self.pylogics2pddl(TRUE_ATOM)
-        if isinstance(formula, PLTLAtomic):
-            if self._fresh_atoms is not None and formula in self._fresh_atoms:
-                return (
-                    Predicate(self._yesterday_dictionary[formula].name, *[])
-                    if isinstance(formula, YesterdayAtom)
-                    else Predicate(formula.name, *[])
-                )
-            predicate = self.from_atoms_to_fluent.get(PLTLAtomic(formula.name), None)
-            check_(
-                predicate is not None,
-                f"expected predicate with name {formula.name}; missing",
-            )
-            return predicate
-
-        check_(
-            isinstance(formula, (PLTLNot, PLTLAnd, PLTLOr)),
-            f"expected one of {PLTLNot, PLTLAnd, PLTLOr}, got formula of type {type(formula).__name__}",
-        )
-
-        if isinstance(formula, PLTLNot):
-            return Not(self.pylogics2pddl(formula.argument))
-        operands = [self.pylogics2pddl(operand) for operand in formula.operands]
-        return And(*operands) if isinstance(formula, PLTLAnd) else Or(*operands)
+        check_(self._translator is not None, "compilation not executed yet")
+        return cast(Pylogics2PddlTranslator, self._translator).translate(formula)
 
 
 def _update_domain_actions_with_check(

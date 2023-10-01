@@ -30,9 +30,10 @@ from pylogics.parsers import parse_pltl
 from pylogics.syntax.base import And, Not, Or
 from pylogics.syntax.pltl import Atomic, Before, Once, PropositionalTrue
 
-from plan4past.compiler import EVALUATE_PNF_ACTION, PNF, ADLCompiler
+from plan4past.compiler import ADLCompiler
 from plan4past.compiler import Not as pddlNot
 from plan4past.compiler import Predicate, When
+from plan4past.constants import EVALUATE_PNF_ACTION, PNF
 from plan4past.helpers.yesterday_atom_helper import QUOTED_ATOM, Yatom_
 
 
