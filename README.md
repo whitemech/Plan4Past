@@ -173,7 +173,7 @@ If you use Plan4Past in your research, please consider citing the following pape
                   Francesco Fuggitti and
                   {Alfonso Emilio} Gerevini and
                   Enrico Scala},
-  title        = {{FOND} Planning for Pure-Past Linear Temporal Logic Goals},
+  title        = {{{FOND} Planning for Pure-Past Linear Temporal Logic Goals}},
   booktitle    = {{ECAI}},
   year         = {2023},
 }
