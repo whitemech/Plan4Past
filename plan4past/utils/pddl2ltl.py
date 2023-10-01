@@ -35,8 +35,8 @@ PDDL_SINCE = "since"
 PDDL_TRIGGERS = "triggers"
 PDDL_HISTORICALLY = "historically"
 PDDL_ONCE = "once"
-PDDL_BEFORE = "before"
-PDDL_WEAKBEFORE = "weak-before"
+PDDL_YESTERDAY = "yesterday"
+PDDL_WEAKYESTERDAY = "weak-yesterday"
 
 PDDL_UNTIL = "until"
 PDDL_RELEASE = "release"
@@ -163,12 +163,12 @@ def tokens2ltl(  # noqa: C901  # pylint: disable=too-many-return-statements,too-
             raise MalformedExpression(MALFORMED_EXPRESSION_MSG.format(expr=str(tokens)))
         return unaryop("O", tokens2ltl(tokens[1]))
 
-    if tokens[0] == PDDL_BEFORE:
+    if tokens[0] == PDDL_YESTERDAY:
         if len(tokens) != 2:
             raise MalformedExpression(MALFORMED_EXPRESSION_MSG.format(expr=str(tokens)))
         return unaryop("Y", tokens2ltl(tokens[1]))
 
-    if tokens[0] == PDDL_WEAKBEFORE:
+    if tokens[0] == PDDL_WEAKYESTERDAY:
         if len(tokens) != 2:
             raise MalformedExpression(MALFORMED_EXPRESSION_MSG.format(expr=str(tokens)))
         return unaryop(tokens2ltl(tokens[1]), "WY")
@@ -180,7 +180,7 @@ def tokens2ltl(  # noqa: C901  # pylint: disable=too-many-return-statements,too-
 
 if __name__ == "__main__":
     formulap = (
-        "(and (or (hello) (once (rain))) (before (city1)) (since (city3) (city2)))"
+        "(and (or (hello) (once (rain))) (yesterday (city1)) (since (city3) (city2)))"
     )
     formulal = "(and (or (hello) (eventually (rain))) (next (city1)) (always (city2)))"
 

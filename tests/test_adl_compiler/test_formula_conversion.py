@@ -33,7 +33,7 @@ from plan4past.compiler import ADLCompiler, Constant
 from plan4past.compiler import Not as pddlNot
 from plan4past.compiler import Or as pddlOr
 from plan4past.compiler import Predicate
-from plan4past.helpers.before_atom_helper import Yatom_
+from plan4past.helpers.yesterday_atom_helper import Yatom_
 
 
 def test_formula_conversion() -> None:
@@ -73,21 +73,23 @@ def test_formula_conversion() -> None:
 
     compiler = ADLCompiler(domain, problem, formula, from_atoms_to_fluent=None)
     compiler.compile()
-    before_dictionary = compiler._before_dictionary  # pylint: disable=protected-access
-    assert before_dictionary is not None
+    yesterday_dictionary = (
+        compiler._yesterday_dictionary  # pylint: disable=protected-access
+    )
+    assert yesterday_dictionary is not None
     pnf0_expected = pddlOr(
-        pddlNot(a_pred), Predicate(before_dictionary[y[0]].name, *[])
+        pddlNot(a_pred), Predicate(yesterday_dictionary[y[0]].name, *[])
     )
     pnf1_expected = pddlOr(
-        pddlNot(b_pred), Predicate(before_dictionary[y[1]].name, *[])
+        pddlNot(b_pred), Predicate(yesterday_dictionary[y[1]].name, *[])
     )
     assert compiler.pylogics2pddl(pnf[0]) == pnf0_expected
     assert compiler.pylogics2pddl(pnf[1]) == pnf1_expected
     pnf2_expected = pddlOr(
         pddlNot(pddlOr(pddlNot(pnf0_expected), pddlNot(pnf1_expected))),
-        Predicate(before_dictionary[y[2]].name, *[]),
+        Predicate(yesterday_dictionary[y[2]].name, *[]),
     )
     assert compiler.pylogics2pddl(pnf[2]) == pnf2_expected
     assert compiler.pylogics2pddl(pnf[3]) == pddlOr(
-        pnf2_expected, Predicate(before_dictionary[y[3]].name, *[])
+        pnf2_expected, Predicate(yesterday_dictionary[y[3]].name, *[])
     )

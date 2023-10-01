@@ -32,10 +32,10 @@ from pylogics.syntax.pltl import (
     Since,
 )
 
-from plan4past.helpers.before_atom_helper import BeforeAtom
 from plan4past.helpers.utils import check_
-from plan4past.utils.before_generator_visitor import get_quoted_dictionary
+from plan4past.helpers.yesterday_atom_helper import YesterdayAtom
 from plan4past.utils.ppnf_visitor import ppnf
+from plan4past.utils.yesterday_generator_visitor import get_quoted_dictionary
 
 
 def is_temporal_operator(formula: Formula) -> bool:
@@ -78,19 +78,19 @@ class CompilationManager:
         :param phi: the PPLTL formula to be compiled
         """
         self.phi = phi
-        self.before_dictionary = get_quoted_dictionary(phi)
+        self.yesterday_dictionary = get_quoted_dictionary(phi)
 
-    def get_before_mapping(self) -> str:
+    def get_yesterday_mapping(self) -> str:
         """
-        Generate the mapping of the before atoms.
+        Generate the mapping of the yesterday atoms.
 
-        :return: the mapping of the before atoms
+        :return: the mapping of the yesterday atoms
         """
-        before_mapping = []
-        for key, value in self.before_dictionary.items():
-            before_mapping.append(f"; {str(key)}: {str(value)}")
+        yesterday_mapping = []
+        for key, value in self.yesterday_dictionary.items():
+            yesterday_mapping.append(f"; {str(key)}: {str(value)}")
 
-        return "\n".join(before_mapping)
+        return "\n".join(yesterday_mapping)
 
     def get_problem_extension(self) -> Tuple[List[Formula], List, Formula]:
         """
@@ -102,9 +102,9 @@ class CompilationManager:
         fresh_atoms = []
         conditional_effects = []
 
-        for before_atom in self.before_dictionary:
-            check_(isinstance(before_atom, BeforeAtom))
-            fresh_atoms.append(before_atom)
-            conditional_effects.append((ppnf(before_atom.formula), before_atom))
+        for yesterday_atom in self.yesterday_dictionary:
+            check_(isinstance(yesterday_atom, YesterdayAtom))
+            fresh_atoms.append(yesterday_atom)
+            conditional_effects.append((ppnf(yesterday_atom.formula), yesterday_atom))
 
         return fresh_atoms, conditional_effects, goal

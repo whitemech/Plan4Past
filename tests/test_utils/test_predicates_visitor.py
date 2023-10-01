@@ -80,8 +80,8 @@ def test_predicates_visitor_not():
     assert predicates(~a) == set()
 
 
-def test_predicates_visitor_before():
-    """Test the predicates visitor for the before formula."""
+def test_predicates_visitor_yesterday():
+    """Test the predicates visitor for the yesterday formula."""
     a = PLTLAtomic("a")
     Ya = Before(a)
     assert predicates(Ya) == {Predicate("Ya")}

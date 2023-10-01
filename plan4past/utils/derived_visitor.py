@@ -125,7 +125,7 @@ def derived_predicates_not(
 
 
 @derived_predicates.register
-def derived_predicates_before(
+def derived_predicates_yesterday(
     formula: Before, atoms_to_fluents: Dict[PLTLAtomic, Predicate]
 ) -> Set[DerivedPredicate]:
     """Compute the derived predicate for a Before formula."""

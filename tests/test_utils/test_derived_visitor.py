@@ -159,8 +159,8 @@ def test_derived_predicates_visitor_not():
     assert _eq(actual, expected)
 
 
-def test_derived_predicates_visitor_before():
-    """Test the derived predicates visitor for the before formula."""
+def test_derived_predicates_visitor_yesterday():
+    """Test the derived predicates visitor for the yesterday formula."""
     a = PLTLAtomic("a")
     Ya = Before(a)
 

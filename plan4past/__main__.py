@@ -194,7 +194,7 @@ def _compile_instance(
         (
             compiled_domain,
             compiled_problem,
-            _before_mapping,
+            _yesterday_mapping,
         ) = _adl_compilation_entrypoint(
             domain,
             problem,
@@ -208,7 +208,7 @@ def _compile_instance(
         (
             compiled_domain,
             compiled_problem,
-            _before_mapping,
+            _yesterday_mapping,
         ) = _adl_compilation_entrypoint(
             domain,
             problem,
@@ -231,7 +231,7 @@ def _adl_compilation_entrypoint(
     compiler = ADLCompiler(domain, problem, formula, mapping, evaluate_pnf, build_dnf)
     compiler.compile()
     compiled_domain, compiled_problem = compiler.result
-    return compiled_domain, compiled_problem, compiler.before_mapping
+    return compiled_domain, compiled_problem, compiler.yesterday_mapping
 
 
 if __name__ == "__main__":

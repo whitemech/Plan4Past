@@ -89,7 +89,7 @@ def find_atoms_not(formula: PLTLNot) -> Set[PLTLAtomic]:
 
 
 @find_atoms.register
-def find_atoms_before(formula: Before) -> Set[PLTLAtomic]:
+def find_atoms_yesterday(formula: Before) -> Set[PLTLAtomic]:
     """Find atoms for a Before formula."""
     return find_atoms_unaryop(formula)
 

@@ -117,7 +117,7 @@ def rewrite_equivalence(formula: PLTLEquivalence) -> Formula:
 
 
 @rewrite.register
-def rewrite_before(formula: Before) -> Formula:
+def rewrite_yesterday(formula: Before) -> Formula:
     """Compute the basic formula for a Before (Yesterday) formula."""
     sub = rewrite_unaryop(formula)
     return Before(sub)
