@@ -66,8 +66,8 @@ formula = "on_b_a & O(ontable_c)"
 domain_parser = DomainParser()
 problem_parser = ProblemParser()
 
-domain = domain_parser(Path("examples/pddl/domain.pddl").read_text(encoding="utf-8"))
-problem = problem_parser(Path("examples/pddl/p-0.pddl").read_text(encoding="utf-8"))
+domain = domain_parser(Path("ignore/examples/pddl/domain.pddl").read_text(encoding="utf-8"))
+problem = problem_parser(Path("ignore/examples/pddl/p-0.pddl").read_text(encoding="utf-8"))
 goal = parse_pltl(formula)
 
 compiler = Compiler(domain, problem, goal)
