@@ -1,0 +1,3 @@
+[submodule "tests/benchmarks"]
+	path = tests/benchmarks
+	url = https://github.com/whitemech/Plan4Past-data
