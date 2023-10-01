@@ -231,7 +231,7 @@ ACHIEVE_GOAL_ACTION = "achieve-goal"
 
 
 class ADLCompiler(Compiler):
-    """Compiler of PLTLf goals into PDDL with only ADL constructs."""
+    """Compiler of PPLTL goals into PDDL with only ADL constructs."""
 
     def __init__(
         self,
