@@ -23,7 +23,7 @@
 
 ---
 
-Classical and FOND Planning for Pure-Past Linear Temporal Logic Goals.
+An award-winning tool for Classical and FOND Planning for Pure-Past Linear Temporal Logic (PPLTL) Goals.
 
 ## Installation
 
@@ -142,27 +142,42 @@ Copyright 2021 -- 2023 WhiteMech
 
 ## Citing
 
-If you use Plan4Past in your research, please consider citing the following paper:
+If you use Plan4Past in your research, please consider citing the following papers.
 
+- For deterministic (classical) planning:
 ```
 @inproceedings{icaps2023bdffgs,
-  author       = {Luigi Bonassi and 
-                  Giuseppe {De Giacomo} and 
-                  Marco Favorito and 
-                  Francesco Fuggitti and 
-                  {Alfonso Emilio} Gerevini and 
+  author       = {Luigi Bonassi and
+                  Giuseppe {De Giacomo} and
+                  Marco Favorito and
+                  Francesco Fuggitti and
+                  {Alfonso Emilio} Gerevini and
                   Enrico Scala},
-  title        = {Planning for Temporally Extended Goals in Pure-Past Linear Temporal Logic},
+  title        = {{Planning for Temporally Extended Goals in Pure-Past Linear Temporal Logic}},
   booktitle    = {{ICAPS}},
-  volume       = {33},
-  url          = {https://ojs.aaai.org/index.php/ICAPS/article/view/27179},
-  doi          = {10.1609/icaps.v33i1.27179},
-  number       = {1},
-  month        = {Jul.},
-  pages        = {61-69},
+  pages        = {61--69},
+  publisher    = {{AAAI} Press},
+  year         = {2023}
+}
+```
+- For non-deterministic (FOND) planning:
+```
+@inproceedings{ecai2023bdffgs,
+  author       = {Luigi Bonassi and
+                  Giuseppe {De Giacomo} and
+                  Marco Favorito and
+                  Francesco Fuggitti and
+                  {Alfonso Emilio} Gerevini and
+                  Enrico Scala},
+  title        = {{FOND} Planning for Pure-Past Linear Temporal Logic Goals},
+  booktitle    = {{ECAI}},
   year         = {2023},
 }
 ```
+
+## Awards :trophy:
+
+Plan4Past has been awarded the **Best Student Paper Award** at ICAPS 2023.
 
 ## Acknowledgements
 
