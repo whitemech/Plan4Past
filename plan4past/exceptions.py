@@ -32,10 +32,6 @@ class ProblemUnsolvableException(BasePlan4PastError):
     """Exception raised when the problem is unsolvable."""
 
 
-class MalformedExpression(BasePlan4PastError):
-    """Malformed expression exception."""
-
-
 class MappingParserError(BasePlan4PastError):
     """Mapping parser error."""
 
