@@ -138,37 +138,15 @@ def cli(
             "[WARNING] The dnf option works only with the adl encoding and will be ignored."
         )
 
-    if adl_encoding:
-        (
-            compiled_domain,
-            compiled_problem,
-            _before_mapping,
-        ) = _adl_compilation_entrypoint(
-            in_domain,
-            in_problem,
-            formula,
-            var_map,
-            build_dnf=build_dnf,
-            evaluate_pnf=False,
-        )
-
-    elif adl_encoding_plus:
-        (
-            compiled_domain,
-            compiled_problem,
-            _before_mapping,
-        ) = _adl_compilation_entrypoint(
-            in_domain,
-            in_problem,
-            formula,
-            var_map,
-            build_dnf=build_dnf,
-            evaluate_pnf=True,
-        )
-    else:
-        compiled_domain, compiled_problem = _compile_instance(
-            in_domain, in_problem, formula, var_map
-        )
+    compiled_domain, compiled_problem = _compile_instance(
+        in_domain,
+        in_problem,
+        formula,
+        var_map,
+        build_dnf,
+        adl_encoding,
+        adl_encoding_plus,
+    )
 
     try:
         with open(out_domain, "w+", encoding="utf-8") as d:
@@ -208,11 +186,41 @@ def _parse_instance(in_domain, in_problem, goal) -> Tuple[Domain, Problem, Formu
     return domain, problem, formula
 
 
-def _compile_instance(domain, problem, formula, mapping) -> Tuple[Domain, Problem]:
+def _compile_instance(
+    domain, problem, formula, mapping, build_dnf, adl_encoding, adl_encoding_plus
+) -> Tuple[Domain, Problem]:
     """Compile the PDDL domain and problem files and the PPLTL goal formula."""
-    compiler = Compiler(domain, problem, formula, mapping)
-    compiler.compile()
-    compiled_domain, compiled_problem = compiler.result
+    if adl_encoding:
+        (
+            compiled_domain,
+            compiled_problem,
+            _before_mapping,
+        ) = _adl_compilation_entrypoint(
+            domain,
+            problem,
+            formula,
+            mapping,
+            build_dnf=build_dnf,
+            evaluate_pnf=False,
+        )
+
+    elif adl_encoding_plus:
+        (
+            compiled_domain,
+            compiled_problem,
+            _before_mapping,
+        ) = _adl_compilation_entrypoint(
+            domain,
+            problem,
+            formula,
+            mapping,
+            build_dnf=build_dnf,
+            evaluate_pnf=True,
+        )
+    else:
+        compiler = Compiler(domain, problem, formula, mapping)
+        compiler.compile()
+        compiled_domain, compiled_problem = compiler.result
 
     return compiled_domain, compiled_problem
 
