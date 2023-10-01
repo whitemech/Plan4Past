@@ -845,21 +845,6 @@ files = [
 devel = ["colorama", "json-spec", "jsonschema", "pylint", "pytest", "pytest-benchmark", "pytest-cache", "validictory"]
 
 [[package]]
-name = "FDgrounder"
-version = "0.0.1"
-description = "FDgrounder"
-optional = false
-python-versions = "*"
-files = []
-develop = false
-
-[package.source]
-type = "git"
-url = "https://github.com/LBonassi95/downward/"
-reference = "only-grounder-lib"
-resolved_reference = "581ea830a60a934ceafcd00d0dda9d41fdfbefa1"
-
-[[package]]
 name = "filelock"
 version = "3.12.2"
 description = "A platform independent file lock."
@@ -4008,4 +3993,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.1,<4.0"
-content-hash = "8822b634c4f66f12fcbdddfd3ef2a20823fa2da1796a1611eeb05627e360e03f"
+content-hash = "f85f2cfc2e4f5cf12b8fb47e8ddab5e0ef10fb8541b6d3cf2d7bb381c3536070"
