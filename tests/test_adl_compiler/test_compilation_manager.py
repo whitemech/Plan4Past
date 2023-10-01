@@ -32,8 +32,8 @@ from pylogics.syntax.pltl import (
     Since,
 )
 
-from plan4past.helpers.before_atom_helper import Yatom_
 from plan4past.helpers.compilation_helper import CompilationManager
+from plan4past.helpers.yesterday_atom_helper import Yatom_
 from plan4past.utils.ppnf_visitor import ppnf
 from plan4past.utils.rewrite_formula_visitor import rewrite
 
@@ -45,91 +45,92 @@ e = Atomic("e")
 f = Atomic("f")
 
 
-def test_before_generation1() -> None:
-    """Test the generation of the before dictionary."""
+def test_yesterday_generation1() -> None:
+    """Test the generation of the yesterday dictionary."""
     phi = Or(Not(Once(Not(a))), Since(b, Not(Once(Not(c)))))
 
     compilation_manager = CompilationManager(phi)
 
-    before_dictionary = compilation_manager.before_dictionary
-    assert len(before_dictionary) == 3
-    assert Yatom_(Once(Not(a))) in before_dictionary
-    assert Yatom_(Since(b, Not(Once(Not(c))))) in before_dictionary
-    assert Yatom_(Once(Not(c))) in before_dictionary
+    yesterday_dictionary = compilation_manager.yesterday_dictionary
+    assert len(yesterday_dictionary) == 3
+    assert Yatom_(Once(Not(a))) in yesterday_dictionary
+    assert Yatom_(Since(b, Not(Once(Not(c))))) in yesterday_dictionary
+    assert Yatom_(Once(Not(c))) in yesterday_dictionary
 
 
-def test_before_generation2() -> None:
-    """Test the generation of the before dictionary."""
+def test_yesterday_generation2() -> None:
+    """Test the generation of the yesterday dictionary."""
     phi = Or(Not(Once(Not(a))), Since(b, Not(Once(Not(a)))))
 
     compilation_manager = CompilationManager(phi)
 
-    before_dictionary = compilation_manager.before_dictionary
-    assert len(before_dictionary) == 2
-    assert Yatom_(Once(Not(a))) in before_dictionary
-    assert Yatom_(Since(b, Not(Once(Not(a))))) in before_dictionary
+    yesterday_dictionary = compilation_manager.yesterday_dictionary
+    assert len(yesterday_dictionary) == 2
+    assert Yatom_(Once(Not(a))) in yesterday_dictionary
+    assert Yatom_(Since(b, Not(Once(Not(a))))) in yesterday_dictionary
 
 
-def test_before_generation3() -> None:
-    """Test the generation of the before dictionary."""
+def test_yesterday_generation3() -> None:
+    """Test the generation of the yesterday dictionary."""
     phi = Or(Not(Once(Not(And(a, b)))), Since(b, Not(Once(Not(And(b, a))))))
 
     compilation_manager = CompilationManager(phi)
 
-    before_dictionary = compilation_manager.before_dictionary
-    assert len(before_dictionary) == 2
-    assert Yatom_(Once(Not(And(a, b)))) in before_dictionary
-    assert Yatom_(Since(b, Not(Once(Not(And(b, a)))))) in before_dictionary
+    yesterday_dictionary = compilation_manager.yesterday_dictionary
+    assert len(yesterday_dictionary) == 2
+    assert Yatom_(Once(Not(And(a, b)))) in yesterday_dictionary
+    assert Yatom_(Since(b, Not(Once(Not(And(b, a)))))) in yesterday_dictionary
 
 
-def test_before_generation4() -> None:
-    """Test the generation of the before dictionary."""
+def test_yesterday_generation4() -> None:
+    """Test the generation of the yesterday dictionary."""
     phi = Or(Not(Once(Not(And(a, b)))), Before(Or(b, Since(c, d))))
 
     compilation_manager = CompilationManager(phi)
 
-    before_dictionary = compilation_manager.before_dictionary
-    assert len(before_dictionary) == 3
-    assert Yatom_(Once(Not(And(a, b)))) in before_dictionary
-    assert Yatom_(Before(Or(b, Since(c, d)))) not in before_dictionary
-    assert Yatom_(Or(b, Since(c, d))) in before_dictionary
-    assert Yatom_(Since(c, d)) in before_dictionary
+    yesterday_dictionary = compilation_manager.yesterday_dictionary
+    assert len(yesterday_dictionary) == 3
+    assert Yatom_(Once(Not(And(a, b)))) in yesterday_dictionary
+    assert Yatom_(Before(Or(b, Since(c, d)))) not in yesterday_dictionary
+    assert Yatom_(Or(b, Since(c, d))) in yesterday_dictionary
+    assert Yatom_(Since(c, d)) in yesterday_dictionary
 
 
-def test_before_generation5() -> None:
-    """Test the generation of the before dictionary."""
+def test_yesterday_generation5() -> None:
+    """Test the generation of the yesterday dictionary."""
     phi = Or(Once(And(a, b)), Before(Or(b, Not(Since(Not(c), Not(d))))))
 
     compilation_manager = CompilationManager(phi)
 
-    before_dictionary = compilation_manager.before_dictionary
-    assert len(before_dictionary) == 3
-    assert Yatom_(Once(And(a, b))) in before_dictionary
-    assert Yatom_(Before(Or(b, Not(Since(Not(c), Not(d)))))) not in before_dictionary
-    assert Yatom_(Or(b, Not(Since(Not(c), Not(d))))) in before_dictionary
-    assert Yatom_(Since(Not(c), Not(d))) in before_dictionary
+    yesterday_dictionary = compilation_manager.yesterday_dictionary
+    assert len(yesterday_dictionary) == 3
+    assert Yatom_(Once(And(a, b))) in yesterday_dictionary
+    assert Yatom_(Before(Or(b, Not(Since(Not(c), Not(d)))))) not in yesterday_dictionary
+    assert Yatom_(Or(b, Not(Since(Not(c), Not(d))))) in yesterday_dictionary
+    assert Yatom_(Since(Not(c), Not(d))) in yesterday_dictionary
 
 
-def test_before_generation6() -> None:
-    """Test the generation of the before dictionary."""
+def test_yesterday_generation6() -> None:
+    """Test the generation of the yesterday dictionary."""
     phi = Once(And(a, Before(Once(And(b, Before(Once(c)))))))
 
     compilation_manager = CompilationManager(phi)
 
-    before_dictionary = compilation_manager.before_dictionary
-    assert len(before_dictionary) == 3
+    yesterday_dictionary = compilation_manager.yesterday_dictionary
+    assert len(yesterday_dictionary) == 3
     assert (
-        Yatom_(Once(And(a, Before(Once(And(b, Before(Once(c)))))))) in before_dictionary
+        Yatom_(Once(And(a, Before(Once(And(b, Before(Once(c))))))))
+        in yesterday_dictionary
     )
-    assert Yatom_(Once(And(b, Before(Once(c))))) in before_dictionary
-    assert Yatom_(Once(c)) in before_dictionary
+    assert Yatom_(Once(And(b, Before(Once(c))))) in yesterday_dictionary
+    assert Yatom_(Once(c)) in yesterday_dictionary
 
-    assert Yatom_(Before(Once(And(b, Before(Once(c)))))) not in before_dictionary
-    assert Yatom_(Before(Once(c))) not in before_dictionary
+    assert Yatom_(Before(Once(And(b, Before(Once(c)))))) not in yesterday_dictionary
+    assert Yatom_(Before(Once(c))) not in yesterday_dictionary
 
 
-def test_before_generation7() -> None:
-    """Test the generation of the before dictionary."""
+def test_yesterday_generation7() -> None:
+    """Test the generation of the yesterday dictionary."""
     phi = Or(
         And(
             Before(a),
@@ -140,18 +141,19 @@ def test_before_generation7() -> None:
 
     compilation_manager = CompilationManager(phi)
 
-    before_dictionary = compilation_manager.before_dictionary
-    assert len(before_dictionary) == 5
-    assert Yatom_(a) in before_dictionary
-    assert Yatom_(b) in before_dictionary
+    yesterday_dictionary = compilation_manager.yesterday_dictionary
+    assert len(yesterday_dictionary) == 5
+    assert Yatom_(a) in yesterday_dictionary
+    assert Yatom_(b) in yesterday_dictionary
     assert (
-        Yatom_(Or(Not(Once(Not(c))), Not(Before(Atomic("true"))))) in before_dictionary
+        Yatom_(Or(Not(Once(Not(c))), Not(Before(Atomic("true")))))
+        in yesterday_dictionary
     )
-    assert Yatom_(Once(Not(c))) in before_dictionary
-    assert Yatom_(Atomic("true")) in before_dictionary
+    assert Yatom_(Once(Not(c))) in yesterday_dictionary
+    assert Yatom_(Atomic("true")) in yesterday_dictionary
 
-    assert Yatom_(Before(b)) not in before_dictionary
-    assert Yatom_(Before(a)) not in before_dictionary
+    assert Yatom_(Before(b)) not in yesterday_dictionary
+    assert Yatom_(Before(a)) not in yesterday_dictionary
 
 
 def test_pex1() -> None:
@@ -162,7 +164,7 @@ def test_pex1() -> None:
 
 
 def test_pex2() -> None:
-    """Test the PPNF translation for a before formula."""
+    """Test the PPNF translation for a yesterday formula."""
     phi = Before(a)
     result = ppnf(phi)
     assert result == Yatom_(a)
@@ -216,15 +218,17 @@ def test_pex_complex_formula1() -> None:
     cm = CompilationManager(phi)
     result = ppnf(phi)
 
-    before_once_a = Yatom_(Once(a))
-    before_since = Yatom_(Since(b, Before(Not(Once(Not(c))))))
-    before_once_not_c = Yatom_(Once(Not(c)))
-    before_not_once_not_c = Yatom_(Not(Once(Not(c))))
+    yesterday_once_a = Yatom_(Once(a))
+    yesterday_since = Yatom_(Since(b, Before(Not(Once(Not(c))))))
+    yesterday_once_not_c = Yatom_(Once(Not(c)))
+    yesterday_not_once_not_c = Yatom_(Not(Once(Not(c))))
 
-    assert len(cm.before_dictionary) == 4
-    assert cm.before_dictionary.get(before_once_not_c) is not None
+    assert len(cm.yesterday_dictionary) == 4
+    assert cm.yesterday_dictionary.get(yesterday_once_not_c) is not None
 
-    pex_phi = And(Or(a, before_once_a), Or(before_not_once_not_c, And(b, before_since)))
+    pex_phi = And(
+        Or(a, yesterday_once_a), Or(yesterday_not_once_not_c, And(b, yesterday_since))
+    )
     assert result == pex_phi
 
 
@@ -234,12 +238,12 @@ def test_pex_complex_formula2() -> None:
     cm = CompilationManager(phi)
     result = ppnf(phi)
 
-    assert len(cm.before_dictionary) == 2
+    assert len(cm.yesterday_dictionary) == 2
 
-    before_once = Yatom_(Once(And(a, Before(Once(b)))))
-    before_once_b = Yatom_(Once(b))
+    yesterday_once = Yatom_(Once(And(a, Before(Once(b)))))
+    yesterday_once_b = Yatom_(Once(b))
 
-    pex_phi = Or(And(a, before_once_b), before_once)
+    pex_phi = Or(And(a, yesterday_once_b), yesterday_once)
     assert result == pex_phi
 
 
@@ -326,10 +330,10 @@ def test_problem_extension_HH_Ha_Hb() -> None:
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
-    assert len(compilation_manager.before_dictionary) == 4
+    assert len(compilation_manager.yesterday_dictionary) == 4
 
     for y in temporalsubformulas:
-        assert y in compilation_manager.before_dictionary
+        assert y in compilation_manager.yesterday_dictionary
         assert y in fresh_atoms
 
     y = temporalsubformulas
@@ -356,10 +360,10 @@ def test_problem_extension_since():
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
-    assert len(compilation_manager.before_dictionary) == 5
+    assert len(compilation_manager.yesterday_dictionary) == 5
 
     for y in temporalsubformulas:
-        assert y in compilation_manager.before_dictionary
+        assert y in compilation_manager.yesterday_dictionary
         assert y in fresh_atoms
 
     y = temporalsubformulas
@@ -385,10 +389,10 @@ def test_problem_extension_since2() -> None:
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
-    assert len(compilation_manager.before_dictionary) == 5
+    assert len(compilation_manager.yesterday_dictionary) == 5
 
     for y in temporalsubformulas:
-        assert y in compilation_manager.before_dictionary
+        assert y in compilation_manager.yesterday_dictionary
         assert y in fresh_atoms
 
     y = temporalsubformulas
@@ -412,10 +416,10 @@ def test_problem_extension_once_blocks() -> None:
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
-    assert len(compilation_manager.before_dictionary) == 3
+    assert len(compilation_manager.yesterday_dictionary) == 3
 
     for y in temporalsubformulas:
-        assert y in compilation_manager.before_dictionary
+        assert y in compilation_manager.yesterday_dictionary
         assert y in fresh_atoms
 
     y = temporalsubformulas
@@ -439,10 +443,10 @@ def test_problem_extension_since3() -> None:
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
-    assert len(compilation_manager.before_dictionary) == 4
+    assert len(compilation_manager.yesterday_dictionary) == 4
 
     for y in temporalsubformulas:
-        assert y in compilation_manager.before_dictionary
+        assert y in compilation_manager.yesterday_dictionary
         assert y in fresh_atoms
 
     y = temporalsubformulas
@@ -470,10 +474,10 @@ def test_problem_extension_seq() -> None:
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
-    assert len(compilation_manager.before_dictionary) == 3
+    assert len(compilation_manager.yesterday_dictionary) == 3
 
     for y in temporalsubformulas:
-        assert y in compilation_manager.before_dictionary
+        assert y in compilation_manager.yesterday_dictionary
         assert y in fresh_atoms
 
     y = temporalsubformulas
@@ -498,10 +502,10 @@ def test_problem_extension_robot1() -> None:
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
-    assert len(compilation_manager.before_dictionary) == 5
+    assert len(compilation_manager.yesterday_dictionary) == 5
 
     for y in temporalsubformulas:
-        assert y in compilation_manager.before_dictionary
+        assert y in compilation_manager.yesterday_dictionary
         assert y in fresh_atoms
 
     y = temporalsubformulas
@@ -523,10 +527,10 @@ def test_problem_extension_robot2() -> None:
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
-    assert len(compilation_manager.before_dictionary) == 2
+    assert len(compilation_manager.yesterday_dictionary) == 2
 
     for y in temporalsubformulas:
-        assert y in compilation_manager.before_dictionary
+        assert y in compilation_manager.yesterday_dictionary
         assert y in fresh_atoms
 
     y = temporalsubformulas

@@ -39,15 +39,15 @@ from pylogics.syntax.pltl import FalseFormula, PropositionalTrue
 from pylogics.utils.to_string import to_string
 
 from plan4past.exceptions import ProblemUnsolvableException
-from plan4past.helpers.before_atom_helper import QUOTED_ATOM
-from plan4past.helpers.compilation_helper import BeforeAtom, CompilationManager
+from plan4past.helpers.compilation_helper import CompilationManager, YesterdayAtom
 from plan4past.helpers.utils import (
     add_val_prefix,
     check_,
     default_mapping,
-    remove_before_prefix,
+    remove_yesterday_prefix,
     replace_symbols,
 )
+from plan4past.helpers.yesterday_atom_helper import QUOTED_ATOM
 from plan4past.utils.atoms_visitor import find_atoms
 from plan4past.utils.derived_visitor import derived_predicates
 from plan4past.utils.dnf_visitor import dnf
@@ -182,10 +182,10 @@ class Compiler:
 def _compute_whens(formula: Formula) -> Set[When]:
     """Compute conditional effects for formula progression."""
     return {
-        When(Predicate(add_val_prefix(remove_before_prefix(p.name))), p)
+        When(Predicate(add_val_prefix(remove_yesterday_prefix(p.name))), p)
         for p in predicates(formula)
     }.union(
-        When(Not(Predicate(add_val_prefix(remove_before_prefix(p.name)))), Not(p))
+        When(Not(Predicate(add_val_prefix(remove_yesterday_prefix(p.name)))), Not(p))
         for p in predicates(formula)
     )
 
@@ -261,9 +261,9 @@ class ADLCompiler(Compiler):
             )
 
         self._fresh_atoms = None
-        self._before_mapping = None
+        self._yesterday_mapping = None
         self.evaluate_pnf = evaluate_pnf
-        self._before_dictionary: Optional[Dict[BeforeAtom, PLTLAtomic]] = None
+        self._yesterday_dictionary: Optional[Dict[YesterdayAtom, PLTLAtomic]] = None
         self.goal_predicate = GOAL_PREDICATE
         self.check_predicate = CHECK_PREDICATE
         self.simplify_disj_goal = simplify_disj_goal
@@ -276,11 +276,11 @@ class ADLCompiler(Compiler):
         return self._result_domain, self._result_problem
 
     @property
-    def before_mapping(self) -> str:
-        """Get the mapping of the before atoms."""
-        if self._before_mapping is None:
+    def yesterday_mapping(self) -> str:
+        """Get the mapping of the yesterday atoms."""
+        if self._yesterday_mapping is None:
             raise ValueError("compilation not executed yet")
-        return self._before_mapping
+        return self._yesterday_mapping
 
     def compile(self):
         """Compute the new domain and the new problem."""
@@ -291,8 +291,8 @@ class ADLCompiler(Compiler):
         new_fluents, new_effs, new_goal = cm.get_problem_extension()
         new_fluents.append(TRUE_ATOM)
         self._fresh_atoms = set(new_fluents)
-        self._before_mapping = cm.get_before_mapping()
-        self._before_dictionary = cm.before_dictionary
+        self._yesterday_mapping = cm.get_yesterday_mapping()
+        self._yesterday_dictionary = cm.yesterday_dictionary
 
         self._compile_domain(new_fluents, new_effs, new_goal)
         self._compile_problem()
@@ -390,8 +390,8 @@ class ADLCompiler(Compiler):
         if isinstance(formula, PLTLAtomic):
             if self._fresh_atoms is not None and formula in self._fresh_atoms:
                 return (
-                    Predicate(self._before_dictionary[formula].name, *[])
-                    if isinstance(formula, BeforeAtom)
+                    Predicate(self._yesterday_dictionary[formula].name, *[])
+                    if isinstance(formula, YesterdayAtom)
                     else Predicate(formula.name, *[])
                 )
             predicate = self.from_atoms_to_fluent.get(PLTLAtomic(formula.name), None)
@@ -472,13 +472,13 @@ def _update_domain_actions_with_check(
     pnf_delete_effects = []
 
     for eff in positive_effects:
-        before_effect = eff.effect
-        check_(isinstance(before_effect, Predicate))
-        pnf_predicate = Predicate(before_effect.name.replace(QUOTED_ATOM, PNF), *[])
+        yesterday_effect = eff.effect
+        check_(isinstance(yesterday_effect, Predicate))
+        pnf_predicate = Predicate(yesterday_effect.name.replace(QUOTED_ATOM, PNF), *[])
         pnf_evaluation_effects.append(When(eff.condition, pnf_predicate))
         pnf_delete_effects.append(Not(pnf_predicate))
-        qouted_update_effects.append(When(pnf_predicate, before_effect))
-        qouted_update_effects.append(When(Not(pnf_predicate), Not(before_effect)))
+        qouted_update_effects.append(When(pnf_predicate, yesterday_effect))
+        qouted_update_effects.append(When(Not(pnf_predicate), Not(yesterday_effect)))
         new_predicates.append(pnf_predicate)
 
     goal_fluent = compiler.goal_predicate

@@ -107,7 +107,7 @@ def val_predicates_not(formula: PLTLNot) -> Set[Predicate]:
 
 
 @val_predicates.register
-def val_predicates_before(formula: Before) -> Set[Predicate]:
+def val_predicates_yesterday(formula: Before) -> Set[Predicate]:
     """Compute the value predicate for a Before (Yesterday) formula."""
     formula_name = replace_symbols(to_string(formula))
     value = Predicate(add_val_prefix(formula_name))

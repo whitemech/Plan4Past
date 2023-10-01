@@ -32,7 +32,7 @@ from pylogics.syntax.pltl import Atomic, Once
 from plan4past.compiler import ADLCompiler
 from plan4past.compiler import Not as pddlNot
 from plan4past.compiler import When
-from plan4past.helpers.before_atom_helper import Yatom_
+from plan4past.helpers.yesterday_atom_helper import Yatom_
 
 
 def test_pddl_compilation() -> None:

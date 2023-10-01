@@ -98,7 +98,7 @@ def predicates_not(formula: PLTLNot) -> Set[Predicate]:
 
 
 @predicates.register
-def predicates_before(formula: Before) -> Set[Predicate]:
+def predicates_yesterday(formula: Before) -> Set[Predicate]:
     """Compute predicate for a Before (Yesterday) formula."""
     quoted = Predicate(replace_symbols(to_string(formula)))
     sub = predicates_unaryop(formula)

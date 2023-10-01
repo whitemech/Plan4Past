@@ -66,11 +66,11 @@ def test_find_atoms_or():
     assert find_atoms(a | b) == {a, b}
 
 
-def test_find_atoms_before():
-    """Test find_atoms for a before formula."""
+def test_find_atoms_yesterday():
+    """Test find_atoms for a yesterday formula."""
     a = PLTLAtomic("a")
-    before_a = Before(a)
-    assert find_atoms(before_a) == {a}
+    yesterday_a = Before(a)
+    assert find_atoms(yesterday_a) == {a}
 
 
 def test_find_atoms_since():

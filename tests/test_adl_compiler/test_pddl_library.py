@@ -52,7 +52,7 @@ def test_pddl_conversion() -> None:
     compiler.compile()
 
     _compiled_domain, _compiled_problem = compiler.result
-    assert compiler._before_mapping is not None  # pylint: disable=protected-access
+    assert compiler._yesterday_mapping is not None  # pylint: disable=protected-access
 
 
 def test_pddl_conversion2() -> None:
@@ -75,7 +75,7 @@ def test_pddl_conversion2() -> None:
     compiler.compile()
 
     _compiled_domain, _compiled_problem = compiler.result
-    assert compiler._before_mapping is not None  # pylint: disable=protected-access
+    assert compiler._yesterday_mapping is not None  # pylint: disable=protected-access
 
 
 def test_unsat_expression() -> None:

@@ -30,8 +30,8 @@ from plan4past.helpers.utils import (
     add_val_prefix,
     check_,
     default_mapping,
-    remove_before_prefix,
     remove_val_prefix,
+    remove_yesterday_prefix,
 )
 
 
@@ -41,10 +41,10 @@ def test_default_mapping() -> None:
     p_b_c = PLTLAtomic("p_b_c")
     p_c_d = PLTLAtomic("p_c_d")
     p2 = PLTLAtomic("p2")
-    before_p_a_b = Before(p_a_b)
+    yesterday_p_a_b = Before(p_a_b)
     p_b_c_since_p_c_d = Since(p_b_c, p_c_d)
 
-    result = default_mapping(before_p_a_b & p_b_c_since_p_c_d & p2)
+    result = default_mapping(yesterday_p_a_b & p_b_c_since_p_c_d & p2)
     assert result == {
         p_a_b: Predicate("p", *constants("a b")),
         p_b_c: Predicate("p", *constants("b c")),
@@ -61,11 +61,11 @@ def test_val_prefix() -> None:
     assert add_val_prefix("Y-foo-bar") == "val-Y-foo-bar"
 
 
-def test_remove_before_prefix() -> None:
-    """Test the remove_before_prefix function."""
-    assert remove_before_prefix("Y-foo") == "foo"
-    assert remove_before_prefix("Yfoo") == "foo"
-    assert remove_before_prefix("foo") == "foo"
+def test_remove_yesterday_prefix() -> None:
+    """Test the remove_yesterday_prefix function."""
+    assert remove_yesterday_prefix("Y-foo") == "foo"
+    assert remove_yesterday_prefix("Yfoo") == "foo"
+    assert remove_yesterday_prefix("foo") == "foo"
 
 
 def test_remove_val_prefix() -> None:

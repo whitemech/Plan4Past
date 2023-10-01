@@ -95,19 +95,19 @@ def test_val_predicates_visitor_not():
     assert val_predicates(~a) == {val_not_a, val_a}
 
 
-def test_val_predicates_visitor_before():
-    """Test the val predicates visitor for the before formula."""
+def test_val_predicates_visitor_yesterday():
+    """Test the val predicates visitor for the yesterday formula."""
     a = PLTLAtomic("a")
-    before_a = Before(a)
+    yesterday_a = Before(a)
 
-    val_before_a = Predicate(add_val_prefix("Ya"))
+    val_yesterday_a = Predicate(add_val_prefix("Ya"))
     val_a = Predicate(add_val_prefix(a.name))
 
-    assert val_predicates(before_a) == {val_before_a, val_a}
+    assert val_predicates(yesterday_a) == {val_yesterday_a, val_a}
 
 
 def test_val_predicates_visitor_since():
-    """Test the val predicates visitor for the before formula."""
+    """Test the val predicates visitor for the yesterday formula."""
     a = PLTLAtomic("a")
     b = PLTLAtomic("b")
     c = PLTLAtomic("c")

@@ -101,15 +101,15 @@ def test_rewrite_formula_visitor_equivalence():
     assert rewrite(PLTLEquivalence(a, b)) == ((a & b) | (~a & ~b))
 
 
-def test_rewrite_formula_visitor_before():
-    """Test the rewrite formula visitor for the before formula."""
+def test_rewrite_formula_visitor_yesterday():
+    """Test the rewrite formula visitor for the yesterday formula."""
     a = PLTLAtomic("a")
-    before_a = Before(a)
-    assert rewrite(before_a) == before_a
+    yesterday_a = Before(a)
+    assert rewrite(yesterday_a) == yesterday_a
 
 
 def test_rewrite_formula_visitor_since():
-    """Test the rewrite formula visitor for the before formula."""
+    """Test the rewrite formula visitor for the yesterday formula."""
     a = PLTLAtomic("a")
     b = PLTLAtomic("b")
     c = PLTLAtomic("c")
