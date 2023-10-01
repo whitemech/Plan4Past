@@ -22,37 +22,15 @@
 
 """Mapping parser."""
 import re
-from typing import Dict, Optional, Sequence, Set, Tuple
+from typing import Dict, Sequence, Set, Tuple
 
 from pddl.custom_types import name
 from pddl.logic import Constant, Predicate, constants
 from pylogics.syntax.base import Formula
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
 
+from plan4past.exceptions import MappingParserError
 from plan4past.utils.atoms_visitor import find_atoms
-
-
-class MappingParserError(Exception):
-    """Mapping parser error."""
-
-    def __init__(self, message: str, *args, row_id: Optional[int] = None) -> None:
-        """
-        Initialize a mapping parser error.
-
-        :param message: the error message
-        :param args: the error message arguments
-        :param row_id: the row id
-        """
-        self.row_id = row_id
-
-        super().__init__(self._make_message_prefix() + message, *args)
-
-    def _make_message_prefix(self) -> str:
-        """Make the message prefix."""
-        if self.row_id is None:
-            return "invalid mapping: "
-        return f"invalid mapping at row {self.row_id}: "
-
 
 SYMBOL_REGEX = re.compile("[a-z_]([a-zA-Z0-9_-]+[a-zA-Z0-9_])|[a-z_][a-zA-Z0-9_]*")
 """The following is a sub-regex of AtomName.REGEX in pylogics.syntax.base."""

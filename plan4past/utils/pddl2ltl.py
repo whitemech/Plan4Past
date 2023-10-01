@@ -24,12 +24,8 @@
 
 from FDgrounder.pddl_parser.lisp_parser import parse_nested_list
 
+from plan4past.exceptions import MalformedExpression
 from plan4past.helpers.utils import check_
-
-
-class MalformedExpression(Exception):
-    """Malformed expression exception."""
-
 
 PDDL_NOT = "not"
 PDDL_AND = "and"

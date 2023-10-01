@@ -38,6 +38,7 @@ from pylogics.syntax.pltl import Atomic as PLTLAtomic
 from pylogics.syntax.pltl import FalseFormula, PropositionalTrue
 from pylogics.utils.to_string import to_string
 
+from plan4past.exceptions import ProblemUnsolvableException
 from plan4past.helpers.before_atom_helper import QUOTED_ATOM
 from plan4past.helpers.compilation_helper import BeforeAtom, CompilationManager
 from plan4past.helpers.utils import (
@@ -215,14 +216,6 @@ def _update_domain_actions_det(
                 )
             )
     return new_actions
-
-
-class ProblemUnsolvableException(Exception):
-    """Exception raised when the problem is unsolvable."""
-
-    def __init__(self, *args: object) -> None:
-        """Initialize the exception."""
-        super().__init__(*args)
 
 
 PNF = "pnf"
