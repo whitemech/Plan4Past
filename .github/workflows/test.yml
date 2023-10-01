@@ -19,6 +19,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@main
+      with:
+        submodules: recursive
     - uses: actions/setup-python@main
       with:
         python-version: ${{ matrix.python-version }}
