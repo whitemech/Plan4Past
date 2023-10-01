@@ -20,7 +20,7 @@
 # along with Plan4Past.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-"""Pnf visitor."""
+"""PPNF visitor."""
 
 from functools import singledispatch
 

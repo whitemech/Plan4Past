@@ -429,8 +429,8 @@ def _update_domain_actions_with_check(
                 not (a or "YO(a)") -> not "YO(a)"
                 ...
 
-        The optmized compilation introduced a set of "pnf_i" variables to encapsulate the complex formulas
-        deriving from the pnf of a PPLTL formula. Hence, the optimized encodind of the above action becomes:
+        The optmized compilation introduces a set of "pnf_i" variables to encapsulate the complex formulas
+        deriving from the pnf of a PPLTL formula. Hence, the optimized encoding of the action above becomes:
 
         (:action ACTION
             Pre: ...
