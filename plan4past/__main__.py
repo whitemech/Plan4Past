@@ -104,7 +104,7 @@ DEFAULT_NEW_PROBLEM_FILENAME: str = "new-problem.pddl"
     "--build-dnf",
     default=False,
     is_flag=True,
-    help="Use the dnf representation to simplify disjunctive goals resulting from the adl encodings.",
+    help="Use the DNF representation to simplify disjunctive goals resulting from the adl encodings.",
     type=bool,
 )
 def cli(
