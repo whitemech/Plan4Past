@@ -192,6 +192,9 @@ class TestOpenStacksDet(BaseCompilerTest):
     @pytest.mark.parametrize(
         "instance_id", list(range(MIN_INSTANCE_ID, MAX_INSTANCE_ID + 1))
     )
-    def test_run(self, instance_id, val, default_planner):
+    @BaseCompilerTest.parametrize_compiler()
+    def test_run(self, instance_id, compiler_builder, val, default_planner):
         """Test the instance with the given id."""
-        self._test_instance(instance_id, val=val, planner=default_planner)
+        self._test_instance(
+            instance_id, compiler_builder, val=val, planner=default_planner
+        )

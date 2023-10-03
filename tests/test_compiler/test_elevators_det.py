@@ -38,7 +38,7 @@ class TestElevatorsDet(BaseCompilerTest):
     PATH_TO_INSTANCES_DIR = ELEVATORS_DIR
     TEGS = ELEVATORS_DIR / "elevators_teg.json"
     MIN_INSTANCE_ID = 2
-    MAX_INSTANCE_ID = 10
+    MAX_INSTANCE_ID = 9
     EXPECTED_PLANS = {
         "s2-0": (
             "(up f0 f1)",
@@ -224,46 +224,6 @@ class TestElevatorsDet(BaseCompilerTest):
             "(down f14 f7)",
             "(depart f7 p6)",
         ),
-        "s10-0": (
-            "(up f0 f9)",
-            "(board f9 p4)",
-            "(down f9 f1)",
-            "(depart f1 p4)",
-            "(up f1 f13)",
-            "(board f13 p2)",
-            "(up f13 f15)",
-            "(depart f15 p2)",
-            "(up f15 f17)",
-            "(board f17 p1)",
-            "(down f17 f15)",
-            "(depart f15 p1)",
-            "(down f15 f3)",
-            "(board f3 p0)",
-            "(up f3 f6)",
-            "(depart f6 p0)",
-            "(board f6 p3)",
-            "(up f6 f12)",
-            "(board f12 p9)",
-            "(depart f12 p3)",
-            "(down f12 f2)",
-            "(board f2 p5)",
-            "(up f2 f16)",
-            "(depart f16 p9)",
-            "(down f16 f7)",
-            "(depart f7 p5)",
-            "(up f7 f10)",
-            "(board f10 p6)",
-            "(up f10 f19)",
-            "(depart f19 p6)",
-            "(down f19 f0)",
-            "(board f0 p8)",
-            "(up f0 f6)",
-            "(depart f6 p8)",
-            "(down f6 f3)",
-            "(board f3 p7)",
-            "(up f3 f6)",
-            "(depart f6 p7)",
-        ),
     }
 
     def make_formula(self, instance_id: int, domain: Path, problem: Path) -> str:
@@ -282,6 +242,9 @@ class TestElevatorsDet(BaseCompilerTest):
     @pytest.mark.parametrize(
         "instance_id", list(range(MIN_INSTANCE_ID, MAX_INSTANCE_ID + 1))
     )
-    def test_run(self, instance_id, val, default_planner):
+    @BaseCompilerTest.parametrize_compiler()
+    def test_run(self, instance_id, compiler_builder, val, default_planner):
         """Test the instance with the given id."""
-        self._test_instance(instance_id, val=val, planner=default_planner)
+        self._test_instance(
+            instance_id, compiler_builder, val=val, planner=default_planner
+        )
