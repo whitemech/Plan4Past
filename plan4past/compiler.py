@@ -49,12 +49,7 @@ from plan4past.helpers.compilation_helper import (
     PredicateMapping,
     YesterdayAtom,
 )
-from plan4past.helpers.utils import (
-    add_val_prefix,
-    check_,
-    default_mapping,
-    remove_yesterday_prefix,
-)
+from plan4past.helpers.utils import add_val_prefix, check_, default_mapping
 from plan4past.helpers.yesterday_atom_helper import QUOTED_ATOM
 from plan4past.utils.atoms_visitor import find_atoms
 from plan4past.utils.derived_visitor import DerivedPredicatesVisitor
@@ -201,20 +196,14 @@ def _compute_whens(predicates: Set[Predicate], mapping: PredicateMapping) -> Set
     """Compute conditional effects for formula progression."""
     result: Set[When] = set()
     for p in predicates:
-        if p.name.startswith("Y-"):
-            present_predicate = Predicate(
-                add_val_prefix(remove_yesterday_prefix(p.name))
-            )
+        formula = mapping.inverse_mapping[p]
+        if isinstance(formula, Before):
+            arg_predicate = mapping.mapping[formula.argument]
+            present_predicate = Predicate(add_val_prefix(arg_predicate.name))
             past_predicate = p
         else:
-            formula = mapping.inverse_mapping[p]
-            if isinstance(formula, Before):
-                arg_predicate = mapping.mapping[formula.argument]
-                present_predicate = Predicate(add_val_prefix(arg_predicate.name))
-                past_predicate = p
-            else:
-                present_predicate = Predicate(add_val_prefix(p.name))
-                past_predicate = p
+            present_predicate = Predicate(add_val_prefix(p.name))
+            past_predicate = p
 
         positive_when = When(present_predicate, past_predicate)
         negative_when = When(Not(present_predicate), Not(past_predicate))

@@ -209,13 +209,13 @@ def test_derived_predicates_visitor_since(derived_predicates_visitor):
     c = PLTLAtomic("c")
     a_since_b_since_c = Since(a, b, c)
 
-    val_a = Predicate(add_val_prefix("quoted_2"))
-    val_b = Predicate(add_val_prefix("quoted_4"))
-    val_c = Predicate(add_val_prefix("quoted_3"))
+    val_a = Predicate(add_val_prefix("quoted_3"))
+    val_b = Predicate(add_val_prefix("quoted_6"))
+    val_c = Predicate(add_val_prefix("quoted_5"))
     val_a_since_b_since_c = Predicate(add_val_prefix("quoted_0"))
-    val_b_since_c = Predicate(add_val_prefix("quoted_1"))
-    Y_a_since_b_since_c = Predicate("Y-quoted_0")
-    Y_b_since_c = Predicate("Y-quoted_1")
+    val_b_since_c = Predicate(add_val_prefix("quoted_2"))
+    Y_a_since_b_since_c = Predicate("quoted_1")
+    Y_b_since_c = Predicate("quoted_4")
 
     condition_a = Predicate("p", Constant("a"))
     condition_b = Predicate("p", Constant("b"))
@@ -240,9 +240,9 @@ def test_derived_predicates_visitor_once(derived_predicates_visitor):
     a = PLTLAtomic("a")
     once_a = Once(a)
 
-    val_a = Predicate(add_val_prefix("quoted_1"))
+    val_a = Predicate(add_val_prefix("quoted_2"))
     val_once_a = Predicate(add_val_prefix("quoted_0"))
-    Y_once_a = Predicate("Y-quoted_0")
+    Y_once_a = Predicate("quoted_1")
 
     condition_a = Predicate("p", Constant("a"))
     condition_once_a = Or(val_a, Y_once_a)

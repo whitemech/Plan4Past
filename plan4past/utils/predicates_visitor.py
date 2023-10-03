@@ -109,15 +109,15 @@ class PredicatesVisitor:  # pylint: disable=R0801
             head = formula.operands[0]
             tail = Since(*formula.operands[1:])
             return self.visit(Since(head, tail))
-        predicate = self._predicate_mapping.get_predicate(formula)
-        quoted = Predicate(f"Y-{predicate.name}")
+        yesterday_predicate = self._predicate_mapping.get_predicate(Before(formula))
+        quoted = Predicate(yesterday_predicate.name)
         subsinces = self.predicates_binaryop(formula)
         return {quoted}.union(subsinces)
 
     @visit.register
     def predicates_once(self, formula: Once) -> Set[Predicate]:
         """Compute predicate for a Once formula."""
-        predicate = self._predicate_mapping.get_predicate(formula)
-        quoted = Predicate(f"Y-{predicate.name}")
+        yesterday_predicate = self._predicate_mapping.get_predicate(Before(formula))
+        quoted = Predicate(yesterday_predicate.name)
         sub = self.predicates_unaryop(formula)
         return sub.union({quoted})

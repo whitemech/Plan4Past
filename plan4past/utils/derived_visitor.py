@@ -147,13 +147,14 @@ class DerivedPredicatesVisitor:
             tail = Since(*formula.operands[1:])
             return self.visit(Since(head, tail))
         predicate = self._predicate_mapping.get_predicate(formula)
+        yesterday_predicate = self._predicate_mapping.get_predicate(Before(formula))
         val = Predicate(add_val_prefix(predicate.name))
         op_or_1_predicate = self._predicate_mapping.get_predicate(formula.operands[1])
         op_or_1 = Predicate(add_val_prefix(op_or_1_predicate.name))
         op_or_2_predicate = self._predicate_mapping.get_predicate(formula.operands[0])
         op_or_2 = And(
             Predicate(add_val_prefix(op_or_2_predicate.name)),
-            Predicate(f"Y-{predicate.name}"),
+            Predicate(yesterday_predicate.name),
         )
         condition = Or(op_or_1, op_or_2)
         der_pred_ops = [self.visit(op) for op in formula.operands]
@@ -163,11 +164,12 @@ class DerivedPredicatesVisitor:
     def derived_predicates_once(self, formula: Once) -> Set[DerivedPredicate]:
         """Compute the derived predicate for a Once formula."""
         predicate = self._predicate_mapping.get_predicate(formula)
+        yesterday_predicate = self._predicate_mapping.get_predicate(Before(formula))
         val = Predicate(add_val_prefix(predicate.name))
         arg_predicate = self._predicate_mapping.get_predicate(formula.argument)
         condition = Or(
             Predicate(add_val_prefix(arg_predicate.name)),
-            Predicate(f"Y-{predicate.name}"),
+            Predicate(yesterday_predicate.name),
         )
         der_pred_arg = self.visit(formula.argument)
         return {DerivedPredicate(val, condition)}.union(der_pred_arg)

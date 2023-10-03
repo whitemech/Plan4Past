@@ -104,8 +104,8 @@ def test_predicates_visitor_since(predicates_visitor):
     c = PLTLAtomic("c")
     a_since_b_since_c = Since(a, b, c)
     assert predicates_visitor.visit(a_since_b_since_c) == {
-        Predicate("Y-quoted_0"),
-        Predicate("Y-quoted_1"),
+        Predicate("quoted_0"),
+        Predicate("quoted_1"),
     }
 
 
@@ -113,4 +113,4 @@ def test_predicates_visitor_once(predicates_visitor):
     """Test the predicates visitor for the once formula."""
     a = PLTLAtomic("a")
     once_a = Once(a)
-    assert predicates_visitor.visit(once_a) == {Predicate("Y-quoted_0")}
+    assert predicates_visitor.visit(once_a) == {Predicate("quoted_0")}
