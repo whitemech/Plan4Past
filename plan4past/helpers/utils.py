@@ -35,17 +35,6 @@ def add_val_prefix(name: str):
     return "val-" + name.replace('"', "")
 
 
-def remove_yesterday_prefix(name: str):
-    """Remove the 'Y' prefix."""
-    return (
-        name.replace("Y-", "")
-        if name.startswith("Y-")
-        else name.replace("Y", "", 1)
-        if name.startswith("Y")
-        else name
-    )
-
-
 def remove_val_prefix(name: str):
     """Remove the 'prime' prefix."""
     return name.replace("val-", "") if name.startswith("val-") else name

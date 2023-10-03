@@ -20,8 +20,9 @@
 # along with Plan4Past.  If not, see <https://www.gnu.org/licenses/>.
 #
 """This module contains the class that manages the compilation of a PPLTL formula."""
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
+from pddl.logic import Predicate
 from pylogics.syntax.base import Formula, Not
 from pylogics.syntax.pltl import (
     Atomic,
@@ -33,7 +34,7 @@ from pylogics.syntax.pltl import (
 )
 
 from plan4past.helpers.utils import check_
-from plan4past.helpers.yesterday_atom_helper import YesterdayAtom
+from plan4past.helpers.yesterday_atom_helper import QUOTED_ATOM, YesterdayAtom
 from plan4past.utils.ppnf_visitor import ppnf
 from plan4past.utils.yesterday_generator_visitor import get_quoted_dictionary
 
@@ -108,3 +109,46 @@ class CompilationManager:
             conditional_effects.append((ppnf(yesterday_atom.formula), yesterday_atom))
 
         return fresh_atoms, conditional_effects, goal
+
+
+class PredicateMapping:
+    """Class that manages the mapping of the predicates."""
+
+    def __init__(self):
+        """Initialize the predicate mapping."""
+        self.mapping: Dict[Formula, Predicate] = {}
+        self.inverse_mapping: Dict[Predicate, Formula] = {}
+        self.id = 0
+
+    def add_predicate(self, formula: Formula) -> None:
+        """
+        Add a predicate to the mapping.
+
+        :param formula: the formula to be added
+        """
+        if self.mapping.get(formula) is None:
+            self.mapping[formula] = Predicate(f"{QUOTED_ATOM}_{self.id}")
+            self.inverse_mapping[self.mapping[formula]] = formula
+            self.id += 1
+
+    def get_predicate(self, formula: Formula) -> Predicate:
+        """
+        Get the predicate from the mapping.
+
+        :param formula: the formula to be added
+        :return: the predicate
+        """
+        result = self.mapping.get(formula)
+        if result is None:
+            self.add_predicate(formula)
+        return self.mapping[formula]
+
+    def get_formula(self, predicate: Predicate) -> Formula:
+        """
+        Get the formula from the inverse mapping.
+
+        :param predicate: the predicate to be added
+        :return: the formula
+        """
+        check_(predicate in self.inverse_mapping, f"predicate {predicate} not found")
+        return self.inverse_mapping[predicate]

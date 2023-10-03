@@ -21,7 +21,7 @@
 #
 
 """This module contains tests for the plan4past.utils.derived_visitor module."""
-from typing import Set
+from typing import Dict, Set
 
 import pytest
 from pddl.logic import Constant
@@ -36,8 +36,32 @@ from pylogics.syntax.pltl import (
     Since,
 )
 
+from plan4past.helpers.compilation_helper import PredicateMapping
 from plan4past.helpers.utils import add_val_prefix
-from plan4past.utils.derived_visitor import derived_predicates
+from plan4past.utils.derived_visitor import DerivedPredicatesVisitor
+
+# pylint: disable=redefined-outer-name
+
+
+@pytest.fixture(scope="function")
+def mapping_from_atoms_to_fluent() -> Dict:
+    """Map atoms to fluents for tests in this module."""
+    a = PLTLAtomic("a")
+    b = PLTLAtomic("b")
+    c = PLTLAtomic("c")
+    condition_a = Predicate("p", Constant("a"))
+    condition_b = Predicate("p", Constant("b"))
+    condition_c = Predicate("p", Constant("c"))
+    return {a: condition_a, b: condition_b, c: condition_c}
+
+
+@pytest.fixture(scope="function")
+def derived_predicates_visitor(
+    mapping_from_atoms_to_fluent,
+) -> DerivedPredicatesVisitor:
+    """Return a val predicates visitor."""
+    m = PredicateMapping()
+    return DerivedPredicatesVisitor(m, mapping_from_atoms_to_fluent)
 
 
 def _eq_pred(a_pred: DerivedPredicate, b_pred: DerivedPredicate) -> bool:
@@ -57,44 +81,45 @@ def _eq(a: Set[DerivedPredicate], b: Set[DerivedPredicate]) -> bool:
     return True
 
 
-def test_derived_predicates_visitor_not_implemented_fail():
+def test_derived_predicates_visitor_not_implemented_fail(derived_predicates_visitor):
     """Test the derived predicates visitor when the input argument is not supported."""
     with pytest.raises(
-        NotImplementedError, match="handler not implemented for object <class 'int'>"
+        NotImplementedError,
+        match="handler not implemented for object of type <class 'int'>",
     ):
-        derived_predicates(1, {})
+        derived_predicates_visitor.visit(1)
 
 
-def test_derived_predicates_visitor_true():
+def test_derived_predicates_visitor_true(derived_predicates_visitor):
     """Test the derived predicates visitor for the propositional true."""
-    val = Predicate(add_val_prefix("true"))
+    val = Predicate(add_val_prefix("quoted_0"))
     expected = {DerivedPredicate(val, And())}
 
-    actual = derived_predicates(PropositionalTrue(), {})
+    actual = derived_predicates_visitor.visit(PropositionalTrue())
     assert _eq(actual, expected)
 
 
-def test_derived_predicates_visitor_false():
+def test_derived_predicates_visitor_false(derived_predicates_visitor):
     """Test the derived predicates visitor for the propositional false."""
-    val = Predicate(add_val_prefix("false"))
+    val = Predicate(add_val_prefix("quoted_0"))
     expected = {DerivedPredicate(val, Or())}
 
-    actual = derived_predicates(PropositionalFalse(), {})
+    actual = derived_predicates_visitor.visit(PropositionalFalse())
     assert _eq(actual, expected)
 
 
-def test_derived_predicates_visitor_atomic():
+def test_derived_predicates_visitor_atomic(derived_predicates_visitor):
     """Test the derived predicates visitor for the atomic formula."""
     a = PLTLAtomic("a")
-    val = Predicate(add_val_prefix("a"))
+    val = Predicate(add_val_prefix("quoted_0"))
     condition = Predicate("p", Constant("a"))
     expected = {DerivedPredicate(val, condition)}
 
-    actual = derived_predicates(a, {a: condition})
+    actual = derived_predicates_visitor.visit(a)
     assert _eq(actual, expected)
 
 
-def test_derived_predicates_visitor_and():
+def test_derived_predicates_visitor_and(derived_predicates_visitor):
     """Test the derived predicates visitor for the and formula."""
     a = PLTLAtomic("a")
     b = PLTLAtomic("b")
@@ -102,9 +127,9 @@ def test_derived_predicates_visitor_and():
     condition_a = Predicate("p", Constant("a"))
     condition_b = Predicate("p", Constant("b"))
 
-    val = Predicate(add_val_prefix("a-and-b"))
-    val_a = Predicate(add_val_prefix("a"))
-    val_b = Predicate(add_val_prefix("b"))
+    val = Predicate(add_val_prefix("quoted_0"))
+    val_a = Predicate(add_val_prefix("quoted_1"))
+    val_b = Predicate(add_val_prefix("quoted_2"))
 
     condition = And(val_a, val_b)
 
@@ -114,11 +139,11 @@ def test_derived_predicates_visitor_and():
         DerivedPredicate(val_b, condition_b),
     }
 
-    actual = derived_predicates(a & b, {a: condition_a, b: condition_b})
+    actual = derived_predicates_visitor.visit(a & b)
     assert _eq(actual, expected)
 
 
-def test_derived_predicates_visitor_or():
+def test_derived_predicates_visitor_or(derived_predicates_visitor):
     """Test the derived predicates visitor for the or formula."""
     a = PLTLAtomic("a")
     b = PLTLAtomic("b")
@@ -126,9 +151,9 @@ def test_derived_predicates_visitor_or():
     condition_a = Predicate("p", Constant("a"))
     condition_b = Predicate("p", Constant("b"))
 
-    val = Predicate(add_val_prefix("a-or-b"))
-    val_a = Predicate(add_val_prefix("a"))
-    val_b = Predicate(add_val_prefix("b"))
+    val = Predicate(add_val_prefix("quoted_0"))
+    val_a = Predicate(add_val_prefix("quoted_1"))
+    val_b = Predicate(add_val_prefix("quoted_2"))
 
     condition = Or(val_a, val_b)
 
@@ -138,59 +163,59 @@ def test_derived_predicates_visitor_or():
         DerivedPredicate(val_b, condition_b),
     }
 
-    actual = derived_predicates(a | b, {a: condition_a, b: condition_b})
+    actual = derived_predicates_visitor.visit(a | b)
     assert _eq(actual, expected)
 
 
-def test_derived_predicates_visitor_not():
+def test_derived_predicates_visitor_not(derived_predicates_visitor):
     """Test the derived predicates visitor for the not formula."""
     a = PLTLAtomic("a")
 
     condition_a = Predicate("p", Constant("a"))
 
-    val = Predicate(add_val_prefix("not-a"))
-    val_a = Predicate(add_val_prefix("a"))
+    val = Predicate(add_val_prefix("quoted_0"))
+    val_a = Predicate(add_val_prefix("quoted_1"))
 
     condition = Not(val_a)
 
     expected = {DerivedPredicate(val, condition), DerivedPredicate(val_a, condition_a)}
 
-    actual = derived_predicates(~a, {a: condition_a})
+    actual = derived_predicates_visitor.visit(~a)
     assert _eq(actual, expected)
 
 
-def test_derived_predicates_visitor_yesterday():
+def test_derived_predicates_visitor_yesterday(derived_predicates_visitor):
     """Test the derived predicates visitor for the yesterday formula."""
     a = PLTLAtomic("a")
     Ya = Before(a)
 
     condition_a = Predicate("p", Constant("a"))
 
-    val = Predicate(add_val_prefix("Ya"))
-    val_a = Predicate(add_val_prefix("a"))
+    val = Predicate(add_val_prefix("quoted_0"))
+    val_a = Predicate(add_val_prefix("quoted_1"))
 
-    condition = Predicate("Ya")
+    condition = Predicate("quoted_0")
 
     expected = {DerivedPredicate(val, condition), DerivedPredicate(val_a, condition_a)}
 
-    actual = derived_predicates(Ya, {a: condition_a})
+    actual = derived_predicates_visitor.visit(Ya)
     assert _eq(actual, expected)
 
 
-def test_derived_predicates_visitor_since():
+def test_derived_predicates_visitor_since(derived_predicates_visitor):
     """Test the derived predicates visitor for the since formula."""
     a = PLTLAtomic("a")
     b = PLTLAtomic("b")
     c = PLTLAtomic("c")
     a_since_b_since_c = Since(a, b, c)
 
-    val_a = Predicate(add_val_prefix("a"))
-    val_b = Predicate(add_val_prefix("b"))
-    val_c = Predicate(add_val_prefix("c"))
-    val_a_since_b_since_c = Predicate(add_val_prefix("a-S-b-S-c"))
-    val_b_since_c = Predicate(add_val_prefix("b-S-c"))
-    Y_a_since_b_since_c = Predicate("Y-a-S-b-S-c")
-    Y_b_since_c = Predicate("Y-b-S-c")
+    val_a = Predicate(add_val_prefix("quoted_3"))
+    val_b = Predicate(add_val_prefix("quoted_6"))
+    val_c = Predicate(add_val_prefix("quoted_5"))
+    val_a_since_b_since_c = Predicate(add_val_prefix("quoted_0"))
+    val_b_since_c = Predicate(add_val_prefix("quoted_2"))
+    Y_a_since_b_since_c = Predicate("quoted_1")
+    Y_b_since_c = Predicate("quoted_4")
 
     condition_a = Predicate("p", Constant("a"))
     condition_b = Predicate("p", Constant("b"))
@@ -206,20 +231,18 @@ def test_derived_predicates_visitor_since():
         DerivedPredicate(val_c, condition_c),
     }
 
-    actual = derived_predicates(
-        a_since_b_since_c, {a: condition_a, b: condition_b, c: condition_c}
-    )
+    actual = derived_predicates_visitor.visit(a_since_b_since_c)
     assert _eq(actual, expected)
 
 
-def test_derived_predicates_visitor_once():
+def test_derived_predicates_visitor_once(derived_predicates_visitor):
     """Test the derived predicates visitor for the once formula."""
     a = PLTLAtomic("a")
     once_a = Once(a)
 
-    val_a = Predicate(add_val_prefix("a"))
-    val_once_a = Predicate(add_val_prefix("Oa"))
-    Y_once_a = Predicate("Y-Oa")
+    val_a = Predicate(add_val_prefix("quoted_2"))
+    val_once_a = Predicate(add_val_prefix("quoted_0"))
+    Y_once_a = Predicate("quoted_1")
 
     condition_a = Predicate("p", Constant("a"))
     condition_once_a = Or(val_a, Y_once_a)
@@ -229,5 +252,5 @@ def test_derived_predicates_visitor_once():
         DerivedPredicate(val_once_a, condition_once_a),
     }
 
-    actual = derived_predicates(once_a, {a: condition_a})
+    actual = derived_predicates_visitor.visit(once_a)
     assert _eq(actual, expected)

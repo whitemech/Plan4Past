@@ -22,7 +22,6 @@
 
 """Value predicates for val predicates visitor."""
 import functools
-from functools import singledispatch
 from typing import Set
 
 from pddl.logic.predicates import Predicate
@@ -38,100 +37,101 @@ from pylogics.syntax.pltl import (
     PropositionalTrue,
     Since,
 )
-from pylogics.utils.to_string import to_string
 
-from plan4past.helpers.utils import add_val_prefix, replace_symbols
-
-
-def val_predicates_binaryop(formula: _BinaryOp):
-    """Compute the value predicate for a binary operator formula."""
-    return set(functools.reduce(set.union, map(val_predicates, formula.operands)))  # type: ignore[arg-type]
+from plan4past.helpers.compilation_helper import PredicateMapping
+from plan4past.helpers.utils import add_val_prefix
 
 
-def val_predicates_unaryop(formula: _UnaryOp):
-    """Compute the value predicate for a unary operator formula."""
-    return val_predicates(formula.argument)
+class ValPredicatesVisitor:
+    """Visitor for computing value predicates."""
 
+    def __init__(self, predicate_mapping: PredicateMapping):
+        """Initialize the visitor."""
+        self._predicate_mapping = predicate_mapping
 
-@singledispatch
-def val_predicates(formula: object) -> Set[Predicate]:
-    """Compute the value predicate for a formula."""
-    raise NotImplementedError(
-        f"handler not implemented for object of type {type(formula)}"
-    )
+    @functools.singledispatchmethod
+    def visit(self, formula: object) -> Set[Predicate]:
+        """Compute the value predicate for a formula."""
+        raise NotImplementedError(
+            f"handler not implemented for object of type {type(formula)}"
+        )
 
+    @visit.register
+    def val_predicates_binaryop(self, formula: _BinaryOp):
+        """Compute the value predicate for a binary operator formula."""
+        return set(functools.reduce(set.union, map(self.visit, formula.operands)))  # type: ignore[arg-type]
 
-@val_predicates.register
-def val_predicates_true(_formula: PropositionalTrue) -> Set[Predicate]:
-    """Compute the value predicate for a true formula."""
-    return {Predicate(add_val_prefix("true"))}
+    @visit.register
+    def val_predicates_unaryop(self, formula: _UnaryOp):
+        """Compute the value predicate for a unary operator formula."""
+        return self.visit(formula.argument)
 
+    @visit.register
+    def val_predicates_false(self, formula: PropositionalFalse) -> Set[Predicate]:
+        """Compute the value predicate for an atomic formula."""
+        predicate = self._predicate_mapping.get_predicate(formula)
+        return {Predicate(add_val_prefix(predicate.name))}
 
-@val_predicates.register
-def val_predicates_false(_formula: PropositionalFalse) -> Set[Predicate]:
-    """Compute the value predicate for a false formula."""
-    return {Predicate(add_val_prefix("false"))}
+    @visit.register
+    def val_predicates_true(self, formula: PropositionalTrue) -> Set[Predicate]:
+        """Compute the value predicate for an atomic formula."""
+        predicate = self._predicate_mapping.get_predicate(formula)
+        return {Predicate(add_val_prefix(predicate.name))}
 
+    @visit.register
+    def val_predicates_atomic(self, formula: PLTLAtomic) -> Set[Predicate]:
+        """Compute the value predicate for an atomic formula."""
+        predicate = self._predicate_mapping.get_predicate(formula)
+        return {Predicate(add_val_prefix(predicate.name))}
 
-@val_predicates.register
-def val_predicates_atomic(formula: PLTLAtomic) -> Set[Predicate]:
-    """Compute the value predicate for an atomic formula."""
-    return {Predicate(add_val_prefix(formula.name))}
+    @visit.register
+    def val_predicates_and(self, formula: PLTLAnd) -> Set[Predicate]:
+        """Compute the value predicate for an And formula."""
+        predicate = self._predicate_mapping.get_predicate(formula)
+        value = Predicate(add_val_prefix(predicate.name))
+        subands = self.val_predicates_binaryop(formula)
+        return {value}.union(subands)
 
+    @visit.register
+    def val_predicates_or(self, formula: PLTLOr) -> Set[Predicate]:
+        """Compute the value predicate for an Or formula."""
+        predicate = self._predicate_mapping.get_predicate(formula)
+        value = Predicate(add_val_prefix(predicate.name))
+        subors = self.val_predicates_binaryop(formula)
+        return {value}.union(subors)
 
-@val_predicates.register
-def val_predicates_and(formula: PLTLAnd) -> Set[Predicate]:
-    """Compute the value predicate for an And formula."""
-    formula_name = replace_symbols(to_string(formula))
-    value = Predicate(add_val_prefix(formula_name))
-    subands = val_predicates_binaryop(formula)
-    return {value}.union(subands)
+    @visit.register
+    def val_predicates_not(self, formula: PLTLNot) -> Set[Predicate]:
+        """Compute the value predicate for a Not formula."""
+        predicate = self._predicate_mapping.get_predicate(formula)
+        value = Predicate(add_val_prefix(predicate.name))
+        sub = self.val_predicates_unaryop(formula)
+        return sub.union({value})
 
+    @visit.register
+    def val_predicates_yesterday(self, formula: Before) -> Set[Predicate]:
+        """Compute the value predicate for a Before (Yesterday) formula."""
+        predicate = self._predicate_mapping.get_predicate(formula)
+        value = Predicate(add_val_prefix(predicate.name))
+        sub = self.val_predicates_unaryop(formula)
+        return sub.union({value})
 
-@val_predicates.register
-def val_predicates_or(formula: PLTLOr) -> Set[Predicate]:
-    """Compute the value predicate for an Or formula."""
-    formula_name = replace_symbols(to_string(formula))
-    value = Predicate(add_val_prefix(formula_name))
-    subors = val_predicates_binaryop(formula)
-    return {value}.union(subors)
+    @visit.register
+    def val_predicates_since(self, formula: Since) -> Set[Predicate]:
+        """Compute the value predicate for a Since formula."""
+        if len(formula.operands) != 2:
+            head = formula.operands[0]
+            tail = Since(*formula.operands[1:])
+            return self.visit(Since(head, tail))
+        predicate = self._predicate_mapping.get_predicate(formula)
+        value = Predicate(add_val_prefix(predicate.name))
+        subsinces = self.val_predicates_binaryop(formula)
+        return {value}.union(subsinces)
 
-
-@val_predicates.register
-def val_predicates_not(formula: PLTLNot) -> Set[Predicate]:
-    """Compute the value predicate for a Not formula."""
-    formula_name = replace_symbols(to_string(formula))
-    value = Predicate(add_val_prefix(formula_name))
-    sub = val_predicates_unaryop(formula)
-    return sub.union({value})
-
-
-@val_predicates.register
-def val_predicates_yesterday(formula: Before) -> Set[Predicate]:
-    """Compute the value predicate for a Before (Yesterday) formula."""
-    formula_name = replace_symbols(to_string(formula))
-    value = Predicate(add_val_prefix(formula_name))
-    sub = val_predicates_unaryop(formula)
-    return sub.union({value})
-
-
-@val_predicates.register
-def val_predicates_since(formula: Since) -> Set[Predicate]:
-    """Compute the value predicate for a Since formula."""
-    if len(formula.operands) != 2:
-        head = formula.operands[0]
-        tail = Since(*formula.operands[1:])
-        return val_predicates(Since(head, tail))
-    formula_name = replace_symbols(to_string(formula))
-    value = Predicate(add_val_prefix(formula_name))
-    subsinces = val_predicates_binaryop(formula)
-    return {value}.union(subsinces)
-
-
-@val_predicates.register
-def val_predicates_once(formula: Once) -> Set[Predicate]:
-    """Compute the value predicate for a Once formula."""
-    formula_name = replace_symbols(to_string(formula))
-    value = Predicate(add_val_prefix(formula_name))
-    sub = val_predicates_unaryop(formula)
-    return sub.union({value})
+    @visit.register
+    def val_predicates_once(self, formula: Once) -> Set[Predicate]:
+        """Compute the value predicate for a Once formula."""
+        predicate = self._predicate_mapping.get_predicate(formula)
+        value = Predicate(add_val_prefix(predicate.name))
+        sub = self.val_predicates_unaryop(formula)
+        return sub.union({value})

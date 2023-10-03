@@ -31,7 +31,6 @@ from plan4past.helpers.utils import (
     check_,
     default_mapping,
     remove_val_prefix,
-    remove_yesterday_prefix,
 )
 
 
@@ -59,13 +58,6 @@ def test_val_prefix() -> None:
     assert add_val_prefix("Yfoo") == "val-Yfoo"
     assert add_val_prefix("foo") == "val-foo"
     assert add_val_prefix("Y-foo-bar") == "val-Y-foo-bar"
-
-
-def test_remove_yesterday_prefix() -> None:
-    """Test the remove_yesterday_prefix function."""
-    assert remove_yesterday_prefix("Y-foo") == "foo"
-    assert remove_yesterday_prefix("Yfoo") == "foo"
-    assert remove_yesterday_prefix("foo") == "foo"
 
 
 def test_remove_val_prefix() -> None:

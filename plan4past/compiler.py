@@ -32,8 +32,7 @@ from pddl.logic.effects import AndEffect, When
 from pddl.logic.predicates import DerivedPredicate, Predicate
 from pylogics.syntax.base import Formula, Logic
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
-from pylogics.syntax.pltl import FalseFormula
-from pylogics.utils.to_string import to_string
+from pylogics.syntax.pltl import Before, FalseFormula
 
 from plan4past.constants import (
     ACHIEVE_GOAL_ACTION,
@@ -45,23 +44,21 @@ from plan4past.constants import (
     TRUE_PREDICATE,
 )
 from plan4past.exceptions import ProblemUnsolvableException
-from plan4past.helpers.compilation_helper import CompilationManager, YesterdayAtom
-from plan4past.helpers.utils import (
-    add_val_prefix,
-    check_,
-    default_mapping,
-    remove_yesterday_prefix,
-    replace_symbols,
+from plan4past.helpers.compilation_helper import (
+    CompilationManager,
+    PredicateMapping,
+    YesterdayAtom,
 )
+from plan4past.helpers.utils import add_val_prefix, check_, default_mapping
 from plan4past.helpers.yesterday_atom_helper import QUOTED_ATOM
 from plan4past.utils.atoms_visitor import find_atoms
-from plan4past.utils.derived_visitor import derived_predicates
+from plan4past.utils.derived_visitor import DerivedPredicatesVisitor
 from plan4past.utils.dnf_visitor import dnf
 from plan4past.utils.nnf_visitor import nnf
-from plan4past.utils.predicates_visitor import predicates
+from plan4past.utils.predicates_visitor import PredicatesVisitor
 from plan4past.utils.pylogics2pddl import Pylogics2PddlTranslator
 from plan4past.utils.rewrite_formula_visitor import rewrite
-from plan4past.utils.val_predicates_visitor import val_predicates
+from plan4past.utils.val_predicates_visitor import ValPredicatesVisitor
 
 
 class Compiler:
@@ -93,6 +90,7 @@ class Compiler:
 
         check_(self.formula.logic == Logic.PLTL, "only PPLTL is supported!")
 
+        self._predicate_mapping = PredicateMapping()
         self._executed: bool = False
         self._result_domain: Optional[Domain] = None
         self._result_problem: Optional[Problem] = None
@@ -134,18 +132,27 @@ class Compiler:
 
     def compile(self):
         """Compute the new domain and the new problem."""
-        if not self._executed:
-            self._compile_domain()
-            self._compile_problem()
-            self._executed = True
+        if self._executed:
+            return
+
+        self._compile_domain()
+        self._compile_problem()
+
+        self._executed = True
 
     def _compile_domain(self):
         """Compute the new domain."""
-        new_predicates = predicates(self.formula).union(val_predicates(self.formula))
-        new_derived_predicates = derived_predicates(
-            self.formula, self.from_atoms_to_fluent
+        subformula_predicates_set = PredicatesVisitor(self._predicate_mapping).visit(
+            self.formula
         )
-        new_whens = _compute_whens(self.formula)
+        val_predicates_set = ValPredicatesVisitor(self._predicate_mapping).visit(
+            self.formula
+        )
+        new_predicates = subformula_predicates_set.union(val_predicates_set)
+        new_derived_predicates = DerivedPredicatesVisitor(
+            self._predicate_mapping, self.from_atoms_to_fluent
+        ).visit(self.formula)
+        new_whens = _compute_whens(subformula_predicates_set, self._predicate_mapping)
         domain_actions = _update_domain_actions_det(self.domain.actions, new_whens)
 
         self._result_domain = Domain(
@@ -174,27 +181,34 @@ class Compiler:
             else set(self.problem.init)
         )
 
+        goal_predicate = self._predicate_mapping.get_predicate(self.formula)
         self._result_problem = Problem(
             name=self.problem.name,
             domain_name=self.domain.name,
             requirements=self.problem.requirements,
             objects=[*self.problem.objects],
             init=new_init,
-            goal=And(
-                Predicate(add_val_prefix(replace_symbols(to_string(self.formula))))
-            ),
+            goal=And(Predicate(add_val_prefix(goal_predicate.name))),
         )
 
 
-def _compute_whens(formula: Formula) -> Set[When]:
+def _compute_whens(predicates: Set[Predicate], mapping: PredicateMapping) -> Set[When]:
     """Compute conditional effects for formula progression."""
-    return {
-        When(Predicate(add_val_prefix(remove_yesterday_prefix(p.name))), p)
-        for p in predicates(formula)
-    }.union(
-        When(Not(Predicate(add_val_prefix(remove_yesterday_prefix(p.name)))), Not(p))
-        for p in predicates(formula)
-    )
+    result: Set[When] = set()
+    for p in predicates:
+        formula = mapping.inverse_mapping[p]
+        if isinstance(formula, Before):
+            arg_predicate = mapping.mapping[formula.argument]
+            present_predicate = Predicate(add_val_prefix(arg_predicate.name))
+            past_predicate = p
+        else:
+            present_predicate = Predicate(add_val_prefix(p.name))
+            past_predicate = p
+
+        positive_when = When(present_predicate, past_predicate)
+        negative_when = When(Not(present_predicate), Not(past_predicate))
+        result.update({positive_when, negative_when})
+    return result
 
 
 def _update_domain_actions_det(
