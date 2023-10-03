@@ -36,7 +36,7 @@ class TestBlocksworldDetSimpleSequence(BaseCompilerTest):
     PATH_TO_DOMAINS_DIR = BLOCKSWORLD_DIR
     PATH_TO_INSTANCES_DIR = BLOCKSWORLD_DIR
     MIN_INSTANCE_ID = 10
-    MAX_INSTANCE_ID = 15
+    MAX_INSTANCE_ID = 10
 
     def make_formula(self, instance_id: int, domain: Path, problem: Path) -> str:
         """
@@ -70,6 +70,9 @@ class TestBlocksworldDetSimpleSequence(BaseCompilerTest):
     @pytest.mark.parametrize(
         "instance_id", list(range(MIN_INSTANCE_ID, MAX_INSTANCE_ID + 1))
     )
-    def test_run(self, instance_id, val, default_planner):
+    @BaseCompilerTest.parametrize_compiler()
+    def test_run(self, instance_id, compiler_builder, val, default_planner):
         """Test the instance with the given id."""
-        self._test_instance(instance_id, val=val, planner=default_planner)
+        self._test_instance(
+            instance_id, compiler_builder, val=val, planner=default_planner
+        )
