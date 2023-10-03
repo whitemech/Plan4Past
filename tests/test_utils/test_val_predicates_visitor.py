@@ -32,94 +32,116 @@ from pylogics.syntax.pltl import (
     Since,
 )
 
+from plan4past.helpers.compilation_helper import PredicateMapping
 from plan4past.helpers.utils import add_val_prefix
-from plan4past.utils.val_predicates_visitor import val_predicates
+from plan4past.utils.val_predicates_visitor import ValPredicatesVisitor
+
+# pylint: disable=redefined-outer-name
 
 
-def test_val_predicates_visitor_not_implemented_fail():
+@pytest.fixture(scope="function")
+def val_predicates_visitor():
+    """Return a val predicates visitor."""
+    m = PredicateMapping()
+    return ValPredicatesVisitor(m)
+
+
+def test_val_predicates_visitor_not_implemented_fail(val_predicates_visitor):
     """Test the val predicates visitor when the input argument is not supported."""
     with pytest.raises(
         NotImplementedError,
         match="handler not implemented for object of type <class 'int'>",
     ):
-        val_predicates(1)
+        val_predicates_visitor.visit(1)
 
 
-def test_val_predicates_visitor_true():
+def test_val_predicates_visitor_true(val_predicates_visitor):
     """Test the val predicates visitor for the propositional true."""
-    assert val_predicates(PropositionalTrue()) == {Predicate(add_val_prefix("true"))}
+    assert val_predicates_visitor.visit(PropositionalTrue()) == {
+        Predicate(add_val_prefix("quoted_0"))
+    }
 
 
-def test_val_predicates_visitor_false():
+def test_val_predicates_visitor_false(val_predicates_visitor):
     """Test the val predicates visitor for the propositional false."""
-    assert val_predicates(PropositionalFalse()) == {Predicate(add_val_prefix("false"))}
+    assert val_predicates_visitor.visit(PropositionalFalse()) == {
+        Predicate(add_val_prefix("quoted_0"))
+    }
 
 
-def test_val_predicates_visitor_atomic():
+def test_val_predicates_visitor_atomic(val_predicates_visitor):
     """Test the val predicates visitor for the atomic formula."""
     a = PLTLAtomic("a")
-    assert val_predicates(a) == {Predicate(add_val_prefix(a.name))}
+    assert val_predicates_visitor.visit(a) == {Predicate(add_val_prefix("quoted_0"))}
 
 
-def test_val_predicates_visitor_and():
+def test_val_predicates_visitor_and(val_predicates_visitor):
     """Test the val predicates visitor for the and formula."""
     a = PLTLAtomic("a")
     b = PLTLAtomic("b")
 
-    val_a_and_b = Predicate(add_val_prefix("a-and-b"))
-    val_a = Predicate(add_val_prefix(a.name))
-    val_b = Predicate(add_val_prefix(b.name))
+    actual_set = val_predicates_visitor.visit(a & b)
 
-    assert val_predicates(a & b) == {val_a_and_b, val_a, val_b}
+    val_a_and_b = Predicate(add_val_prefix("quoted_0"))
+    val_a = Predicate(add_val_prefix("quoted_1"))
+    val_b = Predicate(add_val_prefix("quoted_2"))
+
+    expected_set = {val_a_and_b, val_a, val_b}
+
+    assert actual_set == expected_set
 
 
-def test_val_predicates_visitor_or():
+def test_val_predicates_visitor_or(val_predicates_visitor):
     """Test the val predicates visitor for the or formula."""
     a = PLTLAtomic("a")
     b = PLTLAtomic("b")
 
-    val_a_or_b = Predicate(add_val_prefix("a-or-b"))
-    val_a = Predicate(add_val_prefix(a.name))
-    val_b = Predicate(add_val_prefix(b.name))
+    actual_set = val_predicates_visitor.visit(a | b)
 
-    assert val_predicates(a | b) == {val_a_or_b, val_a, val_b}
+    val_a_or_b = Predicate(add_val_prefix("quoted_0"))
+    val_a = Predicate(add_val_prefix("quoted_1"))
+    val_b = Predicate(add_val_prefix("quoted_2"))
+
+    expected_set = {val_a_or_b, val_a, val_b}
+
+    assert actual_set == expected_set
 
 
-def test_val_predicates_visitor_not():
+def test_val_predicates_visitor_not(val_predicates_visitor):
     """Test the val predicates visitor for the not formula."""
     a = PLTLAtomic("a")
 
-    val_not_a = Predicate(add_val_prefix("not-a"))
-    val_a = Predicate(add_val_prefix(a.name))
+    val_not_a = Predicate(add_val_prefix("quoted_0"))
+    val_a = Predicate(add_val_prefix("quoted_1"))
 
-    assert val_predicates(~a) == {val_not_a, val_a}
+    assert val_predicates_visitor.visit(~a) == {val_not_a, val_a}
 
 
-def test_val_predicates_visitor_yesterday():
+def test_val_predicates_visitor_yesterday(val_predicates_visitor):
     """Test the val predicates visitor for the yesterday formula."""
     a = PLTLAtomic("a")
     yesterday_a = Before(a)
 
-    val_yesterday_a = Predicate(add_val_prefix("Ya"))
-    val_a = Predicate(add_val_prefix(a.name))
+    val_yesterday_a = Predicate(add_val_prefix("quoted_0"))
+    val_a = Predicate(add_val_prefix("quoted_1"))
 
-    assert val_predicates(yesterday_a) == {val_yesterday_a, val_a}
+    assert val_predicates_visitor.visit(yesterday_a) == {val_yesterday_a, val_a}
 
 
-def test_val_predicates_visitor_since():
+def test_val_predicates_visitor_since(val_predicates_visitor):
     """Test the val predicates visitor for the yesterday formula."""
     a = PLTLAtomic("a")
     b = PLTLAtomic("b")
     c = PLTLAtomic("c")
     a_since_b_since_c = Since(a, b, c)
 
-    val_a_since_b_since_c = Predicate(add_val_prefix("a-S-b-S-c"))
-    val_b_since_c = Predicate(add_val_prefix("b-S-c"))
-    val_a = Predicate(add_val_prefix(a.name))
-    val_b = Predicate(add_val_prefix(b.name))
-    val_c = Predicate(add_val_prefix(c.name))
+    val_a_since_b_since_c = Predicate(add_val_prefix("quoted_0"))
+    val_b_since_c = Predicate(add_val_prefix("quoted_1"))
+    val_a = Predicate(add_val_prefix("quoted_2"))
+    val_b = Predicate(add_val_prefix("quoted_3"))
+    val_c = Predicate(add_val_prefix("quoted_4"))
 
-    assert val_predicates(a_since_b_since_c) == {
+    assert val_predicates_visitor.visit(a_since_b_since_c) == {
         val_a_since_b_since_c,
         val_b_since_c,
         val_a,
@@ -128,12 +150,12 @@ def test_val_predicates_visitor_since():
     }
 
 
-def test_val_predicates_visitor_once():
+def test_val_predicates_visitor_once(val_predicates_visitor):
     """Test the val predicates visitor for the once formula."""
     a = PLTLAtomic("a")
     once_a = Once(a)
 
-    val_once_a = Predicate(add_val_prefix("Oa"))
-    val_a = Predicate(add_val_prefix(a.name))
+    val_once_a = Predicate(add_val_prefix("quoted_0"))
+    val_a = Predicate(add_val_prefix("quoted_1"))
 
-    assert val_predicates(once_a) == {val_once_a, val_a}
+    assert val_predicates_visitor.visit(once_a) == {val_once_a, val_a}

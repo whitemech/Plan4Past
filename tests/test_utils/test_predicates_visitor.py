@@ -33,74 +33,84 @@ from pylogics.syntax.pltl import (
     Since,
 )
 
-from plan4past.utils.predicates_visitor import predicates
+from plan4past.helpers.compilation_helper import PredicateMapping
+from plan4past.utils.predicates_visitor import PredicatesVisitor
+
+# pylint: disable=redefined-outer-name
 
 
-def test_predicates_visitor_not_implemented_fail():
+@pytest.fixture(scope="function")
+def predicates_visitor():
+    """Return a val predicates visitor."""
+    m = PredicateMapping()
+    return PredicatesVisitor(m)
+
+
+def test_predicates_visitor_not_implemented_fail(predicates_visitor):
     """Test the predicates visitor when the input argument is not supported."""
     with pytest.raises(
         NotImplementedError,
         match="handler not implemented for object of type <class 'int'>",
     ):
-        predicates(1)
+        predicates_visitor.visit(1)
 
 
-def test_predicates_visitor_true():
+def test_predicates_visitor_true(predicates_visitor):
     """Test the predicates visitor for the propositional true."""
-    assert predicates(PropositionalTrue()) == set()
+    assert predicates_visitor.visit(PropositionalTrue()) == set()
 
 
-def test_predicates_visitor_false():
+def test_predicates_visitor_false(predicates_visitor):
     """Test the predicates visitor for the propositional false."""
-    assert predicates(PropositionalFalse()) == set()
+    assert predicates_visitor.visit(PropositionalFalse()) == set()
 
 
-def test_predicates_visitor_atomic():
+def test_predicates_visitor_atomic(predicates_visitor):
     """Test the predicates visitor for the atomic formula."""
-    assert predicates(PLTLAtomic("a")) == set()
+    assert predicates_visitor.visit(PLTLAtomic("a")) == set()
 
 
-def test_predicates_visitor_and():
+def test_predicates_visitor_and(predicates_visitor):
     """Test the predicates visitor for the and formula."""
     a = PLTLAtomic("a")
     b = PLTLAtomic("b")
-    assert predicates(a & b) == set()
+    assert predicates_visitor.visit(a & b) == set()
 
 
-def test_predicates_visitor_or():
+def test_predicates_visitor_or(predicates_visitor):
     """Test the predicates visitor for the or formula."""
     a = PLTLAtomic("a")
     b = PLTLAtomic("b")
-    assert predicates(a | b) == set()
+    assert predicates_visitor.visit(a | b) == set()
 
 
-def test_predicates_visitor_not():
+def test_predicates_visitor_not(predicates_visitor):
     """Test the predicates visitor for the not formula."""
     a = PLTLAtomic("a")
-    assert predicates(~a) == set()
+    assert predicates_visitor.visit(~a) == set()
 
 
-def test_predicates_visitor_yesterday():
+def test_predicates_visitor_yesterday(predicates_visitor):
     """Test the predicates visitor for the yesterday formula."""
     a = PLTLAtomic("a")
     Ya = Before(a)
-    assert predicates(Ya) == {Predicate("Ya")}
+    assert predicates_visitor.visit(Ya) == {Predicate("quoted_0")}
 
 
-def test_predicates_visitor_since():
+def test_predicates_visitor_since(predicates_visitor):
     """Test the predicates visitor for the since formula."""
     a = PLTLAtomic("a")
     b = PLTLAtomic("b")
     c = PLTLAtomic("c")
     a_since_b_since_c = Since(a, b, c)
-    assert predicates(a_since_b_since_c) == {
-        Predicate("Y-b-S-c"),
-        Predicate("Y-a-S-b-S-c"),
+    assert predicates_visitor.visit(a_since_b_since_c) == {
+        Predicate("Y-quoted_0"),
+        Predicate("Y-quoted_1"),
     }
 
 
-def test_predicates_visitor_once():
+def test_predicates_visitor_once(predicates_visitor):
     """Test the predicates visitor for the once formula."""
     a = PLTLAtomic("a")
     once_a = Once(a)
-    assert predicates(once_a) == {Predicate("Y-Oa")}
+    assert predicates_visitor.visit(once_a) == {Predicate("Y-quoted_0")}

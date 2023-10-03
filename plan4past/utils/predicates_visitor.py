@@ -22,7 +22,6 @@
 
 """Predicates visitor."""
 import functools
-from functools import singledispatch
 from typing import Set
 
 from pddl.logic.predicates import Predicate
@@ -38,90 +37,87 @@ from pylogics.syntax.pltl import (
     PropositionalTrue,
     Since,
 )
-from pylogics.utils.to_string import to_string
 
-from plan4past.helpers.utils import replace_symbols
-
-
-def predicates_binaryop(formula: _BinaryOp):
-    """Compute predicate for a binary operator."""
-    return set(functools.reduce(set.union, map(predicates, formula.operands)))  # type: ignore[arg-type]
+from plan4past.helpers.compilation_helper import PredicateMapping
 
 
-def predicates_unaryop(formula: _UnaryOp):
-    """Compute predicate for a unary operator."""
-    return predicates(formula.argument)
+class PredicatesVisitor:  # pylint: disable=R0801
+    """Visitor for computing predicates."""
 
+    def __init__(self, predicate_mapping: PredicateMapping) -> None:
+        """Initialize the visitor."""
+        self._predicate_mapping = predicate_mapping
 
-@singledispatch
-def predicates(formula: object) -> Set[Predicate]:
-    """Compute predicate for a formula."""
-    raise NotImplementedError(
-        f"handler not implemented for object of type {type(formula)}"
-    )
+    @functools.singledispatchmethod
+    def visit(self, formula: object) -> Set[Predicate]:
+        """Compute predicate for a formula."""
+        raise NotImplementedError(
+            f"handler not implemented for object of type {type(formula)}"
+        )
 
+    def predicates_binaryop(self, formula: _BinaryOp):
+        """Compute predicate for a binary operator."""
+        return set(functools.reduce(set.union, map(self.visit, formula.operands)))  # type: ignore[arg-type]
 
-@predicates.register
-def predicates_true(_formula: PropositionalTrue) -> Set[Predicate]:
-    """Compute predicate for a true formula."""
-    return set()
+    def predicates_unaryop(self, formula: _UnaryOp):
+        """Compute predicate for a unary operator."""
+        return self.visit(formula.argument)
 
+    @visit.register
+    def predicates_true(self, _formula: PropositionalTrue) -> Set[Predicate]:
+        """Compute predicate for a true formula."""
+        return set()
 
-@predicates.register
-def predicates_false(_formula: PropositionalFalse) -> Set[Predicate]:
-    """Compute predicate for a false formula."""
-    return set()
+    @visit.register
+    def predicates_false(self, _formula: PropositionalFalse) -> Set[Predicate]:
+        """Compute predicate for a false formula."""
+        return set()
 
+    @visit.register
+    def predicates_atomic(self, _formula: PLTLAtomic) -> Set[Predicate]:
+        """Compute predicate for an atomic formula."""
+        return set()
 
-@predicates.register
-def predicates_atomic(_formula: PLTLAtomic) -> Set[Predicate]:
-    """Compute predicate for an atomic formula."""
-    return set()
+    @visit.register
+    def predicates_and(self, formula: PLTLAnd) -> Set[Predicate]:
+        """Compute predicate for an And formula."""
+        return self.predicates_binaryop(formula)
 
+    @visit.register
+    def predicates_or(self, formula: PLTLOr) -> Set[Predicate]:
+        """Compute predicate for an Or formula."""
+        return self.predicates_binaryop(formula)
 
-@predicates.register
-def predicates_and(formula: PLTLAnd) -> Set[Predicate]:
-    """Compute predicate for an And formula."""
-    return predicates_binaryop(formula)
+    @visit.register
+    def predicates_not(self, formula: PLTLNot) -> Set[Predicate]:
+        """Compute predicate for a Not formula."""
+        return self.visit(formula.argument)
 
+    @visit.register
+    def predicates_yesterday(self, formula: Before) -> Set[Predicate]:
+        """Compute predicate for a Before (Yesterday) formula."""
+        quoted = self._predicate_mapping.get_predicate(formula)
+        sub = self.predicates_unaryop(formula)
+        return sub.union({quoted})
 
-@predicates.register
-def predicates_or(formula: PLTLOr) -> Set[Predicate]:
-    """Compute predicate for an Or formula."""
-    return predicates_binaryop(formula)
+    @visit.register
+    def predicates_since(
+        self, formula: Since
+    ) -> Set[Predicate]:  # pylint: disable=R0801
+        """Compute predicate for a Since formula."""
+        if len(formula.operands) != 2:
+            head = formula.operands[0]
+            tail = Since(*formula.operands[1:])
+            return self.visit(Since(head, tail))
+        predicate = self._predicate_mapping.get_predicate(formula)
+        quoted = Predicate(f"Y-{predicate.name}")
+        subsinces = self.predicates_binaryop(formula)
+        return {quoted}.union(subsinces)
 
-
-@predicates.register
-def predicates_not(formula: PLTLNot) -> Set[Predicate]:
-    """Compute predicate for a Not formula."""
-    return predicates(formula.argument)
-
-
-@predicates.register
-def predicates_yesterday(formula: Before) -> Set[Predicate]:
-    """Compute predicate for a Before (Yesterday) formula."""
-    quoted = Predicate(replace_symbols(to_string(formula)))
-    sub = predicates_unaryop(formula)
-    return sub.union({quoted})
-
-
-@predicates.register
-def predicates_since(formula: Since) -> Set[Predicate]:
-    """Compute predicate for a Since formula."""
-    if len(formula.operands) != 2:
-        head = formula.operands[0]
-        tail = Since(*formula.operands[1:])
-        return predicates(Since(head, tail))
-    formula_name = replace_symbols(to_string(formula))
-    quoted = Predicate(f"Y-{formula_name}")
-    subsinces = predicates_binaryop(formula)
-    return {quoted}.union(subsinces)
-
-
-@predicates.register
-def predicates_once(formula: Once) -> Set[Predicate]:
-    """Compute predicate for a Once formula."""
-    formula_name = replace_symbols(to_string(formula))
-    quoted = Predicate(f"Y-{formula_name}")
-    sub = predicates_unaryop(formula)
-    return sub.union({quoted})
+    @visit.register
+    def predicates_once(self, formula: Once) -> Set[Predicate]:
+        """Compute predicate for a Once formula."""
+        predicate = self._predicate_mapping.get_predicate(formula)
+        quoted = Predicate(f"Y-{predicate.name}")
+        sub = self.predicates_unaryop(formula)
+        return sub.union({quoted})
