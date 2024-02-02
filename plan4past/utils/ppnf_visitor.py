@@ -34,7 +34,7 @@ from pylogics.syntax.pltl import (
     Since,
 )
 
-from plan4past.helpers.yesterday_atom_helper import get_yesterday_atom
+from plan4past.helpers.formula_helper import get_quoted_atom
 
 
 @singledispatch
@@ -70,7 +70,7 @@ def _(phi: Not) -> Formula:
 @ppnf.register
 def _(phi: Before) -> Formula:
     """Compute the ppnf of a Before."""
-    return get_yesterday_atom(phi)
+    return get_quoted_atom(phi)
 
 
 @ppnf.register
@@ -88,12 +88,12 @@ def _(phi: Or) -> Formula:
 @ppnf.register
 def _(phi: Once) -> Formula:
     """Compute the ppnf of a Once."""
-    return Or(ppnf(phi.argument), get_yesterday_atom(phi))
+    return Or(ppnf(phi.argument), get_quoted_atom(phi))
 
 
 @ppnf.register
 def _(phi: Since) -> Formula:
     """Compute the ppnf of a Since."""
     return Or(
-        ppnf(phi.operands[1]), And(ppnf(phi.operands[0]), get_yesterday_atom(phi))
+        ppnf(phi.operands[1]), And(ppnf(phi.operands[0]), get_quoted_atom(phi))
     )

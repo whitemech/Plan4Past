@@ -33,7 +33,7 @@ from pylogics.syntax.base import Not, Or
 from pylogics.syntax.pltl import Atomic, Once
 
 from plan4past.compiler import ADLCompiler
-from plan4past.helpers.yesterday_atom_helper import Yatom_
+from plan4past.helpers.formula_helper import Yatom_
 
 
 def test_formula_conversion() -> None:

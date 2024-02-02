@@ -34,7 +34,7 @@ from plan4past.compiler import ADLCompiler
 from plan4past.compiler import Not as pddlNot
 from plan4past.compiler import Predicate, When
 from plan4past.constants import EVALUATE_PNF_ACTION, PNF
-from plan4past.helpers.yesterday_atom_helper import QUOTED_ATOM, Yatom_
+from plan4past.helpers.formula_helper import QUOTED_ATOM, Yatom_
 
 
 def get_task(domain_path, problem_path) -> Tuple:

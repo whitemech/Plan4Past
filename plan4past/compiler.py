@@ -53,7 +53,7 @@ from plan4past.helpers.utils import (
     remove_yesterday_prefix,
     replace_symbols,
 )
-from plan4past.helpers.yesterday_atom_helper import QUOTED_ATOM
+from plan4past.helpers.formula_helper import QUOTED_ATOM
 from plan4past.utils.atoms_visitor import find_atoms
 from plan4past.utils.derived_visitor import derived_predicates
 from plan4past.utils.dnf_visitor import dnf
@@ -288,7 +288,7 @@ class ADLCompiler(Compiler):
         new_fluents.append(TRUE_ATOM)
         self._fresh_atoms = set(new_fluents)
         self._yesterday_mapping = cm.get_yesterday_mapping()
-        self._yesterday_dictionary = cm.yesterday_dictionary
+        self._yesterday_dictionary = cm.quoted_map
         self._translator = Pylogics2PddlTranslator(
             cast(Dict[YesterdayAtom, PLTLAtomic], self._yesterday_dictionary),
             self.from_atoms_to_fluent,

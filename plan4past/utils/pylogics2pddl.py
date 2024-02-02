@@ -35,7 +35,7 @@ from pylogics.syntax.pltl import PropositionalTrue
 
 from plan4past.constants import TRUE_ATOM
 from plan4past.helpers.utils import check_
-from plan4past.helpers.yesterday_atom_helper import YesterdayAtom
+from plan4past.helpers.formula_helper import YesterdayAtom
 
 
 class Pylogics2PddlTranslator:

@@ -47,10 +47,10 @@ from pylogics.syntax.pltl import (
     Since,
 )
 
-from plan4past.helpers.yesterday_atom_helper import (
+from plan4past.helpers.formula_helper import (
     QUOTED_ATOM,
     YesterdayAtom,
-    get_yesterday_atom,
+    get_quoted_atom,
 )
 
 
@@ -117,21 +117,21 @@ def _(formula: Not, yesterday_gen: YesterdayGenerator) -> None:
 @populate_dictionary.register
 def _(formula: Once, yesterday_gen: YesterdayGenerator) -> None:
     """Populate dictionary for a Once formula."""
-    yesterday_gen.add_quoted_atom(get_yesterday_atom(formula))
+    yesterday_gen.add_quoted_atom(get_quoted_atom(formula))
     populate_dictionary(formula.argument, yesterday_gen)
 
 
 @populate_dictionary.register
 def _(formula: Before, yesterday_gen: YesterdayGenerator) -> None:
     """Populate dictionary for a Before formula."""
-    yesterday_gen.add_quoted_atom(get_yesterday_atom(formula))
+    yesterday_gen.add_quoted_atom(get_quoted_atom(formula))
     populate_dictionary(formula.argument, yesterday_gen)
 
 
 @populate_dictionary.register
 def _(formula: Since, yesterday_gen: YesterdayGenerator) -> None:
     """Populate dictionary for a Before formula."""
-    yesterday_gen.add_quoted_atom(get_yesterday_atom(formula))
+    yesterday_gen.add_quoted_atom(get_quoted_atom(formula))
     populate_dictionary(formula.operands[0], yesterday_gen)
     populate_dictionary(formula.operands[1], yesterday_gen)
 

@@ -22,7 +22,7 @@
 """This module contains the class that manages the compilation of a PPLTL formula."""
 from typing import List, Tuple
 
-from pylogics.syntax.base import Formula, Not
+from pylogics.syntax.base import Formula, Not, And, Or
 from pylogics.syntax.pltl import (
     Atomic,
     Before,
@@ -33,39 +33,10 @@ from pylogics.syntax.pltl import (
 )
 
 from plan4past.helpers.utils import check_
-from plan4past.helpers.yesterday_atom_helper import YesterdayAtom
+from plan4past.helpers.formula_helper import *
 from plan4past.utils.ppnf_visitor import ppnf
 from plan4past.utils.yesterday_generator_visitor import get_quoted_dictionary
-
-
-def is_temporal_operator(formula: Formula) -> bool:
-    """
-    Check if the formula is a temporal operator.
-
-    :param formula: the formula to be checked
-    :return: True if the formula is a temporal operator, False otherwise
-    """
-    return isinstance(formula, (Before, Once, Since))
-
-
-def is_unary_op(formula: Formula) -> bool:
-    """
-    Check if the formula is a unary operator.
-
-    :param formula: the formula to be checked
-    :return: True if the formula is a unary operator, False otherwise
-    """
-    return isinstance(formula, (Before, Not, Once))
-
-
-def is_atomic_formula(formula: Formula) -> bool:
-    """
-    Check if the formula is an atomic formula.
-
-    :param formula: the formula to be checked
-    :return: True if the formula is an atomic formula, False otherwise
-    """
-    return isinstance(formula, (Atomic, PropositionalTrue, PropositionalFalse))
+from typing import Set
 
 
 class CompilationManager:
@@ -78,7 +49,33 @@ class CompilationManager:
         :param phi: the PPLTL formula to be compiled
         """
         self.phi = phi
-        self.yesterday_dictionary = get_quoted_dictionary(phi)
+        self.quoted_atoms = quoted_set(self.phi)
+
+        # Assign a unique label to each subformula of \phi
+        sub_phi = get_subformulas(self.phi)
+        self.formula_to_id_map = {sub: f'p{index}' for sub, index in zip(sub_phi, range(len(sub_phi)))}
+        self.formula_to_label_map = {sub: self.formula_to_label(sub) for sub in sub_phi}
+
+        self.quoted_map = {
+            quoted_atom: Atomic(f"{QUOTED_ATOM}_{self.formula_to_label_map[quoted_atom.formula]}")
+            for quoted_atom in self.quoted_atoms
+        }
+        # print(self.quoted_map)
+
+    
+    def formula_to_label(self, formula: Formula) -> str:
+        """Get the label of a formula."""
+        return {
+            Atomic: lambda phi: f"{self.formula_to_id_map[phi]}_{str(phi)}",
+            PropositionalTrue: lambda phi: f"{self.formula_to_id_map[phi]}_true",
+            PropositionalFalse: lambda phi: f"{self.formula_to_id_map[phi]}_false",
+            Not: lambda phi: f"{self.formula_to_id_map[phi]}-Not_{self.formula_to_id_map[phi.argument]}",
+            Before: lambda phi: f"{self.formula_to_id_map[phi]}-Before_{self.formula_to_id_map[phi.argument]}",
+            And: lambda phi: f"{self.formula_to_id_map[phi]}-And_" + "_".join([self.formula_to_id_map[arg] for arg in phi.operands]),
+            Or: lambda phi: f"{self.formula_to_id_map[phi]}-Or_" + "_".join([self.formula_to_id_map[arg] for arg in phi.operands]),
+            Once: lambda phi: f"{self.formula_to_id_map[phi]}-Once_{self.formula_to_id_map[phi.argument]}",
+            Since: lambda phi: f"{self.formula_to_id_map[phi]}-Since_{self.formula_to_id_map[phi.operands[0]]}_{self.formula_to_id_map[phi.operands[1]]}",
+        }[type(formula)](formula)
 
     def get_yesterday_mapping(self) -> str:
         """
@@ -87,7 +84,7 @@ class CompilationManager:
         :return: the mapping of the yesterday atoms
         """
         yesterday_mapping = []
-        for key, value in self.yesterday_dictionary.items():
+        for key, value in self.quoted_map.items():
             yesterday_mapping.append(f"; {str(key)}: {str(value)}")
 
         return "\n".join(yesterday_mapping)
@@ -102,7 +99,7 @@ class CompilationManager:
         fresh_atoms = []
         conditional_effects = []
 
-        for yesterday_atom in self.yesterday_dictionary:
+        for yesterday_atom in self.quoted_map:
             check_(isinstance(yesterday_atom, YesterdayAtom))
             fresh_atoms.append(yesterday_atom)
             conditional_effects.append((ppnf(yesterday_atom.formula), yesterday_atom))

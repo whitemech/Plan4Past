@@ -33,7 +33,7 @@ from pylogics.syntax.pltl import (
 )
 
 from plan4past.helpers.compilation_helper import CompilationManager
-from plan4past.helpers.yesterday_atom_helper import Yatom_
+from plan4past.helpers.formula_helper import Yatom_
 from plan4past.utils.ppnf_visitor import ppnf
 from plan4past.utils.rewrite_formula_visitor import rewrite
 
@@ -51,7 +51,7 @@ def test_yesterday_generation1() -> None:
 
     compilation_manager = CompilationManager(phi)
 
-    yesterday_dictionary = compilation_manager.yesterday_dictionary
+    yesterday_dictionary = compilation_manager.quoted_map
     assert len(yesterday_dictionary) == 3
     assert Yatom_(Once(Not(a))) in yesterday_dictionary
     assert Yatom_(Since(b, Not(Once(Not(c))))) in yesterday_dictionary
@@ -64,7 +64,7 @@ def test_yesterday_generation2() -> None:
 
     compilation_manager = CompilationManager(phi)
 
-    yesterday_dictionary = compilation_manager.yesterday_dictionary
+    yesterday_dictionary = compilation_manager.quoted_map
     assert len(yesterday_dictionary) == 2
     assert Yatom_(Once(Not(a))) in yesterday_dictionary
     assert Yatom_(Since(b, Not(Once(Not(a))))) in yesterday_dictionary
@@ -76,7 +76,7 @@ def test_yesterday_generation3() -> None:
 
     compilation_manager = CompilationManager(phi)
 
-    yesterday_dictionary = compilation_manager.yesterday_dictionary
+    yesterday_dictionary = compilation_manager.quoted_map
     assert len(yesterday_dictionary) == 2
     assert Yatom_(Once(Not(And(a, b)))) in yesterday_dictionary
     assert Yatom_(Since(b, Not(Once(Not(And(b, a)))))) in yesterday_dictionary
@@ -88,7 +88,7 @@ def test_yesterday_generation4() -> None:
 
     compilation_manager = CompilationManager(phi)
 
-    yesterday_dictionary = compilation_manager.yesterday_dictionary
+    yesterday_dictionary = compilation_manager.quoted_map
     assert len(yesterday_dictionary) == 3
     assert Yatom_(Once(Not(And(a, b)))) in yesterday_dictionary
     assert Yatom_(Before(Or(b, Since(c, d)))) not in yesterday_dictionary
@@ -102,7 +102,7 @@ def test_yesterday_generation5() -> None:
 
     compilation_manager = CompilationManager(phi)
 
-    yesterday_dictionary = compilation_manager.yesterday_dictionary
+    yesterday_dictionary = compilation_manager.quoted_map
     assert len(yesterday_dictionary) == 3
     assert Yatom_(Once(And(a, b))) in yesterday_dictionary
     assert Yatom_(Before(Or(b, Not(Since(Not(c), Not(d)))))) not in yesterday_dictionary
@@ -116,7 +116,7 @@ def test_yesterday_generation6() -> None:
 
     compilation_manager = CompilationManager(phi)
 
-    yesterday_dictionary = compilation_manager.yesterday_dictionary
+    yesterday_dictionary = compilation_manager.quoted_map
     assert len(yesterday_dictionary) == 3
     assert (
         Yatom_(Once(And(a, Before(Once(And(b, Before(Once(c))))))))
@@ -141,7 +141,7 @@ def test_yesterday_generation7() -> None:
 
     compilation_manager = CompilationManager(phi)
 
-    yesterday_dictionary = compilation_manager.yesterday_dictionary
+    yesterday_dictionary = compilation_manager.quoted_map
     assert len(yesterday_dictionary) == 5
     assert Yatom_(a) in yesterday_dictionary
     assert Yatom_(b) in yesterday_dictionary
@@ -223,8 +223,8 @@ def test_pex_complex_formula1() -> None:
     yesterday_once_not_c = Yatom_(Once(Not(c)))
     yesterday_not_once_not_c = Yatom_(Not(Once(Not(c))))
 
-    assert len(cm.yesterday_dictionary) == 4
-    assert cm.yesterday_dictionary.get(yesterday_once_not_c) is not None
+    assert len(cm.quoted_map) == 4
+    assert cm.quoted_map.get(yesterday_once_not_c) is not None
 
     pex_phi = And(
         Or(a, yesterday_once_a), Or(yesterday_not_once_not_c, And(b, yesterday_since))
@@ -238,7 +238,7 @@ def test_pex_complex_formula2() -> None:
     cm = CompilationManager(phi)
     result = ppnf(phi)
 
-    assert len(cm.yesterday_dictionary) == 2
+    assert len(cm.quoted_map) == 2
 
     yesterday_once = Yatom_(Once(And(a, Before(Once(b)))))
     yesterday_once_b = Yatom_(Once(b))
@@ -330,10 +330,10 @@ def test_problem_extension_HH_Ha_Hb() -> None:
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
-    assert len(compilation_manager.yesterday_dictionary) == 4
+    assert len(compilation_manager.quoted_map) == 4
 
     for y in temporalsubformulas:
-        assert y in compilation_manager.yesterday_dictionary
+        assert y in compilation_manager.quoted_map
         assert y in fresh_atoms
 
     y = temporalsubformulas
@@ -360,10 +360,10 @@ def test_problem_extension_since():
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
-    assert len(compilation_manager.yesterday_dictionary) == 5
+    assert len(compilation_manager.quoted_map) == 5
 
     for y in temporalsubformulas:
-        assert y in compilation_manager.yesterday_dictionary
+        assert y in compilation_manager.quoted_map
         assert y in fresh_atoms
 
     y = temporalsubformulas
@@ -389,10 +389,10 @@ def test_problem_extension_since2() -> None:
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
-    assert len(compilation_manager.yesterday_dictionary) == 5
+    assert len(compilation_manager.quoted_map) == 5
 
     for y in temporalsubformulas:
-        assert y in compilation_manager.yesterday_dictionary
+        assert y in compilation_manager.quoted_map
         assert y in fresh_atoms
 
     y = temporalsubformulas
@@ -416,10 +416,10 @@ def test_problem_extension_once_blocks() -> None:
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
-    assert len(compilation_manager.yesterday_dictionary) == 3
+    assert len(compilation_manager.quoted_map) == 3
 
     for y in temporalsubformulas:
-        assert y in compilation_manager.yesterday_dictionary
+        assert y in compilation_manager.quoted_map
         assert y in fresh_atoms
 
     y = temporalsubformulas
@@ -443,10 +443,10 @@ def test_problem_extension_since3() -> None:
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
-    assert len(compilation_manager.yesterday_dictionary) == 4
+    assert len(compilation_manager.quoted_map) == 4
 
     for y in temporalsubformulas:
-        assert y in compilation_manager.yesterday_dictionary
+        assert y in compilation_manager.quoted_map
         assert y in fresh_atoms
 
     y = temporalsubformulas
@@ -474,10 +474,10 @@ def test_problem_extension_seq() -> None:
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
-    assert len(compilation_manager.yesterday_dictionary) == 3
+    assert len(compilation_manager.quoted_map) == 3
 
     for y in temporalsubformulas:
-        assert y in compilation_manager.yesterday_dictionary
+        assert y in compilation_manager.quoted_map
         assert y in fresh_atoms
 
     y = temporalsubformulas
@@ -502,10 +502,10 @@ def test_problem_extension_robot1() -> None:
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
-    assert len(compilation_manager.yesterday_dictionary) == 5
+    assert len(compilation_manager.quoted_map) == 5
 
     for y in temporalsubformulas:
-        assert y in compilation_manager.yesterday_dictionary
+        assert y in compilation_manager.quoted_map
         assert y in fresh_atoms
 
     y = temporalsubformulas
@@ -527,10 +527,10 @@ def test_problem_extension_robot2() -> None:
     ]
 
     fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
-    assert len(compilation_manager.yesterday_dictionary) == 2
+    assert len(compilation_manager.quoted_map) == 2
 
     for y in temporalsubformulas:
-        assert y in compilation_manager.yesterday_dictionary
+        assert y in compilation_manager.quoted_map
         assert y in fresh_atoms
 
     y = temporalsubformulas
