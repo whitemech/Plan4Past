@@ -73,23 +73,23 @@ def test_formula_conversion() -> None:
 
     compiler = ADLCompiler(domain, problem, formula, from_atoms_to_fluent=None)
     compiler.compile()
-    yesterday_dictionary = (
-        compiler._yesterday_dictionary  # pylint: disable=protected-access
+    translation_dictionary = (
+        compiler._translation_dictionary  # pylint: disable=protected-access
     )
-    assert yesterday_dictionary is not None
+    assert translation_dictionary is not None
     pnf0_expected = PddlOr(
-        PddlNot(a_pred), Predicate(yesterday_dictionary[y[0]].name, *[])
+        PddlNot(a_pred), Predicate(translation_dictionary[y[0]].name, *[])
     )
     pnf1_expected = PddlOr(
-        PddlNot(b_pred), Predicate(yesterday_dictionary[y[1]].name, *[])
+        PddlNot(b_pred), Predicate(translation_dictionary[y[1]].name, *[])
     )
     assert compiler.pylogics2pddl(pnf[0]) == pnf0_expected
     assert compiler.pylogics2pddl(pnf[1]) == pnf1_expected
     pnf2_expected = PddlOr(
         PddlNot(PddlOr(PddlNot(pnf0_expected), PddlNot(pnf1_expected))),
-        Predicate(yesterday_dictionary[y[2]].name, *[]),
+        Predicate(translation_dictionary[y[2]].name, *[]),
     )
     assert compiler.pylogics2pddl(pnf[2]) == pnf2_expected
     assert compiler.pylogics2pddl(pnf[3]) == PddlOr(
-        pnf2_expected, Predicate(yesterday_dictionary[y[3]].name, *[])
+        pnf2_expected, Predicate(translation_dictionary[y[3]].name, *[])
     )

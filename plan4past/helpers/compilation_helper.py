@@ -50,6 +50,7 @@ class CompilationManager:
         """
         self.phi = phi
         self.quoted_atoms = quoted_set(self.phi)
+        self.val_atoms = val_set(self.phi)
 
         # Assign a unique label to each subformula of \phi
         sub_phi = get_subformulas(self.phi)
@@ -59,6 +60,11 @@ class CompilationManager:
         self.quoted_map = {
             quoted_atom: Atomic(f"{QUOTED_ATOM}_{self.formula_to_label_map[quoted_atom.formula]}")
             for quoted_atom in self.quoted_atoms
+        }
+
+        self.val_map = {
+            val_atom: Atomic(f"{VAL_ATOM}_{self.formula_to_label_map[val_atom.formula]}")
+            for val_atom in self.val_atoms
         }
         # print(self.quoted_map)
 

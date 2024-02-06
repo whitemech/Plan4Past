@@ -33,9 +33,9 @@ from pylogics.syntax.base import And, Formula, Not, Or
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
 from pylogics.syntax.pltl import PropositionalTrue
 
-from plan4past.constants import TRUE_ATOM
+from plan4past.constants import TRUE_ATOM, TRUE_PREDICATE
 from plan4past.helpers.utils import check_
-from plan4past.helpers.formula_helper import YesterdayAtom
+from plan4past.helpers.formula_helper import MetaAtom, YesterdayAtom, ValAtom
 
 
 class Pylogics2PddlTranslator:
@@ -43,56 +43,22 @@ class Pylogics2PddlTranslator:
 
     def __init__(
         self,
-        yesterday_dictionary: Dict[YesterdayAtom, PLTLAtomic],
+        translation_dictionary: Dict[MetaAtom, PLTLAtomic],
         from_atoms_to_fluent: Dict[PLTLAtomic, Predicate],
-        fresh_atoms: Set[PLTLAtomic],
     ) -> None:
         """Initialize the translator."""
-        self._fresh_atoms = fresh_atoms
-        self._yesterday_dictionary = yesterday_dictionary
+        self._translation_dictionary = translation_dictionary
         self.from_atoms_to_fluent = from_atoms_to_fluent
+        self.from_atoms_to_fluent.update({TRUE_ATOM: TRUE_PREDICATE})
+    
+    def translate(self, formula: Formula) -> PddlFormula:
+        return {
+            PLTLAtomic: lambda formula: self.from_atoms_to_fluent.get(formula, None),
+            YesterdayAtom: lambda formula: Predicate(self._translation_dictionary[formula].name, *[]),
+            ValAtom: lambda formula: Predicate(self._translation_dictionary[formula].name, *[]),
+            PropositionalTrue: lambda formula: TRUE_PREDICATE,
+            And: lambda formula: PddlAnd(*[self.translate(operand) for operand in formula.operands]),
+            Or: lambda formula: PddlOr(*[self.translate(operand) for operand in formula.operands]),
+            Not: lambda formula: PddlNot(self.translate(formula.argument)),
+        }[type(formula)](formula)
 
-    @singledispatchmethod
-    def translate(self, obj: Formula) -> PddlFormula:
-        """Transform pylogics formulas into PDDL formulas."""
-        raise ValueError(
-            f"object of type {type(obj)} is not supported by this function"
-        )
-
-    @translate.register
-    def translate_true(self, _formula: PropositionalTrue) -> PddlFormula:
-        """Compute the PDDL version of a true formula."""
-        return TRUE_ATOM
-
-    @translate.register
-    def translate_atomic(self, formula: PLTLAtomic) -> PddlFormula:
-        """Compute the PDDL version of an atomic formula."""
-        if self._fresh_atoms is not None and formula in self._fresh_atoms:
-            return (
-                Predicate(self._yesterday_dictionary[formula].name, *[])
-                if isinstance(formula, YesterdayAtom)
-                else Predicate(formula.name, *[])
-            )
-        predicate = self.from_atoms_to_fluent.get(PLTLAtomic(formula.name), None)
-        check_(
-            predicate is not None,
-            f"expected predicate with name {formula.name}; missing",
-        )
-        return predicate
-
-    @translate.register
-    def pylogics2pddl_and(self, formula: And) -> PddlFormula:
-        """Compute the PDDL version of a conjunction."""
-        operands = [self.translate(operand) for operand in formula.operands]
-        return PddlAnd(*operands)
-
-    @translate.register
-    def pylogics2pddl_or(self, formula: Or) -> PddlFormula:
-        """Compute the PDDL version of a disjunction."""
-        operands = [self.translate(operand) for operand in formula.operands]
-        return PddlOr(*operands)
-
-    @translate.register
-    def pylogics2pddl_not(self, formula: Not) -> PddlFormula:
-        """Compute the PDDL version of a disjunction."""
-        return PddlNot(self.translate(formula.argument))

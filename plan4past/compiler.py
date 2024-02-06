@@ -255,7 +255,6 @@ class ADLCompiler(Compiler):
                 "The goal formula can be simplified to FALSE. The problem admits no solution."
             )
 
-        self._fresh_atoms = None
         self._yesterday_mapping = None
         self._translator = None
         self.evaluate_pnf = evaluate_pnf
@@ -283,19 +282,17 @@ class ADLCompiler(Compiler):
         if self._executed:
             return
 
-        cm = CompilationManager(self.formula)
-        new_fluents, new_effs, new_goal = cm.get_problem_extension()
-        new_fluents.append(TRUE_ATOM)
-        self._fresh_atoms = set(new_fluents)
-        self._yesterday_mapping = cm.get_yesterday_mapping()
-        self._yesterday_dictionary = cm.quoted_map
+        self.cm = CompilationManager(self.formula)
+        self._quoted_map = self.cm.quoted_map
+        self._yesterday_mapping = self.cm.get_yesterday_mapping()
+        self._translation_dictionary = self.cm.quoted_map.copy()
+        self._translation_dictionary.update(self.cm.val_map)
         self._translator = Pylogics2PddlTranslator(
-            cast(Dict[YesterdayAtom, PLTLAtomic], self._yesterday_dictionary),
+            cast(Dict[YesterdayAtom, PLTLAtomic], self._translation_dictionary),
             self.from_atoms_to_fluent,
-            cast(Set[PLTLAtomic], self._fresh_atoms),
         )
 
-        self._compile_domain(new_fluents, new_effs, new_goal)
+        self._compile_domain()
         self._compile_problem()
 
         self._executed = True
@@ -303,48 +300,46 @@ class ADLCompiler(Compiler):
 
     # TODO: fix signature, different from parent class  # pylint: disable=fixme
     def _compile_domain(
-        self, new_fluents, new_effs, new_goal
+        self
     ):  # pylint: disable=arguments-differ
         """Compute the new domain."""
-        new_predicates = [self.pylogics2pddl(fluent) for fluent in new_fluents]
-        new_whens_positive = [
-            self.effect_conversion(eff, positive=True) for eff in new_effs
+
+        new_fluents, new_effs, new_goal = self.cm.get_problem_extension()
+        new_fluents.append(TRUE_ATOM)
+
+        quoted_updates = [self.effect_conversion(eff, positive=True) for eff in new_effs] + \
+            [self.effect_conversion(eff, positive=False) for eff in new_effs]
+        
+        #pnf_map = {val_}
+
+        new_predicates = [
+            *self.domain.predicates,
+            *list(map(self.pylogics2pddl, new_fluents)),
+            self.goal_predicate,
         ]
-        new_whens_negative = [
-            self.effect_conversion(eff, positive=False) for eff in new_effs
-        ]
-        new_whens = new_whens_positive + new_whens_negative
+
+        new_goal = self.pylogics2pddl(new_goal)
+
         if self.evaluate_pnf:
             domain_actions = _update_domain_actions_with_check(
-                self, new_whens, new_predicates
+                self, quoted_updates, new_predicates
             )
-            precond = And(self.pylogics2pddl(new_goal), self.check_predicate)
-            new_predicates = [
-                *self.domain.predicates,
-                *new_predicates,
-                self.goal_predicate,
-                self.check_predicate,
-            ]
+            new_goal = And(new_goal, self.check_predicate)
+            new_predicates.append(self.check_predicate)
         else:
             domain_actions = _update_domain_actions(
-                self, self.domain.actions, new_whens
+                self, self.domain.actions, quoted_updates
             )
-            precond = self.pylogics2pddl(new_goal)
-            new_predicates = [
-                *self.domain.predicates,
-                *new_predicates,
-                self.goal_predicate,
-            ]
 
+        achieve_goal_action = _get_achieve_goal_action(self.goal_predicate, new_goal)
         if self.simplify_disj_goal:
-            achieve_goaL_actions = delete_disjunction_in_goal(
+            achieve_goal_actions = delete_disjunction_in_goal(
                 self.goal_predicate,
-                _get_achieve_goal_action(self.goal_predicate, precond),
+                achieve_goal_action,
             )
-            for a in achieve_goaL_actions:
-                domain_actions.add(a)
+            domain_actions = domain_actions.union(achieve_goal_actions)
         else:
-            domain_actions.add(_get_achieve_goal_action(self.goal_predicate, precond))
+            domain_actions.add(achieve_goal_action)
 
         self._result_domain = Domain(
             name=self.domain.name,
@@ -380,14 +375,22 @@ class ADLCompiler(Compiler):
         """Convert effect."""
         condition = self.pylogics2pddl(effect[0])
         effect = self.pylogics2pddl(effect[1])
-        if positive:
-            return When(condition, effect)
-        return When(Not(condition), Not(effect))
+        return When(condition, effect) if positive else When(Not(condition), Not(effect))
 
     def pylogics2pddl(self, formula: Formula) -> PddlFormula:
         """Convert pylogics formula into PDDL formula."""
         check_(self._translator is not None, "compilation not executed yet")
         return cast(Pylogics2PddlTranslator, self._translator).translate(formula)
+
+
+def _extend_action_model(action: Action, additional_precondition: Formula, additional_effects: List) -> Action:
+    new_precondition = And(action.precondition, additional_precondition)
+    new_effects = AndEffect(action.effect, *additional_effects)
+    return _new_action(action.name, action.parameters, new_precondition, new_effects)
+
+
+def _new_action(name: str, parameters: List, preconditions: Formula, effects: AndEffect) -> Action:
+    return Action(name=name, parameters=[*parameters], precondition=preconditions, effect=effects)
 
 
 def _update_domain_actions_with_check(
@@ -455,35 +458,23 @@ def _update_domain_actions_with_check(
         pnf_predicate = Predicate(yesterday_effect.name.replace(QUOTED_ATOM, PNF), *[])
         pnf_evaluation_effects.append(When(eff.condition, pnf_predicate))
         pnf_delete_effects.append(Not(pnf_predicate))
-        qouted_update_effects.append(When(pnf_predicate, yesterday_effect))
-        qouted_update_effects.append(When(Not(pnf_predicate), Not(yesterday_effect)))
+        qouted_update_effects += [When(pnf_predicate, yesterday_effect), When(Not(pnf_predicate), Not(yesterday_effect))]
         new_predicates.append(pnf_predicate)
 
     goal_fluent = compiler.goal_predicate
     new_actions = set()
+
+    additional_precondition = And(Not(goal_fluent), Not(compiler.check_predicate))
+    additional_effects = pnf_delete_effects + qouted_update_effects + [compiler.check_predicate]
+
     for action in compiler.domain.actions:
-        new_actions.add(
-            Action(
-                name=action.name,
-                parameters=[*action.parameters],
-                precondition=And(
-                    action.precondition, Not(goal_fluent), Not(compiler.check_predicate)
-                ),
-                effect=AndEffect(
-                    action.effect,
-                    *pnf_delete_effects,
-                    *qouted_update_effects,
-                    compiler.check_predicate,
-                ),
-            )
-        )
+        new_actions.add(_extend_action_model(action, additional_precondition, additional_effects))
+            
     new_actions.add(
-        Action(
-            name=EVALUATE_PNF_ACTION,
-            parameters=[],
-            precondition=And(Not(goal_fluent), compiler.check_predicate),
-            effect=AndEffect(*pnf_evaluation_effects, Not(compiler.check_predicate)),
-        )
+        _new_action(name=EVALUATE_PNF_ACTION, 
+                    parameters=[], 
+                    preconditions=And(Not(goal_fluent), compiler.check_predicate), 
+                    effects=AndEffect(*pnf_evaluation_effects, Not(compiler.check_predicate)))
     )
 
     return new_actions
