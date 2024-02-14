@@ -31,12 +31,12 @@ b = Atomic("b")
 
 
 test_formulas_val_set = [
-    (a, {ValAtom_(a)}),
-    (And(a, b), {ValAtom_(a), ValAtom_(b), ValAtom_(And(a, b))}),
-    (Or(a, b), {ValAtom_(a), ValAtom_(b), ValAtom_(Or(a, b))}),
-    (Not(And(a, b)), {ValAtom_(a), ValAtom_(b), ValAtom_(And(a, b)), ValAtom_(Not(And(a, b)))}),
-    (Since(a, b), {ValAtom_(a), ValAtom_(b), ValAtom_(Since(a, b))}),
-    (Since(a, Once(b)), {ValAtom_(a), ValAtom_(b), ValAtom_(Once(b)), ValAtom_(Since(a, Once(b)))}),
+    (a, {ValAtom(a)}),
+    (And(a, b), {ValAtom(a), ValAtom(b), ValAtom(And(a, b))}),
+    (Or(a, b), {ValAtom(a), ValAtom(b), ValAtom(Or(a, b))}),
+    (Not(And(a, b)), {ValAtom(a), ValAtom(b), ValAtom(And(a, b)), ValAtom(Not(And(a, b)))}),
+    (Since(a, b), {ValAtom(a), ValAtom(b), ValAtom(Since(a, b))}),
+    (Since(a, Once(b)), {ValAtom(a), ValAtom(b), ValAtom(Once(b)), ValAtom(Since(a, Once(b)))}),
 ]
 
 @pytest.mark.parametrize("input_formula, expected", test_formulas_val_set)
@@ -45,8 +45,8 @@ def test_val_set(input_formula, expected):
 
 
 def test_equality_val_before_atoms():
-    ValAtom_(a) != Yatom_(a)
-    ValAtom_(Since(a, Once(b))) != Yatom_(Since(a, Once(b)))
+    ValAtom(a) != YAtom(a)
+    ValAtom(Since(a, Once(b))) != YAtom(Since(a, Once(b)))
 
 
 test_formulas_quoted_set = [
@@ -54,10 +54,10 @@ test_formulas_quoted_set = [
     (And(a, b), set()),
     (Or(a, b), set()),
     (Not(And(a, b)), set()),
-    (Since(a, b), {Yatom_(Since(a, b))}),
-    (Since(a, Once(b)), {Yatom_(Once(b)), Yatom_(Since(a, Once(b)))}),
-    (Since(a, Before(Once(b))), {Yatom_(Once(b)), Yatom_(Since(a, Before(Once(b))))}),
-    (And(Once(b), Since(a, Before(Once(b)))), {Yatom_(Once(b)), Yatom_(Since(a, Before(Once(b))))})
+    (Since(a, b), {YAtom(Since(a, b))}),
+    (Since(a, Once(b)), {YAtom(Once(b)), YAtom(Since(a, Once(b)))}),
+    (Since(a, Before(Once(b))), {YAtom(Once(b)), YAtom(Since(a, Before(Once(b))))}),
+    (And(Once(b), Since(a, Before(Once(b)))), {YAtom(Once(b)), YAtom(Since(a, Before(Once(b))))})
 ]
 
 @pytest.mark.parametrize("input_formula, expected", test_formulas_quoted_set)
@@ -72,10 +72,10 @@ test_formulas_quoted_set = [
     (ValAtom(And(a, b)), And(ValAtom(a), ValAtom(b))),
     (ValAtom(Or(a, b)), Or(ValAtom(a), ValAtom(b))),
     (ValAtom(Not(And(a, b))), Not(ValAtom(And(a, b)))),
-    (ValAtom(Before(Since(a, b))), Yatom_(Since(a, b))),
-    (ValAtom(Since(a, b)), Or(ValAtom(b), And(ValAtom(a), Yatom_(Since(a, b))))),
-    (ValAtom(Since(a, Once(b))), Or(ValAtom(Once(b)), And(ValAtom(a), Yatom_(Since(a, Once(b)))))),
-    (ValAtom(Since(a, Before(Once(b)))), Or(ValAtom(Before(Once(b))), And(ValAtom(a), Yatom_(Since(a, Before(Once(b))))))),
+    (ValAtom(Before(Since(a, b))), YAtom(Since(a, b))),
+    (ValAtom(Since(a, b)), Or(ValAtom(b), And(ValAtom(a), YAtom(Since(a, b))))),
+    (ValAtom(Since(a, Once(b))), Or(ValAtom(Once(b)), And(ValAtom(a), YAtom(Since(a, Once(b)))))),
+    (ValAtom(Since(a, Before(Once(b)))), Or(ValAtom(Before(Once(b))), And(ValAtom(a), YAtom(Since(a, Before(Once(b))))))),
 ]
 
 @pytest.mark.parametrize("input_formula, expected", test_formulas_quoted_set)

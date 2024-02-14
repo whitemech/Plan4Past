@@ -68,7 +68,7 @@ class MetaAtom(Atomic):
         return f'"{self.symbol}_{self.formula}"'
 
 
-class YesterdayAtom(MetaAtom):
+class YAtom(MetaAtom):
     """
     Data strucure representing a quoted "yesterdy atom".
     """
@@ -88,12 +88,6 @@ class ValAtom(MetaAtom):
         Initialize a yesterday atom.
         """
         super().__init__(formula, VAL_ATOM)
-
-def ValAtom_(formula: Formula):
-    return ValAtom(formula)
-
-def Yatom_(formula: Formula):
-    return YesterdayAtom(formula)
 
 def get_subformulas(phi: Formula) -> Set[Formula]:
     """Compute the pnf of a formula."""
@@ -143,12 +137,12 @@ def val_condition(val: ValAtom) -> Formula:
     return cases[type(formula)](formula)
 
 
-def val_set(phi: Formula) -> Set[ValAtom_]:
+def val_set(phi: Formula) -> Set[ValAtom]:
     """Compute the pnf of a formula."""
-    return {ValAtom_(sub) for sub in get_subformulas(phi)}
+    return {ValAtom(sub) for sub in get_subformulas(phi)}
 
 
-def get_quoted_atom(formula: Formula) -> YesterdayAtom:
+def get_quoted_atom(formula: Formula) -> YAtom:
     """
     Get the quoted atom from a formula.
     This helper function distinguishes handles the difference between Y(\phi) and \phi1 S \phi2
@@ -161,8 +155,8 @@ def get_quoted_atom(formula: Formula) -> YesterdayAtom:
     :return: the "quoted" atom
     """
     check_(type(formula) in TEMPORAL_TYPES)
-    return Yatom_(formula) if type(formula) in {Since, Once} else Yatom_(formula.argument)
+    return YAtom(formula) if type(formula) in {Since, Once} else YAtom(formula.argument)
 
-def quoted_set(phi: Formula) -> Set[YesterdayAtom]:
+def quoted_set(phi: Formula) -> Set[YAtom]:
     """Compute the pnf of a formula."""
     return {get_quoted_atom(sub) for sub in get_subformulas(phi) if type(sub) in TEMPORAL_TYPES}

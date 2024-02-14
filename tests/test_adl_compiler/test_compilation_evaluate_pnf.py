@@ -34,7 +34,7 @@ from plan4past.compiler import ADLCompiler
 from plan4past.compiler import Not as pddlNot
 from plan4past.compiler import Predicate, When
 from plan4past.constants import EVALUATE_PNF_ACTION, PNF
-from plan4past.helpers.formula_helper import QUOTED_ATOM, Yatom_
+from plan4past.helpers.formula_helper import QUOTED_ATOM, YAtom
 
 
 def get_task(domain_path, problem_path) -> Tuple:
@@ -126,10 +126,10 @@ def test_pddl_compilation() -> None:
     formula = parse_pltl(f"H(H(H({a}) | H({b}))) | ({a} | {b})")
 
     temporalsubformulas = [
-        Yatom_(Once(Not(a))),
-        Yatom_(Once(Not(b))),
-        Yatom_(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b))))))),
-        Yatom_(Once(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b)))))))),
+        YAtom(Once(Not(a))),
+        YAtom(Once(Not(b))),
+        YAtom(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b))))))),
+        YAtom(Once(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b)))))))),
     ]
 
     y = temporalsubformulas
@@ -154,11 +154,11 @@ def test_pddl_compilation2() -> None:
     formula = parse_pltl("O(robotat_c & Y(Y(Y(!Y(true)))))")
 
     temporalsubformulas = [
-        Yatom_(PropositionalTrue()),
-        Yatom_(Not(Before(PropositionalTrue()))),
-        Yatom_(Before(Not(Before(PropositionalTrue())))),
-        Yatom_(Before(Before(Not(Before(PropositionalTrue()))))),
-        Yatom_(Once(And(c, Before(Before(Before(Not(Before(PropositionalTrue())))))))),
+        YAtom(PropositionalTrue()),
+        YAtom(Not(Before(PropositionalTrue()))),
+        YAtom(Before(Not(Before(PropositionalTrue())))),
+        YAtom(Before(Before(Not(Before(PropositionalTrue()))))),
+        YAtom(Once(And(c, Before(Before(Before(Not(Before(PropositionalTrue())))))))),
     ]
 
     y = temporalsubformulas
@@ -197,7 +197,7 @@ def test_pddl_compilation3() -> None:
         Once(And(on_a_table, on_b_table, on_c_table, Before(subformulas[2])))
     )
 
-    temporalsubformulas = [Yatom_(sub) for sub in subformulas]
+    temporalsubformulas = [YAtom(sub) for sub in subformulas]
 
     y = temporalsubformulas
     pnf = [Or(And(on_a_c, on_c_b), y[0])]

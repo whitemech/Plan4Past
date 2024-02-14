@@ -33,7 +33,7 @@ from pylogics.syntax.pltl import (
 )
 
 from plan4past.helpers.compilation_helper import CompilationManager
-from plan4past.helpers.formula_helper import Yatom_, ppnf
+from plan4past.helpers.formula_helper import YAtom, ppnf
 from plan4past.utils.rewrite_formula_visitor import rewrite
 from plan4past.utils.predicates_visitor import predicates
 
@@ -53,9 +53,9 @@ def test_yesterday_generation1() -> None:
 
     yesterday_dictionary = compilation_manager.quoted_map
     assert len(yesterday_dictionary) == 3
-    assert Yatom_(Once(Not(a))) in yesterday_dictionary
-    assert Yatom_(Since(b, Not(Once(Not(c))))) in yesterday_dictionary
-    assert Yatom_(Once(Not(c))) in yesterday_dictionary
+    assert YAtom(Once(Not(a))) in yesterday_dictionary
+    assert YAtom(Since(b, Not(Once(Not(c))))) in yesterday_dictionary
+    assert YAtom(Once(Not(c))) in yesterday_dictionary
 
 
 def test_yesterday_generation2() -> None:
@@ -66,8 +66,8 @@ def test_yesterday_generation2() -> None:
 
     yesterday_dictionary = compilation_manager.quoted_map
     assert len(yesterday_dictionary) == 2
-    assert Yatom_(Once(Not(a))) in yesterday_dictionary
-    assert Yatom_(Since(b, Not(Once(Not(a))))) in yesterday_dictionary
+    assert YAtom(Once(Not(a))) in yesterday_dictionary
+    assert YAtom(Since(b, Not(Once(Not(a))))) in yesterday_dictionary
 
 
 def test_yesterday_generation3() -> None:
@@ -78,8 +78,8 @@ def test_yesterday_generation3() -> None:
 
     yesterday_dictionary = compilation_manager.quoted_map
     assert len(yesterday_dictionary) == 2
-    assert Yatom_(Once(Not(And(a, b)))) in yesterday_dictionary
-    assert Yatom_(Since(b, Not(Once(Not(And(b, a)))))) in yesterday_dictionary
+    assert YAtom(Once(Not(And(a, b)))) in yesterday_dictionary
+    assert YAtom(Since(b, Not(Once(Not(And(b, a)))))) in yesterday_dictionary
 
 
 def test_yesterday_generation4() -> None:
@@ -90,10 +90,10 @@ def test_yesterday_generation4() -> None:
 
     yesterday_dictionary = compilation_manager.quoted_map
     assert len(yesterday_dictionary) == 3
-    assert Yatom_(Once(Not(And(a, b)))) in yesterday_dictionary
-    assert Yatom_(Before(Or(b, Since(c, d)))) not in yesterday_dictionary
-    assert Yatom_(Or(b, Since(c, d))) in yesterday_dictionary
-    assert Yatom_(Since(c, d)) in yesterday_dictionary
+    assert YAtom(Once(Not(And(a, b)))) in yesterday_dictionary
+    assert YAtom(Before(Or(b, Since(c, d)))) not in yesterday_dictionary
+    assert YAtom(Or(b, Since(c, d))) in yesterday_dictionary
+    assert YAtom(Since(c, d)) in yesterday_dictionary
 
 
 def test_yesterday_generation5() -> None:
@@ -104,10 +104,10 @@ def test_yesterday_generation5() -> None:
 
     yesterday_dictionary = compilation_manager.quoted_map
     assert len(yesterday_dictionary) == 3
-    assert Yatom_(Once(And(a, b))) in yesterday_dictionary
-    assert Yatom_(Before(Or(b, Not(Since(Not(c), Not(d)))))) not in yesterday_dictionary
-    assert Yatom_(Or(b, Not(Since(Not(c), Not(d))))) in yesterday_dictionary
-    assert Yatom_(Since(Not(c), Not(d))) in yesterday_dictionary
+    assert YAtom(Once(And(a, b))) in yesterday_dictionary
+    assert YAtom(Before(Or(b, Not(Since(Not(c), Not(d)))))) not in yesterday_dictionary
+    assert YAtom(Or(b, Not(Since(Not(c), Not(d))))) in yesterday_dictionary
+    assert YAtom(Since(Not(c), Not(d))) in yesterday_dictionary
 
 
 def test_yesterday_generation6() -> None:
@@ -119,14 +119,14 @@ def test_yesterday_generation6() -> None:
     yesterday_dictionary = compilation_manager.quoted_map
     assert len(yesterday_dictionary) == 3
     assert (
-        Yatom_(Once(And(a, Before(Once(And(b, Before(Once(c))))))))
+        YAtom(Once(And(a, Before(Once(And(b, Before(Once(c))))))))
         in yesterday_dictionary
     )
-    assert Yatom_(Once(And(b, Before(Once(c))))) in yesterday_dictionary
-    assert Yatom_(Once(c)) in yesterday_dictionary
+    assert YAtom(Once(And(b, Before(Once(c))))) in yesterday_dictionary
+    assert YAtom(Once(c)) in yesterday_dictionary
 
-    assert Yatom_(Before(Once(And(b, Before(Once(c)))))) not in yesterday_dictionary
-    assert Yatom_(Before(Once(c))) not in yesterday_dictionary
+    assert YAtom(Before(Once(And(b, Before(Once(c)))))) not in yesterday_dictionary
+    assert YAtom(Before(Once(c))) not in yesterday_dictionary
 
 
 def test_yesterday_generation7() -> None:
@@ -143,17 +143,17 @@ def test_yesterday_generation7() -> None:
 
     yesterday_dictionary = compilation_manager.quoted_map
     assert len(yesterday_dictionary) == 5
-    assert Yatom_(a) in yesterday_dictionary
-    assert Yatom_(b) in yesterday_dictionary
+    assert YAtom(a) in yesterday_dictionary
+    assert YAtom(b) in yesterday_dictionary
     assert (
-        Yatom_(Or(Not(Once(Not(c))), Not(Before(Atomic("true")))))
+        YAtom(Or(Not(Once(Not(c))), Not(Before(Atomic("true")))))
         in yesterday_dictionary
     )
-    assert Yatom_(Once(Not(c))) in yesterday_dictionary
-    assert Yatom_(Atomic("true")) in yesterday_dictionary
+    assert YAtom(Once(Not(c))) in yesterday_dictionary
+    assert YAtom(Atomic("true")) in yesterday_dictionary
 
-    assert Yatom_(Before(b)) not in yesterday_dictionary
-    assert Yatom_(Before(a)) not in yesterday_dictionary
+    assert YAtom(Before(b)) not in yesterday_dictionary
+    assert YAtom(Before(a)) not in yesterday_dictionary
 
 
 def test_pex1() -> None:
@@ -167,28 +167,28 @@ def test_pex2() -> None:
     """Test the PPNF translation for a yesterday formula."""
     phi = Before(a)
     result = ppnf(phi)
-    assert result == Yatom_(a)
+    assert result == YAtom(a)
 
 
 def test_pex3() -> None:
     """Test the PPNF translation for a disjunction formula."""
     phi = Or(Before(a), Not(Before(Atomic("true"))))
     result = ppnf(phi)
-    assert result == Or(Yatom_(a), Not(Yatom_(Atomic("true"))))
+    assert result == Or(YAtom(a), Not(YAtom(Atomic("true"))))
 
 
 def test_pex4() -> None:
     """Test the PPNF translation for a once formula."""
     phi = Once(a)
     result = ppnf(phi)
-    assert result == Or(a, Yatom_(Once(a)))
+    assert result == Or(a, YAtom(Once(a)))
 
 
 def test_pex5() -> None:
     """Test the PPNF translation for a once formula inside a negation."""
     phi = Not(Once(Not(a)))
     result = ppnf(phi)
-    assert result == Not(Or(Not(a), Yatom_(Once(Not(a)))))
+    assert result == Not(Or(Not(a), YAtom(Once(Not(a)))))
 
 
 def test_pex6() -> None:
@@ -202,14 +202,14 @@ def test_pex7() -> None:
     """Test the PPNF translation for a since formula."""
     phi = Since(a, b)
     result = ppnf(phi)
-    assert result == Or(b, And(a, Yatom_(Since(a, b))))
+    assert result == Or(b, And(a, YAtom(Since(a, b))))
 
 
 def test_pex8() -> None:
     """Test the PPNF translation for a since formula inside a negation."""
     phi = Not(Since(Not(a), Not(b)))
     result = ppnf(phi)
-    assert result == Not(Or(Not(b), And(Not(a), Yatom_(Since(Not(a), Not(b))))))
+    assert result == Not(Or(Not(b), And(Not(a), YAtom(Since(Not(a), Not(b))))))
 
 
 def test_pex_complex_formula1() -> None:
@@ -218,10 +218,10 @@ def test_pex_complex_formula1() -> None:
     cm = CompilationManager(phi)
     result = ppnf(phi)
 
-    yesterday_once_a = Yatom_(Once(a))
-    yesterday_since = Yatom_(Since(b, Before(Not(Once(Not(c))))))
-    yesterday_once_not_c = Yatom_(Once(Not(c)))
-    yesterday_not_once_not_c = Yatom_(Not(Once(Not(c))))
+    yesterday_once_a = YAtom(Once(a))
+    yesterday_since = YAtom(Since(b, Before(Not(Once(Not(c))))))
+    yesterday_once_not_c = YAtom(Once(Not(c)))
+    yesterday_not_once_not_c = YAtom(Not(Once(Not(c))))
 
     assert len(cm.quoted_map) == 4
     assert cm.quoted_map.get(yesterday_once_not_c) is not None
@@ -240,8 +240,8 @@ def test_pex_complex_formula2() -> None:
 
     assert len(cm.quoted_map) == 2
 
-    yesterday_once = Yatom_(Once(And(a, Before(Once(b)))))
-    yesterday_once_b = Yatom_(Once(b))
+    yesterday_once = YAtom(Once(And(a, Before(Once(b)))))
+    yesterday_once_b = YAtom(Once(b))
 
     pex_phi = Or(And(a, yesterday_once_b), yesterday_once)
     assert result == pex_phi
@@ -249,34 +249,34 @@ def test_pex_complex_formula2() -> None:
 
 # ("H(H(H(a) | H(b))) | (a | b)", expected3)  # noqa
 pnf_ha_hb = Or(
-    Not(Or(Not(a), Yatom_(Once(Not(a))))), Not(Or(Not(b), Yatom_(Once(Not(b)))))
+    Not(Or(Not(a), YAtom(Once(Not(a))))), Not(Or(Not(b), YAtom(Once(Not(b)))))
 )
 pnf_h_ha_hb = Not(
-    Or(Not(pnf_ha_hb), Yatom_(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b))))))))
+    Or(Not(pnf_ha_hb), YAtom(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b))))))))
 )
 pnf_h_h_ha_hb = Not(
     Or(
-        Or(Not(pnf_ha_hb), Yatom_(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b)))))))),
-        Yatom_(Once(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b)))))))),
+        Or(Not(pnf_ha_hb), YAtom(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b)))))))),
+        YAtom(Once(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b)))))))),
     )
 )
 combinations = [
     (
         "O(a) & O(b) & O(c)",
-        And(Or(a, Yatom_(Once(a))), Or(b, Yatom_(Once(b))), Or(c, Yatom_(Once(c)))),
+        And(Or(a, YAtom(Once(a))), Or(b, YAtom(Once(b))), Or(c, YAtom(Once(c)))),
     ),
     (
         "O(O(a) & O(b) & O(c))",
         Or(
-            And(Or(a, Yatom_(Once(a))), Or(b, Yatom_(Once(b))), Or(c, Yatom_(Once(c)))),
-            Yatom_(Once(And(Once(a), Once(b), Once(c)))),
+            And(Or(a, YAtom(Once(a))), Or(b, YAtom(Once(b))), Or(c, YAtom(Once(c)))),
+            YAtom(Once(And(Once(a), Once(b), Once(c)))),
         ),
     ),
     (
         "O(O(a) | O(b) | O(c))",
         Or(
-            Or(Or(a, Yatom_(Once(a))), Or(b, Yatom_(Once(b))), Or(c, Yatom_(Once(c)))),
-            Yatom_(Once(Or(Once(a), Once(b), Once(c)))),
+            Or(Or(a, YAtom(Once(a))), Or(b, YAtom(Once(b))), Or(c, YAtom(Once(c)))),
+            YAtom(Once(Or(Once(a), Once(b), Once(c)))),
         ),
     ),
     ("H(a) | H(b)", pnf_ha_hb),
@@ -285,7 +285,7 @@ combinations = [
         Not(
             Or(
                 Not(pnf_ha_hb),
-                Yatom_(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b))))))),
+                YAtom(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b))))))),
             )
         ),
     ),
@@ -295,9 +295,9 @@ combinations = [
             Or(
                 Or(
                     Not(pnf_ha_hb),
-                    Yatom_(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b))))))),
+                    YAtom(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b))))))),
                 ),
-                Yatom_(Once(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b)))))))),
+                YAtom(Once(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b)))))))),
             )
         ),
     ),
@@ -323,13 +323,13 @@ def test_problem_extension_HH_Ha_Hb() -> None:
 
     # pylint: disable=R0801
     temporalsubformulas = [
-        Yatom_(Once(Not(a))),
-        Yatom_(Once(Not(b))),
-        Yatom_(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b))))))),
-        Yatom_(Once(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b)))))))),
+        YAtom(Once(Not(a))),
+        YAtom(Once(Not(b))),
+        YAtom(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b))))))),
+        YAtom(Once(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b)))))))),
     ]
 
-    _, quoted_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
+    quoted_atoms, conditional_effects, goal = compilation_manager.get_adl_compilation()
     assert len(compilation_manager.quoted_map) == 4
 
     for y in temporalsubformulas:
@@ -352,14 +352,14 @@ def test_problem_extension_since():
     compilation_manager = CompilationManager(formula_)
 
     temporalsubformulas = [
-        Yatom_(Once(d)),
-        Yatom_(Once(a)),
-        Yatom_(Once(b)),
-        Yatom_(Once(c)),
-        Yatom_(Since(Once(d), And(Once(a), Once(b), Once(c)))),
+        YAtom(Once(d)),
+        YAtom(Once(a)),
+        YAtom(Once(b)),
+        YAtom(Once(c)),
+        YAtom(Since(Once(d), And(Once(a), Once(b), Once(c)))),
     ]
 
-    _, quoted_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
+    quoted_atoms, conditional_effects, goal = compilation_manager.get_adl_compilation()
     assert len(compilation_manager.quoted_map) == 5
 
     for y in temporalsubformulas:
@@ -381,14 +381,14 @@ def test_problem_extension_since2() -> None:
     compilation_manager = CompilationManager(formula_)
 
     temporalsubformulas = [
-        Yatom_(Once(d)),
-        Yatom_(Once(a)),
-        Yatom_(Once(b)),
-        Yatom_(Once(c)),
-        Yatom_(Since(Or(Once(a), Once(b), Once(c)), Once(d))),
+        YAtom(Once(d)),
+        YAtom(Once(a)),
+        YAtom(Once(b)),
+        YAtom(Once(c)),
+        YAtom(Since(Or(Once(a), Once(b), Once(c)), Once(d))),
     ]
 
-    _, quoted_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
+    quoted_atoms, conditional_effects, goal = compilation_manager.get_adl_compilation()
     assert len(compilation_manager.quoted_map) == 5
 
     for y in temporalsubformulas:
@@ -410,12 +410,12 @@ def test_problem_extension_once_blocks() -> None:
     compilation_manager = CompilationManager(formula_)
 
     temporalsubformulas = [
-        Yatom_(Once(d)),
-        Yatom_(Once(And(a, Once(d)))),
-        Yatom_(Once(And(b, Once(d)))),
+        YAtom(Once(d)),
+        YAtom(Once(And(a, Once(d)))),
+        YAtom(Once(And(b, Once(d)))),
     ]
 
-    _, quoted_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
+    quoted_atoms, conditional_effects, goal = compilation_manager.get_adl_compilation()
     assert len(compilation_manager.quoted_map) == 3
 
     for y in temporalsubformulas:
@@ -436,13 +436,13 @@ def test_problem_extension_since3() -> None:
     compilation_manager = CompilationManager(formula_)
 
     temporalsubformulas = [
-        Yatom_(Once(a)),
-        Yatom_(Once(b)),
-        Yatom_(Since(c, Once(a))),
-        Yatom_(Since(c, Once(b))),
+        YAtom(Once(a)),
+        YAtom(Once(b)),
+        YAtom(Since(c, Once(a))),
+        YAtom(Since(c, Once(b))),
     ]
 
-    _, quoted_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
+    quoted_atoms, conditional_effects, goal = compilation_manager.get_adl_compilation()
     assert len(compilation_manager.quoted_map) == 4
 
     for y in temporalsubformulas:
@@ -468,12 +468,12 @@ def test_problem_extension_seq() -> None:
     compilation_manager = CompilationManager(formula_)
 
     temporalsubformulas = [
-        Yatom_(Once(c)),
-        Yatom_(Once(And(b, Before(Once(c))))),
-        Yatom_(Once(And(a, Before(Once(And(b, Before(Once(c)))))))),
+        YAtom(Once(c)),
+        YAtom(Once(And(b, Before(Once(c))))),
+        YAtom(Once(And(a, Before(Once(And(b, Before(Once(c)))))))),
     ]
 
-    _, quoted_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
+    quoted_atoms, conditional_effects, goal = compilation_manager.get_adl_compilation()
     assert len(compilation_manager.quoted_map) == 3
 
 
@@ -495,14 +495,14 @@ def test_problem_extension_robot1() -> None:
     compilation_manager = CompilationManager(formula_)
 
     temporalsubformulas = [
-        Yatom_(PropositionalTrue()),
-        Yatom_(Not(Before(PropositionalTrue()))),
-        Yatom_(Before(Not(Before(PropositionalTrue())))),
-        Yatom_(Before(Before(Not(Before(PropositionalTrue()))))),
-        Yatom_(Once(And(c, Before(Before(Before(Not(Before(PropositionalTrue())))))))),
+        YAtom(PropositionalTrue()),
+        YAtom(Not(Before(PropositionalTrue()))),
+        YAtom(Before(Not(Before(PropositionalTrue())))),
+        YAtom(Before(Before(Not(Before(PropositionalTrue()))))),
+        YAtom(Once(And(c, Before(Before(Before(Not(Before(PropositionalTrue())))))))),
     ]
 
-    _, quoted_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
+    quoted_atoms, conditional_effects, goal = compilation_manager.get_adl_compilation()
     assert len(compilation_manager.quoted_map) == 5
 
     for y in temporalsubformulas:
@@ -523,11 +523,11 @@ def test_problem_extension_robot2() -> None:
     compilation_manager = CompilationManager(formula_)
 
     temporalsubformulas = [
-        Yatom_(a),
-        Yatom_(Once(Not(Or(Not(Before(a)), Not(b))))),
+        YAtom(a),
+        YAtom(Once(Not(Or(Not(Before(a)), Not(b))))),
     ]
 
-    _, quoted_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
+    quoted_atoms, conditional_effects, goal = compilation_manager.get_adl_compilation()
     assert len(compilation_manager.quoted_map) == 2
 
     for y in temporalsubformulas:

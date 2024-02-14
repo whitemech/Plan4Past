@@ -44,7 +44,7 @@ from plan4past.constants import (
     TRUE_PREDICATE,
 )
 from plan4past.exceptions import ProblemUnsolvableException
-from plan4past.helpers.compilation_helper import CompilationManager, YesterdayAtom, ValAtom
+from plan4past.helpers.compilation_helper import CompilationManager, YAtom, ValAtom
 from plan4past.helpers.utils import (
     check_,
     default_mapping,
@@ -132,7 +132,7 @@ class Compiler:
         self._translation_dictionary = self.cm.quoted_map.copy()
         self._translation_dictionary.update(self.cm.val_map)
         self._translator = Pylogics2PddlTranslator(
-            cast(Dict[YesterdayAtom, PLTLAtomic], self._translation_dictionary),
+            cast(Dict[YAtom, PLTLAtomic], self._translation_dictionary),
             self.from_atoms_to_fluent,
         )
         if not self._executed:
@@ -269,7 +269,7 @@ class ADLCompiler(Compiler):
         self._yesterday_mapping = None
         self._translator = None
         self.evaluate_pnf = evaluate_pnf
-        self._yesterday_dictionary: Optional[Dict[YesterdayAtom, PLTLAtomic]] = None
+        self._yesterday_dictionary: Optional[Dict[YAtom, PLTLAtomic]] = None
         self.goal_predicate = GOAL_PREDICATE
         self.check_predicate = CHECK_PREDICATE
         self.simplify_disj_goal = simplify_disj_goal
@@ -299,7 +299,7 @@ class ADLCompiler(Compiler):
         self._translation_dictionary = self.cm.quoted_map.copy()
         self._translation_dictionary.update(self.cm.val_map)
         self._translator = Pylogics2PddlTranslator(
-            cast(Dict[YesterdayAtom, PLTLAtomic], self._translation_dictionary),
+            cast(Dict[YAtom, PLTLAtomic], self._translation_dictionary),
             self.from_atoms_to_fluent,
         )
 
@@ -315,7 +315,7 @@ class ADLCompiler(Compiler):
     ):  # pylint: disable=arguments-differ
         """Compute the new domain."""
 
-        _, quoted_atoms, new_effs, new_goal = self.cm.get_problem_extension()
+        quoted_atoms, new_effs, new_goal = self.cm.get_adl_compilation()
         quoted_atoms.append(TRUE_ATOM)
 
         quoted_updates = [self.effect_conversion(eff, positive=True) for eff in new_effs] + \

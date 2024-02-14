@@ -35,7 +35,7 @@ from pylogics.syntax.pltl import PropositionalTrue
 
 from plan4past.constants import TRUE_ATOM, TRUE_PREDICATE
 from plan4past.helpers.utils import check_
-from plan4past.helpers.formula_helper import MetaAtom, YesterdayAtom, ValAtom
+from plan4past.helpers.formula_helper import MetaAtom, YAtom, ValAtom
 
 
 class Pylogics2PddlTranslator:
@@ -54,7 +54,7 @@ class Pylogics2PddlTranslator:
     def translate(self, formula: Formula) -> PddlFormula:
         return {
             PLTLAtomic: lambda formula: self.from_atoms_to_fluent.get(formula, None),
-            YesterdayAtom: lambda formula: Predicate(self._translation_dictionary[formula].name, *[]),
+            YAtom: lambda formula: Predicate(self._translation_dictionary[formula].name, *[]),
             ValAtom: lambda formula: Predicate(self._translation_dictionary[formula].name, *[]),
             PropositionalTrue: lambda formula: TRUE_PREDICATE,
             And: lambda formula: PddlAnd(*[self.translate(operand) for operand in formula.operands]),

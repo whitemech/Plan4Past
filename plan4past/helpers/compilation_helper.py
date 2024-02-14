@@ -65,7 +65,6 @@ class CompilationManager:
             val_atom: Atomic(f"{VAL_ATOM}_{self.formula_to_label_map[val_atom.formula]}")
             for val_atom in self.val_atoms
         }
-        # print(self.quoted_map)
 
     
     def formula_to_label(self, formula: Formula) -> str:
@@ -94,7 +93,7 @@ class CompilationManager:
 
         return "\n".join(yesterday_mapping)
 
-    def get_problem_extension(self) -> Tuple[List[Formula], List, Formula]:
+    def get_adl_compilation(self) -> Tuple[List[Formula], List, Formula]:
         """
         Get the problem extension.
 
@@ -102,16 +101,11 @@ class CompilationManager:
         """
         goal = ppnf(self.phi)
         quoted_atoms = []
-        val_atoms = []
         conditional_effects = []
 
         for yesterday_atom in self.quoted_map:
-            check_(isinstance(yesterday_atom, YesterdayAtom))
+            check_(isinstance(yesterday_atom, YAtom))
             quoted_atoms.append(yesterday_atom)
             conditional_effects.append((ppnf(yesterday_atom.formula), yesterday_atom))
-        
-        for val_atom in self.val_map:
-            check_(isinstance(val_atom, ValAtom))
-            val_atoms.append(val_atom)
 
-        return val_atoms, quoted_atoms, conditional_effects, goal
+        return quoted_atoms, conditional_effects, goal

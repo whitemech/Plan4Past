@@ -49,7 +49,7 @@ from pylogics.syntax.pltl import (
 
 from plan4past.helpers.formula_helper import (
     QUOTED_ATOM,
-    YesterdayAtom,
+    YAtom,
     get_quoted_atom,
 )
 
@@ -59,10 +59,10 @@ class YesterdayGenerator:  # pylint: disable=too-few-public-methods
 
     def __init__(self) -> None:
         """Initialize the yesterday generator."""
-        self.yesterday_dictionary: Dict[YesterdayAtom, Atomic] = {}
+        self.yesterday_dictionary: Dict[YAtom, Atomic] = {}
         self.yesterday_id = 0
 
-    def add_quoted_atom(self, yesterday_atom: YesterdayAtom) -> None:
+    def add_quoted_atom(self, yesterday_atom: YAtom) -> None:
         """Add a yesterday atom to the dictionary."""
         if self.yesterday_dictionary.get(yesterday_atom) is None:
             self.yesterday_dictionary[yesterday_atom] = Atomic(
@@ -71,7 +71,7 @@ class YesterdayGenerator:  # pylint: disable=too-few-public-methods
             self.yesterday_id += 1
 
 
-def get_quoted_dictionary(phi: Formula) -> Dict[YesterdayAtom, Atomic]:
+def get_quoted_dictionary(phi: Formula) -> Dict[YAtom, Atomic]:
     """Get the dictionary of yesterday atoms."""
     yesterday_gen = YesterdayGenerator()
     populate_dictionary(phi, yesterday_gen)

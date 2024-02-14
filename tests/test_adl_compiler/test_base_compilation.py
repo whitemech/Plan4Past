@@ -32,7 +32,7 @@ from pylogics.syntax.pltl import Atomic, Once
 from plan4past.compiler import ADLCompiler
 from plan4past.compiler import Not as pddlNot
 from plan4past.compiler import When
-from plan4past.helpers.formula_helper import Yatom_
+from plan4past.helpers.formula_helper import YAtom
 
 
 def test_pddl_compilation() -> None:
@@ -57,10 +57,10 @@ def test_pddl_compilation() -> None:
     formula = parse_pltl(f"H(H(H({a}) | H({b}))) | ({a} | {b})")
 
     temporalsubformulas = [
-        Yatom_(Once(Not(a))),
-        Yatom_(Once(Not(b))),
-        Yatom_(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b))))))),
-        Yatom_(Once(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b)))))))),
+        YAtom(Once(Not(a))),
+        YAtom(Once(Not(b))),
+        YAtom(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b))))))),
+        YAtom(Once(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b)))))))),
     ]
 
     y = temporalsubformulas
