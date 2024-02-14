@@ -64,5 +64,23 @@ test_formulas_quoted_set = [
 def test_val_set(input_formula, expected):
     assert quoted_set(input_formula) == expected
 
+
+test_formulas_quoted_set = [
+    (ValAtom(a), a),
+    (ValAtom(PropositionalTrue()), PropositionalTrue()),
+    (ValAtom(PropositionalFalse()), PropositionalFalse()),
+    (ValAtom(And(a, b)), And(ValAtom(a), ValAtom(b))),
+    (ValAtom(Or(a, b)), Or(ValAtom(a), ValAtom(b))),
+    (ValAtom(Not(And(a, b))), Not(ValAtom(And(a, b)))),
+    (ValAtom(Before(Since(a, b))), Yatom_(Since(a, b))),
+    (ValAtom(Since(a, b)), Or(ValAtom(b), And(ValAtom(a), Yatom_(Since(a, b))))),
+    (ValAtom(Since(a, Once(b))), Or(ValAtom(Once(b)), And(ValAtom(a), Yatom_(Since(a, Once(b)))))),
+    (ValAtom(Since(a, Before(Once(b)))), Or(ValAtom(Before(Once(b))), And(ValAtom(a), Yatom_(Since(a, Before(Once(b))))))),
+]
+
+@pytest.mark.parametrize("input_formula, expected", test_formulas_quoted_set)
+def test_val_condition(input_formula, expected):
+    assert val_condition(input_formula) == expected
+
 if __name__ == "__main__":
     pytest.main()

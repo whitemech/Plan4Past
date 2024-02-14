@@ -110,6 +110,39 @@ def get_subformulas(phi: Formula) -> Set[Formula]:
     }[type(phi)](phi)
 
 
+def ppnf(phi: Formula) -> Formula:
+    """Compute the ppnf of a formula."""
+    return {
+        Atomic: lambda phi: phi,
+        PropositionalTrue: lambda phi: phi,
+        PropositionalFalse: lambda phi: phi,
+        Not: lambda phi: Not(ppnf(phi.argument)),
+        Before: lambda phi: get_quoted_atom(phi),
+        And: lambda phi: And(*[ppnf(operand) for operand in phi.operands]),
+        Or: lambda phi: Or(*[ppnf(operand) for operand in phi.operands]),
+        Once: lambda phi: Or(ppnf(phi.argument), get_quoted_atom(phi)),
+        Since: lambda phi: Or(ppnf(phi.operands[1]), And(ppnf(phi.operands[0]), get_quoted_atom(phi))),
+    }[type(phi)](phi)
+
+
+
+def val_condition(val: ValAtom) -> Formula:
+    """Compute the conditition 'cond' of an axiom 'val_\phi <- cond'."""
+    formula = val.formula
+    cases = {
+        Atomic: lambda phi: phi,
+        PropositionalTrue: lambda phi: phi,
+        PropositionalFalse: lambda phi: phi,
+        Not: lambda phi: Not(ValAtom(phi.argument)),
+        Before: lambda phi: get_quoted_atom(phi),
+        And: lambda phi: And(*[ValAtom(operand) for operand in phi.operands]),
+        Or: lambda phi: Or(*[ValAtom(operand) for operand in phi.operands]),
+        Once: lambda phi: Or(ValAtom(phi.argument), get_quoted_atom(phi)),
+        Since: lambda phi: Or(ValAtom(phi.operands[1]), And(ValAtom(phi.operands[0]), get_quoted_atom(phi))),
+    }
+    return cases[type(formula)](formula)
+
+
 def val_set(phi: Formula) -> Set[ValAtom_]:
     """Compute the pnf of a formula."""
     return {ValAtom_(sub) for sub in get_subformulas(phi)}

@@ -33,7 +33,6 @@ from pddl.logic.predicates import DerivedPredicate, Predicate
 from pylogics.syntax.base import Formula, Logic
 from pylogics.syntax.pltl import Atomic as PLTLAtomic
 from pylogics.syntax.pltl import FalseFormula
-from pylogics.utils.to_string import to_string
 
 from plan4past.constants import (
     ACHIEVE_GOAL_ACTION,
@@ -45,23 +44,16 @@ from plan4past.constants import (
     TRUE_PREDICATE,
 )
 from plan4past.exceptions import ProblemUnsolvableException
-from plan4past.helpers.compilation_helper import CompilationManager, YesterdayAtom
+from plan4past.helpers.compilation_helper import CompilationManager, YesterdayAtom, ValAtom
 from plan4past.helpers.utils import (
-    add_val_prefix,
     check_,
     default_mapping,
-    remove_yesterday_prefix,
-    replace_symbols,
 )
-from plan4past.helpers.formula_helper import QUOTED_ATOM
-from plan4past.utils.atoms_visitor import find_atoms
-from plan4past.utils.derived_visitor import derived_predicates
+from plan4past.helpers.formula_helper import QUOTED_ATOM, val_condition
 from plan4past.utils.dnf_visitor import dnf
 from plan4past.utils.nnf_visitor import nnf
-from plan4past.utils.predicates_visitor import predicates
 from plan4past.utils.pylogics2pddl import Pylogics2PddlTranslator
 from plan4past.utils.rewrite_formula_visitor import rewrite
-from plan4past.utils.val_predicates_visitor import val_predicates
 
 
 class Compiler:
@@ -134,18 +126,48 @@ class Compiler:
 
     def compile(self):
         """Compute the new domain and the new problem."""
+        self.cm = CompilationManager(self.formula)
+        self._quoted_map = self.cm.quoted_map
+        self._yesterday_mapping = self.cm.get_yesterday_mapping()
+        self._translation_dictionary = self.cm.quoted_map.copy()
+        self._translation_dictionary.update(self.cm.val_map)
+        self._translator = Pylogics2PddlTranslator(
+            cast(Dict[YesterdayAtom, PLTLAtomic], self._translation_dictionary),
+            self.from_atoms_to_fluent,
+        )
         if not self._executed:
             self._compile_domain()
             self._compile_problem()
             self._executed = True
 
+    def pylogics2pddl(self, formula: Formula) -> PddlFormula:
+        """Convert pylogics formula into PDDL formula."""
+        check_(self._translator is not None, "compilation not executed yet")
+        return cast(Pylogics2PddlTranslator, self._translator).translate(formula)
+
     def _compile_domain(self):
         """Compute the new domain."""
-        new_predicates = predicates(self.formula).union(val_predicates(self.formula))
-        new_derived_predicates = derived_predicates(
-            self.formula, self.from_atoms_to_fluent
-        )
-        new_whens = _compute_whens(self.formula)
+
+
+        quoted_atoms = [yesterday_atom for yesterday_atom in self.cm.quoted_map.keys()]
+        val_atoms = [val_atom for val_atom in self.cm.val_map.keys()]
+
+        new_whens = []
+        for quoted_atom in quoted_atoms:
+            val_atom = ValAtom(quoted_atom.formula)
+            new_whens.append(self.effect_conversion((val_atom, quoted_atom), positive=True))
+            new_whens.append(self.effect_conversion((val_atom, quoted_atom), positive=False))
+
+        new_predicates = [
+            *list(map(self.pylogics2pddl, quoted_atoms)),
+            *list(map(self.pylogics2pddl, val_atoms))
+        ]
+
+        new_derived_predicates = [
+            DerivedPredicate(self.pylogics2pddl(val_atom), self.pylogics2pddl(val_condition(val_atom)))
+            for val_atom in val_atoms
+        ]
+
         domain_actions = _update_domain_actions_det(self.domain.actions, new_whens)
 
         self._result_domain = Domain(
@@ -165,14 +187,16 @@ class Compiler:
             ],
             actions=domain_actions,
         )
+    
+    def effect_conversion(self, effect: Tuple, positive) -> When:
+        """Convert effect."""
+        condition = self.pylogics2pddl(effect[0])
+        effect = self.pylogics2pddl(effect[1])
+        return When(condition, effect) if positive else When(Not(condition), Not(effect))
 
     def _compile_problem(self):
         """Compute the new problem."""
-        new_init = (
-            {*self.problem.init, Predicate("true")}
-            if PLTLAtomic("true") in find_atoms(self.formula)
-            else set(self.problem.init)
-        )
+        new_init = ({*self.problem.init, TRUE_PREDICATE})
 
         self._result_problem = Problem(
             name=self.problem.name,
@@ -180,21 +204,8 @@ class Compiler:
             requirements=self.problem.requirements,
             objects=[*self.problem.objects],
             init=new_init,
-            goal=And(
-                Predicate(add_val_prefix(replace_symbols(to_string(self.formula))))
-            ),
+            goal=And(self.pylogics2pddl(ValAtom(self.formula))),
         )
-
-
-def _compute_whens(formula: Formula) -> Set[When]:
-    """Compute conditional effects for formula progression."""
-    return {
-        When(Predicate(add_val_prefix(remove_yesterday_prefix(p.name))), p)
-        for p in predicates(formula)
-    }.union(
-        When(Not(Predicate(add_val_prefix(remove_yesterday_prefix(p.name)))), Not(p))
-        for p in predicates(formula)
-    )
 
 
 def _update_domain_actions_det(
@@ -304,17 +315,15 @@ class ADLCompiler(Compiler):
     ):  # pylint: disable=arguments-differ
         """Compute the new domain."""
 
-        new_fluents, new_effs, new_goal = self.cm.get_problem_extension()
-        new_fluents.append(TRUE_ATOM)
+        _, quoted_atoms, new_effs, new_goal = self.cm.get_problem_extension()
+        quoted_atoms.append(TRUE_ATOM)
 
         quoted_updates = [self.effect_conversion(eff, positive=True) for eff in new_effs] + \
             [self.effect_conversion(eff, positive=False) for eff in new_effs]
         
-        #pnf_map = {val_}
-
         new_predicates = [
             *self.domain.predicates,
-            *list(map(self.pylogics2pddl, new_fluents)),
+            *list(map(self.pylogics2pddl, quoted_atoms)),
             self.goal_predicate,
         ]
 
@@ -370,17 +379,6 @@ class ADLCompiler(Compiler):
             init=new_init,
             goal=And(self.goal_predicate),
         )
-
-    def effect_conversion(self, effect: Tuple, positive) -> When:
-        """Convert effect."""
-        condition = self.pylogics2pddl(effect[0])
-        effect = self.pylogics2pddl(effect[1])
-        return When(condition, effect) if positive else When(Not(condition), Not(effect))
-
-    def pylogics2pddl(self, formula: Formula) -> PddlFormula:
-        """Convert pylogics formula into PDDL formula."""
-        check_(self._translator is not None, "compilation not executed yet")
-        return cast(Pylogics2PddlTranslator, self._translator).translate(formula)
 
 
 def _extend_action_model(action: Action, additional_precondition: Formula, additional_effects: List) -> Action:

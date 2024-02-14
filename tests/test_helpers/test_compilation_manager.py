@@ -33,9 +33,9 @@ from pylogics.syntax.pltl import (
 )
 
 from plan4past.helpers.compilation_helper import CompilationManager
-from plan4past.helpers.formula_helper import Yatom_
-from plan4past.utils.ppnf_visitor import ppnf
+from plan4past.helpers.formula_helper import Yatom_, ppnf
 from plan4past.utils.rewrite_formula_visitor import rewrite
+from plan4past.utils.predicates_visitor import predicates
 
 a = Atomic("a")
 b = Atomic("b")
@@ -329,12 +329,12 @@ def test_problem_extension_HH_Ha_Hb() -> None:
         Yatom_(Once(Once(Not(Or(Not(Once(Not(a))), Not(Once(Not(b)))))))),
     ]
 
-    fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
+    _, quoted_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
     assert len(compilation_manager.quoted_map) == 4
 
     for y in temporalsubformulas:
         assert y in compilation_manager.quoted_map
-        assert y in fresh_atoms
+        assert y in quoted_atoms
 
     y = temporalsubformulas
     pnf = [Or(Not(a), y[0]), Or(Not(b), y[1])]
@@ -359,12 +359,12 @@ def test_problem_extension_since():
         Yatom_(Since(Once(d), And(Once(a), Once(b), Once(c)))),
     ]
 
-    fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
+    _, quoted_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
     assert len(compilation_manager.quoted_map) == 5
 
     for y in temporalsubformulas:
         assert y in compilation_manager.quoted_map
-        assert y in fresh_atoms
+        assert y in quoted_atoms
 
     y = temporalsubformulas
     pnf = [Or(d, y[0]), Or(a, y[1]), Or(b, y[2]), Or(c, y[3])]
@@ -388,12 +388,12 @@ def test_problem_extension_since2() -> None:
         Yatom_(Since(Or(Once(a), Once(b), Once(c)), Once(d))),
     ]
 
-    fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
+    _, quoted_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
     assert len(compilation_manager.quoted_map) == 5
 
     for y in temporalsubformulas:
         assert y in compilation_manager.quoted_map
-        assert y in fresh_atoms
+        assert y in quoted_atoms
 
     y = temporalsubformulas
     pnf = [Or(d, y[0]), Or(a, y[1]), Or(b, y[2]), Or(c, y[3])]
@@ -415,12 +415,12 @@ def test_problem_extension_once_blocks() -> None:
         Yatom_(Once(And(b, Once(d)))),
     ]
 
-    fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
+    _, quoted_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
     assert len(compilation_manager.quoted_map) == 3
 
     for y in temporalsubformulas:
         assert y in compilation_manager.quoted_map
-        assert y in fresh_atoms
+        assert y in quoted_atoms
 
     y = temporalsubformulas
     pnf = [Or(d, y[0]), Or(And(a, Or(d, y[0])), y[1]), Or(And(b, Or(d, y[0])), y[2])]
@@ -442,12 +442,12 @@ def test_problem_extension_since3() -> None:
         Yatom_(Since(c, Once(b))),
     ]
 
-    fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
+    _, quoted_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
     assert len(compilation_manager.quoted_map) == 4
 
     for y in temporalsubformulas:
         assert y in compilation_manager.quoted_map
-        assert y in fresh_atoms
+        assert y in quoted_atoms
 
     y = temporalsubformulas
     pnf = [
@@ -473,12 +473,13 @@ def test_problem_extension_seq() -> None:
         Yatom_(Once(And(a, Before(Once(And(b, Before(Once(c)))))))),
     ]
 
-    fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
+    _, quoted_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
     assert len(compilation_manager.quoted_map) == 3
+
 
     for y in temporalsubformulas:
         assert y in compilation_manager.quoted_map
-        assert y in fresh_atoms
+        assert y in quoted_atoms
 
     y = temporalsubformulas
     pnf = [Or(c, y[0]), Or(And(b, y[0]), y[1]), Or(And(a, y[1]), y[2])]
@@ -501,12 +502,12 @@ def test_problem_extension_robot1() -> None:
         Yatom_(Once(And(c, Before(Before(Before(Not(Before(PropositionalTrue())))))))),
     ]
 
-    fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
+    _, quoted_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
     assert len(compilation_manager.quoted_map) == 5
 
     for y in temporalsubformulas:
         assert y in compilation_manager.quoted_map
-        assert y in fresh_atoms
+        assert y in quoted_atoms
 
     y = temporalsubformulas
     pnf = [PropositionalTrue(), Not(y[0]), y[1], y[2], Or(And(c, y[3]), y[4])]
@@ -526,12 +527,12 @@ def test_problem_extension_robot2() -> None:
         Yatom_(Once(Not(Or(Not(Before(a)), Not(b))))),
     ]
 
-    fresh_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
+    _, quoted_atoms, conditional_effects, goal = compilation_manager.get_problem_extension()
     assert len(compilation_manager.quoted_map) == 2
 
     for y in temporalsubformulas:
         assert y in compilation_manager.quoted_map
-        assert y in fresh_atoms
+        assert y in quoted_atoms
 
     y = temporalsubformulas
     pnf = [a, Or(Not(Or(Not(y[0]), Not(b))), y[1])]

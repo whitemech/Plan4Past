@@ -34,7 +34,6 @@ from pylogics.syntax.pltl import (
 
 from plan4past.helpers.utils import check_
 from plan4past.helpers.formula_helper import *
-from plan4past.utils.ppnf_visitor import ppnf
 from plan4past.utils.yesterday_generator_visitor import get_quoted_dictionary
 from typing import Set
 
@@ -102,12 +101,17 @@ class CompilationManager:
         :return: the problem extension
         """
         goal = ppnf(self.phi)
-        fresh_atoms = []
+        quoted_atoms = []
+        val_atoms = []
         conditional_effects = []
 
         for yesterday_atom in self.quoted_map:
             check_(isinstance(yesterday_atom, YesterdayAtom))
-            fresh_atoms.append(yesterday_atom)
+            quoted_atoms.append(yesterday_atom)
             conditional_effects.append((ppnf(yesterday_atom.formula), yesterday_atom))
+        
+        for val_atom in self.val_map:
+            check_(isinstance(val_atom, ValAtom))
+            val_atoms.append(val_atom)
 
-        return fresh_atoms, conditional_effects, goal
+        return val_atoms, quoted_atoms, conditional_effects, goal
