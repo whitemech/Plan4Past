@@ -56,6 +56,34 @@ from plan4past.utils.pylogics2pddl import Pylogics2PddlTranslator
 from plan4past.utils.rewrite_formula_visitor import rewrite
 
 
+
+def add_preconditions_effects(action: Action, additional_precondition: Formula, additional_effects: List[When]) -> Action:
+    """Get a copy of the action with new preconditions and effects."""
+    return add_effects(add_preconditions(action, additional_precondition), additional_effects)
+
+def add_preconditions(action: Action, additional_precondition: Formula) -> Action:
+    """Get a copy of the action with new preconditions."""
+    return new_action(action.name, 
+                      action.parameters, 
+                      And(action.precondition, additional_precondition), 
+                      action.effect)
+
+
+def add_effects(action: Action, additional_effects: List[When]) -> Action:
+    """Get a copy of the action with new effects."""
+    new_effect = AndEffect(*action.effect.operands, *additional_effects) \
+        if isinstance(action.effect, AndEffect) else AndEffect(action.effect, *additional_effects)
+    return new_action(action.name,
+                      action.parameters,
+                      action.precondition,
+                      new_effect)
+
+
+def new_action(name: str, parameters: List, preconditions: Formula, effects: AndEffect) -> Action:
+    """Create a new action."""
+    return Action(name=name, parameters=[*parameters], precondition=preconditions, effect=effects)
+
+
 class Compiler:
     """Compiler of PPLTL goals into PDDL."""
 
@@ -209,30 +237,13 @@ class Compiler:
 
 
 def _update_domain_actions_det(
-    actions: AbstractSet[Action], progression: Set[When]
+    actions: AbstractSet[Action], progression: List[When]
 ) -> Set[Action]:
     """Update domain actions."""
-    new_actions = set()
-    for action in actions:
-        if isinstance(action.effect, AndEffect):
-            previous_effects = action.effect.operands
-            new_actions.add(
-                Action(
-                    name=action.name,
-                    parameters=[*action.parameters],
-                    precondition=And(action.precondition),
-                    effect=AndEffect(*previous_effects, *progression),
-                )
-            )
-        else:
-            new_actions.add(
-                Action(
-                    name=action.name,
-                    parameters=[*action.parameters],
-                    precondition=And(action.precondition),
-                    effect=AndEffect(action.effect, *progression),
-                )
-            )
+    new_actions = {
+        add_effects(action, progression)
+        for action in actions
+    }
     return new_actions
 
 
@@ -381,16 +392,6 @@ class ADLCompiler(Compiler):
         )
 
 
-def _extend_action_model(action: Action, additional_precondition: Formula, additional_effects: List) -> Action:
-    new_precondition = And(action.precondition, additional_precondition)
-    new_effects = AndEffect(action.effect, *additional_effects)
-    return _new_action(action.name, action.parameters, new_precondition, new_effects)
-
-
-def _new_action(name: str, parameters: List, preconditions: Formula, effects: AndEffect) -> Action:
-    return Action(name=name, parameters=[*parameters], precondition=preconditions, effect=effects)
-
-
 def _update_domain_actions_with_check(
     compiler: ADLCompiler, new_effects: Set[When], new_predicates: list
 ) -> Set[Action]:
@@ -466,10 +467,10 @@ def _update_domain_actions_with_check(
     additional_effects = pnf_delete_effects + qouted_update_effects + [compiler.check_predicate]
 
     for action in compiler.domain.actions:
-        new_actions.add(_extend_action_model(action, additional_precondition, additional_effects))
+        new_actions.add(add_preconditions_effects(action, additional_precondition, additional_effects))
             
     new_actions.add(
-        _new_action(name=EVALUATE_PNF_ACTION, 
+        new_action(name=EVALUATE_PNF_ACTION, 
                     parameters=[], 
                     preconditions=And(Not(goal_fluent), compiler.check_predicate), 
                     effects=AndEffect(*pnf_evaluation_effects, Not(compiler.check_predicate)))
@@ -484,21 +485,10 @@ def _update_domain_actions(
     new_conditional_effects: List[When],
 ) -> Set[Action]:
     """Update domain actions."""
-    new_actions = set()
-    for action in actions:
-        if isinstance(action.effect, AndEffect):
-            eff_list = list(action.effect.operands) + new_conditional_effects
-            new_effect = AndEffect(*eff_list)
-        else:
-            new_effect = AndEffect(action.effect, *new_conditional_effects)
-        new_actions.add(
-            Action(
-                name=action.name,
-                parameters=[*action.parameters],
-                precondition=And(action.precondition, Not(compiler.goal_predicate)),
-                effect=new_effect,
-            )
-        )
+    new_actions = {
+        add_preconditions_effects(action, Not(compiler.goal_predicate), new_conditional_effects)
+        for action in actions
+    }
     return new_actions
 
 

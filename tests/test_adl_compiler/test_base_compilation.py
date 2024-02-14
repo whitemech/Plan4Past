@@ -86,3 +86,8 @@ def test_pddl_compilation() -> None:
         else:
             # THE GOAL IS IN THIS ACTION
             assert act.precondition == compiler.pylogics2pddl(Or(Not(pnf[3]), a, b))
+    
+
+    compiler = ADLCompiler(domain, problem, formula, from_atoms_to_fluent=None)
+    compiler.evaluate_pnf = True
+    compiler.compile()

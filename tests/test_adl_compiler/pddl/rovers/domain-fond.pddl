@@ -217,4 +217,17 @@
           (channel_free ?x1))
       )
     )
+
+    (:action test
+    :parameters (?x0 - rover ?x1 - lander ?x2 - objective ?x3 - mode ?x4 - waypoint ?x5 - waypoint)
+    :precondition 
+      (and
+        (at ?x0 ?x4)
+        (at_lander ?x1 ?x5)
+        (have_image ?x0 ?x2 ?x3)
+        (visible ?x4 ?x5)
+        (available ?x0)
+        (channel_free ?x1))
+    :effect (channel_free ?x1)
+    )
 )
