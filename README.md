@@ -47,6 +47,10 @@ cd Plan4Past
 pip install .
 ```
 
+## Dataset
+
+The dataset used to run the experiments in the papers can be found at: https://github.com/whitemech/Plan4Past-data
+
 ## Quickstart
 
 You can use the `plan4past` package in two ways: as a library, and as a CLI tool.
@@ -122,7 +126,6 @@ apptainer build plan4past.sif plan4past.def
 ./plan4past.sif -d examples/pddl/domain.pddl -p examples/pddl/p-0.pddl -g "ontable_c & O(on_b_a)"
 ```
 
-
 ## Development
 
 If you want to contribute, set up your development environment as follows:
@@ -148,7 +151,25 @@ Copyright 2021 -- 2023 WhiteMech
 
 If you use Plan4Past in your research, please consider citing the following papers.
 
-- For deterministic (classical) planning:
+- Extended journal version including deterministic (classical) and non-deterministic (FOND) Planning
+```
+@article{aij2025Bbdffgs,
+  author       = {Luigi Bonassi and
+                  Giuseppe {De Giacomo} and
+                  Marco Favorito and
+                  Francesco Fuggitti and
+                  Alfonso Emilio Gerevini and
+                  Enrico Scala},
+  title        = {Planning for temporally extended goals in pure-past linear temporal
+                  logic},
+  journal      = {Artif. Intell.},
+  volume       = {348},
+  pages        = {104409},
+  year         = {2025}
+}
+``` 
+
+- ICAPS 2023 paper dedicated to deterministic (classical) planning:
 ```
 @inproceedings{icaps2023bdffgs,
   author       = {Luigi Bonassi and
@@ -164,7 +185,7 @@ If you use Plan4Past in your research, please consider citing the following pape
   year         = {2023}
 }
 ```
-- For non-deterministic (FOND) planning:
+- ECAI 2023 paper dedicated to non-deterministic (FOND) planning:
 ```
 @inproceedings{ecai2023bdffgs,
   author       = {Luigi Bonassi and
